@@ -202,3 +202,7 @@
 	.BPHide4Bidi 	{  }
 	.BPHide4EA 		{  }
 	.BPHide4Thai 	{  }
+
+.InfoField {
+	PADDING-RIGHT: 12px; PADDING-LEFT: 12px; PADDING-BOTTOM: 4px; MARGIN-LEFT: 24px; MARGIN-RIGHT: 48px; PADDING-TOP: 4px; BACKGROUND-COLOR: #cccccc
+}

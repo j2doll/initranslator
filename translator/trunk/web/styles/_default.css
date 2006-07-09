@@ -4,9 +4,7 @@
 .pageBreakAfter {
 	PAGE-BREAK-AFTER: always
 }
-.InfoField {
-	PADDING-RIGHT: 12px; PADDING-LEFT: 12px; PADDING-BOTTOM: 4px; MARGIN-LEFT: 24px; MARGIN-RIGHT: 48px; PADDING-TOP: 4px; BACKGROUND-COLOR: #efefef
-}
+
 BODY {
 	FONT-SIZE: 70%; BACKGROUND: #ffffff; COLOR: #333333; FONT-FAMILY: Verdana, Arial, Helvetica, sans-serif
 }

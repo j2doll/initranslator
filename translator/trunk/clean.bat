@@ -1,0 +1,1 @@
+del /s /q *.dcu *.~* *.drc *.cfg *.ddp *.dsk .#* *.rsb *.used *.identcache

@@ -2,7 +2,7 @@ Ini Translator Changelog
 ========================
 2006-07-10:
 - Merged ITranslationItem, ITranslationItem2, ITranslationItem3 into ITranslationItem
-- Merged ITranslationItem, ITranslationItem2 into ITranslationItems
+- Merged ITranslationItems, ITranslationItems2 into ITranslationItems
 - Added PreData and PostData to ITranslationItem
 - Added Modified to ITranslationItems
 

@@ -52,36 +52,53 @@ object frmImport: TfrmImport
     201)
   PixelsPerInch = 96
   TextHeight = 13
-  object Label1: TLabel
+  object Label1: TTntLabel
     Left = 8
     Top = 8
     Width = 46
     Height = 13
     Caption = '&Filename:'
   end
-  object Label2: TLabel
+  object Label2: TTntLabel
     Left = 8
     Top = 56
     Width = 87
     Height = 13
     Caption = '&Original language:'
   end
-  object Label3: TLabel
+  object Label3: TTntLabel
     Left = 8
     Top = 104
     Width = 107
     Height = 13
     Caption = '&Translation Language:'
   end
-  object edFilename: TEdit
+  object cbOrigLang: TTntComboBox
+    Left = 8
+    Top = 72
+    Width = 361
+    Height = 21
+    ItemHeight = 13
+    TabOrder = 4
+  end
+  object cbTransLang: TTntComboBox
+    Left = 8
+    Top = 120
+    Width = 361
+    Height = 21
+    ItemHeight = 13
+    TabOrder = 5
+  end
+  object edFilename: TTntEdit
     Left = 8
     Top = 24
     Width = 337
     Height = 21
     Anchors = [akLeft, akTop, akRight]
     TabOrder = 0
+    OnChange = edFilenameChange
   end
-  object btnBrowse: TButton
+  object btnBrowse: TTntButton
     Left = 352
     Top = 24
     Width = 21
@@ -91,7 +108,7 @@ object frmImport: TfrmImport
     TabOrder = 1
     OnClick = btnBrowseClick
   end
-  object btnOK: TButton
+  object btnOK: TTntButton
     Left = 208
     Top = 161
     Width = 75
@@ -100,9 +117,9 @@ object frmImport: TfrmImport
     Caption = 'OK'
     Default = True
     ModalResult = 1
-    TabOrder = 4
+    TabOrder = 2
   end
-  object btnCancel: TButton
+  object btnCancel: TTntButton
     Left = 288
     Top = 161
     Width = 75
@@ -111,22 +128,6 @@ object frmImport: TfrmImport
     Cancel = True
     Caption = 'Cancel'
     ModalResult = 2
-    TabOrder = 5
-  end
-  object edOrigLang: TEdit
-    Left = 8
-    Top = 72
-    Width = 360
-    Height = 21
-    Anchors = [akLeft, akTop, akRight]
-    TabOrder = 2
-  end
-  object edTransLang: TEdit
-    Left = 8
-    Top = 120
-    Width = 360
-    Height = 21
-    Anchors = [akLeft, akTop, akRight]
     TabOrder = 3
   end
   object OpenDialog1: TOpenDialog

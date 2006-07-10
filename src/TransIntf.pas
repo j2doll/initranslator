@@ -15,7 +15,7 @@
    the specific language governing rights and limitations under the License.
 }
 
-// $Id: TransIntf.pas,v 1.12 2006/07/07 10:18:38 peter3 Exp $
+// $Id: TransIntf.pas,v 1.13 2006/07/10 12:56:16 peter3 Exp $
 
 unit TransIntf;
 
@@ -77,10 +77,6 @@ type
     property Section: WideString read GetSection write SetSection;
     property Name: WideString read GetName write SetName;
     property Owner: ITranslationItems read GetOwner write SetOwner;
-  end;
-
-  ITranslationItem2 = interface(ITranslationItem)
-    ['{77326880-2729-475F-91D5-0347E954E87A}']
     // Works just as SetOriginal and SetTranslation in ITranslationItem, but
     // also sets OrigQuote/TransQuote to #0
     procedure SetClearOriginal(const Value: WideString);
@@ -88,10 +84,7 @@ type
 
     property ClearOriginal: WideString read GetOriginal write SetClearOriginal;
     property ClearTranslation: WideString read GetTranslation write SetClearTranslation;
-  end;
 
-  ITranslationItem3 = interface(ITranslationItem2)
-    ['{B5B83720-A584-493B-8DF2-205602532099}']
     procedure SetModified(Value: WordBool);
     function GetModified: WordBool;
     procedure SetPrivateStorage(const Value: WideString);
@@ -101,7 +94,14 @@ type
     // like along with each item.
     property PrivateStorage: WideString read GetPrivateStorage write SetPrivateStorage;
     property Modified: WordBool read GetModified write SetModified;
+    function GetPreData:WideString;
+    procedure SetPreData(const Value:WideString);
+    function GetPostData:WideString;
+    procedure SetPostData(const Value:WideString);
+    property PreData:WideString read GetPreData write SetPreData;
+    property PostData:WideString read GetPostData write SetPostData;
   end;
+
 
   ITranslationItems = interface(IInterface)
     ['{6ACD4934-9B26-4232-B11E-95FB18B60FCA}']
@@ -109,24 +109,23 @@ type
     procedure SetTranslatedCount(const Value: integer);
     function GetSort: TTranslateSortType;
     procedure SetSort(const Value: TTranslateSortType);
+    procedure SetModified(Value: WordBool);
+    function GetModified: WordBool;
+    function GetItem(Index: integer): ITranslationItem;
+    function GetCount: integer;
 
-    function Add: ITranslationItem;
+    function Add: ITranslationItem;overload;
+    function Add(const Item: ITranslationItem): integer; overload;
+    function CreateItem: ITranslationItem; // create an item that isn't added to the list
     procedure Delete(Index: integer);
     procedure Clear;
     function IndexOf(const Section, Name: WideString; CaseSense: WordBool = false): integer;
 
-    function GetItem(Index: integer): ITranslationItem;
-    function GetCount: integer;
     property Count: integer read GetCount;
     property Items[Index: integer]: ITranslationItem read GetItem; default;
     property TranslatedCount: integer read GetTranslatedCount write SetTranslatedCount;
     property Sort: TTranslateSortType read GetSort write SetSort;
-  end;
-  ITranslationItems2 = interface(ITranslationItems)
-    ['{4A9A03BE-F42E-4A27-AA02-99386B96CD89}']
-    // add existing item
-    function Add(const Item: ITranslationItem): integer; overload;
-    function CreateItem: ITranslationItem; // create an item that isn't added to the list
+    property Modified:WordBool read GetModified write SetModified;
   end;
 
   IFileParser = interface(IInterface)

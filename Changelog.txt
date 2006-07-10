@@ -1,10 +1,16 @@
 Ini Translator Changelog
 ========================
+2006-07-10:
+- Merged ITranslationItem, ITranslationItem2, ITranslationItem3 into ITranslationItem
+- Merged ITranslationItem, ITranslationItem2 into ITranslationItems
+- Added PreData and PostData to ITranslationItem
+- Added Modified to ITranslationItems
+
 2006-07-09:
 - Released on SourceForge as version 1.9.0.0
 
 2006-07-09:
-- SUpport for multiple translations in dictionary
+- Support for multiple translations in dictionary
 - New dialog for "Translate using dictionary"
 - New dialog to edit dictionary items
 - MRU list and toolbar positions are now saved to the ini file instead of registry

@@ -15,7 +15,7 @@
    WITHOUT WARRANTY OF ANY KIND, either express or implied. See the License for
    the specific language governing rights and limitations under the License.
 }
-// $Id: MainFrm.pas,v 1.103 2006/07/09 16:31:42 peter3 Exp $
+// $Id: MainFrm.pas,v 1.104 2006/07/10 12:56:15 peter3 Exp $
 unit MainFrm;
 {$I TRANSLATOR.INC}
 
@@ -1076,7 +1076,7 @@ procedure TfrmMain.SetModified(const Value: boolean);
   var i: integer;
   begin
     for i := 0 to FTranslateFile.Items.Count - 1 do
-      ITranslationItem3(FTranslateFile.Items[i]).Modified := false;
+      FTranslateFile.Items[i].Modified := false;
     lvTranslateStrings.Update;
   end;
 begin
@@ -1638,7 +1638,7 @@ begin
   for Result := High(FBookmarks) downto Low(FBookmarks) do
     if FBookmarks[Result] = Index then
       Exit;
-  if ITranslationItem3(FTranslateFile.Items[Index]).Modified then
+  if FTranslateFile.Items[Index].Modified then
     Result := High(FBookmarks) + 1
   else
     Result := -1;
@@ -2218,7 +2218,7 @@ begin
   if reTranslation.Modified and (lvTranslateStrings.Selected <> nil) then
   begin
     i := lvTranslateStrings.Selected.Index;
-    with FTranslateFile.Items[i] as ITranslationItem2 do
+    with FTranslateFile.Items[i] do
     begin
       ClearTranslation := MyWideQuotedStr(RemoveQuotes(trimCRLFRight(reTranslation.Text)), TransQuote);
       Translated := MyWideDequotedStr(Translation, TransQuote) <> '';
@@ -3609,14 +3609,14 @@ var
     ToItem.Translation := FromItem.Translation;
     ToItem.Section := FromItem.Section;
     ToItem.Name := FromItem.Name;
-    (ToItem as ITranslationItem2).ClearOriginal := (FromItem as ITranslationItem2).ClearOriginal;
-    (ToItem as ITranslationItem2).ClearTranslation := (FromItem as ITranslationItem2).ClearTranslation;
-    (ToItem as ITranslationItem3).PrivateStorage := (FromItem as ITranslationItem3).PrivateStorage;
+    ToItem.ClearOriginal := FromItem.ClearOriginal;
+    ToItem.ClearTranslation := FromItem.ClearTranslation;
+    ToItem.PrivateStorage := FromItem.PrivateStorage;
   end;
 begin
   Index := lvTranslateStrings.Selected.Index;
   AOldItem := FTranslateFile.Items[Index];
-  AItem := (FTranslateFile.Items as ITranslationItems2).CreateItem;
+  AItem := FTranslateFile.Items.CreateItem;
   CopyItem(AOldItem, AItem);
   ASections := TTntStringlist.Create;
   try
@@ -3651,7 +3651,7 @@ var
   FOldSort: TTranslateSortType;
   i, AIndex: integer;
 begin
-  AItem := (FTranslateFile.Items as ITranslationItems2).CreateItem;
+  AItem := FTranslateFile.Items.CreateItem;
   with lvTranslateStrings do
     if ItemIndex > -1 then
       AItem.Section := FTranslateFile.Items[ItemIndex].Section;
@@ -3675,7 +3675,7 @@ begin
         try
           // insert the new item at the correct location
           FTranslateFile.Items.Sort := stIndex;
-          AIndex := (FTranslateFile.Items as ITranslationItems2).Add(AItem);
+          AIndex := FTranslateFile.Items.Add(AItem);
           i := 0;
           while i <= AIndex do
           begin

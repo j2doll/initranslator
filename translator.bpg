@@ -9,9 +9,10 @@ MAKE = $(ROOT)\bin\make.exe -$(MAKEFLAGS) -f$**
 DCC = $(ROOT)\bin\dcc32.exe $**
 BRCC = $(ROOT)\bin\brcc32.exe $**
 #------------------------------------------------------------------------------
-PROJECTS = ConsoleTest.exe POParser.dll PHPParser.dll PHPNukeParser.dll \
-  MozillaDTDParser.dll MozillaPropsParser.dll IBForumsParser.dll SciTEParser.dll \
-  OOGSIParser.dll OlegParser.dll MSDictParser.dll MSDictBuild.exe translator.exe
+PROJECTS = ConsoleTest.exe IBForumsParser.dll MozillaDTDParser.dll \
+  MozillaPropsParser.dll MSDictBuild.exe MSDictParser.dll OlegParser.dll \
+  OOGSIParser.dll PHPNukeParser.dll PHPParser.dll PolyGlotParser.dll POParser.dll \
+  SciTEParser.dll TMXParser.dll translator.exe
 #------------------------------------------------------------------------------
 default: $(PROJECTS)
 #------------------------------------------------------------------------------
@@ -53,6 +54,12 @@ MSDictParser.dll: src\MSDictParser\MSDictParser.dpr
   $(DCC)
 
 MSDictBuild.exe: src\MsDictBuild\MSDictBuild.dpr
+  $(DCC)
+
+TMXParser.dll: src\TMXPlugin\TMXParser.dpr
+  $(DCC)
+
+PolyGlotParser.dll: src\PolyglotPlugin\PolyGlotParser.dpr
   $(DCC)
 
 

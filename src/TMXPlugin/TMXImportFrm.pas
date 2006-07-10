@@ -21,35 +21,39 @@ interface
 
 uses
   Windows, Messages, SysUtils, Classes, Graphics, Controls, Forms,
-  Dialogs, StdCtrls;
+  Dialogs, StdCtrls, TntStdCtrls;
 
 type
   TfrmImport = class(TForm)
-    Label1: TLabel;
-    edFilename: TEdit;
-    btnBrowse: TButton;
-    btnOK: TButton;
-    btnCancel: TButton;
+    Label1: TTntLabel;
+    edFilename: TTntEdit;
+    btnBrowse: TTntButton;
+    btnOK: TTntButton;
+    btnCancel: TTntButton;
     OpenDialog1: TOpenDialog;
-    Label2: TLabel;
-    edOrigLang: TEdit;
-    Label3: TLabel;
-    edTransLang: TEdit;
+    Label2: TTntLabel;
+    Label3: TTntLabel;
+    cbOrigLang: TTntComboBox;
+    cbTransLang: TTntComboBox;
     procedure btnBrowseClick(Sender: TObject);
+    procedure edFilenameChange(Sender: TObject);
   private
     { Private declarations }
+    procedure ParseLanguages(const Filename: string);
   public
     { Public declarations }
-    class function Execute(var AFilename, AOrigLang, ATransLang: string; const ACaption, Filter, InitialDir, DefaultExt:string): boolean;
+    class function Execute(var AFilename, AOrigLang, ATransLang: string; const ACaption, Filter, InitialDir, DefaultExt: string): boolean;
   end;
 
 implementation
+uses
+  TntClasses, XMLDoc, xmldom;
 
 {$R *.dfm}
 
 { TfrmImport }
 
-class function TfrmImport.Execute(var AFilename, AOrigLang, ATransLang: string; const ACaption, Filter, InitialDir, DefaultExt:string): boolean;
+class function TfrmImport.Execute(var AFilename, AOrigLang, ATransLang: string; const ACaption, Filter, InitialDir, DefaultExt: string): boolean;
 var
   frmImport: TfrmImport;
 begin
@@ -61,14 +65,14 @@ begin
     OpenDialog1.InitialDir := InitialDir;
     OpenDialog1.DefaultExt := DefaultExt;
     edFilename.Text := AFilename;
-    edOrigLang.Text := AOrigLang;
-    edTransLang.Text := ATransLang;
-    Result := (ShowModal = mrOk) and FileExists(edFilename.Text) and (edOrigLang.Text <> '') and (edTransLang.Text <> '');
+    cbOrigLang.Text := AOrigLang;
+    cbTransLang.Text := ATransLang;
+    Result := (ShowModal = mrOk) and FileExists(edFilename.Text) and (cbOrigLang.Text <> '') and (cbTransLang.Text <> '');
     if Result then
     begin
       AFilename := edFilename.Text;
-      AOrigLang := edOrigLang.Text;
-      ATransLang := edTransLang.Text;
+      AOrigLang := cbOrigLang.Text;
+      ATransLang := cbTransLang.Text;
     end;
   finally
     Free;
@@ -82,6 +86,51 @@ begin
     edFilename.Text := OpenDialog1.Filename;
 end;
 
-end.
+procedure TfrmImport.edFilenameChange(Sender: TObject);
+begin
+  if FileExists(edFilename.Text) then
+    ParseLanguages(edFilename.Text);
+end;
 
+procedure TfrmImport.ParseLanguages(const Filename: string);
+var
+  FXMLImport: TXMLDocument;
+  NodeList: IDOMNodeList;
+  Node: IDOMNode;
+  i: integer;
+  S: WideString;
+  List: TTntStringList;
+begin
+  // detect available languages
+  FXMLImport := TXMLDocument.Create(nil);
+  List := TTntStringList.Create;
+  try
+    List.Sorted := true;  // no duplicates
+
+    FXMLImport.LoadFromFile(Filename);
+    if FXMLImport.DOMDocument <> nil then
+    begin
+      NodeList := FXMLImport.DOMDocument.getElementsByTagName('tuv');
+      if NodeList <> nil then
+        for i := 0 to NodeList.length - 1 do
+        begin
+          Node := NodeList.item[i];
+          if (Node.attributes <> nil) and (Node.attributes.getNamedItem('xml:lang') <> nil) then
+          begin
+            S := Node.attributes.getNamedItem('xml:lang').nodeValue;
+            if S <> '' then
+              List.Add(S);
+          end;
+          cbOrigLang.Items.Assign(List);
+          cbTransLang.Items.Assign(List);
+        end;
+      cbOrigLang.ItemIndex := 0;
+      cbTransLang.ItemIndex := 0;
+    end;
+  finally
+    List.Free;
+  end;
+end;
+
+end.
 

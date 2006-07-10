@@ -1,0 +1,150 @@
+{@abstract(Translation interfaces. Used by plugins }
+{
+  Copyright © 2003-2004 by Peter Thornqvist; all rights reserved
+
+  Developer(s):
+    p3 - peter3 att users dott sourceforge dott net
+
+  Status:
+   The contents of this file are subject to the Mozilla Public License Version
+   1.1 (the "License"); you may not use this file except in compliance with the
+   License. You may obtain a copy of the License at http://www.mozilla.org/MPL/MPL-1.1.html
+
+   Software distributed under the License is distributed on an "AS IS" basis,
+   WITHOUT WARRANTY OF ANY KIND, either express or implied. See the License for
+   the specific language governing rights and limitations under the License.
+}
+
+// $Id: TransIntf.pas,v 1.12 2006/07/07 10:18:38 peter3 Exp $
+
+unit TransIntf;
+
+{$I TRANSLATOR.INC}
+
+interface
+
+type
+  TTranslateSortType = integer;
+const
+  CAP_IMPORT = 1; // we can import
+  CAP_EXPORT = 2; // we can export
+  CAP_CONFIGURE = 4; // we have a configuration dialog
+  CAP_ITEM_DELETE = 8; // we support deleting items
+  CAP_ITEM_INSERT = 16; // we support adding items
+  CAP_ITEM_EDIT = 32; // we support modifying the items
+
+  stNone = 0;
+  stSection = 1;
+  stOriginal = 2;
+  stInvertOriginal = 3;
+  stTranslation = 4;
+  stInvertTranslation = 5;
+  stIndex = 6;
+  stInvertIndex = 7;
+
+type
+  ITranslationItems = interface;
+  ITranslationItem = interface(IInterface)
+    ['{5B400D54-5B0E-48B4-BEE3-9DBDA02AE3D6}']
+    function GetIndex: integer;
+    function GetName: WideString;
+    function GetOrigComments: WideString;
+    function GetOriginal: WideString;
+    function GetSection: WideString;
+    function GetTransComments: WideString;
+    function GetTranslation: WideString;
+    function GetTranslated: WordBool;
+    function GetOwner: ITranslationItems;
+    procedure SetTranslated(const Value: WordBool);
+    procedure SetIndex(const Value: integer);
+    procedure SetName(const Value: WideString);
+    procedure SetOrigComments(const Value: WideString);
+    procedure SetOriginal(const Value: WideString);
+    procedure SetSection(const Value: WideString);
+    procedure SetTransComments(const Value: WideString);
+    procedure SetTranslation(const Value: WideString);
+    procedure SetOwner(const Value: ITranslationItems);
+
+    function TransQuote: WideChar;
+    function OrigQuote: WideChar;
+
+    property Index: integer read GetIndex write SetIndex;
+    property Translated: WordBool read GetTranslated write SetTranslated;
+    property TransComments: WideString read GetTransComments write SetTransComments;
+    property OrigComments: WideString read GetOrigComments write SetOrigComments;
+    property Original: WideString read GetOriginal write SetOriginal;
+    property Translation: WideString read GetTranslation write SetTranslation;
+    property Section: WideString read GetSection write SetSection;
+    property Name: WideString read GetName write SetName;
+    property Owner: ITranslationItems read GetOwner write SetOwner;
+  end;
+
+  ITranslationItem2 = interface(ITranslationItem)
+    ['{77326880-2729-475F-91D5-0347E954E87A}']
+    // Works just as SetOriginal and SetTranslation in ITranslationItem, but
+    // also sets OrigQuote/TransQuote to #0
+    procedure SetClearOriginal(const Value: WideString);
+    procedure SetClearTranslation(const Value: WideString);
+
+    property ClearOriginal: WideString read GetOriginal write SetClearOriginal;
+    property ClearTranslation: WideString read GetTranslation write SetClearTranslation;
+  end;
+
+  ITranslationItem3 = interface(ITranslationItem2)
+    ['{B5B83720-A584-493B-8DF2-205602532099}']
+    procedure SetModified(Value: WordBool);
+    function GetModified: WordBool;
+    procedure SetPrivateStorage(const Value: WideString);
+    function GetPrivateStorage: WideString;
+    // Some imported formats carry baggage not available in a standard translation item.
+    // This property is provided so these formats can store whatever they
+    // like along with each item.
+    property PrivateStorage: WideString read GetPrivateStorage write SetPrivateStorage;
+    property Modified: WordBool read GetModified write SetModified;
+  end;
+
+  ITranslationItems = interface(IInterface)
+    ['{6ACD4934-9B26-4232-B11E-95FB18B60FCA}']
+    function GetTranslatedCount: integer;
+    procedure SetTranslatedCount(const Value: integer);
+    function GetSort: TTranslateSortType;
+    procedure SetSort(const Value: TTranslateSortType);
+
+    function Add: ITranslationItem;
+    procedure Delete(Index: integer);
+    procedure Clear;
+    function IndexOf(const Section, Name: WideString; CaseSense: WordBool = false): integer;
+
+    function GetItem(Index: integer): ITranslationItem;
+    function GetCount: integer;
+    property Count: integer read GetCount;
+    property Items[Index: integer]: ITranslationItem read GetItem; default;
+    property TranslatedCount: integer read GetTranslatedCount write SetTranslatedCount;
+    property Sort: TTranslateSortType read GetSort write SetSort;
+  end;
+  ITranslationItems2 = interface(ITranslationItems)
+    ['{4A9A03BE-F42E-4A27-AA02-99386B96CD89}']
+    // add existing item
+    function Add(const Item: ITranslationItem): integer; overload;
+    function CreateItem: ITranslationItem; // create an item that isn't added to the list
+  end;
+
+  IFileParser = interface(IInterface)
+    ['{3E556846-9B4D-4722-B48F-48D020715509}']
+    function ExportItems(const Items, Orphans: ITranslationItems): HResult; safecall;
+    function ImportItems(const Items, Orphans: ITranslationItems): HResult; safecall;
+    function DisplayName(Capability: integer): WideString; safecall;
+    // return combination of the CAP_ constants
+    function Capabilities: integer; safecall;
+    function Configure(Capability: integer): HResult; safecall;
+    procedure Init(AppHandle: Cardinal); safecall;
+  end;
+
+  TExportFunc = function(out Parser: IFileParser): HResult; stdcall;
+
+const
+  cRegisterTransFileParserFuncName = 'RegisterTransFileParser001';
+
+implementation
+
+end.

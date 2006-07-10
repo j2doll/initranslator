@@ -114,7 +114,7 @@ begin
     try
       Items.Sort := stIndex;
       for i := 0 to Items.Count - 1 do
-        Strings.Add(StringReplace((Items[i] as ITranslationItem3).PrivateStorage, cGSIPlaceHolder, Items[i].Translation, []));
+        Strings.Add(StringReplace(Items[i].PrivateStorage, cGSIPlaceHolder, Items[i].Translation, []));
     finally
       Items.Sort := FOldSort;
     end;
@@ -192,7 +192,7 @@ var
   procedure ParseRow(const Orig, Trans: WideString);
   var S: WideString;
   begin
-    with Items.Add as ITranslationItem3 do
+    with Items.Add do
     begin
       Index := Items.Count;
 //      Section := cSectionName;

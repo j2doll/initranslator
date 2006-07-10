@@ -75,7 +75,7 @@ NEWS_NOTIFY
             <Property name="SuppressStatusMessages" type="Boolean">False</Property>
             <Property name="TimeOut" type="Integer">0</Property>
             <Object Class="TPersistParam" XMLID="{517045E7-48E7-41A4-8E5B-3373C18374C5}"><Property MultiValue="0" name="Caption" type="String">R&amp;amp;oot path:</Property>
-              <Property MultiValue="0" name="DefaultValue" type="String">%ProgramFiles%\Borland\Projects\Private\translator\</Property>
+              <Property MultiValue="0" name="DefaultValue" type="String">%ProgramFiles%\Borland\Projects\Private\translator\trunk\</Property>
               <Property name="InUse" type="Boolean">True</Property>
               <Property name="List" type="TStrings"><![CDATA[]]>
                 </Property>
@@ -85,7 +85,7 @@ NEWS_NOTIFY
               <Property MultiValue="0" name="Value" type="String"></Property>
               </Object>
             <Object Class="TPersistParam" XMLID="{5A6C5938-84D8-41C7-B96B-EBCF36D2A234}"><Property MultiValue="0" name="Caption" type="String">&amp;amp;Source path:</Property>
-              <Property MultiValue="0" name="DefaultValue" type="String">%ProgramFiles%\Borland\Projects\Private\translator\src\</Property>
+              <Property MultiValue="0" name="DefaultValue" type="String">%ProgramFiles%\Borland\Projects\Private\translator\trunk\src\</Property>
               <Property name="InUse" type="Boolean">True</Property>
               <Property name="List" type="TStrings"><![CDATA[]]>
                 </Property>
@@ -1913,13 +1913,13 @@ Peter Thornqvist
         </Object>
       </Object>
     <Object Class="TFBVariablesCollection" XMLID="{C95A8F83-E731-4886-851A-9740E107DB47}"><Property MultiValue="0" name="Name" type="String"></Property>
-      <Object Class="TFBVariable" XMLID="{0C0FDBE2-16AE-488C-96A4-95260FA479E9}"><Property MultiValue="0" name="DefaultValue" type="String">%ProgramFiles%\Borland\Projects\Private\translator\src\</Property>
+      <Object Class="TFBVariable" XMLID="{0C0FDBE2-16AE-488C-96A4-95260FA479E9}"><Property MultiValue="0" name="DefaultValue" type="String">%ProgramFiles%\Borland\Projects\Private\translator\trunk\src\</Property>
         <Property name="IsMacro" type="Boolean">False</Property>
         <Property name="MakeEnv" type="Boolean">False</Property>
         <Property MultiValue="0" name="Name" type="String">SRCPATH</Property>
         <Property name="VariableType" type="TFBVariableType">vtProject</Property>
         </Object>
-      <Object Class="TFBVariable" XMLID="{CD0B31FC-1CB1-4269-97CB-A5FC3899DA2B}"><Property MultiValue="0" name="DefaultValue" type="String">%ProgramFiles%\Borland\Projects\Private\translator\</Property>
+      <Object Class="TFBVariable" XMLID="{CD0B31FC-1CB1-4269-97CB-A5FC3899DA2B}"><Property MultiValue="0" name="DefaultValue" type="String">%ProgramFiles%\Borland\Projects\Private\translator\trunk\</Property>
         <Property name="IsMacro" type="Boolean">False</Property>
         <Property name="MakeEnv" type="Boolean">False</Property>
         <Property MultiValue="0" name="Name" type="String">ROOTPATH</Property>
@@ -1943,7 +1943,7 @@ Peter Thornqvist
         <Property MultiValue="0" name="Name" type="String">VERSION_RELEASE</Property>
         <Property name="VariableType" type="TFBVariableType">vtProject</Property>
         </Object>
-      <Object Class="TFBVariable" XMLID="{2C0ECC00-A68D-45F6-9BBA-67E2C178ACCA}"><Property MultiValue="0" name="DefaultValue" type="String">0</Property>
+      <Object Class="TFBVariable" XMLID="{2C0ECC00-A68D-45F6-9BBA-67E2C178ACCA}"><Property MultiValue="0" name="DefaultValue" type="String">1</Property>
         <Property name="IsMacro" type="Boolean">False</Property>
         <Property name="MakeEnv" type="Boolean">False</Property>
         <Property MultiValue="0" name="Name" type="String">VERSION_BUILD</Property>

@@ -15,7 +15,7 @@
    the specific language governing rights and limitations under the License.
 }
 
-// $Id: TranslateFile.pas,v 1.29 2006/07/07 10:18:38 peter3 Exp $
+// $Id: TranslateFile.pas,v 1.30 2006/07/10 12:56:16 peter3 Exp $
 
 unit TranslateFile;
 
@@ -29,8 +29,7 @@ type
   TTranslationItems = class;
   TTranslateFiles = class;
 
-  TTranslationItem = class(TInterfacedObject, IInterface, ITranslationItem,
-      ITranslationItem2, ITranslationItem3)
+  TTranslationItem = class(TInterfacedObject, IInterface, ITranslationItem)
   private
     FOwner: ITranslationItems;
     FOriginal: WideString;
@@ -40,7 +39,7 @@ type
     FIndex: integer;
     FTransComments: WideString;
     FOrigComments: WideString;
-    FPrivateStorage: WideString;
+    FPrivateStorage, FPreData, FPostData: WideString;
     FTranslated, FModified: WordBool;
     FOrigQuote, FTransQuote: WideChar;
     { ITranslationItem }
@@ -70,6 +69,10 @@ type
     function GetPrivateStorage: WideString;
     function GetModified: WordBool;
     procedure SetModified(Value: WordBool);
+    function GetPreData:WideString;
+    procedure SetPreData(const Value:WideString);
+    function GetPostData:WideString;
+    procedure SetPostData(const Value:WideString);
   private
     function GetQuote(const S: WideString): WideChar;
     procedure Change(Changed: boolean);
@@ -91,19 +94,24 @@ type
     property Name: WideString read GetName write SetName;
     property Translated: WordBool read GetTranslated write SetTranslated;
     property Modified: WordBool read GetModified write SetModified;
+    property PreData:WideString read GetPreData write SetPreData;
+    property PostData:WideString read GetPostData write SetPostData;
   end;
 
-  TTranslationItems = class(TInterfacedObject, IInterface, ITranslationItems, ITranslationItems2)
+  TTranslationItems = class(TInterfacedObject, IInterface, ITranslationItems)
   private
     FItems: TList;
     FSort: TTranslateSortType;
     FTranslatedCount: integer;
+    FModified:WordBool;
     function GetCount: integer;
     function GetItem(Index: integer): ITranslationItem;
     procedure SetSort(const Value: TTranslateSortType);
     function GetTranslatedCount: integer;
     procedure SetTranslatedCount(const Value: integer);
     function GetSort: TTranslateSortType;
+    function GetModified: WordBool;
+    procedure SetModified(Value: WordBool);
   public
     function Add: ITranslationItem; overload;
     function Add(const Item: ITranslationItem): integer; overload;
@@ -119,6 +127,7 @@ type
     property Count: integer read GetCount;
     property Items[Index: integer]: ITranslationItem read GetItem; default;
     property TranslatedCount: integer read GetTranslatedCount write SetTranslatedCount;
+    property Modified: WordBool read GetModified write SetModified;
   end;
 
   TTranslateFiles = class
@@ -348,6 +357,19 @@ begin
   Result := ITranslationItem(FItems[Index]);
 end;
 
+function TTranslationItems.GetModified: WordBool;
+var i:integer;
+begin
+  Result := FModified;
+  if not Result then
+    for i := 0 to Count - 1 do
+      if Items[i].Modified then
+      begin
+        Result := true;
+        Exit;
+      end;
+end;
+
 function TTranslationItems.GetSort: TTranslateSortType;
 begin
   Result := FSort;
@@ -408,6 +430,18 @@ end;
 function InvertOrigSort(Item1, Item2: ITranslationItem): Integer;
 begin
   Result := -OrigSort(Item1, Item2);
+end;
+
+procedure TTranslationItems.SetModified(Value: WordBool);
+var i:integer;
+begin
+  if FModified <> Value then
+  begin
+    FModified := Value;
+    if not FModified then
+      for i := 0 to Count - 1 do
+        Items[i].Modified := false;
+  end;
 end;
 
 procedure TTranslationItems.SetSort(const Value: TTranslateSortType);
@@ -700,6 +734,16 @@ begin
   Result := FOwner;
 end;
 
+function TTranslationItem.GetPostData: WideString;
+begin
+  Result := FPostData;
+end;
+
+function TTranslationItem.GetPreData: WideString;
+begin
+  Result := FPreData;
+end;
+
 function TTranslationItem.GetPrivateStorage: WideString;
 begin
   Result := FPrivateStorage;
@@ -782,6 +826,16 @@ end;
 procedure TTranslationItem.SetOwner(const Value: ITranslationItems);
 begin
   FOwner := Value;
+end;
+
+procedure TTranslationItem.SetPostData(const Value: WideString);
+begin
+  FPostData := Value;
+end;
+
+procedure TTranslationItem.SetPreData(const Value: WideString);
+begin
+  FPreData := Value;
 end;
 
 procedure TTranslationItem.SetPrivateStorage(const Value: WideString);

@@ -52,6 +52,7 @@ const
   cTMXFilter = 'TMX Files (*.tmx)|*.tmx|All files (*.*)|*.*';
   cTMXImportTitle  = 'Import from TMX file';
   cTMXExportTitle  = 'Export to TMX file';
+  
 var
   FXMLImport:TXMLDocument = nil;
 
@@ -63,6 +64,8 @@ begin
   FXMLExport := TXMLDocument.Create(nil);
   if FXMLImport <> nil then
     FXMLExport.XML := FXMLImport.XML;
+  Strings.Assign(FXMLExport.XML);
+  // TODO
 end;
 
 function TTMXParser.Capabilities: Integer;
@@ -180,7 +183,7 @@ begin
                     TI := Items.Add;
                   TI.Original := ChildNode.nodeValue;
                   Include(FFoundItems, fiOriginal);
-                end;
+                end;            
               end;
             end
             else if IsTranslation(Node.attributes) then

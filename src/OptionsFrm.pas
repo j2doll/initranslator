@@ -16,7 +16,7 @@
    the specific language governing rights and limitations under the License.
 }
 
-// $Id: OptionsFrm.pas,v 1.22 2004/11/23 23:49:57 peter3 Exp $
+// $Id$
 
 unit OptionsFrm;
 

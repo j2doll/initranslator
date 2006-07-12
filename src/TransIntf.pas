@@ -15,7 +15,7 @@
    the specific language governing rights and limitations under the License.
 }
 
-// $Id: TransIntf.pas,v 1.13 2006/07/10 12:56:16 peter3 Exp $
+// $Id$
 
 unit TransIntf;
 

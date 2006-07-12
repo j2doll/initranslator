@@ -16,7 +16,7 @@
    the specific language governing rights and limitations under the License.
 }
 
-// $Id: PHPParser.dpr,v 1.7 2004/10/12 22:29:57 peter3 Exp $
+// $Id$
 
 library PHPParser;
 

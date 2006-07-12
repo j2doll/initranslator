@@ -15,7 +15,7 @@
    WITHOUT WARRANTY OF ANY KIND, either express or implied. See the License for
    the specific language governing rights and limitations under the License.
 }
-// $Id: MainFrm.pas,v 1.104 2006/07/10 12:56:15 peter3 Exp $
+// $Id$
 unit MainFrm;
 {$I TRANSLATOR.INC}
 

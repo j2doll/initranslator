@@ -15,7 +15,7 @@
    the specific language governing rights and limitations under the License.
 }
 
-// $Id: OrphansFrm.pas,v 1.15 2006/07/07 10:18:38 peter3 Exp $
+// $Id$
 
 unit OrphansFrm;
 

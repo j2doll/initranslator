@@ -14,7 +14,7 @@
    WITHOUT WARRANTY OF ANY KIND, either express or implied. See the License for
    the specific language governing rights and limitations under the License.
 }
-// $Id: OOGSIImportFrm.pas,v 1.2 2004/10/13 23:15:34 peter3 Exp $
+// $Id$
 
 unit OOGSIImportFrm;
 

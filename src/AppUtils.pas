@@ -14,7 +14,7 @@
    WITHOUT WARRANTY OF ANY KIND, either express or implied. See the License for
    the specific language governing rights and limitations under the License.
 }
-// $Id: AppUtils.pas,v 1.34 2006/07/09 16:31:42 peter3 Exp $
+// $Id$
 unit AppUtils;
 {$I TRANSLATOR.INC}
 

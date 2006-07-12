@@ -1,10 +1,18 @@
 Ini Translator Changelog
 ========================
+2006-07-12:
+- New option for dictionary: "Ignore translated items when using dictionary"
+- When using dictionary, clicking "Add" does not autmatically use the added word and close the dialog as before
+- When editing the dictionary, you can now filter items according to whether they have translations or not
+- When creating a new dictionary, empty translations are no longer added, just the original
+- Fixed behavior of "Next suspicious translation" so empty translations aren't reported as mismatched
+- Fixed behavior of "Next unmatched shortcut" so empty translations aren't reported as mismatched
+
 2006-07-10:
 - Merged ITranslationItem, ITranslationItem2, ITranslationItem3 into ITranslationItem
 - Merged ITranslationItems, ITranslationItems2 into ITranslationItems
-- Added PreData and PostData to ITranslationItem
-- Added Modified to ITranslationItems
+- Added properties PreData and PostData to ITranslationItem
+- Added property Modified to ITranslationItems
 
 2006-07-09:
 - Released on SourceForge as version 1.9.0.0

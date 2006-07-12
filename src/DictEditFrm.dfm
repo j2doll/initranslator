@@ -14,7 +14,7 @@ inherited frmDictEdit: TfrmDictEdit
   end
   object TntLabel2: TTntLabel
     Left = 8
-    Top = 87
+    Top = 79
     Width = 62
     Height = 13
     Caption = '&Translations:'
@@ -26,6 +26,15 @@ inherited frmDictEdit: TfrmDictEdit
     Height = 4
     Anchors = [akLeft, akRight, akBottom]
     Shape = bsTopLine
+  end
+  object TntLabel3: TTntLabel
+    Left = 8
+    Top = 424
+    Width = 30
+    Height = 13
+    Anchors = [akLeft, akBottom]
+    Caption = 'S&how:'
+    FocusControl = cbFilter
   end
   object cbOriginal: TTntComboBox
     Left = 8
@@ -59,9 +68,9 @@ inherited frmDictEdit: TfrmDictEdit
   end
   object lbTranslations: TTntListBox
     Left = 8
-    Top = 104
+    Top = 96
     Width = 473
-    Height = 257
+    Height = 265
     Anchors = [akLeft, akTop, akRight, akBottom]
     BevelKind = bkFlat
     BorderStyle = bsNone
@@ -107,7 +116,7 @@ inherited frmDictEdit: TfrmDictEdit
     Caption = 'OK'
     Default = True
     ModalResult = 1
-    TabOrder = 7
+    TabOrder = 8
   end
   object btnCancel: TTntButton
     Left = 400
@@ -118,7 +127,25 @@ inherited frmDictEdit: TfrmDictEdit
     Cancel = True
     Caption = 'Cancel'
     ModalResult = 2
-    TabOrder = 8
+    TabOrder = 9
+  end
+  object cbFilter: TTntComboBox
+    Left = 48
+    Top = 420
+    Width = 249
+    Height = 21
+    BevelKind = bkTile
+    Style = csDropDownList
+    Anchors = [akLeft, akRight, akBottom]
+    ItemHeight = 13
+    ItemIndex = 0
+    TabOrder = 7
+    Text = 'All items'
+    OnChange = cbFilterChange
+    Items.WideStrings = (
+      'All items'
+      'Items with translations'
+      'Items without translations')
   end
   object alDictEdit: TTntActionList
     OnUpdate = alDictEditUpdate

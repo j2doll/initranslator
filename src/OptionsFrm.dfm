@@ -4,7 +4,7 @@ object frmOptions: TfrmOptions
   ActiveControl = chkShowQuotes
   BorderStyle = bsDialog
   Caption = 'Preferences'
-  ClientHeight = 371
+  ClientHeight = 393
   ClientWidth = 444
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
@@ -16,12 +16,12 @@ object frmOptions: TfrmOptions
   Scaled = False
   DesignSize = (
     444
-    371)
+    393)
   PixelsPerInch = 96
   TextHeight = 13
   object Label1: TTntLabel
     Left = 16
-    Top = 217
+    Top = 239
     Width = 51
     Height = 13
     Anchors = [akLeft, akRight, akBottom]
@@ -30,7 +30,7 @@ object frmOptions: TfrmOptions
   end
   object Label2: TTntLabel
     Left = 16
-    Top = 265
+    Top = 287
     Width = 25
     Height = 13
     Anchors = [akLeft, akRight, akBottom]
@@ -39,7 +39,7 @@ object frmOptions: TfrmOptions
   end
   object Bevel1: TBevel
     Left = -4
-    Top = 168
+    Top = 192
     Width = 435
     Height = 3
     Anchors = [akLeft, akTop, akRight]
@@ -47,7 +47,7 @@ object frmOptions: TfrmOptions
   end
   object Bevel2: TBevel
     Left = 4
-    Top = 321
+    Top = 343
     Width = 435
     Height = 3
     Anchors = [akLeft, akRight, akBottom]
@@ -55,25 +55,25 @@ object frmOptions: TfrmOptions
   end
   object btnOK: TTntButton
     Left = 265
-    Top = 337
+    Top = 359
     Width = 80
     Height = 23
     Anchors = [akRight, akBottom]
     Caption = 'OK'
     Default = True
     ModalResult = 1
-    TabOrder = 20
+    TabOrder = 21
   end
   object btnCancel: TTntButton
     Left = 349
-    Top = 337
+    Top = 359
     Width = 80
     Height = 23
     Anchors = [akRight, akBottom]
     Cancel = True
     Caption = 'Cancel'
     ModalResult = 2
-    TabOrder = 21
+    TabOrder = 22
   end
   object chkShowQuotes: TTntCheckBox
     Left = 8
@@ -95,13 +95,13 @@ object frmOptions: TfrmOptions
   end
   object btnFont: TTntButton
     Left = 356
-    Top = 184
+    Top = 206
     Width = 80
     Height = 23
     Hint = 'Select a new font for the list and edit fields'
     Anchors = [akRight, akBottom]
     Caption = '&Font...'
-    TabOrder = 15
+    TabOrder = 16
     OnClick = btnFontClick
   end
   object chkShowDetails: TTntCheckBox
@@ -140,7 +140,7 @@ object frmOptions: TfrmOptions
     Height = 17
     Hint = 'Save the current edits when pressing RETURN'
     Caption = 'Press &RETURN to confirm translation:'
-    TabOrder = 8
+    TabOrder = 9
     OnClick = chkReturnToSaveClick
   end
   object chkMoveToNext: TTntCheckBox
@@ -153,11 +153,11 @@ object frmOptions: TfrmOptions
       'o move to the previous item)'
     Caption = 'A&utomatically move to next/previous'
     Enabled = False
-    TabOrder = 9
+    TabOrder = 10
   end
   object edLanguage: TTntEdit
     Left = 16
-    Top = 236
+    Top = 258
     Width = 394
     Height = 21
     Hint = 'Select a language file for the program'
@@ -166,21 +166,21 @@ object frmOptions: TfrmOptions
     BevelKind = bkFlat
     BevelOuter = bvRaised
     BorderStyle = bsNone
-    TabOrder = 16
+    TabOrder = 17
   end
   object btnLanguage: TTntButton
     Left = 413
-    Top = 238
+    Top = 260
     Width = 19
     Height = 19
     Anchors = [akRight, akBottom]
     Caption = '...'
-    TabOrder = 17
+    TabOrder = 18
     OnClick = btnLanguageClick
   end
   object edHelp: TTntEdit
     Left = 16
-    Top = 284
+    Top = 306
     Width = 394
     Height = 21
     Hint = 'Select a file that is to be openend when F1 is pressed'
@@ -189,16 +189,16 @@ object frmOptions: TfrmOptions
     BevelKind = bkFlat
     BevelOuter = bvRaised
     BorderStyle = bsNone
-    TabOrder = 18
+    TabOrder = 19
   end
   object btnHelp: TTntButton
     Left = 413
-    Top = 286
+    Top = 308
     Width = 19
     Height = 19
     Anchors = [akRight, akBottom]
     Caption = '...'
-    TabOrder = 19
+    TabOrder = 20
     OnClick = btnHelpClick
   end
   object chkSavePosition: TTntCheckBox
@@ -208,7 +208,7 @@ object frmOptions: TfrmOptions
     Height = 17
     Hint = 'Remember location of main window'
     Caption = 'Remember form &position:'
-    TabOrder = 10
+    TabOrder = 11
     OnClick = chkSavePositionClick
   end
   object chkSaveMinMax: TTntCheckBox
@@ -218,7 +218,7 @@ object frmOptions: TfrmOptions
     Height = 17
     Hint = 'Remember whether main window was minimized /maximized'
     Caption = 'Remember form min/ma&x state'
-    TabOrder = 11
+    TabOrder = 12
   end
   object chkGlobalPath: TTntCheckBox
     Left = 8
@@ -233,12 +233,12 @@ object frmOptions: TfrmOptions
   end
   object pnlFontPreview: TTntPanel
     Left = 16
-    Top = 184
+    Top = 206
     Width = 330
     Height = 25
     Anchors = [akLeft, akRight, akBottom]
     BevelOuter = bvLowered
-    TabOrder = 22
+    TabOrder = 23
   end
   object chkMonitorFiles: TTntCheckBox
     Left = 214
@@ -249,7 +249,7 @@ object frmOptions: TfrmOptions
       'Continually check whether the currently loaded files are being m' +
       'odified outside the program'
     Caption = 'Monitor external file &changes'
-    TabOrder = 12
+    TabOrder = 13
     OnClick = chkSavePositionClick
   end
   object chkDictIgnoreSpeedKey: TTntCheckBox
@@ -273,7 +273,7 @@ object frmOptions: TfrmOptions
       'Enable to show the full path and filename of the loaded files in' +
       ' the listview'#39's columns header'
     Caption = 'Sh&ow full filename in list columns'
-    TabOrder = 13
+    TabOrder = 14
   end
   object chkUseTranslationEverywhere: TTntCheckBox
     Left = 214
@@ -284,7 +284,7 @@ object frmOptions: TfrmOptions
       'When a translation is made, copies the translation to all other ' +
       'matching items automatically'
     Caption = 'Use translation ever&ywhere'
-    TabOrder = 14
+    TabOrder = 15
   end
   object chkAutoFocusTranslation: TTntCheckBox
     Left = 8
@@ -297,6 +297,18 @@ object frmOptions: TfrmOptions
     Anchors = [akLeft, akTop, akRight]
     Caption = 'Autofo&cus translation when typing'
     TabOrder = 7
+  end
+  object chkDictIgnoreNonEmpty: TTntCheckBox
+    Left = 8
+    Top = 164
+    Width = 433
+    Height = 17
+    Hint = 
+      'When activated, typing in the listview will automatically move f' +
+      'ocus to the translation edit field.'
+    Anchors = [akLeft, akTop, akRight]
+    Caption = '&Ignore translated items when using dictionary'
+    TabOrder = 8
   end
   object FontDialog: TFontDialog
     Font.Charset = DEFAULT_CHARSET

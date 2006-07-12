@@ -125,6 +125,8 @@ type
     FMisMatchIdentical: boolean;
     FMisMatchEmptyTranslation: boolean;
     FMisMatchEndControl: boolean;
+    FDictIgnoreNonEmpty: boolean;
+    FDictEditFilter: Integer;
     procedure ReadWindowInfos(ini: TCustomIniFile);
     procedure WriteWindowInfos(ini: TCustomIniFile);
     function GetWindowInfo(AForm: TForm): TAppWindowInfo;
@@ -191,6 +193,9 @@ type
     property PinCommentWindow: boolean read FPinCommentWindow write FPinCommentWindow default true;
     property ShowFullNameInColumns: boolean read FShowFullNameInColumns write FShowFullNameInColumns default false;
     property Tools: TToolItems read FTools write SetTools;
+
+    property DictIgnoreNonEmpty:boolean read FDictIgnoreNonEmpty write FDictIgnoreNonEmpty;
+    property DictEditFilter:Integer read FDictEditFilter write FDictEditFilter;
   end;
 
 implementation
@@ -516,6 +521,8 @@ begin
     OrigEncoding := ini.ReadInteger('Files', 'OrigEncoding', OrigEncoding);
     MonitorFiles := ini.ReadBool('Files', 'MonitorFiles', MonitorFiles);
     Theme := ini.ReadString('General', 'Theme', Theme);
+    DictIgnoreNonEmpty := ini.ReadBool('General', 'DictIgnoreNonEmpty', false);
+    DictEditFilter := ini.ReadInteger('General', 'DictEditFilter', 0);
 
     PinCommentWindow := ini.ReadBool('Comments', 'PinCommentWindow', PinCommentWindow);
     ShowFullNameInColumns := ini.ReadBool('General', 'ShowFullNameInColumns', ShowFullNameInColumns);
@@ -610,6 +617,8 @@ begin
     ini.WriteInteger('Files', 'TransEncoding', TransEncoding);
     ini.WriteBool('Files', 'MonitorFiles', MonitorFiles);
     ini.WriteString('General', 'Theme', Theme);
+    ini.WriteBool('General', 'DictIgnoreNonEmpty', DictIgnoreNonEmpty);
+    ini.WriteInteger('General', 'DictEditFilter', DictEditFilter);
 
     ini.WriteBool('Comments', 'PinCommentWindow', PinCommentWindow);
     ini.WriteBool('General', 'ShowFullNameInColumns', ShowFullNameInColumns);

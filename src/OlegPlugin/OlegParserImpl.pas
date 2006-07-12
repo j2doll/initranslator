@@ -125,8 +125,7 @@ begin
   end;
 end;
 
-function TOlegParser.ImportItems(const Items,
-  Orphans: ITranslationItems): HRESULT;
+function TOlegParser.ImportItems(const Items, Orphans: ITranslationItems): HRESULT;
 var
   S: TTntStringlist;
   i, j: integer;

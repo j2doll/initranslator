@@ -99,6 +99,7 @@ resourcestring
   SErrNameEmpty = 'Name cannot be empty';
   SErrOrigTextEmpty = 'Original text cannot be empty';
   SErrSectionNameExists = 'An item with the specified Section and Name already exists';
+  SDictTranslationCompleted = 'Translating with dictionary finished';
 
 const
   SLngExt = 'lng';

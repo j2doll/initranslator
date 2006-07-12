@@ -54,7 +54,7 @@ type
 
 implementation
 uses
-  AppUtils;
+  AppUtils, CommonUtils;
 
 function StripPunctuation(const S: WideString): WideString;
 var i, j: integer;

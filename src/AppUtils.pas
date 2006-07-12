@@ -52,7 +52,6 @@ function GetAppStoragePath: string;
 function AutoDetectCharacterSet(Stream:TStream):TEncoding;overload;
 function AutoDetectCharacterSet(const Filename:string):TEncoding;overload;
 function AutoDetectCharacterSet(const S:WideString):TEncoding;overload;
-function IsCharPunct(const S:WideChar):boolean;
 
 
 implementation
@@ -97,16 +96,6 @@ begin
   finally
     T.Free;
   end;
-end;
-
-function IsCharPunct(const S:WideChar):boolean;
-var
-  CharType: integer;
-begin
-  if GetStringTypeExW(LOCALE_SYSTEM_DEFAULT, CT_CTYPE1, @S, 1, CharType) then
-    Result := CharType and C1_PUNCT = C1_PUNCT
-  else
-    Result := false;
 end;
 
 function GlobalLanguageFile: TAppLanguage;

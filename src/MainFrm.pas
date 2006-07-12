@@ -1000,7 +1000,13 @@ begin
     FDict.Clear;
   for i := 0 to FTranslateFile.Items.Count - 1 do
     with FTranslateFile.Items[i] do
-      FDict.Add(trim(Original)).Translations.Add(trim(Translation));
+      if (trim(Original) <> '') then
+      begin
+        if (trim(Translation) <> '') then
+          FDict.Add(trim(Original)).Translations.Add(trim(Translation))
+        else
+          FDict.Add(trim(Original));
+      end;
   OpenDictDlg.Filename := '';
   SaveDictDlg.FileName := '';
   UpdateStatus;
@@ -1040,34 +1046,41 @@ end;
 
 procedure TfrmMain.UseDictionary;
 var
-  i, j: integer;
+  i, j, FResult: integer;
   S: WideString;
-
+  FModified: boolean;
 begin
   for i := 0 to FTranslateFile.Items.Count - 1 do
 //    if FTranslateFile.Items[i].Translation = '' then
+  begin
+    if FTranslateFile.Items[i].Translated and GlobalAppOptions.DictIgnoreNonEmpty then
+      Continue;
+    j := FDict.IndexOf(FTranslateFile.Items[i].Original);
+    if (j >= 0) then // dictionary item found
     begin
-      j := FDict.IndexOf(FTranslateFile.Items[i].Original);
-      if (j >= 0) then // dictionary item found
-      begin
-        S := FDict[j].Translations[0];
-//        if FDict[j].Translations.Count > 1 then // more than one translation, choose one
-        case TfrmDictTranslationSelect.Edit(FDict[j], S) of
-          cDictIgnore:
-            Continue;
-          cDictAdd:
-            begin
-              FDict[j].Translations.Add(S);
-              FTranslateFile.Items[i].Translation := S;
-            end;
-          cDictUse:
+      lvTranslateStrings.Items[i].MakeVisible(false);
+      lvTranslateStrings.Items[i].Selected := true;
+      lvTranslateStrings.Items[i].Focused := true;
+      S := FTranslateFile.Items[i].Translation;
+      FResult := TfrmDictTranslationSelect.Edit(FDict[j], S, FModified);
+      FDict.Modified := FDict.Modified or FModified;
+      case FResult of
+        cDictIgnore:
+          Continue;
+        cDictAdd:
+          begin
+            FDict[j].Translations.Add(S);
             FTranslateFile.Items[i].Translation := S;
-          cDictCancel:
-            Exit;
-        end;
-        FTranslateFile.Items[i].Translated := S <> '';
+          end;
+        cDictUse:
+          FTranslateFile.Items[i].Translation := S;
+        cDictCancel:
+          Exit;
       end;
+      FTranslateFile.Items[i].Translated := S <> '';
     end;
+  end;
+  InfoMsg(SDictTranslationCompleted, SInfoCaption);
 end;
 
 procedure TfrmMain.SetModified(const Value: boolean);
@@ -1473,6 +1486,7 @@ begin
   ini.WriteString(ClassName, EncodeStrings(SErrNameEmpty), EncodeStrings(SErrNameEmpty));
   ini.WriteString(ClassName, EncodeStrings(SErrOrigTextEmpty), EncodeStrings(SErrOrigTextEmpty));
   ini.WriteString(ClassName, EncodeStrings(SErrSectionNameExists), EncodeStrings(SErrSectionNameExists));
+  ini.WriteString(ClassName, EncodeStrings(SDictTranslationCompleted), EncodeStrings(SDictTranslationCompleted));
 
   for i := 0 to alMain.ActionCount - 1 do
   begin
@@ -2825,17 +2839,6 @@ procedure TfrmMain.acFindUnmatchedShortCutExecute(Sender: TObject);
 var
   i: integer;
 
-  function WideContainsChar(Ch: WideChar; const S: WideString): boolean;
-  var
-    i: integer;
-  begin
-    Result := Length(S) > 0;
-    for i := 1 to Length(S) do
-      if S[i] = Ch then
-        Exit;
-    Result := false;
-  end;
-
 begin
   SaveEditChanges;
   if lvTranslateStrings.Selected = nil then
@@ -2848,8 +2851,7 @@ begin
     i := 0;
   while (i >= 0) and (i < lvTranslateStrings.Items.Count - 1) do
   begin
-    if WideContainsChar('&', FTranslateFile.Items[i].Original) <> WideContainsChar('&',
-      FTranslateFile.Items[i].Translation) then
+    if (FTranslateFile.Items[i].Translation <> '') and (SubStrCount('&', FTranslateFile.Items[i].Original) <> SubStrCount('&', FTranslateFile.Items[i].Translation)) then
     begin
       lvTranslateStrings.Selected := lvTranslateStrings.Items[i];
       if lvTranslateStrings.Selected <> nil then
@@ -2992,21 +2994,6 @@ var
     Result := not GlobalAppOptions.MisMatchEndControl or WideSameStr(EndControl(Original), EndControl(Translation));
   end;
 
-  function SubStrCount(const SubStr, Str: WideString): integer;
-  var tmp: PWideChar;
-  begin
-    Result := 0;
-    if (Length(SubStr) = 0) or (Length(Str) = 0) then
-      Exit;
-    tmp := StrPosW(PWideChar(Str), PWideChar(SubStr));
-    while tmp <> nil do
-    begin
-      Inc(Result);
-      Inc(tmp, Length(SubStr));
-      tmp := StrPosW(tmp, PWideChar(SubStr));
-    end;
-  end;
-
   function CountMisMatch(const Original, Translation: WideString): boolean;
   var
     i: Integer;
@@ -3050,18 +3037,25 @@ begin
     begin
       with FTranslateFile.Items[i] do
       begin
-        if IsSame(Original, Translation) or IsUntranslated(Translated)
-          or (LeadingSpaces(Original) <> LeadingSpaces(Translation))
-          or (TrailingSpaces(Original) <> TrailingSpaces(Translation))
-          or not IsSameEndControl(Original, Translation) or CountMismatch(Original, Translation) then
-          break;
+        if IsSame(Original, Translation) then
+          Break;
+        if IsUntranslated(Translated) then
+          Break
+        else if Translation <> '' then
+        begin
+          if (LeadingSpaces(Original) <> LeadingSpaces(Translation))
+            or (TrailingSpaces(Original) <> TrailingSpaces(Translation))
+            or not IsSameEndControl(Original, Translation)
+            or CountMismatch(Original, Translation) then
+            Break;
+        end;
         Inc(i);
         if i = FTranslateFile.Items.Count - 1 then
         begin
           if FLoop then // already looped once, so break out
           begin
             i := -1; // don't change selection
-            break;
+            Break;
           end;
           i := 0;
           FLoop := true;

@@ -14,7 +14,7 @@
    WITHOUT WARRANTY OF ANY KIND, either express or implied. See the License for
    the specific language governing rights and limitations under the License.
 }
-// $Id: DualImportFrm.pas,v 1.5 2004/11/29 00:55:25 peter3 Exp $
+// $Id$
 unit DualImportFrm;
 
 interface

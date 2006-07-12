@@ -14,7 +14,7 @@
    WITHOUT WARRANTY OF ANY KIND, either express or implied. See the License for
    the specific language governing rights and limitations under the License.
 }
-// $Id: MozillaPropsParser.dpr,v 1.6 2004/10/12 22:29:56 peter3 Exp $
+// $Id$
 
 library MozillaPropsParser;
 

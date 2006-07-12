@@ -15,7 +15,7 @@
    WITHOUT WARRANTY OF ANY KIND, either express or implied. See the License for
    the specific language governing rights and limitations under the License.
 }
-// $Id: PHPNukeImpl.pas,v 1.16 2006/06/27 09:26:45 peter3 Exp $
+// $Id$
 unit PHPNukeImpl;
 
 interface

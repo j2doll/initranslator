@@ -23,7 +23,7 @@
 { Last modified: July 29, 2002                                                                     }
 {                                                                                                  }
 {**************************************************************************************************}
-// $Id: ExceptDlgMail.pas,v 1.6 2004/11/05 20:10:37 peter3 Exp $
+// $Id$
 unit ExceptDlgMail;
 
 interface

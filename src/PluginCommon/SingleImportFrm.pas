@@ -30,7 +30,7 @@
 
 }
 
-// $Id: SingleImportFrm.pas,v 1.4 2006/07/05 22:33:11 peter3 Exp $
+// $Id$
 
 unit SingleImportFrm;
 

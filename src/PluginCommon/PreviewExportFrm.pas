@@ -14,7 +14,7 @@
    WITHOUT WARRANTY OF ANY KIND, either express or implied. See the License for
    the specific language governing rights and limitations under the License.
 }
-// $Id: PreviewExportFrm.pas,v 1.7 2006/07/05 22:33:11 peter3 Exp $
+// $Id$
 unit PreviewExportFrm;
 
 interface

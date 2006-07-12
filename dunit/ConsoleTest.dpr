@@ -19,7 +19,7 @@
 // Uncomment the following directive to create a console application
 // or leave commented to create a GUI application...
 // {$APPTYPE CONSOLE}
-// $Id: ConsoleTest.dpr,v 1.3 2004/10/23 16:55:08 peter3 Exp $
+// $Id$
 
 program ConsoleTest;
 // get dunit from http://dunit.sourceforge.net

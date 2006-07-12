@@ -14,7 +14,7 @@
    WITHOUT WARRANTY OF ANY KIND, either express or implied. See the License for
    the specific language governing rights and limitations under the License.
 }
-// $Id: MozillaPropsImpl.pas,v 1.8 2004/10/23 16:55:11 peter3 Exp $
+// $Id$
 unit MozillaPropsImpl;
 
 interface

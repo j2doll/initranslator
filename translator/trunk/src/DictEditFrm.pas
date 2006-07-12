@@ -26,6 +26,8 @@ type
     acRemoveOriginal: TTntAction;
     acAddTranslation: TTntAction;
     acRemoveTranslation: TTntAction;
+    TntLabel3: TTntLabel;
+    cbFilter: TTntComboBox;
     procedure cbOriginalChange(Sender: TObject);
     procedure alDictEditUpdate(Action: TBasicAction; var Handled: Boolean);
     procedure acAddOriginalExecute(Sender: TObject);
@@ -33,6 +35,7 @@ type
     procedure acAddTranslationExecute(Sender: TObject);
     procedure acRemoveTranslationExecute(Sender: TObject);
     procedure lbTranslationsClick(Sender: TObject);
+    procedure cbFilterChange(Sender: TObject);
   private
     { Private declarations }
     FItems: TDictionaryItems;
@@ -48,6 +51,8 @@ type
   end;
 
 implementation
+uses
+  AppUtils;
 
 {$R *.dfm}
 
@@ -71,11 +76,15 @@ var
 begin
   frm := self.Create(Application);
   try
+    frm.cbFilter.ItemIndex := GlobalAppOptions.DictEditFilter;
     frm.Items := Items;
 //    frm.Items.IgnorePunctuation := Items.IgnorePunctuation;
     Result := frm.ShowModal = mrOK;
     if Result then
+    begin
       Items.Assign(frm.Items);
+      GlobalAppOptions.DictEditFilter := frm.cbFilter.ItemIndex;
+    end;
   finally
     frm.Free;
   end;
@@ -83,21 +92,15 @@ end;
 
 function TfrmDictEdit.GetItems: TDictionaryItems;
 begin
-// TODO: collect data from the UI
   Result := FItems;
 end;
 
 procedure TfrmDictEdit.SetItems(const Value: TDictionaryItems);
-var i: integer;
 begin
   FItems.Assign(Value);
   cbOriginal.Items.Clear;
   lbTranslations.Items.Clear;
-  for i := 0 to FItems.Count - 1 do
-    cbOriginal.Items.Add(FItems[i].Original);
-  if cbOriginal.Items.Count > 0 then
-    cbOriginal.ItemIndex := 0;
-  cbOriginalChange(nil);
+  cbFilterChange(nil);
 end;
 
 procedure TfrmDictEdit.cbOriginalChange(Sender: TObject);
@@ -138,7 +141,7 @@ begin
     edTranslation.SetFocus;
     edTranslation.SelectAll;
   end;
-  cbOriginalChange(Sender);
+  cbFilterChange(Sender);
 end;
 
 procedure TfrmDictEdit.acRemoveOriginalExecute(Sender: TObject);
@@ -207,6 +210,27 @@ end;
 procedure TfrmDictEdit.UpdateUI;
 begin
   alDictEdit.UpdateAction(nil);
+end;
+
+procedure TfrmDictEdit.cbFilterChange(Sender: TObject);
+var i:integer;
+begin
+  cbOriginal.Text := '';
+  cbOriginal.Items.Clear;
+  for i := 0 to FItems.Count - 1 do
+    case cbFilter.ItemIndex of
+    0:  // all items
+      cbOriginal.Items.Add(FItems[i].Original);
+    1:  // items with translations
+      if FItems[i].Translations.Count > 0 then
+        cbOriginal.Items.Add(FItems[i].Original);
+    2:
+      if FItems[i].Translations.Count = 0 then
+        cbOriginal.Items.Add(FItems[i].Original);
+  end;
+  if cbOriginal.Items.Count > 0 then
+    cbOriginal.ItemIndex := 0;
+  cbOriginalChange(Sender);
 end;
 
 end.

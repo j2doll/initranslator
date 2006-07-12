@@ -58,13 +58,14 @@ inherited frmDictTranslationSelect: TfrmDictTranslationSelect
     Left = 8
     Top = 128
     Width = 379
-    Height = 185
+    Height = 161
     Anchors = [akLeft, akTop, akRight, akBottom]
     BevelKind = bkFlat
     BorderStyle = bsNone
     ItemHeight = 13
     TabOrder = 2
     OnClick = lbTranslationsClick
+    OnDblClick = lbTranslationsDblClick
   end
   object btnUse: TTntButton
     Left = 45
@@ -75,7 +76,7 @@ inherited frmDictTranslationSelect: TfrmDictTranslationSelect
     Caption = '&Change'
     Default = True
     ModalResult = 1
-    TabOrder = 5
+    TabOrder = 6
     OnClick = btnUseClick
   end
   object btnCancel: TTntButton
@@ -87,7 +88,7 @@ inherited frmDictTranslationSelect: TfrmDictTranslationSelect
     Cancel = True
     Caption = 'Close'
     ModalResult = 2
-    TabOrder = 6
+    TabOrder = 7
     OnClick = btnCancelClick
   end
   object btnIgnore: TTntButton
@@ -98,7 +99,7 @@ inherited frmDictTranslationSelect: TfrmDictTranslationSelect
     Anchors = [akRight, akBottom]
     Caption = '&Ignore'
     ModalResult = 1
-    TabOrder = 3
+    TabOrder = 4
     OnClick = btnIgnoreClick
   end
   object btnAdd: TTntButton
@@ -108,8 +109,16 @@ inherited frmDictTranslationSelect: TfrmDictTranslationSelect
     Height = 23
     Anchors = [akRight, akBottom]
     Caption = '&Add'
-    ModalResult = 1
-    TabOrder = 4
+    TabOrder = 5
     OnClick = btnAddClick
+  end
+  object chkIgnoreNonEmpty: TTntCheckBox
+    Left = 24
+    Top = 296
+    Width = 361
+    Height = 17
+    Anchors = [akLeft, akRight, akBottom]
+    Caption = '&Don'#39't check translated items'
+    TabOrder = 3
   end
 end

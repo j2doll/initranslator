@@ -60,6 +60,7 @@ type
     chkShowFullNames: TTntCheckBox;
     chkUseTranslationEverywhere: TTntCheckBox;
     chkAutoFocusTranslation: TTntCheckBox;
+    chkDictIgnoreNonEmpty: TTntCheckBox;
     procedure chkShowToolTipsClick(Sender: TObject);
     procedure chkReturnToSaveClick(Sender: TObject);
     procedure btnLanguageClick(Sender: TObject);
@@ -149,6 +150,7 @@ begin
     frm.chkShowFullNames.Checked := Options.ShowFullNameInColumns;
     frm.chkUseTranslationEverywhere.Checked := Options.UseTranslationEverywhere;
     frm.chkAutoFocusTranslation.Checked := Options.AutoFocusTranslation;
+    frm.chkDictIgnoreNonEmpty.Checked := Options.DictIgnoreNonEmpty;
     frm.edLanguage.Text := Options.LanguageFile;
     frm.edHelp.Text := Options.HelpFile;
     frm.FontDialog.Font := Options.AppFont;
@@ -171,6 +173,7 @@ begin
       Options.MonitorFiles := frm.chkMonitorFiles.Checked;
       Options.UseTranslationEverywhere := frm.chkUseTranslationEverywhere.Checked;
       Options.AutoFocusTranslation := frm.chkAutoFocusTranslation.Checked;
+      Options.DictIgnoreNonEmpty := frm.chkDictIgnoreNonEmpty.Checked;
       Options.ShowFullNameInColumns := frm.chkShowFullNames.Checked;
       if AnsiCompareFilename(frm.edLanguage.Text, Options.LanguageFile) <> 0 then
         InfoMsg(Translate(Application.MainForm.ClassName, SLanguageNotChangedUntilRestart), Translate(frm.ClassName, SInfoCaption));

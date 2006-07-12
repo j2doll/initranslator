@@ -34,6 +34,10 @@ function DoubleQuoteString(const S: WideString; CheckString: boolean = true): Wi
 
 function RunProcess(const Filename, Params: string; WorkingDir: string;
   const WaitUntilTerminated, WaitUntilIdle: Boolean; const ShowCmd: Integer; var ResultCode: Cardinal): Boolean;
+function SubStrCount(const SubStr, Str: WideString): integer;
+function WideContainsChar(Ch: WideChar; const S: WideString): boolean;
+function IsCharPunct(const S:WideChar):boolean;
+
 
 implementation
 uses
@@ -447,4 +451,35 @@ begin
   Result := True;
 end;
 
+function SubStrCount(const SubStr, Str: WideString): integer;
+var tmp: PWideChar;
+begin
+  Result := 0;
+  if (Length(SubStr) = 0) or (Length(Str) = 0) then
+    Exit;
+  tmp := StrPosW(PWideChar(Str), PWideChar(SubStr));
+  while tmp <> nil do
+  begin
+    Inc(Result);
+    Inc(tmp, Length(SubStr));
+    tmp := StrPosW(tmp, PWideChar(SubStr));
+  end;
+end;
+
+function WideContainsChar(Ch: WideChar; const S: WideString): boolean;
+begin
+  Result := SubStrCount(Ch, S) > 0;
+end;
+
+function IsCharPunct(const S:WideChar):boolean;
+var
+  CharType: integer;
+begin
+  if GetStringTypeExW(LOCALE_SYSTEM_DEFAULT, CT_CTYPE1, @S, 1, CharType) then
+    Result := CharType and C1_PUNCT = C1_PUNCT
+  else
+    Result := false;
+end;
+
 end.
+

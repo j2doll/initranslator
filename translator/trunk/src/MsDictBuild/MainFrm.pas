@@ -159,7 +159,7 @@ begin
         j := Strings.IndexOfName(AName);
         if j >= 0 then
           Strings.Delete(j);
-        Strings.Add(WideFormat('%s=%s', [AName, AValue]));
+        Strings.Add(WideFormat('%s="%s"', [AName, AValue])); // need to add quotes since we support multiple translation items and this should be treated as one
       end;
     end;
   finally
@@ -180,7 +180,7 @@ begin
         Inc(Result, ConvertFile(ExtractFilePath(FileSpec) + F.Name, Strings));
     until FindNext(F) <> 0;
   finally
-    FindCLose(F);
+    FindClose(F);
   end;
 end;
 

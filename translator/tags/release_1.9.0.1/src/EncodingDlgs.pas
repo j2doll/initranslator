@@ -20,7 +20,7 @@
    WITHOUT WARRANTY OF ANY KIND, either express or implied. See the License for
    the specific language governing rights and limitations under the License.
 }
-// $Id: EncodingDlgs.pas,v 1.12 2004/11/05 20:10:37 peter3 Exp $
+// $Id$
 unit EncodingDlgs;
 {$I TRANSLATOR.INC}
 

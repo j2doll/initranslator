@@ -14,7 +14,7 @@
    WITHOUT WARRANTY OF ANY KIND, either express or implied. See the License for
    the specific language governing rights and limitations under the License.
 }
-// $Id: PHPNukeParser.dpr,v 1.7 2004/10/12 22:29:57 peter3 Exp $
+// $Id$
 library PHPNukeParser;
 
 uses

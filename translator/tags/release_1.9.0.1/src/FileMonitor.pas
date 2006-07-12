@@ -14,7 +14,7 @@
    WITHOUT WARRANTY OF ANY KIND, either express or implied. See the License for
    the specific language governing rights and limitations under the License.
 }
-// $Id: FileMonitor.pas,v 1.11 2006/07/07 10:18:37 peter3 Exp $
+// $Id$
 unit FileMonitor;
 {$I TRANSLATOR.INC}
 

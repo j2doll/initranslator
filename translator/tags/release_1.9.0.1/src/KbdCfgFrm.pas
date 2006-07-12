@@ -15,7 +15,7 @@
    the specific language governing rights and limitations under the License.
 }
 
-// $Id: KbdCfgFrm.pas,v 1.14 2006/07/07 10:18:37 peter3 Exp $
+// $Id$
 unit KbdCfgFrm;
 
 {$I TRANSLATOR.INC}

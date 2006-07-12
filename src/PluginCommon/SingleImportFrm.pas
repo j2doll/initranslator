@@ -30,7 +30,7 @@
 
 }
 
-// $Id$
+// $Id: SingleImportFrm.pas 13 2006-07-12 14:30:20Z peter3 $
 
 unit SingleImportFrm;
 

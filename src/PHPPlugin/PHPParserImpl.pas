@@ -15,7 +15,7 @@
    the specific language governing rights and limitations under the License.
 }
 
-// $Id$
+// $Id: PHPParserImpl.pas 13 2006-07-12 14:30:20Z peter3 $
 unit PHPParserImpl;
 
 interface

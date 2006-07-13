@@ -533,6 +533,9 @@ type
     procedure GetSections(Strings: TTntStringlist);
     procedure CheckBookMarkImages;
     procedure DoTrim;
+    procedure AddItem(const Section, Original, Translation, OrigComments, TransComments: WideString); overload;
+    procedure AddItem(AItem: ITranslationItem); overload;
+    procedure DeleteItem(Index: integer);
   public
     { Public declarations }
     property Modified: boolean read GetModified write SetModified;
@@ -3557,20 +3560,6 @@ begin
     BuildToolMenu(Sender);
 end;
 
-procedure TfrmMain.acDeleteItemExecute(Sender: TObject);
-var
-  Index: integer;
-begin
-  if YesNo(Translate(ClassName, SPromptDeleteItem), Translate(ClassName, SConfirmDelete)) then
-  begin
-    Index := lvTranslateStrings.Selected.Index;
-    FTranslateFile.Items.Delete(Index);
-    lvTranslateStrings.Items.Count := FTranslateFile.Items.Count;
-    lvTranslateStrings.Invalidate;
-    UpdateStatus;
-  end;
-end;
-
 procedure TfrmMain.GetSections(Strings: TTntStringlist);
 var
   i: integer;
@@ -3587,63 +3576,67 @@ begin
 
 end;
 
-procedure TfrmMain.acEditItemExecute(Sender: TObject);
+procedure TfrmMain.AddItem(AItem: ITranslationItem);
 var
-  Index: integer;
-  AOldItem, AItem: ITranslationItem;
-  ASections: TTntStringlist;
-
-  procedure CopyItem(const FromItem, ToItem: ITranslationItem);
-  begin
-    ToItem.Index := FromItem.Index;
-    ToItem.Translated := FromItem.Translated;
-    ToItem.TransComments := FromItem.TransComments;
-    ToItem.OrigComments := FromItem.OrigComments;
-    ToItem.Original := FromItem.Original;
-    ToItem.Translation := FromItem.Translation;
-    ToItem.Section := FromItem.Section;
-    ToItem.Name := FromItem.Name;
-    ToItem.ClearOriginal := FromItem.ClearOriginal;
-    ToItem.ClearTranslation := FromItem.ClearTranslation;
-    ToItem.PrivateStorage := FromItem.PrivateStorage;
-  end;
+  AIndex, i: integer;
+  FOldSort: TTranslateSortType;
 begin
-  Index := lvTranslateStrings.Selected.Index;
-  AOldItem := FTranslateFile.Items[Index];
-  AItem := FTranslateFile.Items.CreateItem;
-  CopyItem(AOldItem, AItem);
-  ASections := TTntStringlist.Create;
+  FOldSort := FTranslateFile.Items.Sort;
   try
-    GetSections(ASections);
-    if TfrmEditItem.Edit(Translate(ClassName, SCaptionEditItem), ASections, AItem, false) then
+    FTranslateFile.Items.Sort := stIndex;
+    AIndex := FTranslateFile.Items.Add(AItem);
+    i := 0;
+    while i <= AIndex do
     begin
-      if (AItem.Section = '') then
-        ErrMsg(Translate(ClassName, SErrSectionEmpty), SErrorCaption)
-      else if (AItem.Name = '') then
-        ErrMsg(Translate(ClassName, SErrNameEmpty), SErrorCaption)
-      else if (AItem.Original = '') then
-        ErrMsg(Translate(ClassName, SErrOrigTextEmpty), SErrorCaption)
-      else if (not WideSameText(AOldItem.Section, AItem.Section) or not WideSameText(AOldItem.Name, AItem.Name))
-        and (FTranslateFile.Items.IndexOf(AItem.Section, AItem.Name, false) > -1) then
-        ErrMsg(Translate(ClassName, SErrSectionNameExists), SErrorCaption)
-      else
+    // find first item with same section name
+      if WideSameText(FTranslateFile.Items[i].Section, AItem.Section) then
       begin
-        CopyItem(AItem, AOldItem);
-        lvTranslateStrings.Invalidate;
-        UpdateStatus;
+        while i <= AIndex do
+        begin
+                // find first item with another section name
+          if not WideSameText(FTranslateFile.Items[i].Section, AItem.Section) then
+          begin
+                  // insert our new item into the list
+            FTranslateFile.Items[AIndex].Index := i;
+                  // increment index of all subsequent items
+            while i < AIndex do
+            begin
+              FTranslateFile.Items[i].Index := FTranslateFile.Items[i].Index + 1;
+              Inc(i);
+            end;
+          end;
+          Inc(i);
+        end;
       end;
+      Inc(i);
     end;
   finally
-    ASections.Free;
+    FTranslateFile.Items.Sort := FOldSort;
   end;
+end;
+
+procedure TfrmMain.AddItem(const Section, Original, Translation, OrigComments, TransComments: WideString);
+var AItem: ITranslationItem;
+begin
+  AItem := FTranslateFile.Items.CreateItem;
+  AItem.Section := Section;
+  AItem.Original := Original;
+  AItem.Translation := Translation;
+  AItem.OrigComments := OrigComments;
+  AItem.TransComments := TransComments;
+  AddItem(AItem);
+end;
+
+procedure TfrmMain.DeleteItem(Index: integer);
+begin
+  if (Index >= 0) and (Index < FTranslateFile.Items.Count) then
+    FTranslateFile.Items.Delete(Index);
 end;
 
 procedure TfrmMain.acAddItemExecute(Sender: TObject);
 var
   AItem: ITranslationItem;
   ASections: TTntStringlist;
-  FOldSort: TTranslateSortType;
-  i, AIndex: integer;
 begin
   AItem := FTranslateFile.Items.CreateItem;
   with lvTranslateStrings do
@@ -3665,40 +3658,13 @@ begin
       else
       begin
         lvTranslateStrings.Items.BeginUpdate;
-        FOldSort := FTranslateFile.Items.Sort;
         try
           // insert the new item at the correct location
-          FTranslateFile.Items.Sort := stIndex;
-          AIndex := FTranslateFile.Items.Add(AItem);
-          i := 0;
-          while i <= AIndex do
-          begin
-            // find first item with same section name
-            if WideSameText(FTranslateFile.Items[i].Section, AItem.Section) then
-            begin
-              while i <= AIndex do
-              begin
-                // find first item with another section name
-                if not WideSameText(FTranslateFile.Items[i].Section, AItem.Section) then
-                begin
-                  // insert our new item into the list
-                  FTranslateFile.Items[AIndex].Index := i;
-                  // increment index of all subsequent items
-                  while i < AIndex do
-                  begin
-                    FTranslateFile.Items[i].Index := FTranslateFile.Items[i].Index + 1;
-                    Inc(i);
-                  end;
-                end;
-                Inc(i);
-              end;
-            end;
-            Inc(i);
-          end;
+          AddItem(AItem);
+          Modified := true;
           lvTranslateStrings.Items.Count := FTranslateFile.Items.Count;
           UpdateStatus;
         finally
-          FTranslateFile.Items.Sort := FOldSort;
           lvTranslateStrings.Items.EndUpdate;
         end;
         // scroll it into view
@@ -3709,6 +3675,84 @@ begin
     end;
   finally
     ASections.Free;
+  end;
+end;
+
+procedure TfrmMain.acEditItemExecute(Sender: TObject);
+var
+  Index: integer;
+  AItem, ANewItem: ITranslationItem;
+  ASections: TTntStringlist;
+
+  procedure CopyItem(const FromItem, ToItem: ITranslationItem);
+  begin
+    ToItem.Index := FromItem.Index;
+    ToItem.Translated := FromItem.Translated;
+    ToItem.TransComments := FromItem.TransComments;
+    ToItem.OrigComments := FromItem.OrigComments;
+    ToItem.Original := FromItem.Original;
+    ToItem.Translation := FromItem.Translation;
+    ToItem.Section := FromItem.Section;
+    ToItem.Name := FromItem.Name;
+    ToItem.ClearOriginal := FromItem.ClearOriginal;
+    ToItem.ClearTranslation := FromItem.ClearTranslation;
+    ToItem.PrivateStorage := FromItem.PrivateStorage;
+  end;
+  function EqualItems(const FromItem, ToItem: ITranslationItem):boolean;
+  begin
+    Result :=
+      WideSameStr(FromItem.Section, ToItem.Section)
+      and WideSameStr(FromItem.Original, ToItem.Original)
+      and WideSameStr(FromItem.Translation, ToItem.Translation)
+      and WideSameStr(FromItem.OrigComments, ToItem.OrigComments)
+      and WideSameStr(FromItem.TransComments, ToItem.TransComments);
+  end;
+begin
+  ANewItem := FTranslateFile.Items.CreateItem;
+  Index := lvTranslateStrings.Selected.Index;
+  AItem := FTranslateFile.Items[Index];
+  ASections := TTntStringlist.Create;
+  try
+    GetSections(ASections);
+    CopyItem(AItem, ANewItem);
+    if TfrmEditItem.Edit(Translate(ClassName, SCaptionEditItem), ASections, ANewItem, false) then
+    begin
+      if EqualItems(AItem, ANewItem) then Exit;
+      lvTranslateStrings.Items.BeginUpdate;
+      try
+        if (ANewItem.Section = '') then
+          ErrMsg(Translate(ClassName, SErrSectionEmpty), SErrorCaption)
+        else if (ANewItem.Name = '') then
+          ErrMsg(Translate(ClassName, SErrNameEmpty), SErrorCaption)
+        else if (ANewItem.Original = '') then
+          ErrMsg(Translate(ClassName, SErrOrigTextEmpty), SErrorCaption)
+        else
+        begin
+          lvTranslateStrings.ItemIndex := -1;
+          CopyItem(ANewItem, AItem);
+          Modified := true;
+          lvTranslateStrings.ItemIndex := Index;
+          if lvTranslateStrings.Selected <> nil then
+            lvTranslateStrings.Selected.MakeVisible(true);
+          UpdateStatus;
+        end;
+      finally
+        lvTranslateStrings.Items.EndUpdate;
+      end;
+    end;
+  finally
+    ASections.Free;
+  end;
+end;
+
+procedure TfrmMain.acDeleteItemExecute(Sender: TObject);
+begin
+  if (lvTranslateStrings.Selected <> nil) and YesNo(Translate(ClassName, SPromptDeleteItem), Translate(ClassName, SConfirmDelete)) then
+  begin
+    DeleteItem(lvTranslateStrings.Selected.Index);
+    lvTranslateStrings.Items.Count := FTranslateFile.Items.Count;
+    lvTranslateStrings.Invalidate;
+    UpdateStatus;
   end;
 end;
 

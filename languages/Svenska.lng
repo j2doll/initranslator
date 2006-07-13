@@ -53,6 +53,7 @@ These words will always be considered incorrect during a spell check operation.=
 These words will automatically be corrected when encountered during a spelling check.=Dessa ord korrigeras automatiskt vid stavningskontroll.
 These words will be considered correct during a spell check operation.=Dessa ord behandlas som korrekta vid stavningskontroll.
 Words added with Ignore All / Change All=Ord som lagts till med Ignorera Alla / Ersätt Alla
+
 [TfrmComments]
 -=-
 &Copy=K&opiera
@@ -68,6 +69,7 @@ Paste|Inserts Clipboard contents=Klistra in|Infogar innehållet i Urklipp vid ins
 Select &All=Markera &allt
 Select All|Selects the entire document=Markera allt|Markera hela dokumentet
 Undo|Reverts the last action=Ångra|Ångra senaste åtgärden
+
 [TfrmConfigKbd]
 &Add=L&ägg till
 &Close=Stä&ng
@@ -81,6 +83,7 @@ Description:=Beskrivning:
 R&eset=&Återställ
 Select command:=Kommandon:
 Select shortcut:=Kortkommandon:
+
 [TfrmConfigSuspicious]
 &Leading spaces mismatch=&Inledande mellanslag matchar inte
 &Match between original and translation (one string per row):=&Matcha mellan original och översättning (en sträng per rad):
@@ -92,6 +95,7 @@ Mismatched &control characters at end=&Omatchade kontrolltecken i slutet
 OK=OK
 Translation is &empty=Översättningen är to&m
 Treat as suspicious:=Betrakta som misstänkt:
+
 [TfrmDictEdit]
 &Add=&Lägg till
 &Original:=&Original:
@@ -102,6 +106,7 @@ Cancel=Avbryt
 Edit Dictionary=Redigera ordbok
 OK=OK
 Re&move=Ta bo&rt
+
 [TfrmDictTranslationSelect]
 &Add=&Lägg till
 &Change=Ä&ndra
@@ -111,6 +116,7 @@ Re&move=Ta bo&rt
 A&vailable translations:=A&lla översättningar:
 Close=Stäng
 Select Translation=Välj översättning
+
 [TfrmEditItem]
 &Name:=&Namn:
 &OK=&OK
@@ -121,14 +127,17 @@ Cancel=Avbryt
 Edit Item=Redigera rad
 Ori&ginal Comment=Ori&ginalkommentar
 T&ranslation Comment=Öve&rsättningskommentar
+
 [TfrmFindReplace]
 Find/Replace=Sök/Ersätt
+
 [TfrmImportExport]
 (there is nothing to show in this view)=(det finns inget att visa)
 Close=Stäng
 Configure...=Konfigurera...
 Import/Export=Import/Export
 OK=OK
+
 [TfrmMain]
 "%s" has been changed outside the program, do you want to reload it?=%s" har ändrats utanför programmet. Vill du öppna den på nytt?
 %0:d of %1:d translated=%0:d av %1:d översatta
@@ -347,6 +356,7 @@ Spell check the translations=Stavningskontrollera översättningen
 Spelling...=Stavning...
 St focus to the listview=Fokusera listan
 T&ools=Verkt&yg
+Test=Test
 Test the exception handler=Testa undantagshanteringen
 Text must match the entire line=Texten måste matcha hela raden
 The language will not be changed until you restart the program=Språket ändras inte förrän du startar om programmet
@@ -378,6 +388,7 @@ UTF-8=UTF-8
 View=Visa
 View Comments=Visa kommentarer
 View Orphaned Items=Visa överblivna översättningar
+
 [TfrmOptions]
 &Font...=&Typsnitt...
 &Help:=&Hjälp:
@@ -417,9 +428,11 @@ When a file is opened, set the new folder as the start folder for all file open 
 When a translation is made, copies the translation to all other matching items automatically=När en översättning görs, kopiera översättningen automatiskt till alla matchande poster
 When activated, typing in the listview will automatically move focus to the translation edit field.=Anger om du vill att inmatning i listan automatiskt ska flytta fokus till översättningsfältet.
 When translating with the dictionary, strip out any &'s in the original text before comparing=Ignorera '&' tecken när ordboken används för översättning
+
 [TfrmOrphans]
 Copy=Kopiera
 Orphaned Items=Överblivna texter
+
 [TfrmPromptArgs]
 Application Directory=Programkatalogen
 Arguments:=Parametrar:
@@ -445,6 +458,7 @@ Translation Name=Översättningsfilens namn
 Translation Path=Översättningsfilens sökväg
 Translation Text=Översättningstext
 Windows Directory=Windowskatalogen
+
 [TfrmTools]
 &...=&...
 &Add=L&ägg till
@@ -485,6 +499,7 @@ Translation Text=Översättningstext
 Use Shell E&xecute=Använd ShellE&xecute
 Wait for co&mpletion=&Vänta tills klar
 Windows Directory=Windowskatalogen
+
 [TfrmTrim]
 Cancel=Avbryt
 Leading\r\nTrailing\r\nBoth\r\n=Inledande\r\nAvslutande\r\nBåda\r\n
@@ -495,6 +510,7 @@ Trim h&ow:=Trimma h&ur
 Trim Options=Trimningsinställningar
 Trim wh&at:=Trimma va&d
 Trim wh&ere:=Trima &var:
+
 [Translator]
 Author=Ini Translator
 EMail=(ingen)

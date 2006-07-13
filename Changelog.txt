@@ -3,7 +3,7 @@ Ini Translator Changelog
 2006-07-13:
 - It is no longer possible to press RETURN to create new lines in the Add and Edit Item dialog (Original and Translation)
 - Fixed Add/Edit Item functionality so we can maintain original sort when savong files
-- When saving files (both Original and Translation), they are now sorted according to Index to preserve original sort as much as possible
+- When saving files (both Original and Translation), they are now sorted according to Index (as it was pre 1.8.01022) to preserve original sort as much as possible
  
 2006-07-12:
 - New option for dictionary: "Ignore translated items when using dictionary"

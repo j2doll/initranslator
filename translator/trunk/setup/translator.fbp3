@@ -1629,7 +1629,7 @@ Action.BuildVersion   = VERSION_BUILD;
             <Property MultiValue="0" name="ActionLogTitle" type="WideString">Upload</Property>
             <Property MultiValue="0" name="ActionTypeID" type="String"></Property>
             <Property MultiValue="0" name="Description" type="String">Upload</Property>
-            <Property name="Enabled" type="WordBool">True</Property>
+            <Property name="Enabled" type="WordBool">False</Property>
             <Property name="IgnoreFailure" type="WordBool">False</Property>
             <Property name="IsAction" type="Boolean">True</Property>
             <Property name="IsBreakPoint" type="WordBool">False</Property>
@@ -1672,6 +1672,25 @@ Action.BuildVersion   = VERSION_BUILD;
                 <Property MultiValue="0" name="LocalFile" type="String">%ROOTPATH%setup\Output\*.exe</Property>
                 <Property MultiValue="0" name="RemoteFile" type="String">*.exe</Property>
                 </Object>
+              </Object>
+            <Object Class="TRunDosCMDAction" XMLID="{68673FE2-D6D1-4B8F-97FC-5D14BD6251F4}"><Property MultiValue="0" name="ActionComment" type="String"></Property>
+              <Property MultiValue="0" name="ActionLogTitle" type="WideString">Run ftpupload batch</Property>
+              <Property MultiValue="0" name="ActionTypeID" type="String"></Property>
+              <Property MultiValue="0" name="Command" type="WideString">%ROOTPATH%setup\Output\ftpupload.bat</Property>
+              <Property MultiValue="0" name="Description" type="String">Run ftpupload batch</Property>
+              <Property name="Enabled" type="WordBool">False</Property>
+              <Property name="HideWindow" type="WordBool">False</Property>
+              <Property name="IgnoreFailure" type="WordBool">False</Property>
+              <Property name="IsAction" type="Boolean">True</Property>
+              <Property name="IsBreakPoint" type="WordBool">False</Property>
+              <Property name="LogOutput" type="WordBool">True</Property>
+              <Property MultiValue="0" name="LogToVariable" type="String"></Property>
+              <Property name="NodeCollapsed" type="Boolean">False</Property>
+              <Property name="PauseInterval" type="Cardinal">0</Property>
+              <Property MultiValue="0" name="StartInDir" type="WideString">%ROOTPATH%setup\Output</Property>
+              <Property name="SuccessRC" type="Integer">0</Property>
+              <Property name="SuppressStatusMessages" type="Boolean">False</Property>
+              <Property name="WaitForCompletion" type="WordBool">True</Property>
               </Object>
             <Object Class="TBuildScript" XMLID="{B1C91094-5CFA-4189-9572-FC46E1DA735F}"><Property MultiValue="0" name="BreakPointsStore" type="String"></Property>
               <Property MultiValue="0" name="Name" type="String">Condition</Property>

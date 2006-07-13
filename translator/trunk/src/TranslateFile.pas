@@ -211,8 +211,6 @@ begin
   // sorting isn't affected when deleting
   IInterface(FItems.List[Index]) := nil;
   FItems.Delete(Index);
-  // FItems[Index].Deleted := true;
-  // Inc(FDeletedCount);
 end;
 
 destructor TTranslationItems.Destroy;
@@ -623,7 +621,8 @@ begin
   ASection := '';
   FOldSort := Items.Sort;
   try
-    Items.Sort := stSection;
+//    Items.Sort := stSection;
+    Items.Sort := stIndex;
     for i := 0 to Items.Count - 1 do
     begin
       if ASection <> Items[i].Section then
@@ -661,12 +660,16 @@ begin
   FOldSort := Items.Sort;
   try
     Items.Sort := stSection;
+//    Items.Sort := stIndex;
     for i := 0 to Items.Count - 1 do
     begin
       if ASection <> Items[i].Section then
       begin
-        S.Add(StartSection + Items[i].Section + EndSection);
+        if ASection <> '' then
+          S.Add('');
+
         ASection := Items[i].Section;
+        S.Add(StartSection + ASection + EndSection);
       end;
       if trim(Items[i].TransComments) <> '' then
       begin

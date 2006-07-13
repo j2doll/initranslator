@@ -90,6 +90,7 @@ inherited frmEditItem: TfrmEditItem
     ScrollBars = ssBoth
     TabOrder = 2
     WordWrap = False
+    OnKeyDown = DoKeyDown
   end
   object edTranslation: TTntRichEdit
     Left = 8
@@ -105,6 +106,7 @@ inherited frmEditItem: TfrmEditItem
     ScrollBars = ssBoth
     TabOrder = 3
     WordWrap = False
+    OnKeyDown = DoKeyDown
   end
   object edName: TEdit
     Left = 8

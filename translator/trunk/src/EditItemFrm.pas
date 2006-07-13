@@ -25,6 +25,8 @@ type
     edOrigComments: TTntRichEdit;
     edTransComment: TTntRichEdit;
     procedure TntFormCreate(Sender: TObject);
+    procedure DoKeyDown(Sender: TObject; var Key: Word;
+      Shift: TShiftState);
   private
     { Private declarations }
   public
@@ -83,6 +85,13 @@ procedure TfrmEditItem.TntFormCreate(Sender: TObject);
 begin
   inherited;
   pcComments.ActivePageIndex := 0;
+end;
+
+procedure TfrmEditItem.DoKeyDown(Sender: TObject; var Key: Word;
+  Shift: TShiftState);
+begin
+  if Key = VK_RETURN then
+    Key := 0;
 end;
 
 end.

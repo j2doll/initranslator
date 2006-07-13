@@ -1,9 +1,10 @@
 object frmImport: TfrmImport
   Left = 412
   Top = 228
-  Width = 392
-  Height = 152
+  BorderStyle = bsDialog
   Caption = 'Select file'
+  ClientHeight = 106
+  ClientWidth = 384
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
   Font.Color = clWindowText
@@ -49,7 +50,7 @@ object frmImport: TfrmImport
   Position = poScreenCenter
   DesignSize = (
     384
-    125)
+    106)
   PixelsPerInch = 96
   TextHeight = 13
   object Label1: TLabel
@@ -79,7 +80,7 @@ object frmImport: TfrmImport
   end
   object btnOK: TButton
     Left = 208
-    Top = 83
+    Top = 64
     Width = 75
     Height = 25
     Anchors = [akRight, akBottom]
@@ -90,7 +91,7 @@ object frmImport: TfrmImport
   end
   object btnCancel: TButton
     Left = 288
-    Top = 83
+    Top = 64
     Width = 75
     Height = 25
     Anchors = [akRight, akBottom]
@@ -103,7 +104,6 @@ object frmImport: TfrmImport
     DefaultExt = 'dtd'
     Filter = 'MessenegerDTD files (*.dtd|*.dtd|All files (*.*)|*.*'
     InitialDir = '.'
-    Left = 48
-    Top = 56
+    Left = 208
   end
 end

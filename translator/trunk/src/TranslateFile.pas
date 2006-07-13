@@ -69,10 +69,10 @@ type
     function GetPrivateStorage: WideString;
     function GetModified: WordBool;
     procedure SetModified(Value: WordBool);
-    function GetPreData:WideString;
-    procedure SetPreData(const Value:WideString);
-    function GetPostData:WideString;
-    procedure SetPostData(const Value:WideString);
+    function GetPreData: WideString;
+    procedure SetPreData(const Value: WideString);
+    function GetPostData: WideString;
+    procedure SetPostData(const Value: WideString);
   private
     function GetQuote(const S: WideString): WideChar;
     procedure Change(Changed: boolean);
@@ -94,8 +94,8 @@ type
     property Name: WideString read GetName write SetName;
     property Translated: WordBool read GetTranslated write SetTranslated;
     property Modified: WordBool read GetModified write SetModified;
-    property PreData:WideString read GetPreData write SetPreData;
-    property PostData:WideString read GetPostData write SetPostData;
+    property PreData: WideString read GetPreData write SetPreData;
+    property PostData: WideString read GetPostData write SetPostData;
   end;
 
   TTranslationItems = class(TInterfacedObject, IInterface, ITranslationItems)
@@ -103,7 +103,7 @@ type
     FItems: TList;
     FSort: TTranslateSortType;
     FTranslatedCount: integer;
-    FModified:WordBool;
+    FModified: WordBool;
     function GetCount: integer;
     function GetItem(Index: integer): ITranslationItem;
     procedure SetSort(const Value: TTranslateSortType);
@@ -158,7 +158,7 @@ type
 
 implementation
 uses
-  Windows, TntClasses;
+  Windows, TntSystem, TntClasses;
 
 function trimQuotes(const S: WideString; Quote: WideChar): WideString;
 begin
@@ -356,7 +356,7 @@ begin
 end;
 
 function TTranslationItems.GetModified: WordBool;
-var i:integer;
+var i: integer;
 begin
   Result := FModified;
   if not Result then
@@ -431,9 +431,9 @@ begin
 end;
 
 procedure TTranslationItems.SetModified(Value: WordBool);
-var i:integer;
+var i: integer;
 begin
-  if FModified <> Value then
+  if GetModified <> Value then
   begin
     FModified := Value;
     if not FModified then
@@ -514,8 +514,8 @@ begin
   FComments := TTntStringlist.Create;
   try
     S.LoadFromFile(Filename);
-    if Encoding = feUTF8 then
-      S.AnsiStrings.Text := UTF8Decode(S.AnsiStrings.Text);
+//    if Encoding = feUTF8 then
+//      S.AnsiStrings.Text := UTF8Decode(S.AnsiStrings.Text);
     for i := 0 to S.Count - 1 do
     begin
       if WideTextPos(CommentChar, S[i]) = 1 then
@@ -566,8 +566,8 @@ begin
 //      S.AnsiStrings.LoadFromFile(Filename)
 //    else
     S.LoadFromFile(Filename);
-    if Encoding = feUTF8 then
-      S.AnsiStrings.Text := UTF8Decode(S.AnsiStrings.Text);
+//    if Encoding = feUTF8 then
+//      S.AnsiStrings.Text := UTF8Decode(S.AnsiStrings.Text);
     for i := 0 to S.Count - 1 do
     begin
       if WideTextPos(CommentChar, S[i]) = 1 then
@@ -610,6 +610,19 @@ begin
   end;
 end;
 
+procedure FixAndAddComments(S: TTntStringlist; const Comments: WideString);
+var tmp:WideString;
+begin
+  if trim(Comments) <> '' then
+  begin
+    S.Add('');
+    tmp := trim(Comments);
+    if tmp[1] <> ';' then
+      tmp := '; ' + tmp;
+    S.Add(tmp);
+  end;
+end;
+
 procedure TTranslateFiles.SaveOriginal(const Filename: WideString; Encoding: TEncoding);
 var
   i: integer;
@@ -630,18 +643,19 @@ begin
         S.Add(StartSection + Items[i].Section + EndSection);
         ASection := Items[i].Section;
       end;
-      if trim(Items[i].OrigComments) <> '' then
-        S.Add(trim(Items[i].OrigComments));
+      FixAndAddComments(S, Items[i].OrigComments);
       S.Add(Items[i].Name + SeparatorChar + Items[i].Original);
     end;
-    if Encoding <> feUnicode then
-    begin
-      if Encoding = feUTF8 then
-        S.AnsiStrings.Text := UTF8Encode(S.AnsiStrings.Text);
-      S.AnsiStrings.SaveToFile(Filename)
-    end
+    case Encoding of
+      feUnicode:
+        S.SaveToFile(Filename);
+      feUnicodeSwapped:
+        raise Exception.Create('Unicode swapped not supported!');
+      feUTF8:
+        S.AnsiStrings.SaveToFileEx(Filename, CP_UTF8);
     else
-      S.SaveToFile(Filename);
+      S.AnsiStrings.SaveToFile(Filename)
+    end;
   finally
     S.Free;
     Items.Sort := FOldSort;
@@ -671,21 +685,20 @@ begin
         ASection := Items[i].Section;
         S.Add(StartSection + ASection + EndSection);
       end;
-      if trim(Items[i].TransComments) <> '' then
-      begin
-        S.Add('');
-        S.Add(trim(Items[i].TransComments));
-      end;
+      FixAndAddComments(S, Items[i].TransComments);
       S.Add(Items[i].Name + SeparatorChar + Items[i].Translation);
     end;
-    if Encoding <> feUnicode then
-    begin
-      if Encoding = feUTF8 then
-        S.AnsiStrings.Text := UTF8Encode(S.AnsiStrings.Text);
-      S.AnsiStrings.SaveToFile(Filename)
-    end
+    case Encoding of
+      feUnicode:
+        S.SaveToFile(Filename);
+      feUnicodeSwapped:
+        raise Exception.Create('Unicode swapped not supported!');
+      feUTF8:
+        S.AnsiStrings.SaveToFileEx(Filename, CP_UTF8);
     else
-      S.SaveToFile(Filename);
+      S.AnsiStrings.SaveToFile(Filename)
+    end;
+
   finally
     S.Free;
     Items.Sort := FOldSort;
@@ -883,3 +896,4 @@ begin
 end;
 
 end.
+

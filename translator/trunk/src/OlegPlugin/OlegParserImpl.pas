@@ -13,7 +13,7 @@
    WITHOUT WARRANTY OF ANY KIND, either express or implied. See the License for
    the specific language governing rights and limitations under the License.
 }
-// $Id: OlegParserImpl.pas 13 2006-07-12 14:30:20Z peter3 $
+// $Id$
 unit OlegParserImpl;
 
 interface

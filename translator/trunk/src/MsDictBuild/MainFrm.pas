@@ -15,7 +15,7 @@
    the specific language governing rights and limitations under the License.
 }
 
-// $Id: $
+// $Id$
 
 unit MainFrm;
 

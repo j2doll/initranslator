@@ -1,5 +1,6 @@
 [FileVersion]
 Version=7.0
+[Compiler]
 UnsafeType=0
 UnsafeCode=0
 UnsafeCast=0
@@ -27,12 +28,12 @@ Locale=1033
 CodePage=1252
 [Version Info Keys]
 CompanyName=IniTranslator
-FileDescription=PolyGlotTranslator Plugin for IniTranslator
-FileVersion=1.7.0.0
-InternalName=PolyGlotParser.dll
-LegalCopyright=Copyright (c) 2004 by Chris Thornton; all rights reserved
+FileDescription=TMX Plugin for IniTranslator
+FileVersion=1.9.0.0
+InternalName=TMXParser.dll
+LegalCopyright=Copyright (c) 2006 by Peter Thörnqvist; all rights reserved
 LegalTrademarks=
-OriginalFilename=PolyGlotParser.dll
-ProductName=PolyGlotTranslator Plugin for IniTranslator
-ProductVersion=1.7.0.0
+OriginalFilename=TMXParser.dll
+ProductName=TMX Plugin for IniTranslator
+ProductVersion=1.9.0.0
 Comments=Latest version at http://initranslator.sourceforge.net

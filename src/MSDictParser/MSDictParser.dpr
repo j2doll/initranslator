@@ -5,9 +5,9 @@ uses
   Classes,
   TransIntf in '..\TransIntf.pas',
   PreviewExportFrm in '..\PluginCommon\PreviewExportFrm.pas' {frmExport},
-  SingleImportFrm in '..\PluginCommon\SingleImportFrm.pas' {frmImport},
   MSDictParserImpl in 'MSDictParserImpl.pas',
-  CommonUtils in '..\CommonUtils.pas';
+  CommonUtils in '..\CommonUtils.pas',
+  SingleImportFrm in 'SingleImportFrm.pas' {frmImport};
 
 {$R *.res}
 function InstallPlugin(out Parser:IFileParser):HResult;stdcall;

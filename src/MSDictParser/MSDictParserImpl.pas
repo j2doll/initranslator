@@ -25,7 +25,8 @@ uses
 type
   TMsDictParser = class(TInterfacedObject, IUnknown, IFileParser)
   private
-    FAppHandle:Cardinal;
+    FAppHandle: Cardinal;
+    FSkipLines: integer;
     { IFileParser }
     function Capabilities: Integer; safecall;
     function Configure(Capability: Integer): HRESULT; safecall;
@@ -33,8 +34,7 @@ type
     function ExportItems(const Items: ITranslationItems; const Orphans: ITranslationItems): HRESULT; safecall;
     function ImportItems(const Items: ITranslationItems; const Orphans: ITranslationItems): HRESULT; safecall;
     procedure Init(AppHandle: Cardinal); safecall;
-    function SkipFirstTwoLines:boolean;
-    function AddCopyright:boolean;
+    function AddCopyright: boolean;
   protected
     FTransFile: string;
     procedure LoadSettings;
@@ -48,7 +48,7 @@ type
 
 implementation
 uses
-  Forms, Windows, StrUtils, Controls, IniFiles, CommonUtils, 
+  Forms, Windows, StrUtils, Controls, IniFiles, CommonUtils,
   TntSysUtils, PreviewExportFrm, SingleImportFrm;
 
 const
@@ -58,12 +58,11 @@ const
   cSectionName = 'MS Glossary';
   cCopyright = 'This glossary is intellectual property of Microsoft Corporation. Please refer to the complete copyright text in the README.TXT file included in this file.,,,,,,,';
 
-
 { TMsDictParser }
 
 function TMsDictParser.AddCopyright: boolean;
 begin
-  Result := MessageBox(GetFocus,'Add Microsoft Copyright notice?', 'Confirm', MB_YESNO) = IDYES;
+  Result := MessageBox(GetFocus, 'Add Microsoft Copyright notice?', 'Confirm', MB_YESNO) = IDYES;
 end;
 
 procedure TMsDictParser.BuildPreview(Items: ITranslationItems; Strings: TTntStrings);
@@ -75,7 +74,7 @@ begin
     Strings.Add('');
   end;
   for i := 0 to Items.Count - 1 do
-    Strings.Add(WideFormat(Items[i].TransComments,['"' + Items[i].Original + '"','"' + Items[i].Translation + '"']));
+    Strings.Add(WideFormat(Items[i].TransComments, ['"' + Items[i].Original + '"', '"' + Items[i].Translation + '"']));
 end;
 
 function TMsDictParser.Capabilities: Integer;
@@ -142,7 +141,7 @@ begin
   end;
 end;
 
-function WideContainsText(const AText, ASubText:WideString):boolean;
+function WideContainsText(const AText, ASubText: WideString): boolean;
 begin
   Result := Pos(WideUppercase(ASubText), WideUppercase(AText)) > 0;
 end;
@@ -150,11 +149,12 @@ end;
 function TMsDictParser.ImportItems(const Items, Orphans: ITranslationItems): HRESULT;
 var
   S: TTntStringlist;
-  i, j: integer;
-  procedure ParseItem(var S:PWideChar; _End:PWideChar; out Value:WideString);
+  i: integer;
+
+  procedure ParseItem(var S: PWideChar; _End: PWideChar; out Value: WideString);
   var
     Start: PWideChar;
-    QuoteChar :WideChar;
+    QuoteChar: WideChar;
   begin
     Value := '';
     if (S = nil) or (S = _End) then
@@ -180,29 +180,32 @@ var
         if (S = _End) then
         begin
           SetString(Value, Start, S - Start);
-          if S^ = QuoteChar then Inc(S);
+          if S^ = QuoteChar then
+            Inc(S);
           Exit;
         end;
         Inc(S);
       end
     end
-    else while True do // no quote, so string ends at first comma
-    begin
-      if (S = _End) or (S^ = WideChar(',')) then
+    else
+      while True do // no quote, so string ends at first comma
       begin
-        SetString(Value, Start, S - Start);
-        Exit;
+        if (S = _End) or (S^ = WideChar(',')) then
+        begin
+          SetString(Value, Start, S - Start);
+          Exit;
+        end;
+        Inc(S);
       end;
-      Inc(S);
-    end;
   end;
-  procedure AddItem(const Items:ITranslationItems; const S:WideString);
+
+  procedure AddItem(const Items: ITranslationItems; const S: WideString);
   var
     TI: ITranslationItem;
-    AOrig, ATrans:WideString;
-    P, R, _End:PWideChar;
-    Cmt:WideString;
-    ALength:integer;
+    AOrig, ATrans: WideString;
+    P, R, _End: PWideChar;
+    Cmt: WideString;
+    ALength: integer;
   begin
     // Accroding to Microsoft, glossaries contain the following five mandatory columns:
     // Source Term, Translation (previously also called Target Term), String Category, Platform (previously also called Environment), Product
@@ -226,9 +229,9 @@ var
     _End := P + Length(S);
     R := P;
     ParseItem(P, _End, AOrig);
-    ALength := P-R;
+    ALength := P - R;
     Delete(Cmt, 1, ALength);
-    Insert('%s',Cmt, 1);
+    Insert('%s', Cmt, 1);
     if P^ = WideChar(',') then
       Inc(P);
     ParseItem(P, _End, ATrans);
@@ -237,8 +240,9 @@ var
     R := P;
     ALength := P - PWideChar(S) - ALength + 3;
     ParseItem(P, _End, ATrans);
-    Delete(Cmt, ALength, P-R);
-    Insert('%s',Cmt, ALength);
+    Delete(Cmt, ALength, P - R);
+    Insert('%s', Cmt, ALength);
+    if AOrig <> '' then
     // if Items.IndexOf(cSectionName, AOrig) < 0 then // takes ages
     begin
       TI := Items.Add;
@@ -247,7 +251,8 @@ var
 
       TI.Section := cSectionName;
       P := PWideChar(AOrig);
-      TI.Original := P;
+      TI.Name := P;
+      TI.Original := TI.Name;
       P := PWideChar(ATrans);
       TI.Translation := P;
       TI.Translated := TI.Translation <> '';
@@ -260,18 +265,17 @@ begin
     Items.Clear;
     Orphans.Clear;
     LoadSettings;
-    if TfrmImport.Execute(FTransFile, cMsDictImportTitle, cMsDictFilter, '.', 'csv') then
+    if TfrmImport.Execute(FTransFile, FSkipLines, cMsDictImportTitle, cMsDictFilter, '.', 'csv') then
     begin
       Items.Sort := stNone;
+      if FSkipLines < 0 then
+        FSkipLines := 0;
       S := TTntStringlist.Create;
       try
         S.LoadFromFile(FTransFile);
-        if SkipFirstTwoLines then
-          j := 2
-        else
-          j := 0;
-        for i := j to S.Count - 1 do
+        for i := FSkipLines to S.Count - 1 do
           AddItem(Items, S[i]);
+        Items.Modified := false;
       finally
         Items.Sort := stIndex;
         S.Free;
@@ -295,6 +299,7 @@ begin
     with TIniFile.Create(ChangeFileExt(GetModuleName(hInstance), '.ini')) do
     try
       FTransFile := ReadString('Settings', 'TransFile', FTransFile);
+      FSkipLines := ReadInteger('Settings', 'SkipLines', 2);
     finally
       Free;
     end;
@@ -309,17 +314,13 @@ begin
     with TIniFile.Create(ChangeFileExt(GetModuleName(hInstance), '.ini')) do
     try
       WriteString('Settings', 'TransFile', FTransFile);
+      WriteInteger('Settings', 'SkipLines', FSkipLines);
     finally
       Free;
     end;
   except
     Application.HandleException(self);
   end;
-end;
-
-function TMsDictParser.SkipFirstTwoLines: boolean;
-begin
-  Result := MessageBox(GetFocus,'Skip first two lines of the file (these normally contains Microsofts Copyright notice)?', 'Confirm', MB_YESNO) = IDYES;
 end;
 
 end.

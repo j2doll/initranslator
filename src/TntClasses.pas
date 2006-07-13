@@ -1146,7 +1146,7 @@ begin
       while P <> _End do
       begin
         Start := P;
-        while not (P^ in [WideChar(#10), WideChar(#13)]) and (P^ <> WideLineSeparator) do
+        while not (P^ in [CR, LF]) and (P^ <> WideLineSeparator) do
         begin
           if P = _End then
             Break;
@@ -1154,8 +1154,8 @@ begin
         end;
         SetString(S, Start, P - Start);
         Add(S);
-        if P^ = #13 then Inc(P);
-        if P^ = #10 then Inc(P);
+        if P^ = CR then Inc(P);
+        if P^ = LF then Inc(P);
         if P^ = WideLineSeparator then Inc(P);
       end;
   finally

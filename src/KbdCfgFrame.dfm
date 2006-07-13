@@ -40,14 +40,14 @@ object FrmKbdCfg: TFrmKbdCfg
   end
   object lblAssignedTo: TTntLabel
     Left = 8
-    Top = 294
-    Width = 3
+    Top = 278
+    Width = 369
     Height = 13
     Anchors = [akLeft, akBottom]
   end
   object lblAssignedTo2: TTntLabel
-    Left = 169
-    Top = 294
+    Left = 193
+    Top = 278
     Width = 3
     Height = 13
     Anchors = [akLeft, akBottom]
@@ -83,15 +83,17 @@ object FrmKbdCfg: TFrmKbdCfg
     Shape = bsTopLine
   end
   object lblDescription: TTntLabel
-    Left = 34
-    Top = 337
-    Width = 3
-    Height = 13
+    Left = 23
+    Top = 315
+    Width = 355
+    Height = 38
     Anchors = [akLeft, akRight, akBottom]
+    AutoSize = False
+    WordWrap = True
   end
   object lblBottom: TTntLabel
     Left = 8
-    Top = 315
+    Top = 299
     Width = 56
     Height = 13
     Anchors = [akLeft, akBottom]
@@ -99,7 +101,7 @@ object FrmKbdCfg: TFrmKbdCfg
   end
   object bvBottom: TBevel
     Left = 72
-    Top = 322
+    Top = 306
     Width = 304
     Height = 6
     Anchors = [akLeft, akRight, akBottom]

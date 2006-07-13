@@ -66,7 +66,7 @@ var
 
 implementation
 uses
-  IniFiles, ShellAPI, ShFolder;
+  IniFiles, ShellAPI, ShFolder, TntWideStrUtils;
 
 {$R *.dfm}
 

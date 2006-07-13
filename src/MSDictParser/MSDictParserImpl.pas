@@ -218,12 +218,13 @@ var
     // Items can have embedded quotes of the same type that encloses the item. In those cases, the end of an item is
     // detected by checking for a comma after the quote char.
     // The files can (and often do) contain exact duplicate items.
-    // The two first lines often (but not always) contains a Copyright notice and an empty line.
+    // The 2 (or 10) first lines often (but not always) contains a Copyright notice and an empty line.
     // The files are saved as Unicode.
 
     // NB! In some cases an item is split on several lines. This parser cannot handle those items. To import
     // such a file, you will have to first manually edit it (in an editor that supports Unicode, like WordPad),
     // removing the unwanted CRLF's.
+    
     Cmt := S;
     P := PWideChar(S);
     _End := P + Length(S);

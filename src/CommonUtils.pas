@@ -58,7 +58,7 @@ function IsCharPunct(const S:WideChar):boolean;
 
 implementation
 uses
-  Windows, Forms, Dialogs, Math, Registry, StrUtils, TntSysUtils;
+  Windows, Forms, Dialogs, Math, Registry, StrUtils, TntSysUtils, TntWideStrUtils;
 
 function MyWideDequotedStr(const S: WideString; Quote: WideChar): WideString;
 // var LText:PWideChar;
@@ -68,7 +68,7 @@ begin
     Result := S;
     Exit;
   end;
-  if (Length(S) > 1) and (S[1] = Quote) and (WideLastChar(S) = Quote) then
+  if (Length(S) > 1) and (S[1] = Quote) and (TntWideLastChar(S) = Quote) then
   begin
 //    LText := PWideChar(S);
 //    Result := WideExtractQuotedStr(LText, Quote);
@@ -122,7 +122,7 @@ end;
 
 function trimCRLFRight(const S: WideString): WideString;
 begin
-  Result := trimRight(StringReplace(S, #13#10, ' ', [rfReplaceAll]));
+  Result := trimRight(Tnt_WideStringReplace(S, WideString(#13#10), WideString(' '), [rfReplaceAll]));
 end;
 
 procedure InfoMsg(const AText, ACaption: WideString);
@@ -474,12 +474,12 @@ begin
   Result := 0;
   if (Length(SubStr) = 0) or (Length(Str) = 0) then
     Exit;
-  tmp := StrPosW(PWideChar(Str), PWideChar(SubStr));
+  tmp := WStrPos(PWideChar(Str), PWideChar(SubStr));
   while tmp <> nil do
   begin
     Inc(Result);
     Inc(tmp, Length(SubStr));
-    tmp := StrPosW(tmp, PWideChar(SubStr));
+    tmp := WStrPos(tmp, PWideChar(SubStr));
   end;
 end;
 

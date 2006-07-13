@@ -51,7 +51,7 @@ uses
   TBXSentimoXTheme, TBXUxThemes, TBXXitoTheme,
   TBXStripesTheme, TBXStatusBars, TBXToolPals, TBXLists,
   TBXDefaultXPTheme, TBXWhidbeyTheme, TBXZezioTheme,
-  TBXDkPanels;
+  TBXDkPanels, TntStdActns;
 
 const
   WM_DELAYLOADED = WM_USER + 1001;
@@ -97,7 +97,7 @@ type
     acCut: TTntAction;
     acCopy: TTntAction;
     acPaste: TTntAction;
-    acSelectAll: TTntAction;
+    acSelectAll: TTntEditSelectAll;
     acUndo: TTntAction;
     TopDock: TTBXDock;
     tbMenu: TTBXToolbar;
@@ -546,7 +546,7 @@ var
 
 implementation
 uses
-  ShellAPI, StrUtils, Clipbrd,
+  ShellAPI, StrUtils, TntClipbrd,
 {$IFDEF USEADDICTSPELLCHECKER}
   ad3ParseEngine,
 {$ENDIF USEADDICTSPELLCHECKER}
@@ -573,15 +573,15 @@ begin
     if FileExists(GlobalAppOptions.OriginalFile) then
     begin
       OpenOrigDlg.FileName := GlobalAppOptions.OriginalFile;
-      //    OpenOrigDlg.EncodingIndex := GlobalAppOptions.OrigEncoding;
+//      OpenOrigDlg.EncodingIndex := GlobalAppOptions.OrigEncoding;
       SetFileAndFilter(OpenOrigDlg.FileName, OpenOrigDlg.FilterIndex);
       LoadOriginal(OpenOrigDlg.FileName, TEncoding(OpenOrigDlg.EncodingIndex)); // ??
     end;
     if FileExists(GlobalAppOptions.TranslationFile) then
     begin
       OpenTransDlg.FileName := GlobalAppOptions.TranslationFile;
-      //    OpenTransDlg.EncodingIndex := GlobalAppOptions.TransEncoding;
-      //    SaveTransDlg.EncodingIndex := OpenTransDlg.EncodingIndex;
+//      OpenTransDlg.EncodingIndex := GlobalAppOptions.TransEncoding;
+//      SaveTransDlg.EncodingIndex := OpenTransDlg.EncodingIndex;
       if FFileName = '' then
         SetFileAndFilter(OpenTransDlg.FileName, OpenTransDlg.FilterIndex);
       LoadTranslation(OpenTransDlg.FileName, TEncoding(OpenTransDlg.EncodingIndex)); // ??
@@ -680,8 +680,8 @@ begin
   GlobalAppOptions.OriginalFile := OpenOrigDlg.FileName;
   GlobalAppOptions.TranslationFile := OpenTransDlg.FileName;
   GlobalAppOptions.DictionaryFile := OpenDictDlg.FileName;
-  //  GlobalAppOptions.OrigEncoding := OpenOrigDlg.EncodingIndex;
-  //  GlobalAppOptions.TransEncoding := SaveTransDlg.EncodingIndex;
+  GlobalAppOptions.OrigEncoding := OpenOrigDlg.EncodingIndex;
+  GlobalAppOptions.TransEncoding := OpenTransDlg.EncodingIndex;
 
   GlobalAppOptions.FilterIndex := OpenOrigDlg.FilterIndex;
   GlobalAppOptions.ShowQuotes := acShowQuotes.Checked;
@@ -972,17 +972,16 @@ begin
   end;
 end;
 
-function TfrmMain.SaveOrigAs(const FileName: string;
-  Encoding: TEncoding): boolean;
+function TfrmMain.SaveOrigAs(const FileName: string; Encoding: TEncoding): boolean;
 begin
   Result := false;
   SaveOrigDlg.FileName := Filename;
-  SaveOrigDlg.FilterIndex := Ord(Encoding);
+  SaveOrigDlg.EncodingIndex := Ord(Encoding);
   if SaveOrigDlg.Execute then
   begin
     StopMonitor(FFileMonitors[cOrigMonitor]);
     try
-      FTranslateFile.SaveOriginal(SaveOrigDlg.FileName, TEncoding(SaveTransDlg.EncodingIndex));
+      FTranslateFile.SaveOriginal(SaveOrigDlg.FileName, TEncoding(SaveOrigDlg.EncodingIndex));
     except
       on E: Exception do
         HandleFileCreateException(Self, E, SaveOrigDlg.FileName);
@@ -1569,7 +1568,7 @@ begin
       F := [rfReplaceAll];
       if not FFindReplace.MatchCase then
         Include(F, rfIgnoreCase);
-      FTranslateFile.Items[i].Translation := WideStringReplace(FTranslateFile.Items[i].Translation,
+      FTranslateFile.Items[i].Translation := Tnt_WideStringReplace(FTranslateFile.Items[i].Translation,
         FFindReplace.FindText, FFindReplace.ReplaceText, F);
     end;
     FTranslateFile.Items[i].Translated := FTranslateFile.Items[i].Translation <> '';
@@ -1619,7 +1618,7 @@ begin
         F := [rfReplaceAll];
         if not FFindReplace.MatchCase then
           Include(F, rfIgnoreCase);
-        FTranslateFile.Items[i].Translation := WideStringReplace(FTranslateFile.Items[i].Translation,
+        FTranslateFile.Items[i].Translation := Tnt_WideStringReplace(FTranslateFile.Items[i].Translation,
           FFindReplace.FindText, FFindReplace.ReplaceText, F);
       end;
       FTranslateFile.Items[i].Translated := FTranslateFile.Items[i].Translation <> '';
@@ -1774,7 +1773,7 @@ begin
     Encodings.Add(Translate(ClassName, SANSI));
     Encodings.Add(Translate(ClassName, SUTF8));
     Encodings.Add(Translate(ClassName, SUnicode));
-    EncodingIndex := 0;
+    EncodingIndex := GlobalAppOptions.OrigEncoding;
   end;
 
   OpenTransDlg := TEncodingOpenDialog.Create(Self);
@@ -1787,7 +1786,7 @@ begin
     Encodings.Add(Translate(ClassName, SANSI));
     Encodings.Add(Translate(ClassName, SUTF8));
     Encodings.Add(Translate(ClassName, SUnicode));
-    EncodingIndex := 0;
+    EncodingIndex := GlobalAppOptions.TransEncoding;
   end;
   SaveTransDlg := TEncodingSaveDialog.Create(Self);
   with SaveTransDlg do
@@ -1800,7 +1799,7 @@ begin
     Encodings.Add(Translate(ClassName, SANSI));
     Encodings.Add(Translate(ClassName, SUTF8));
     Encodings.Add(Translate(ClassName, SUnicode));
-    EncodingIndex := 0;
+    EncodingIndex := GlobalAppOptions.TransEncoding;
   end;
   SaveOrigDlg := TEncodingSaveDialog.Create(Self);
   with SaveOrigDlg do
@@ -1813,7 +1812,7 @@ begin
     Encodings.Add(Translate(ClassName, SANSI));
     Encodings.Add(Translate(ClassName, SUTF8));
     Encodings.Add(Translate(ClassName, SUnicode));
-    EncodingIndex := 0;
+    EncodingIndex := GlobalAppOptions.OrigEncoding;
   end;
 end;
 
@@ -1959,7 +1958,7 @@ begin
   acCopy.Enabled := (ActiveControl is TCustomEdit) and (TCustomEdit(ActiveControl).SelLength > 0);
   acCut.Enabled := acCopy.Enabled and
     (GetWindowLong(TCustomEdit(ActiveControl).Handle, GWL_STYLE) and ES_READONLY <> ES_READONLY);
-  acPaste.Enabled := (Clipboard.HasFormat(CF_TEXT) or Clipboard.HasFormat(CF_UNICODETEXT)) and
+  acPaste.Enabled := (TntClipboard.HasFormat(CF_TEXT) or TntClipboard.HasFormat(CF_UNICODETEXT)) and
     (GetWindowLong(TCustomEdit(ActiveControl).Handle, GWL_STYLE) and ES_READONLY <> ES_READONLY);
   acToggleTranslated.Enabled := Index > -1;
   acToggleTranslated.Checked := acToggleTranslated.Enabled and FTranslateFile.Items[Index].Translated;
@@ -2237,7 +2236,7 @@ begin
     i := lvTranslateStrings.Selected.Index;
     with FTranslateFile.Items[i] do
     begin
-      ClearTranslation := MyWideQuotedStr(RemoveQuotes(trimCRLFRight(reTranslation.Text)), TransQuote);
+      Translation := RemoveQuotes(trimCRLFRight(reTranslation.Text));
       Translated := MyWideDequotedStr(Translation, TransQuote) <> '';
       lvTranslateStrings.Invalidate;
       if GlobalAppOptions.UseTranslationEverywhere then
@@ -2366,18 +2365,34 @@ end;
 
 procedure TfrmMain.acCutExecute(Sender: TObject);
 begin
+  if ActiveControl is TTntRichEdit then
+  begin
+    TntClipboard.AsWideText := trimCRLFRight(TTntRichEdit(ActiveControl).SelText);
+    TTntRichEdit(ActiveControl).SelText := '';
+    TTntRichEdit(ActiveControl).Modified := true;
+  end
+  else
   if ActiveControl is TWinControl then
     SendMessage(TWinControl(ActiveControl).Handle, WM_CUT, 0, 0);
 end;
 
 procedure TfrmMain.acCopyExecute(Sender: TObject);
 begin
+  if ActiveControl is TTntRichEdit then
+    TntClipboard.AsWideText := trimCRLFRight(TTntRichEdit(ActiveControl).SelText)
+  else
   if ActiveControl is TWinControl then
     SendMessage(TWinControl(ActiveControl).Handle, WM_COPY, 0, 0);
 end;
 
 procedure TfrmMain.acPasteExecute(Sender: TObject);
 begin
+  if ActiveControl is TTntRichEdit then
+  begin
+    TTntRichEdit(ActiveControl).SelText := trimCRLFRight(TntClipboard.AsWideText);
+    TTntRichEdit(ActiveControl).Modified := true;
+  end
+  else
   if ActiveControl is TWinControl then
     SendMessage(TWinControl(ActiveControl).Handle, WM_PASTE, 0, 0);
 end;
@@ -2767,7 +2782,7 @@ begin
     T := T + Format('Alt+%.5d ', [Ord(S[i])]);
   if YesNo(Translate(ClassName, SAsciiValue) + #13#10 + T + #13#10#13#10 + Translate(ClassName, SQCopyToClipboard),
     Translate(ClassName, SDecodedCharsCaption)) then
-    Clipboard.AsText := T;
+    TntClipboard.AsWideText := T;
 end;
 
 procedure TfrmMain.lvTranslateStringsInfoTip(Sender: TObject;
@@ -2984,7 +2999,7 @@ var
     Result := '';
     for i := Length(S) downto 1 do // is this loop really correct? does it skip trailbytes?
     begin
-      W := WideLastChar(S[i]);
+      W := TntWideLastChar(S[i]);
       if IsCharPunct(W) then
         Result := W + Result
       else
@@ -3141,7 +3156,7 @@ procedure TfrmMain.DoCommentModified(Sender: TObject;
     CChar: WideChar;
   begin
     CChar := FTranslateFile.CommentChar;
-    Result := CChar + WideStringReplace(trim(S), SLineBreak, SLineBreak + CChar, [rfReplaceAll]);
+    Result := CChar + Tnt_WideStringReplace(trim(S), SLineBreak, SLineBreak + CChar, [rfReplaceAll]);
     while (Length(Result) > 0) and (Result[Length(Result)] = CChar) do
       SetLength(Result, Length(Result) - 1);
   end;
@@ -3459,36 +3474,36 @@ var
 begin
   Result := AMacros;
 
-  Result := WideStringReplace(Result, '$(OrigLine)', reOriginal.Text, [rfReplaceAll, rfIgnoreCase]);
+  Result := Tnt_WideStringReplace(Result, '$(OrigLine)', reOriginal.Text, [rfReplaceAll, rfIgnoreCase]);
   if reOriginal.SelLength = 0 then
     S := reOriginal.Text
   else
     S := reOriginal.SelText;
-  Result := WideStringReplace(Result, '$(OrigText)', S, [rfReplaceAll, rfIgnoreCase]);
-  Result := WideStringReplace(Result, '$(OrigPath)', OpenOrigDlg.FileName, [rfReplaceAll, rfIgnoreCase]);
-  Result := WideStringReplace(Result, '$(OrigDir)', ExtractFilePath(OpenOrigDlg.FileName), [rfReplaceAll, rfIgnoreCase]);
-  Result := WideStringReplace(Result, '$(OrigName)', ChangeFileExt(ExtractFilename(OpenOrigDlg.FileName), ''), [rfReplaceAll, rfIgnoreCase]);
-  Result := WideStringReplace(Result, '$(OrigExt)', ExtractFileExt(OpenOrigDlg.FileName), [rfReplaceAll, rfIgnoreCase]);
+  Result := Tnt_WideStringReplace(Result, '$(OrigText)', S, [rfReplaceAll, rfIgnoreCase]);
+  Result := Tnt_WideStringReplace(Result, '$(OrigPath)', OpenOrigDlg.FileName, [rfReplaceAll, rfIgnoreCase]);
+  Result := Tnt_WideStringReplace(Result, '$(OrigDir)', ExtractFilePath(OpenOrigDlg.FileName), [rfReplaceAll, rfIgnoreCase]);
+  Result := Tnt_WideStringReplace(Result, '$(OrigName)', ChangeFileExt(ExtractFilename(OpenOrigDlg.FileName), ''), [rfReplaceAll, rfIgnoreCase]);
+  Result := Tnt_WideStringReplace(Result, '$(OrigExt)', ExtractFileExt(OpenOrigDlg.FileName), [rfReplaceAll, rfIgnoreCase]);
 
-  Result := WideStringReplace(Result, '$(TransLine)', reTranslation.Text, [rfReplaceAll, rfIgnoreCase]);
+  Result := Tnt_WideStringReplace(Result, '$(TransLine)', reTranslation.Text, [rfReplaceAll, rfIgnoreCase]);
   if reTranslation.SelLength = 0 then
     S := reTranslation.Text
   else
     S := reTranslation.SelText;
-  Result := WideStringReplace(Result, '$(TransText)', S, [rfReplaceAll, rfIgnoreCase]);
-  Result := WideStringReplace(Result, '$(TransPath)', OpenTransDlg.FileName, [rfReplaceAll, rfIgnoreCase]);
-  Result := WideStringReplace(Result, '$(TransDir)', ExtractFilePath(OpenTransDlg.FileName), [rfReplaceAll, rfIgnoreCase]);
-  Result := WideStringReplace(Result, '$(TransName)', ChangeFileExt(ExtractFilename(OpenTransDlg.FileName), ''), [rfReplaceAll, rfIgnoreCase]);
-  Result := WideStringReplace(Result, '$(TransExt)', ExtractFileExt(OpenTransDlg.FileName), [rfReplaceAll, rfIgnoreCase]);
+  Result := Tnt_WideStringReplace(Result, '$(TransText)', S, [rfReplaceAll, rfIgnoreCase]);
+  Result := Tnt_WideStringReplace(Result, '$(TransPath)', OpenTransDlg.FileName, [rfReplaceAll, rfIgnoreCase]);
+  Result := Tnt_WideStringReplace(Result, '$(TransDir)', ExtractFilePath(OpenTransDlg.FileName), [rfReplaceAll, rfIgnoreCase]);
+  Result := Tnt_WideStringReplace(Result, '$(TransName)', ChangeFileExt(ExtractFilename(OpenTransDlg.FileName), ''), [rfReplaceAll, rfIgnoreCase]);
+  Result := Tnt_WideStringReplace(Result, '$(TransExt)', ExtractFileExt(OpenTransDlg.FileName), [rfReplaceAll, rfIgnoreCase]);
 
-  Result := WideStringReplace(Result, '$(DictPath)', OpenDictDlg.FileName, [rfReplaceAll, rfIgnoreCase]);
-  Result := WideStringReplace(Result, '$(DictDir)', ExtractFilePath(OpenDictDlg.FileName), [rfReplaceAll, rfIgnoreCase]);
-  Result := WideStringReplace(Result, '$(DictName)', ChangeFileExt(ExtractFilename(OpenDictDlg.FileName), ''), [rfReplaceAll, rfIgnoreCase]);
-  Result := WideStringReplace(Result, '$(DictExt)', ExtractFileExt(OpenDictDlg.FileName), [rfReplaceAll, rfIgnoreCase]);
+  Result := Tnt_WideStringReplace(Result, '$(DictPath)', OpenDictDlg.FileName, [rfReplaceAll, rfIgnoreCase]);
+  Result := Tnt_WideStringReplace(Result, '$(DictDir)', ExtractFilePath(OpenDictDlg.FileName), [rfReplaceAll, rfIgnoreCase]);
+  Result := Tnt_WideStringReplace(Result, '$(DictName)', ChangeFileExt(ExtractFilename(OpenDictDlg.FileName), ''), [rfReplaceAll, rfIgnoreCase]);
+  Result := Tnt_WideStringReplace(Result, '$(DictExt)', ExtractFileExt(OpenDictDlg.FileName), [rfReplaceAll, rfIgnoreCase]);
 
-  Result := WideStringReplace(Result, '$(AppDir)', ExtractFilePath(Application.ExeName), [rfReplaceAll, rfIgnoreCase]);
-  Result := WideStringReplace(Result, '$(WinDir)', WinDir, [rfReplaceAll, rfIgnoreCase]);
-  Result := WideStringReplace(Result, '$(SysDir)', SysDir, [rfReplaceAll, rfIgnoreCase]);
+  Result := Tnt_WideStringReplace(Result, '$(AppDir)', ExtractFilePath(Application.ExeName), [rfReplaceAll, rfIgnoreCase]);
+  Result := Tnt_WideStringReplace(Result, '$(WinDir)', WinDir, [rfReplaceAll, rfIgnoreCase]);
+  Result := Tnt_WideStringReplace(Result, '$(SysDir)', SysDir, [rfReplaceAll, rfIgnoreCase]);
 end;
 
 procedure TfrmMain.DoMacroReplace(Sender: TObject; var Args: WideString);
@@ -3698,7 +3713,8 @@ var
     ToItem.ClearTranslation := FromItem.ClearTranslation;
     ToItem.PrivateStorage := FromItem.PrivateStorage;
   end;
-  function EqualItems(const FromItem, ToItem: ITranslationItem):boolean;
+
+  function EqualItems(const FromItem, ToItem: ITranslationItem): boolean;
   begin
     Result :=
       WideSameStr(FromItem.Section, ToItem.Section)
@@ -3717,7 +3733,8 @@ begin
     CopyItem(AItem, ANewItem);
     if TfrmEditItem.Edit(Translate(ClassName, SCaptionEditItem), ASections, ANewItem, false) then
     begin
-      if EqualItems(AItem, ANewItem) then Exit;
+      if EqualItems(AItem, ANewItem) then
+        Exit;
       lvTranslateStrings.Items.BeginUpdate;
       try
         if (ANewItem.Section = '') then
@@ -3746,11 +3763,22 @@ begin
 end;
 
 procedure TfrmMain.acDeleteItemExecute(Sender: TObject);
+var i: integer;
 begin
   if (lvTranslateStrings.Selected <> nil) and YesNo(Translate(ClassName, SPromptDeleteItem), Translate(ClassName, SConfirmDelete)) then
   begin
+    i := lvTranslateStrings.Selected.Index;
     DeleteItem(lvTranslateStrings.Selected.Index);
     lvTranslateStrings.Items.Count := FTranslateFile.Items.Count;
+    if i >= FTranslateFile.Items.Count then
+      i := FTranslateFile.Items.Count - 1
+    else if i < 0 then
+      i := 0;
+    lvTranslateStrings.ItemIndex := i;
+    if lvTranslateStrings.ItemIndex = -1 then
+      lvTranslateStrings.ItemIndex := 0;
+    if lvTranslateStrings.Selected <> nil then
+      lvTranslateStrings.Selected.MakeVisible(false);
     lvTranslateStrings.Invalidate;
     UpdateStatus;
   end;

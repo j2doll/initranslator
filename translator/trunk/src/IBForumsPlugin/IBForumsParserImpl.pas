@@ -78,7 +78,7 @@ begin
   Result := S;
   if (S = '') or (Quote = #0) then
     Result := S;
-  if (Length(S) > 1) and (S[1] = Quote) and (WideLastChar(S) = Quote) then
+  if (Length(S) > 1) and (S[1] = Quote) and (TntWideLastChar(S) = Quote) then
     Result := Copy(S, 2, Length(S) - 2)
 end;
 

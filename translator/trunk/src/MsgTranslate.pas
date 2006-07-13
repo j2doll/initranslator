@@ -166,7 +166,7 @@ begin
     Inc(i);
   end;
   SetLength(Result, j);
-//  Result := StringReplace(S, '\n', SLineBreak, [rfReplaceAll]);
+//  Result := Tnt_WideStringReplace(S, '\n', SLineBreak, [rfReplaceAll]);
 end;
 
 function EncodeStrings(const S: string): string;
@@ -197,7 +197,7 @@ begin
     end;
   end;
   SetLength(Result, j);
-//  Result := StringReplace(S, SLineBreak, '\n', [rfReplaceAll]);
+//  Result := Tnt_WideStringReplace(S, SLineBreak, '\n', [rfReplaceAll]);
 end;
 
 { TAppLanguage }

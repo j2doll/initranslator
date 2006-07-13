@@ -224,7 +224,7 @@ begin
     // check if the shortcut to delete is the main shortcut, delete if so
     S := TextToShortCut(Items[ItemIndex]);
     if A.ShortCut = S then
-      A.ShortCut := 0;
+      A.ShortCut := 0;                       
     Index := A.SecondaryShortCuts.IndexOfShortCut(S);
     if Index > -1 then
       A.SecondaryShortCuts.Delete(Index);

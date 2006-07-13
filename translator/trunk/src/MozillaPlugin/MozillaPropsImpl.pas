@@ -1,4 +1,4 @@
-{@abstract(Moziall .properties file parser) }
+{@abstract(Mozilla properties file parser) }
 {
   Copyright © 2003-2004 by Peter Thornqvist; all rights reserved
 

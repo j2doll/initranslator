@@ -1,4 +1,4 @@
-{@abstract(Parser for SciTE language files) }
+{@abstract(Parser for Oleg) }
 {
   Copyright © 2003-2004 by Peter Thornqvist; all rights reserved
 

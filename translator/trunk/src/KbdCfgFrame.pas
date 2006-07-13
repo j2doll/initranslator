@@ -1,4 +1,4 @@
-{@abstract(Keyboard configuration dialog) }
+{@abstract(Keyboard configuration frame) }
 {
   Copyright © 2003-2004 by Peter Thornqvist; all rights reserved
 

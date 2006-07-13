@@ -1,4 +1,4 @@
-{@abstract(php nuke parser) }
+{@abstract(php nuke and Joomla parser) }
 
 {
   Copyright © 2003-2004 by Peter Thornqvist; all rights reserved

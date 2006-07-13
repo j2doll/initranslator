@@ -1,4 +1,4 @@
-{@abstract(Translation interfaces. Used by plugins }
+{@abstract(Translation interfaces. Used by plugins) }
 {
   Copyright © 2003-2004 by Peter Thornqvist; all rights reserved
 

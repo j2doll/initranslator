@@ -42,6 +42,9 @@ const
   stIndex = 6;
   stInvertIndex = 7;
 
+  TOOL_ENABLED = 1;
+  TOOL_CHECKED = 2;
+
 type
   ITranslationItems = interface;
   ITranslationItem = interface(IInterface)
@@ -139,10 +142,51 @@ type
     procedure Init(AppHandle: Cardinal); safecall;
   end;
 
+  // An item that can reside on the "Plugins" menu
+  // When clicked, the Execute function is called
+  IToolItem = interface(IInterface)
+  ['{E14F5620-0EC9-43B5-816C-1A265C3FF237}']
+    function DisplayName:WideString;safecall; // what to display on the menu
+    function About:WideString;safecall;
+    function Status(const Items, Orphans: ITranslationItems):Integer; safecall; // TOOL_ENABLED or TOOL_CHECKED
+    function Icon:LongWord; safecall; // HICON: return <= 0 for no icon
+
+    function Execute(const Items, Orphans: ITranslationItems): HResult; safecall;
+    procedure Init(AppHandle: Cardinal); safecall;
+  end;
+
+  // A list of IToolItem
+  IToolItems = interface(IInterface)
+  ['{05D4D3AB-366D-48A1-8913-F4EAEEE4DE2F}']
+    function Count:Integer;safecall;
+    // return S_OK if the index is valid
+    function ToolItem(Index:Integer; out ToolItem:IToolItem):HResult;safecall;
+  end;
+
+  // not completed
+  IApplication = interface(IInterface)
+  ['{61FD76C9-714C-4DDF-BEB2-19A4631B444C}']
+    function GetItems:ITranslationItems;
+    function GetOrphans:ITranslationItems;
+    function GetAppHandle:Cardinal;
+
+    property Items:ITranslationItems read GetItems;
+    property Orphans:ITranslationItems read GetOrphans;
+    property AppHandle:Cardinal read GetAppHandle;
+
+    function Changing:WordBool;safecall;
+    procedure Change;safecall;
+    function BeginUpdate:Integer;safecall;
+    function EndUpdate:Integer;safecall;
+  end;
+
+  // return S_OK if all is fine
   TExportFunc = function(out Parser: IFileParser): HResult; stdcall;
+  TExportToolItemsFunc = function(out ToolItems: IToolItems): HResult; stdcall;
 
 const
   cRegisterTransFileParserFuncName = 'RegisterTransFileParser001';
+  cRegisterTransToolItemsFuncName = 'RegisterTransToolItems001';
 
 implementation
 

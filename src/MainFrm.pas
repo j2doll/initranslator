@@ -27,12 +27,12 @@ uses
   ImgList, IniFiles,
   BaseForm, FileMonitor, MsgTranslate, AppOptions, // app specific
   AppConsts, TranslateFile, TransIntf, Dictionary,
-  FindReplaceFrm, EncodingDlgs,
+  FindReplaceFrm, EncodingDlgs, ToolItems,
 {$IFDEF USEADDICTSPELLCHECKER}
   ad3Spell, ad3SpellBase, ad3Configuration, ad3ConfigurationDialogCtrl, ad3SpellLanguages, ad3ParserBase, ad3Ignore,
 {$ENDIF USEADDICTSPELLCHECKER}
   TntStdCtrls, TntComCtrls, TNTClasses, TNTSysUtils, // TNT controls (http://home.ccci.org/wolbrink/tnt/delphi_unicode_controls.htm)
-  TntActnList, TntExtCtrls, TntDialogs,
+  TntActnList, TntExtCtrls, TntDialogs, TntStdActns,
 
   TB2Item, TB2Dock, TB2Toolbar, TB2ToolWindow, TB2MRU, // Toolbar2000 (http://www.jrsoftware.org)
   TBX, TBXExtItems, TB2ExtItems, TBXSwitcher, // TBX (http://g32.org)
@@ -51,7 +51,7 @@ uses
   TBXSentimoXTheme, TBXUxThemes, TBXXitoTheme,
   TBXStripesTheme, TBXStatusBars, TBXToolPals, TBXLists,
   TBXDefaultXPTheme, TBXWhidbeyTheme, TBXZezioTheme,
-  TBXDkPanels, TntStdActns;
+  TBXDkPanels;
 
 const
   WM_DELAYLOADED = WM_USER + 1001;
@@ -330,6 +330,7 @@ type
     acDictEdit: TTntAction;
     TBXItem16: TTBXItem;
     TBXSeparatorItem8: TTBXSeparatorItem;
+    mnuPlugins: TTBXSubmenuItem;
     procedure FormCreate(Sender: TObject);
     procedure FormCloseQuery(Sender: TObject; var CanClose: boolean);
     procedure lvTranslateStringsChange(Sender: TObject; Item: TListItem;
@@ -432,6 +433,7 @@ type
     procedure acTrimExecute(Sender: TObject);
     procedure acConfigSuspiciousExecute(Sender: TObject);
     procedure acDictEditExecute(Sender: TObject);
+    procedure mnuPluginsPopup(Sender: TTBCustomItem; FromLink: Boolean);
   private
     { Private declarations }
     OpenOrigDlg, OpenTransDlg: TEncodingOpenDialog;
@@ -445,6 +447,7 @@ type
     FFileMonitors: array of TFileMonitorThread;
     FBookmarks: array[0..9] of integer;
     FImportIndex, FCapabilitesSupported: integer;
+    FExternalToolItems: TExternalToolItems;
 {$IFDEF USEADDICTSPELLCHECKER}
     adSpellChecker: TAddictSpell3;
     procedure SpellCheckComplete(Sender: TObject);
@@ -523,6 +526,8 @@ type
     procedure UpdateColumn(Index: integer; const AFileName: string);
     procedure DoTranslateSuggestionClick(Sender: TObject);
     procedure BuildToolMenu(Parent: TTBCustomItem);
+    procedure BuildExternalToolMenu(Parent: TTBCustomItem);
+
     procedure DoToolMenuClick(Sender: TObject);
     procedure DoTestToolClick(Sender: TObject; Tool: TToolItem);
     function MacroReplace(const AMacros: WideString): WideString;
@@ -536,6 +541,7 @@ type
     procedure AddItem(const Section, Original, Translation, OrigComments, TransComments: WideString); overload;
     procedure AddItem(AItem: ITranslationItem); overload;
     procedure DeleteItem(Index: integer);
+    procedure DoExternalToolClick(Sender: TObject);
   public
     { Public declarations }
     property Modified: boolean read GetModified write SetModified;
@@ -1103,7 +1109,7 @@ end;
 
 function TfrmMain.GetModified: boolean;
 begin
-  FModified := reTranslation.Modified or FModified;
+  FModified := reTranslation.Modified or FModified or FTranslateFile.Items.Modified;
   Result := FModified;
 end;
 
@@ -2141,6 +2147,7 @@ begin
   ScreenCursor(crAppStart);
   ClearBookmarks;
   FixXPPanelBug;
+  BuildExternalToolMenu(mnuPlugins);
 
   GlobalLanguageFile.OnRead := DoReadObject;
 
@@ -2202,6 +2209,7 @@ begin
   SaveSettings;
   FTranslateFile.Free;
   FDict.Free;
+  FExternalToolItems.Free;
   for i := 0 to Length(FFileMonitors) - 1 do
     if FFileMonitors[i] <> nil then
       FFileMonitors[i].Terminate;
@@ -2371,8 +2379,7 @@ begin
     TTntRichEdit(ActiveControl).SelText := '';
     TTntRichEdit(ActiveControl).Modified := true;
   end
-  else
-  if ActiveControl is TWinControl then
+  else if ActiveControl is TWinControl then
     SendMessage(TWinControl(ActiveControl).Handle, WM_CUT, 0, 0);
 end;
 
@@ -2380,8 +2387,7 @@ procedure TfrmMain.acCopyExecute(Sender: TObject);
 begin
   if ActiveControl is TTntRichEdit then
     TntClipboard.AsWideText := trimCRLFRight(TTntRichEdit(ActiveControl).SelText)
-  else
-  if ActiveControl is TWinControl then
+  else if ActiveControl is TWinControl then
     SendMessage(TWinControl(ActiveControl).Handle, WM_COPY, 0, 0);
 end;
 
@@ -2392,8 +2398,7 @@ begin
     TTntRichEdit(ActiveControl).SelText := trimCRLFRight(TntClipboard.AsWideText);
     TTntRichEdit(ActiveControl).Modified := true;
   end
-  else
-  if ActiveControl is TWinControl then
+  else if ActiveControl is TWinControl then
     SendMessage(TWinControl(ActiveControl).Handle, WM_PASTE, 0, 0);
 end;
 
@@ -3468,6 +3473,67 @@ begin
   end;
 end;
 
+procedure TfrmMain.DoExternalToolClick(Sender: TObject);
+var
+  T: TExternalToolItem;
+  i: integer;
+begin
+  i := lvTranslateStrings.ItemIndex;
+  lvTranslateStrings.Items.BeginUpdate;
+  try
+    T := TExternalToolItem((Sender as TTBCustomItem).Tag);
+    T.Execute(FTranslateFile.Items, FTranslateFile.Orphans);
+    lvTranslateStrings.Items.Count := FTranslateFile.Items.Count;
+    lvTranslateStrings.Invalidate;
+  finally
+    lvTranslateStrings.Items.EndUpdate;
+    lvTranslateStrings.ItemIndex := i;
+  end;
+
+  if lvTranslateStrings.Selected <> nil then
+  begin
+    lvTranslateStrings.Selected.Focused := true;
+    lvTranslateStrings.Selected.MakeVisible(false);
+  end;
+end;
+
+procedure TfrmMain.BuildExternalToolMenu(Parent: TTBCustomItem);
+var
+  M: TTBXItem;
+  i: integer;
+  E: TExternalToolItem;
+begin
+  FExternalToolItems := TExternalToolItems.Create(ExtractFilePath(Application.ExeName) + 'plugins');
+  Parent.Clear;
+  for i := 0 to FExternalToolItems.Count - 1 do
+  begin
+    E := FExternalToolItems[i];
+    M := TTBXItem.Create(Parent);
+    M.Caption := Translate(ClassName, E.DisplayName);
+    M.OnClick := DoExternalToolClick;
+    M.Images := FExternalToolItems.Images;
+    M.ImageIndex := E.ImageIndex;
+
+    M.Tag := Integer(E);
+    Parent.Add(M);
+  end;
+  Parent.Visible := Parent.Count > 0;
+  FExternalToolItems.InitAll(Application.Handle);
+end;
+
+procedure TfrmMain.mnuPluginsPopup(Sender: TTBCustomItem; FromLink: Boolean);
+var
+  i, AStatus: integer;
+begin
+  for i := 0 to mnuPlugins.Count - 1 do
+  begin
+    with TExternalToolItem(mnuPlugins[i].Tag) do
+      AStatus := Status(FTranslateFile.Items, FTranslateFile.Orphans);
+    mnuPlugins[i].Enabled := AStatus and TOOL_ENABLED = TOOL_ENABLED;
+    mnuPlugins[i].Checked := AStatus and TOOL_CHECKED = TOOL_CHECKED;
+  end;
+end;
+
 function TfrmMain.MacroReplace(const AMacros: WideString): WideString;
 var
   S: string;
@@ -3868,6 +3934,7 @@ procedure TfrmMain.acDictEditExecute(Sender: TObject);
 begin
   TfrmDictEdit.Edit(FDict);
 end;
+
 
 end.
 

@@ -389,6 +389,11 @@ object frmMain: TfrmMain
           Action = acDictInvert
         end
       end
+      object mnuPlugins: TTBXSubmenuItem
+        Caption = '&Plugins'
+        Visible = False
+        OnPopup = mnuPluginsPopup
+      end
       object TBXSubmenuItem1: TTBXSubmenuItem
         Caption = 'T&ools'
         OnSelect = TBXSubmenuItem1Select

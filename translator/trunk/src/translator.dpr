@@ -51,7 +51,8 @@ uses
   TrimFrm in 'TrimFrm.pas' {frmTrim: TTntForm},
   SuspiciousConfigFrm in 'SuspiciousConfigFrm.pas' {frmConfigSuspicious: TTntForm},
   DictTranslationSelectDlg in 'DictTranslationSelectDlg.pas' {frmDictTranslationSelect: TTntForm},
-  DictEditFrm in 'DictEditFrm.pas' {frmDictEdit: TTntForm};
+  DictEditFrm in 'DictEditFrm.pas' {frmDictEdit: TTntForm},
+  ToolItems in 'ToolItems.pas';
 
 {$R *.res}
 

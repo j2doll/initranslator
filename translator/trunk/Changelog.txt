@@ -1,15 +1,26 @@
 Ini Translator Changelog
 ========================
+2006-07-17:
+- Added interfaces to support tool menu style plugins (IToolItems and IToolItem)
+- Added support class for managing IToolItems
+- Added support to display and execute IToolItem plugins
+- Added a demo to show how to implement the new interfaces
+
 2006-07-13:
-- It is no longer possible to press RETURN to create new lines in the Add and Edit Item dialog (Original and Translation)
-- Fixed Add/Edit Item functionality so we can maintain original sort when savong files
-- When saving files (both Original and Translation), they are now sorted according to Index (as it was pre 1.8.01022) to preserve original sort as much as possible
+- It should no longer be possible to press RETURN to create new lines in the Add and Edit Item dialog (Original and Translation)
+- Fixed Add/Edit Item functionality so we can maintain original sort when saving files
+- When saving files (both Original and Translation), they are now sorted according to Index (as it was pre 1.8.0.1021) to preserve original sort as much as possible
+- Updated to latest TNT 2.2.5
+- Long standing issue with Cut/Copy/Paste of cyrillic and other non-western codepages hopefully fixed (discussed in the bug tracker and the forums for a long time)
+- Removing a shortcut in the kbd config dialog didn't actually delete the shortcut - fixed
+- Encoding is remembered when files are opened/saved so you don't have to constantly reassign it
+
  
 2006-07-12:
 - New option for dictionary: "Ignore translated items when using dictionary"
-- When using dictionary, clicking "Add" does not autmatically use the added word and close the dialog as before
+- When using dictionary, clicking "Add" just adds the new word without closing the dialog
 - When editing the dictionary, you can now filter items according to whether they have translations or not
-- When creating a new dictionary, empty translations are no longer added, just the original
+- When creating a new dictionary, empty translations are no longer added, just the original text
 - Fixed behavior of "Next suspicious translation" so empty translations aren't reported as mismatched
 - Fixed behavior of "Next unmatched shortcut" so empty translations aren't reported as mismatched
 
@@ -19,10 +30,9 @@ Ini Translator Changelog
 - Added properties PreData and PostData to ITranslationItem
 - Added property Modified to ITranslationItems
 
-2006-07-09:
-- Released on SourceForge as version 1.9.0.0
 
 2006-07-09:
+- Released version 1.9.0.1 on sourceforge
 - Support for multiple translations in dictionary
 - New dialog for "Translate using dictionary"
 - New dialog to edit dictionary items
@@ -33,10 +43,15 @@ Ini Translator Changelog
 - Added "Modified" icon to the list: when a translation has been modified, a marker is shown for that item
 - New configuration dialog for "Next suspicious translation"
 
+2006-06-30:
+- Released version 1.8.0.1022 on sourceforge
+- Fixed installer issue
+
 2006-06-28:
-- ini and alf files are now stored in the users Application Data\IniTranslator folder
-- fixed some spelling errors in lng files
-- added missing [SpellChecker] section to lng files that needed it
+- Released version 1.8.0.1021 on sourceforge
+- Ini and alf files are now stored in the users Application Data\IniTranslator folder
+- Fixed some spelling errors in lng files
+- Added missing [SpellChecker] section to lng files that needed it
 
 2004-11-28:
 - SecondIsOptional parameter added to PluginCommon\DualImportFrm as suggested by Chris Thornton
@@ -49,6 +64,7 @@ Ini Translator Changelog
 - Added a new MyShortCutToText function to make the shortcut keys in menus etc use the correct ordering (Ctrl+Shift+Alt) instead of Delphi's backward ordering (Shift+Ctrl+Alt). This change was also needed in TB2Common.pas and TB2Item.pas in TB2k.
 - Added "Save Original" menu item
 - Changed shortcuts for original and translation open/save such that original uses Ctrl+Shift+<key> and translation uses Ctrl+<key>
+
 2004-11-24:
 - When adding a new item, make sure it inserted into the right section
 - Editing items disables the section and name edit fields (maybe name should be enabled?)
@@ -57,44 +73,55 @@ Ini Translator Changelog
 - New strings in the lng file
 - Support for inverted index sorting added
 - New index column in listview
+
 2004-11-22:
 - Added some support for editing, adding and deleting items. This can (currently) only be done if the items have been imported from a plugin and if the
   plugin supports the new CAP_ITEM_DELETE, CAP_ITEM_INSERT and CAP_ITEM_EDIT capabilities. When activated, new items appear in the
   listview popup menu. Currently, only the PO file plugin has been modified to return these capabilities.
+
 2004-11-05:
 - Changed most AnsiString -> WideString
 - Added a fixed TntClasses.pas to the source tree
 - Added a new parser for Microsoft Glossary files (MsDictParser)
+
 2004-10-25:
 - All forms now inherit from TTntForm through a base form (BaseForm/TfrmBase). This allows me to introduce common behavior for the forms in one unit and have it propagate automatically.
+
 2004-10-24:
 - Fixed error where adding the first item to the Tools menu generated a "Cannot focus a disabled or invisible window" error.
+
 2004-10-23:
 - Released on SF
 - Upped version to 1.8.0.0 (for next release)
 - Better error handling when unable to create files
 - Better error handling in DLL's
 - Added OlegParser for Oleg Translator
+
 2004-10-22:
 - Tool items now support shortcuts
 - Tool list shows conflict marker if shortcut is used anywhere else
+
 2004-10-20:
 - Updated help w. External Tools
 - Updated Default and Swedish LNG files
+
 2004-10-19:
 - Removed "CharMap", "View Original|Translation|Dictionary in Notepad": these can now be realized in the Tools menu instead
 - Added External Tools menu and dialog to edit tool items
 - Some standard tool menu items added to the setup script
+
 2004-10-12:
 - Updated Arabic language file from Awadh Al-Ghaamdi
+
 2004-10-11:
 - Updated language files with translation strings for spell checker dialog(s)
 - Updated language files with changed "About" text
-- Added support for Addict spellchecker 
+- Added support for Addict spellchecker
 - Addictive Software (http://www.addictivesoftware.com) has kindly donated a license of Addict to IniTranslator!
 
 2004-10-05:
 - Released as 1.7.0.5 on SF
+
 2004-09-30:
 - added "Use translation everywhere" as an option. If activated, the translated text is copied to all other matching items automatically
 - added "Autofocus translation when typing" as an option. If activated, when typing in the listview, the focus moves to the translation field

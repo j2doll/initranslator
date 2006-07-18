@@ -1,5 +1,9 @@
 Ini Translator Changelog
 ========================
+2006-07-18:
+- The program can now use language files saved as Unicode
+- Added WideString version of TMemIniFile
+
 2006-07-17:
 - Added interfaces to support tool menu style plugins (IToolItems and IToolItem)
 - Added support class for managing IToolItems

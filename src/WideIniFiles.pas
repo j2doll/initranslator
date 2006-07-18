@@ -494,9 +494,6 @@ constructor TWideMemIniFile.Create(const FileName: WideString);
 begin
   inherited Create(FileName);
   FSections := TWideHashedStringList.Create;
-{$IFDEF LINUX}
-  FSections.CaseSensitive := True;
-{$ENDIF}
   LoadValues;
 end;
 

@@ -24,7 +24,7 @@ interface
 uses
   Windows, Messages, SysUtils, Classes, Graphics, Controls, Forms,
   Dialogs, Menus, ComCtrls, StdCtrls, ExtCtrls, ActnList, StdActns,
-  ImgList, IniFiles,
+  ImgList, WideIniFiles,
   BaseForm, FileMonitor, MsgTranslate, AppOptions, // app specific
   AppConsts, TranslateFile, TransIntf, Dictionary,
   FindReplaceFrm, EncodingDlgs, ToolItems,
@@ -452,8 +452,10 @@ type
     adSpellChecker: TAddictSpell3;
     procedure SpellCheckComplete(Sender: TObject);
     procedure CreateSpellChecker;
-    procedure SpellCheckGetString(Sender: TObject; LanguageString: TSpellLanguageString; var Text: string);
-    procedure SpellCheckWordCheck(Sender: TObject; const Word: string; var CheckType: TWordCheckType; var Replacement: string);
+    procedure SpellCheckGetString(Sender: TObject;
+      LanguageString: TSpellLanguageString; var Text: string);
+    procedure SpellCheckWordCheck(Sender: TObject; const
+      Word: string; var CheckType: TWordCheckType; var Replacement: string);
     procedure SpellCheckExecute(Sender: TObject);
 {$ENDIF USEADDICTSPELLCHECKER}
 
@@ -470,7 +472,8 @@ type
     function SaveOrigAs(const FileName: string; Encoding: TEncoding): boolean;
     procedure SetModified(const Value: boolean);
     function GetModified: boolean;
-    function SearchFromCurrent(const FindText: WideString; CaseSense, WholeWord, Down, Fuzzy: boolean; FindIn: TFindIn): TTntListItem;
+    function SearchFromCurrent(const FindText: WideString; CaseSense, WholeWord,
+      Down, Fuzzy: boolean; FindIn: TFindIn): TTntListItem;
     procedure UpdateStatus;
     function AddQuotes(const S: WideString): WideString;
     function RemoveQuotes(const S: WideString): WideString;
@@ -491,7 +494,7 @@ type
     procedure UseDictionary;
     procedure DoWriteObject(Sender, AnObject: TObject; const APropName: string;
       var ASection, AName, AValue: WideString);
-    procedure DoSaveExtra(Sender: TObject; ini: TCustomIniFile);
+    procedure DoSaveExtra(Sender: TObject; ini: TWideCustomIniFile);
     procedure DoAllowWriting(Sender, AnObject: TObject;
       const APropName: string; var ATranslate: boolean);
     procedure DoReadObject(Sender, AnObject: TObject; const PropName,
@@ -636,9 +639,7 @@ begin
     PostMessage(Handle, WM_DELAYLOADED, Handle, 0);
     acRestoreSortExecute(nil);
     LoadTranslate;
-    // make sure there is no horz scrollbar at startup
-    if lvTranslateStrings.VisibleRowCount <= lvTranslateStrings.Items.Count then
-      lvTranslateStrings.Columns[0].Width := lvTranslateStrings.Columns[0].Width - GetSystemMetrics(SM_CXVSCROLL);
+
   end;
   UpdateColumn(0, OpenOrigDlg.Filename);
   UpdateColumn(1, OpenTransDlg.Filename);
@@ -1422,7 +1423,7 @@ begin
   AName := AValue;
 end;
 
-procedure TfrmMain.DoSaveExtra(Sender: TObject; ini: TCustomIniFile);
+procedure TfrmMain.DoSaveExtra(Sender: TObject; ini: TWideCustomIniFile);
 var
   i: integer;
   S: string;
@@ -1705,6 +1706,8 @@ procedure TfrmMain.WMDelayLoaded(var Message: TMessage);
 begin
   if frmComments <> nil then
     frmComments.Pinned := GlobalAppOptions.PinCommentWindow;
+  if lvTranslateStrings.VisibleRowCount < lvTranslateStrings.Items.Count then
+    lvTranslateStrings.Columns[0].Width := lvTranslateStrings.Columns[0].Width - GetSystemMetrics(SM_CXVSCROLL);
 end;
 
 procedure TfrmMain.WMDropFiles(var Message: TWmDropFiles);
@@ -2189,6 +2192,7 @@ begin
   LoadSettings(true);
   HandleCommandLine;
   UpdateStatus;
+
   Windows.SetFocus(reTranslation.Handle);
   // strange bug here: form picks up "Show about box" hint (something to do with TBX maybe?)
   Hint := '';
@@ -3318,6 +3322,7 @@ begin
     begin
       // this copies the content of the listview item to the richedit control (reTranslation)
       lvTranslateStrings.Selected := lvTranslateStrings.Items[i];
+      lvTranslateStrings.Selected.MakeVisible(false);
       // the OnCompleteCheck event is hooked up to save any changes to the richedit back to the listview
       adSpellChecker.CheckWinControl(reTranslation, ctAll);
       if adSpellChecker.CheckCanceled then
@@ -3329,6 +3334,7 @@ begin
       begin
         // this copies the content of the listview item to the richedit control (reTranslation)
         lvTranslateStrings.Selected := lvTranslateStrings.Items[i];
+        lvTranslateStrings.Selected.MakeVisible(false);
         // the OnCompleteCheck event is hooked up to save any changes to the richedit back to the listview
         adSpellChecker.CheckWinControl(reTranslation, ctAll);
         // here I would like to check if the dialog was closed (Cancel clicked) so I can break out of the loop
@@ -3348,9 +3354,10 @@ end;
 
 procedure WriteToFile(const Name, Value: string);
 begin
-  with TIniFile.Create(ChangeFileExt(Application.ExeName, '.spl')) do
+  with TWideMemIniFile.Create(ChangeFileExt(Application.ExeName, '.spl')) do
   try
     WriteString('SpellChecker', Name, Value);
+    UpdateFile;
   finally
     Free;
   end;
@@ -3934,7 +3941,6 @@ procedure TfrmMain.acDictEditExecute(Sender: TObject);
 begin
   TfrmDictEdit.Edit(FDict);
 end;
-
 
 end.
 

@@ -1,6 +1,7 @@
 Ini Translator Changelog
 ========================
 2006-07-18:
+- Released version 1.9.0.5 on SourceForge
 - The program can now use language files saved as Unicode
 - Added WideString version of TMemIniFile
 

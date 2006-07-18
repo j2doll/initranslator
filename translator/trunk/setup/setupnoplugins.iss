@@ -41,7 +41,7 @@ AppendDefaultDirName=false
 [Dirs]
 Name: {app}\help
 Name: {app}\languages; Components: LANGUAGEFILES
-Name: {app}\dictionaries; Components: DICTIONARIES MAINAPPLICATION
+Name: {app}\dictionaries; Components: DICTIONARIES
 Name: {app}\help\images; Components: HTMLSOURCEHELP
 Name: {app}\help\styles; Components: HTMLSOURCEHELP
 Name: {userappdata}\IniTranslator
@@ -62,7 +62,7 @@ Source: ..\help\images\*.jpg; DestDir: {app}\help\images; Components: HTMLSOURCE
 Source: ..\help\styles\*.css; DestDir: {app}\help\styles; Components: HTMLSOURCEHELP
 
 Source: ..\bin\translator.map; DestDir: {app}; Components: DEBUGFILES
-Source: ..\bin\MsDictBuild.map; DestDir: {app}; Components: DEBUGFILES
+Source: ..\bin\MsDictBuild.map; DestDir: {app}; Components: DEBUGFILES and MSDICTBUILDINSTALL
 
 [Registry]
 Root: HKCR; SubKey: .LNG; ValueType: string; ValueData: LNGFILE; Flags: uninsdeletekey; Tasks: LNGASSOCIATE
@@ -93,16 +93,16 @@ Filename: {app}\Download Daily Sources.url; Section: InternetShortcut; Key: URL;
 Filename: {app}\MPL 1.1 License.url; Section: InternetShortcut; Key: URL; String: http://www.mozilla.org/MPL/MPL-1.1.html
 Filename: {app}\Latest Release.url; Section: InternetShortcut; Key: URL; String: http://sourceforge.net/project/showfiles.php?group_id=78744
 ; add some default tool menu entries
-Filename: {userappdata}\IniTranslator\translator.ini; Section: External Tools; Key: 0; String: """Character Map"",$(SysDir)\CharMap.exe,,$(SysDir),False,False,False,False"; Flags: createkeyifdoesntexist
-Filename: {userappdata}\IniTranslator\translator.ini; Section: External Tools; Key: 1; String: -,,,,False,False,False,False; Flags: createkeyifdoesntexist
-Filename: {userappdata}\IniTranslator\translator.ini; Section: External Tools; Key: 2; String: """View Original in Notepad"",$(SysDir)\Notepad.exe,$(OrigPath),$(OrigDir),False,False,False,True"; Flags: createkeyifdoesntexist
-Filename: {userappdata}\IniTranslator\translator.ini; Section: External Tools; Key: 3; String: """View Translation in Notepad"",$(SysDir)\notepad.exe,$(TransPath),$(TransDir),False,False,False,True"; Flags: createkeyifdoesntexist
-Filename: {userappdata}\IniTranslator\translator.ini; Section: External Tools; Key: 4; String: """View Dictionary in Notepad"",$(SysDir)\notepad.exe,$(DictPath),$(DictDir),False,False,False,True"; Flags: createkeyifdoesntexist
-Filename: {userappdata}\IniTranslator\translator.ini; Section: External Tools; Key: 5; String: -,,,,False,False,False,False; Flags: createkeyifdoesntexist
-Filename: {userappdata}\IniTranslator\translator.ini; Section: External Tools; Key: 6; String: """Word Web Online"",iexplore.exe,http://www.wordwebonline.com/search.pl?w=$(TransText),,False,False,True,True"; Flags: createkeyifdoesntexist
-Filename: {userappdata}\IniTranslator\translator.ini; Section: External Tools; Key: 7; String: -,,,,False,False,False,False; Flags: createkeyifdoesntexist
-Filename: {userappdata}\IniTranslator\translator.ini; Section: External Tools; Key: 8; String: """View in Explorer (Original)"",$(WinDir)\explorer.exe,""/e,/root,, /select, $(OrigPath)"",,False,False,False,False"; Flags: createkeyifdoesntexist
-Filename: {userappdata}\IniTranslator\translator.ini; Section: External Tools; Key: 9; String: """View in Explorer (Translation)"",$(WinDir)\explorer.exe,""/e, /root,, /select, $(TransPath)"",,False,False,False,False"; Flags: createkeyifdoesntexist
+Filename: {userappdata}\IniTranslator\translator.ini; Section: External Tools; Key: 0; String: """Character Map"",$(SysDir)\CharMap.exe,,$(SysDir),False,False,False,False"; Flags: createkeyifdoesntexist; Components: DEFAULT_TOOLS
+Filename: {userappdata}\IniTranslator\translator.ini; Section: External Tools; Key: 1; String: -,,,,False,False,False,False; Flags: createkeyifdoesntexist; Components: DEFAULT_TOOLS
+Filename: {userappdata}\IniTranslator\translator.ini; Section: External Tools; Key: 2; String: """View Original in Notepad"",$(SysDir)\Notepad.exe,$(OrigPath),$(OrigDir),False,False,False,True"; Flags: createkeyifdoesntexist; Components: DEFAULT_TOOLS
+Filename: {userappdata}\IniTranslator\translator.ini; Section: External Tools; Key: 3; String: """View Translation in Notepad"",$(SysDir)\notepad.exe,$(TransPath),$(TransDir),False,False,False,True"; Flags: createkeyifdoesntexist; Components: DEFAULT_TOOLS
+Filename: {userappdata}\IniTranslator\translator.ini; Section: External Tools; Key: 4; String: """View Dictionary in Notepad"",$(SysDir)\notepad.exe,$(DictPath),$(DictDir),False,False,False,True"; Flags: createkeyifdoesntexist; Components: DEFAULT_TOOLS
+Filename: {userappdata}\IniTranslator\translator.ini; Section: External Tools; Key: 5; String: -,,,,False,False,False,False; Flags: createkeyifdoesntexist; Components: DEFAULT_TOOLS
+Filename: {userappdata}\IniTranslator\translator.ini; Section: External Tools; Key: 6; String: """Word Web Online"",iexplore.exe,http://www.wordwebonline.com/search.pl?w=$(TransText),,False,False,True,True"; Flags: createkeyifdoesntexist; Components: DEFAULT_TOOLS
+Filename: {userappdata}\IniTranslator\translator.ini; Section: External Tools; Key: 7; String: -,,,,False,False,False,False; Flags: createkeyifdoesntexist; Components: DEFAULT_TOOLS
+Filename: {userappdata}\IniTranslator\translator.ini; Section: External Tools; Key: 8; String: """View in Explorer (Original)"",$(WinDir)\explorer.exe,""/e,/root,, /select, $(OrigPath)"",,False,False,False,False"; Flags: createkeyifdoesntexist; Components: DEFAULT_TOOLS
+Filename: {userappdata}\IniTranslator\translator.ini; Section: External Tools; Key: 9; String: """View in Explorer (Translation)"",$(WinDir)\explorer.exe,""/e, /root,, /select, $(TransPath)"",,False,False,False,False"; Flags: createkeyifdoesntexist; Components: DEFAULT_TOOLS
 
 [UninstallDelete]
 Name: {app}\*.*; Type: filesandordirs
@@ -132,3 +132,4 @@ Name: HTMLBINARYHELP; Description: CHM based Help; Types: full compact
 Name: HTMLSOURCEHELP; Description: HTML based Help; Types: full
 Name: DEBUGFILES; Description: Debug map file; Types: custom full
 Name: MSDICTBUILDINSTALL; Description: MS Dictionary Converter; Types: custom full
+Name: DEFAULT_TOOLS; Description: Install default tools; Types: custom full compact

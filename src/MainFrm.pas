@@ -3853,6 +3853,7 @@ begin
     if lvTranslateStrings.Selected <> nil then
       lvTranslateStrings.Selected.MakeVisible(false);
     lvTranslateStrings.Invalidate;
+    lvTranslateStringsChange(Sender, lvTranslateStrings.Selected, ctText);
     UpdateStatus;
   end;
 end;

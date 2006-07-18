@@ -22,14 +22,14 @@ unit MsgTranslate;
 
 interface
 uses
-  SysUtils, IniFiles, Classes;
+  SysUtils, WideIniFiles, Classes;
 
 type
   TTranslateEvent = procedure(Sender, AnObject: TObject; const APropName, ASection: string; var AValue: WideString) of object;
   TTemplateEvent = procedure(Sender, AnObject: TObject; const APropName: string; var ASection, AName, AValue: WideString) of object;
   TCheckTranslateEvent = procedure(Sender, AnObject: TObject; const APropName: string; var ATranslate: boolean) of object;
 
-  TSaveTranslationEvent = procedure(Sender: TObject; ini: TCustomIniFile) of object;
+  TSaveTranslationEvent = procedure(Sender: TObject; ini: TWideCustomIniFile) of object;
   IApplicationTranslator = interface
     ['{C52E0714-4487-4AC6-BBCF-886FFEF9643E}']
     function Translate(const Section, Name, Value: WideString): WideString; stdcall;
@@ -37,7 +37,7 @@ type
 
   TAppLanguage = class(TObject, IUnknown, IApplicationTranslator)
   private
-    FLangFile: TMemIniFile;
+    FLangFile: TWideMemIniFile;
     FSkipList: TStrings;
     FClassSkipList: TThreadList;
     FOnWrite: TTemplateEvent;
@@ -46,7 +46,7 @@ type
     FFilename: string;
     FOnReading: TCheckTranslateEvent;
     FOnWriting: TCheckTranslateEvent;
-    procedure WriteTranslationSub(IniFile: TCustomIniFile; AnObject: TObject);
+    procedure WriteTranslationSub(IniFile: TWideCustomIniFile; AnObject: TObject);
     { IUnknown }
     function _AddRef: Integer; stdcall;
     function _Release: Integer; stdcall;
@@ -232,7 +232,7 @@ begin
     LoadFromFile(Filename);
 end;
 
-procedure TAppLanguage.WriteTranslationSub(IniFile: TCustomIniFile; AnObject: TObject);
+procedure TAppLanguage.WriteTranslationSub(IniFile: TWideCustomIniFile; AnObject: TObject);
 var
   i, j, Count: integer;
   PropList: PPropList;
@@ -311,9 +311,9 @@ end;
 procedure TAppLanguage.CreateTemplate(const AFilename: string;
   AnObject: TObject);
 var
-  ini: TMemIniFile;
+  ini: TWideMemIniFile;
 begin
-  ini := TMemIniFile.Create(AFilename);
+  ini := TWideMemIniFile.Create(AFilename);
   try
     WriteTranslationSub(ini, AnObject);
     if Assigned(FOnWriteAdditional) then
@@ -370,14 +370,14 @@ end;
 procedure TAppLanguage.LoadFromFile(const AFilename: string);
 begin
   FreeAndNil(FLangFile);
-  FLangFile := TMemIniFile.Create(AFilename);
+  FLangFile := TWideMemIniFile.Create(AFilename);
   FFilename := AFilename;
 end;
 
 procedure TAppLanguage.SaveToFile(const AFilename: string);
 begin
   if FLangFile = nil then
-    FLangFile := TmemIniFile.Create(AFilename)
+    FLangFile := TWideMemIniFile.Create(AFilename)
   else if AFilename <> Filename then
     FLangFile.Rename(AFilename, false);
   FLangFile.UpdateFile;

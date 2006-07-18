@@ -1,0 +1,28 @@
+[FileVersion]
+Version=7.0
+[Compiler]
+UnsafeType=0
+UnsafeCode=0
+UnsafeCast=0
+[Directories]
+OutputDir=..\..\bin
+UnitOutputDir=..\..\dcu
+[Version Info]
+IncludeVerInfo=1
+AutoIncBuild=0
+MajorVer=1
+MinorVer=8
+Release=0
+Build=0
+Debug=0
+Locale=1053
+CodePage=1252
+[Version Info Keys]
+CompanyName=Peter Thörnqvist
+FileDescription=
+FileVersion=1.8.0.0
+InternalName=MsDictBuild.exe
+LegalCopyright=Copyright (c) 2004-2005 by Peter Thörnqvist; all rights reserved
+OriginalFilename=MsDictBuild.exe
+ProductName=MsDictBuild
+ProductVersion=1.8.0.0

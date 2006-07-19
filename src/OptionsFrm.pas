@@ -77,7 +77,7 @@ type
 
 implementation
 uses
-  AppConsts, AppUtils, CommonUtils;
+  AppConsts, AppUtils, CommonUtils, TntDialogs;
 
 {$R *.dfm}
 
@@ -93,9 +93,10 @@ end;
 
 procedure TfrmOptions.btnLanguageClick(Sender: TObject);
 begin
-  with TOpenDialog.Create(nil) do
+  with TTntOpenDialog.Create(nil) do
   try
     InitialDir := '.';
+    Title := SSelectLanguageFile;
     Filename := edLanguage.Text;
     if Execute then
       edLanguage.Text := Filename;
@@ -106,8 +107,9 @@ end;
 
 procedure TfrmOptions.btnHelpClick(Sender: TObject);
 begin
-  with TOpenDialog.Create(nil) do
+  with TTntOpenDialog.Create(nil) do
   try
+    Title := SSelectHelpFile;
     InitialDir := '.';
     Filename := edHelp.Text;
     if Execute then
@@ -176,7 +178,7 @@ begin
       Options.DictIgnoreNonEmpty := frm.chkDictIgnoreNonEmpty.Checked;
       Options.ShowFullNameInColumns := frm.chkShowFullNames.Checked;
       if AnsiCompareFilename(frm.edLanguage.Text, Options.LanguageFile) <> 0 then
-        InfoMsg(Translate(Application.MainForm.ClassName, SLanguageNotChangedUntilRestart), Translate(frm.ClassName, SInfoCaption));
+        InfoMsg(Translate(Application.MainForm.ClassName, SLanguageNotChangedUntilRestart), Translate(Application.MainForm.ClassName, SInfoCaption));
       Options.LanguageFile := frm.edLanguage.Text;
       Options.HelpFile := frm.edHelp.Text;
       Options.AppFont.Assign(frm.FontDialog.Font);
@@ -190,7 +192,7 @@ procedure TfrmOptions.UpdatePreview;
 begin
   pnlFontPreview.Font := FontDialog.Font;
   pnlFontPreview.Caption :=
-    Format('%s, %dpt', [FontDialog.Font.Name, FontDialog.Font.Size]);
+    WideFormat('%s, %dpt', [FontDialog.Font.Name, FontDialog.Font.Size]);
 end;
 
 end.

@@ -113,8 +113,8 @@ type
     function GetSearchUp: boolean;
     function GetPosition: TPoint;
     procedure SetPosition(const Value: TPoint);
-    function GetTitle: string;
-    procedure SetTitle(const Value: string);
+    function GetTitle: WideString;
+    procedure SetTitle(const Value: WideString);
     function GetExpanded: boolean;
     procedure SetExpanded(const Value: boolean);
     function GetShowing: boolean;
@@ -135,7 +135,7 @@ type
     property FindText: WideString read GetFindText write SetFindText;
     property ReplaceText: WideString read GetReplaceText write SetReplaceText;
   published
-    property Title: string read GetTitle write SetTitle;
+    property Title: WideString read GetTitle write SetTitle;
     property MaxHistoryCount: Cardinal read GetMaxHistoryCount write SetMaxHistoryCount;
     property Expanded: boolean read GetExpanded write SetExpanded;
     property Position: TPoint read GetPosition write SetPosition;
@@ -427,7 +427,7 @@ begin
   Result := (FForm <> nil) and FForm.Visible;
 end;
 
-function TFindReplace.GetTitle: string;
+function TFindReplace.GetTitle: WideString;
 begin
   Result := FForm.Caption;
 end;
@@ -518,7 +518,7 @@ begin
   FForm.chkSearchUp.Checked := Value;
 end;
 
-procedure TFindReplace.SetTitle(const Value: string);
+procedure TFindReplace.SetTitle(const Value: WideString);
 begin
   FForm.Caption := Value;
 end;

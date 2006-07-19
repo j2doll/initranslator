@@ -104,7 +104,7 @@ procedure LoadActionShortCutsFromFile(AL: TTntActionList; Filename: string);
 
 implementation
 uses
-  Menus, AppConsts, AppUtils, CommonUtils, MsgTranslate, TntSysUtils;
+  TntMenus, Menus, AppConsts, AppUtils, CommonUtils, MsgTranslate, TntSysUtils;
 
 {$R *.dfm}
 
@@ -123,7 +123,7 @@ begin
     begin
       A := TTntAction(AL[i]);
       if (A.Tag <> ACTION_HIDDEN_TAG) and ((A.ShortCut <> 0) or (A.SecondaryShortCuts.Count > 0)) then
-        S.Add(Format('%s;%s;%s', [A.Name, MyShortCutToText(A.ShortCut), Tnt_WideStringReplace(A.SecondaryShortCuts.Text, #13#10, #27, [rfReplaceAll])]));
+        S.Add(WideFormat('%s;%s;%s', [A.Name, MyShortCutToText(A.ShortCut), Tnt_WideStringReplace(A.SecondaryShortCuts.Text, #13#10, #27, [rfReplaceAll])]));
     end;
     S.SaveToFile(Filename);
   finally
@@ -150,7 +150,7 @@ var
   i, j: integer;
   A: TTntAction;
   S: TTntStringlist;
-  ActionName: string;
+  ActionName: WideString;
 begin
   if Filename = '' then
     Filename := GetAppStoragePath + 'translator.alf';
@@ -169,7 +169,7 @@ begin
       begin
         S[i] := Copy(S[i], j + 1, MaxInt);
         j := Pos(';', S[i]);
-        A.ShortCut := TextToShortCut(Copy(S[i], 1, j - 1));
+        A.ShortCut := WideTextToShortCut(Copy(S[i], 1, j - 1));
         S[i] := Copy(S[i], j + 1, MaxInt);
         A.SecondaryShortCuts.Text := Tnt_WideStringReplace(S[i], #27, #13#10, [rfReplaceAll]);
       end;
@@ -222,7 +222,7 @@ begin
   with lbCurrentShortCuts do
   begin
     // check if the shortcut to delete is the main shortcut, delete if so
-    S := TextToShortCut(Items[ItemIndex]);
+    S := WideTextToShortCut(Items[ItemIndex]);
     if A.ShortCut = S then
       A.ShortCut := 0;                       
     Index := A.SecondaryShortCuts.IndexOfShortCut(S);
@@ -231,7 +231,7 @@ begin
     Items.Delete(ItemIndex);
     // make sure the action has a default shortcut (if any available)
     if Items.Count > 0 then
-      A.ShortCut := TextToShortCut(Items[0]);
+      A.ShortCut := WideTextToShortCut(Items[0]);
   end;
   FModified := true;
 end;

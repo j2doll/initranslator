@@ -23,35 +23,40 @@ interface
 
 uses
   Windows, Messages, SysUtils, Classes, Graphics, Controls, Forms,
-  Dialogs, Menus, ComCtrls, StdCtrls, ExtCtrls, ActnList, StdActns,
-  ImgList, WideIniFiles,
-  BaseForm, FileMonitor, MsgTranslate, AppOptions, // app specific
+  Dialogs, Menus, ComCtrls, StdCtrls, ExtCtrls, ActnList, StdActns, ImgList,
+  // app specific
+  BaseForm, FileMonitor, MsgTranslate, AppOptions,
   AppConsts, TranslateFile, TransIntf, Dictionary,
-  FindReplaceFrm, EncodingDlgs, ToolItems,
+  FindReplaceFrm, EncodingDlgs, ToolItems, WideIniFiles,
 {$IFDEF USEADDICTSPELLCHECKER}
+  // addict spell checker (www.addictive-software.com)
   ad3Spell, ad3SpellBase, ad3Configuration, ad3ConfigurationDialogCtrl, ad3SpellLanguages, ad3ParserBase, ad3Ignore,
 {$ENDIF USEADDICTSPELLCHECKER}
-  TntStdCtrls, TntComCtrls, TNTClasses, TNTSysUtils, // TNT controls (http://home.ccci.org/wolbrink/tnt/delphi_unicode_controls.htm)
+  // TNT controls (http://home.ccci.org/wolbrink/tnt/delphi_unicode_controls.htm)
+  TntStdCtrls, TntComCtrls, TNTClasses, TNTSysUtils,
   TntActnList, TntExtCtrls, TntDialogs, TntStdActns,
-
-  TB2Item, TB2Dock, TB2Toolbar, TB2ToolWindow, TB2MRU, // Toolbar2000 (http://www.jrsoftware.org)
-  TBX, TBXExtItems, TB2ExtItems, TBXSwitcher, // TBX (http://g32.org)
+  // Toolbar2000 (http://www.jrsoftware.org)
+  TB2Item, TB2Dock, TB2Toolbar, TB2ToolWindow, TB2MRU,
+  // TBX (http://g32.org)
+  TBX, TBXExtItems, TB2ExtItems, TBXSwitcher,
   TBXDefaultTheme, TBXOfficeXPTheme, TBXAluminumTheme, TBXStripesTheme, TBXStatusBars,
   // additional TBX themes (http://www.rmklever.com)
-//  TBXOffice11XPTheme, TBXOffice11AdaptiveTheme, TBXTristanTheme, TBXTristan2Theme,
-//  TBXAthenTheme, TBXMonaiXPTheme, TBXMonaiTheme,
-//  TBXNewOfficeTheme, TBXNewOfficeAdaptiveTheme, TBXDreamTheme,
-//  TBXEosTheme,
+{$IFDEF USEOLDTBX}
+  TBXOffice11XPTheme, TBXOffice11AdaptiveTheme, TBXTristanTheme, TBXTristan2Theme,
+  TBXAthenTheme, TBXMonaiXPTheme, TBXMonaiTheme,
+  TBXNewOfficeTheme, TBXNewOfficeAdaptiveTheme, TBXDreamTheme,
+  TBXEosTheme,
+  TBXNexos2Theme, TBXNexos3Theme, TBXNexos4Theme, TBXNexos5Theme, TBXNexosXTheme,
+  TBXOfficeCTheme, TBXOfficeKTheme, TBXReliferTheme, TBXRomaTheme,
+  TBXSentimoXTheme, TBXUxThemes, TBXXitoTheme,
+  TBXStatusBars, TBXToolPals, TBXLists,
+  TBXDefaultXPTheme, TBXWhidbeyTheme, TBXZezioTheme,
   //
   // TBXOfficeXPGradientTheme,
   // TBXOffice2003Theme, TBXDock2003,
   // TBXBlueGradientXPTheme,
   //
-//  TBXNexos2Theme, TBXNexos3Theme, TBXNexos4Theme, TBXNexos5Theme, TBXNexosXTheme,
-//  TBXOfficeCTheme, TBXOfficeKTheme, TBXReliferTheme, TBXRomaTheme,
-//  TBXSentimoXTheme, TBXUxThemes, TBXXitoTheme,
-//  TBXStatusBars, TBXToolPals, TBXLists,
-//  TBXDefaultXPTheme, TBXWhidbeyTheme, TBXZezioTheme,
+{$ENDIF USEOLDTBX}
   TBXDkPanels;
 
 const
@@ -84,8 +89,8 @@ type
     acRestoreSort: TTntAction;
     acDictSave: TTntAction;
     acDictLoad: TTntAction;
-    SaveDictDlg: TSaveDialog;
-    OpenDictDlg: TOpenDialog;
+    SaveDictDlg: TTntSaveDialog;
+    OpenDictDlg: TTntOpenDialog;
     acDictCreate: TTntAction;
     acDictTranslate: TTntAction;
     il16: TImageList;
@@ -292,10 +297,10 @@ type
     splitHorz: TSplitter;
     pnlBottom: TTntPanel;
     pnlTrans: TTntPanel;
-    lblTrans: TLabel;
+    lblTrans: TTntLabel;
     reTranslation: TTntRichEdit;
     pnlOrig: TTntPanel;
-    lblOrig: TLabel;
+    lblOrig: TTntLabel;
     reOriginal: TTntRichEdit;
     lvTranslateStrings: TTntListView;
     pnlKeyBack: TTntPanel;
@@ -441,7 +446,7 @@ type
     SaveTransDlg, SaveOrigDlg: TEncodingSaveDialog;
     FFindReplace: TFindReplace;
     FTranslateFile: TTranslateFiles;
-    FLastFindText, FFileName: string;
+    FLastFindText, FFileName: WideString;
     FModified: boolean;
     FDict: TDictionaryItems;
     FCommandProcessor: boolean;
@@ -572,6 +577,7 @@ uses
 procedure TfrmMain.LoadSettings(FirstLoad: boolean);
 var
   i: integer;
+  m: boolean;
 begin
   WaitCursor;
   // only options that can be changed from the options dialog needs to be reset, so these are only set once
@@ -632,7 +638,7 @@ begin
     cbThemes.Lines.Clear;
     for i := 0 to ThemeSwitcher.ThemeCount - 1 do
       cbThemes.Lines.Add(ThemeSwitcher.Themes[i]);
-    cbThemes.Lines.Sort; 
+    cbThemes.Lines.Sort;
     cbThemes.Text := GlobalAppOptions.Theme;
     // must call ThemeSwitcher manually: cbThemes.OnChange is not triggered when assigning directly to Text property
     ThemeSwitcher.Theme := GlobalAppOptions.Theme;
@@ -647,8 +653,13 @@ begin
   lvTranslateStrings.Font := GlobalAppOptions.AppFont;
   reOriginal.Font := GlobalAppOptions.AppFont;
   reOriginal.DefAttributes.Assign(reOriginal.Font);
-  reTranslation.Font := GlobalAppOptions.AppFont;
-  reTranslation.DefAttributes.Assign(reTranslation.Font);
+  m := reTranslation.Modified;
+  try
+    reTranslation.Font := GlobalAppOptions.AppFont;
+    reTranslation.DefAttributes.Assign(reTranslation.Font);
+  finally
+    reTranslation.Modified := m;
+  end;
   Application.ShowHint := GlobalAppOptions.ShowToolTips;
   Application.HintShortCuts := GlobalAppOptions.ShowToolTipShortCuts;
   ShowHint := Application.ShowHint;
@@ -802,7 +813,7 @@ var
   i: integer;
 begin
   if not FileExists(CommandFile) then
-    ErrMsg(Format(Translate(ClassName, SFmtFileNotFound), [CommandFile]), Translate(ClassName, SErrorCaption))
+    ErrMsg(WideFormat(Translate(ClassName, SFmtFileNotFound), [CommandFile]), Translate(ClassName, SErrorCaption))
   else
   begin
     WaitCursor;
@@ -1228,7 +1239,7 @@ begin
     StatusBar1.Panels[1].Caption := '  ' + FTranslateFile.Items[lvTranslateStrings.Selected.Index].Section;
     StatusBar1.Panels[2].Caption := '  ' + FTranslateFile.Items[lvTranslateStrings.Selected.Index].Name;
     with FTranslateFile.Items[lvTranslateStrings.Selected.Index] do
-      lblViewDetails.Caption := Format(Translate(ClassName, SFmtKeyDetails), [Section, Name]);
+      lblViewDetails.Caption := WideFormat(Translate(ClassName, SFmtKeyDetails), [Section, Name]);
   end
   else
   begin
@@ -1239,17 +1250,17 @@ begin
   // very simple, but should work *most* of the time...
   lblViewDetails.Font.Height := -CalcMaxFontSize(lblViewDetails.Canvas, lblViewDetails.Caption, lblViewDetails.Width,
     14, 7);
-  StatusBar1.Panels[3].Caption := '  ' + Format(Translate(ClassName, SFmtItemsCount), [FTranslateFile.Items.Count]);
+  StatusBar1.Panels[3].Caption := '  ' + WideFormat(Translate(ClassName, SFmtItemsCount), [FTranslateFile.Items.Count]);
   if SaveDictDlg.FileName <> '' then
     StatusBar1.Panels[4].Caption := '  ' + ExtractFileName(SaveDictDlg.FileName)
   else
     StatusBar1.Panels[4].Caption := '  ' + Translate(ClassName, SNoDictionary);
   if acDictInvert.Checked then
-    StatusBar1.Panels[4].Caption := StatusBar1.Panels[4].Caption + Format(' (%s)', [Translate(ClassName,
+    StatusBar1.Panels[4].Caption := StatusBar1.Panels[4].Caption + WideFormat(' (%s)', [Translate(ClassName,
         SDictInverted)]);
   pbTranslated.Max := FTranslateFile.Items.Count;
   pbTranslated.Position := FTranslateFile.Items.TranslatedCount;
-  pbTranslated.Hint := '  ' + Format(Translate(ClassName, SCountOfCountTranslated), [FTranslateFile.Items.TranslatedCount,
+  pbTranslated.Hint := '  ' + WideFormat(Translate(ClassName, SCountOfCountTranslated), [FTranslateFile.Items.TranslatedCount,
     FTranslateFile.Items.Count]);
   StatusBar1.Panels[5].Caption := pbTranslated.Hint;
   for i := 0 to StatusBar1.Panels.Count - 1 do
@@ -1268,8 +1279,7 @@ begin
       FFileMonitors[i] := nil;
 end;
 
-procedure TfrmMain.DoMonitoredFileChange(Sender: TObject;
-  const FileName: string; var AContinue, AReset: boolean);
+procedure TfrmMain.DoMonitoredFileChange(Sender: TObject; const FileName: string; var AContinue, AReset: boolean);
 begin
   if GetActiveWindow <> Handle then
   begin
@@ -1277,14 +1287,14 @@ begin
     Exit; // only show confirm message if we have focus
   end;
   AContinue := false;
-  if YesNo(Format(Translate(ClassName, SFmtFileChangedReloadPrompt), [FileName]), Translate(ClassName, SConfirmCaption)) then
+  if YesNo(WideFormat(Translate(ClassName, SFmtFileChangedReloadPrompt), [FileName]), Translate(ClassName, SConfirmCaption)) then
   begin
     if Sender = FFileMonitors[cOrigMonitor] then
     begin
       // in case Original and Translation is the same file...
       StopMonitor(FFileMonitors[cTransMonitor]);
       if FileExists(SaveTransDlg.FileName) then
-        SaveTranslation(SaveTransDlg.FileName, TEncoding(SaveTransDlg.EncodingIndex));
+        SaveTranslation(SaveTransDlg.FileName, AutoDetectCharacterSet(SaveTransDlg.FileName));
       LoadOriginal(FileName, TEncoding(OpenOrigDlg.EncodingIndex));
       LoadTranslation(OpenTransDlg.FileName, TEncoding(OpenTransDlg.EncodingIndex));
     end
@@ -1496,6 +1506,8 @@ begin
   ini.WriteString(ClassName, EncodeStrings(SErrOrigTextEmpty), EncodeStrings(SErrOrigTextEmpty));
   ini.WriteString(ClassName, EncodeStrings(SErrSectionNameExists), EncodeStrings(SErrSectionNameExists));
   ini.WriteString(ClassName, EncodeStrings(SDictTranslationCompleted), EncodeStrings(SDictTranslationCompleted));
+  ini.WriteString(ClassName, EncodeStrings(SSelectLanguageFile), EncodeStrings(SSelectLanguageFile));
+  ini.WriteString(ClassName, EncodeStrings(SSelectHelpFile), EncodeStrings(SSelectHelpFile));
 
   for i := 0 to alMain.ActionCount - 1 do
   begin
@@ -1540,7 +1552,7 @@ begin
     lvTranslateStrings.Selected.MakeVisible(false)
   end
   else
-    InfoMsg(Format(Translate(ClassName, SFmtTextNotFound), [FFindReplace.FindText]),
+    InfoMsg(WideFormat(Translate(ClassName, SFmtTextNotFound), [FFindReplace.FindText]),
       Translate(ClassName, SSearchFailCaption));
 end;
 
@@ -1596,7 +1608,7 @@ begin
       FFindReplace.SearchUp, FFindReplace.FuzzySearch, FFindReplace.FindInIndex);
   if li = nil then
   begin
-    InfoMsg(Format(Translate(ClassName, SFmtTextNotFound), [FFindReplace.FindText]),
+    InfoMsg(WideFormat(Translate(ClassName, SFmtTextNotFound), [FFindReplace.FindText]),
       Translate(ClassName, SSearchFailCaption));
     Exit;
   end;
@@ -1882,9 +1894,9 @@ var
   S: string;
 begin
   if AOriginal then
-    S := Format('%s [%s]', [FileName, OpenTransDlg.FileName])
+    S := WideFormat('%s [%s]', [FileName, OpenTransDlg.FileName])
   else
-    S := Format('%s [%s]', [OpenOrigDlg.FileName, FileName]);
+    S := WideFormat('%s [%s]', [OpenOrigDlg.FileName, FileName]);
   MRUFiles.Add(S);
 end;
 
@@ -2175,7 +2187,7 @@ begin
   GlobalLanguageFile.SkipClass(TTBXStatusBar);
   GlobalLanguageFile.SkipClass(TTBXStatusPanel);
   GlobalLanguageFile.SkipClass(TTBXSeparatorItem);
-  //  GlobalLanguageFile.SkipClass(TTBXComboBoxItem);
+  GlobalLanguageFile.SkipClass(TTBXComboBoxItem);
   GlobalLanguageFile.SkipClass(TTBXSwitcher);
   GlobalLanguageFile.SkipClass(TTBXMRUList);
   GlobalLanguageFile.SkipClass(TProgressBar);
@@ -2367,10 +2379,10 @@ end;
 
 procedure TfrmMain.acAboutExecute(Sender: TObject);
 var
-  S: string;
+  S: WideString;
 begin
-  S := Format(Translate(ClassName, SFmtAboutText), [Caption, GetAppVersion]);
-  AboutMsg(S, Format(Translate(ClassName, SFmtAboutCaption), [Caption]));
+  S := WideFormat(Translate(ClassName, SFmtAboutText), [Caption, GetAppVersion]);
+  AboutMsg(S, WideFormat(Translate(ClassName, SFmtAboutCaption), [Caption]));
 end;
 
 procedure TfrmMain.acCutExecute(Sender: TObject);
@@ -2571,7 +2583,7 @@ end;
 procedure TfrmMain.acHelpExecute(Sender: TObject);
 begin
   if not FileExists(GlobalAppOptions.HelpFile) then
-    ErrMsg(Format(Translate(ClassName, SFmtErrHelpNotFound), [GlobalAppOptions.HelpFile]),
+    ErrMsg(WideFormat(Translate(ClassName, SFmtErrHelpNotFound), [GlobalAppOptions.HelpFile]),
       Translate(ClassName, SErrorCaption))
   else
     ShellExecute(Handle, '', PChar(GlobalAppOptions.HelpFile), nil, nil, SW_SHOWNORMAL);
@@ -2641,7 +2653,7 @@ procedure TfrmMain.acCreateTranslationFileExecute(Sender: TObject);
 var
   frm1, frm2, frm3, frm4, frm5, frm6, frm7, frm8, frm9, frm10, frm11: TfrmBase;
 begin
-  with TSaveDialog.Create(nil) do
+  with TTntSaveDialog.Create(nil) do
   try
     Options := Options + [ofOverwritePrompt];
     Title := Translate(ClassName, SSaveTranslationTemplate);
@@ -2786,7 +2798,7 @@ begin
     T := T + ' $' + IntToHex(Ord(S[i]), 2);
   T := T + #13#10'  ';
   for i := 1 to Length(S) do
-    T := T + Format('Alt+%.5d ', [Ord(S[i])]);
+    T := T + WideFormat('Alt+%.5d ', [Ord(S[i])]);
   if YesNo(Translate(ClassName, SAsciiValue) + #13#10 + T + #13#10#13#10 + Translate(ClassName, SQCopyToClipboard),
     Translate(ClassName, SDecodedCharsCaption)) then
     TntClipboard.AsWideText := T;
@@ -3178,13 +3190,13 @@ begin
   case Index of
     0:
       if AFileName <> '' then
-        lvTranslateStrings.Columns[0].Caption := Format(Translate(ClassName, SOriginalColumn),
+        lvTranslateStrings.Columns[0].Caption := WideFormat(Translate(ClassName, SOriginalColumn),
           [GetMinimizedFilename(AFileName, not GlobalAppOptions.ShowFullNameInColumns)])
       else
         lvTranslateStrings.Columns[0].Caption := Translate(ClassName, SOriginal);
     1:
       if AFileName <> '' then
-        lvTranslateStrings.Columns[1].Caption := Format(Translate(ClassName, STranslationColumn),
+        lvTranslateStrings.Columns[1].Caption := WideFormat(Translate(ClassName, STranslationColumn),
           [GetMinimizedFilename(AFileName, not GlobalAppOptions.ShowFullNameInColumns)])
       else
         lvTranslateStrings.Columns[1].Caption := Translate(ClassName, STranslation);
@@ -3621,7 +3633,7 @@ begin
   end;
 
   if (ReturnValue <> 0) and (ATool.WaitForCompletion or ATool.UseShellExecute) then
-    ErrMsg(Format(Translate(ClassName, SErrToolExecFmt), [Cmd, Args, SysErrorMessage(ReturnValue)]), StripHotkey(ATool.Title));
+    ErrMsg(WideFormat(Translate(ClassName, SErrToolExecFmt), [Cmd, Args, SysErrorMessage(ReturnValue)]), StripHotkey(ATool.Title));
 end;
 
 procedure TfrmMain.DoToolMenuClick(Sender: TObject);

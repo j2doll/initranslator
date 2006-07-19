@@ -36,22 +36,23 @@ uses
 
   TB2Item, TB2Dock, TB2Toolbar, TB2ToolWindow, TB2MRU, // Toolbar2000 (http://www.jrsoftware.org)
   TBX, TBXExtItems, TB2ExtItems, TBXSwitcher, // TBX (http://g32.org)
-  TBXDefaultTheme, TBXOfficeXPTheme, TBXStatusBars; // additional TBX themes (http://www.rmklever.com)
-  // TBXOffice11XPTheme, TBXOffice11AdaptiveTheme, TBXTristanTheme, TBXTristan2Theme,
-  // TBXAluminumTheme, TBXAthenTheme, TBXMonaiXPTheme, TBXMonaiTheme,
-  // TBXNewOfficeTheme, TBXNewOfficeAdaptiveTheme, TBXDreamTheme,
-  // TBXEosTheme,
+  TBXDefaultTheme, TBXOfficeXPTheme, TBXAluminumTheme, TBXStripesTheme, TBXStatusBars,
+  // additional TBX themes (http://www.rmklever.com)
+//  TBXOffice11XPTheme, TBXOffice11AdaptiveTheme, TBXTristanTheme, TBXTristan2Theme,
+//  TBXAthenTheme, TBXMonaiXPTheme, TBXMonaiTheme,
+//  TBXNewOfficeTheme, TBXNewOfficeAdaptiveTheme, TBXDreamTheme,
+//  TBXEosTheme,
   //
   // TBXOfficeXPGradientTheme,
   // TBXOffice2003Theme, TBXDock2003,
   // TBXBlueGradientXPTheme,
   //
-  // TBXNexos2Theme, TBXNexos3Theme, TBXNexos4Theme, TBXNexos5Theme, TBXNexosXTheme,
-  // TBXOfficeCTheme, TBXOfficeKTheme, TBXReliferTheme, TBXRomaTheme,
-  // TBXSentimoXTheme, TBXUxThemes, TBXXitoTheme,
-  // TBXStripesTheme, TBXStatusBars, TBXToolPals, TBXLists,
-  // TBXDefaultXPTheme, TBXWhidbeyTheme, TBXZezioTheme,
-  // TBXDkPanels;
+//  TBXNexos2Theme, TBXNexos3Theme, TBXNexos4Theme, TBXNexos5Theme, TBXNexosXTheme,
+//  TBXOfficeCTheme, TBXOfficeKTheme, TBXReliferTheme, TBXRomaTheme,
+//  TBXSentimoXTheme, TBXUxThemes, TBXXitoTheme,
+//  TBXStatusBars, TBXToolPals, TBXLists,
+//  TBXDefaultXPTheme, TBXWhidbeyTheme, TBXZezioTheme,
+  TBXDkPanels;
 
 const
   WM_DELAYLOADED = WM_USER + 1001;

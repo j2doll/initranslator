@@ -1,5 +1,11 @@
 Ini Translator Changelog
 ========================
+2006-07-19:
+- Released version 1.9.0.6 on SourceForge
+- Several extra themes removed since they are not supported by tbx 2.2
+- Menus and toolbars now supports unicode
+- Upgraded to tb2k 2.1.6 and tbx 2.2 alpha for unicode support
+
 2006-07-18:
 - Released version 1.9.0.5 on SourceForge
 - The program can now use language files saved as Unicode

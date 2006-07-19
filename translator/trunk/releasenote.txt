@@ -5,6 +5,10 @@ Ini Translator is a small Windows tool to simplify the translation of ini style 
 
 The program and the sources are hosted at sourceforge and are released subject to the MPL 1.1 license.
 
+
+New in version 1.9.0.6:
+- The menus and toolbars now support unicode
+
 New in version 1.9.0.5:
 - The program can now use language files saved as Unicode
 - Added interfaces to support tool menu style plugins (IToolItems and IToolItem)

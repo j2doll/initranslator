@@ -36,22 +36,22 @@ uses
 
   TB2Item, TB2Dock, TB2Toolbar, TB2ToolWindow, TB2MRU, // Toolbar2000 (http://www.jrsoftware.org)
   TBX, TBXExtItems, TB2ExtItems, TBXSwitcher, // TBX (http://g32.org)
-  TBXDefaultTheme, TBXOfficeXPTheme, // additional TBX themes (http://www.rmklever.com)
-  TBXOffice11XPTheme, TBXOffice11AdaptiveTheme, TBXTristanTheme, TBXTristan2Theme,
-  TBXAluminumTheme, TBXAthenTheme, TBXMonaiXPTheme, TBXMonaiTheme,
-  TBXNewOfficeTheme, TBXNewOfficeAdaptiveTheme, TBXDreamTheme,
-  TBXEosTheme,
+  TBXDefaultTheme, TBXOfficeXPTheme, TBXStatusBars; // additional TBX themes (http://www.rmklever.com)
+  // TBXOffice11XPTheme, TBXOffice11AdaptiveTheme, TBXTristanTheme, TBXTristan2Theme,
+  // TBXAluminumTheme, TBXAthenTheme, TBXMonaiXPTheme, TBXMonaiTheme,
+  // TBXNewOfficeTheme, TBXNewOfficeAdaptiveTheme, TBXDreamTheme,
+  // TBXEosTheme,
   //
   // TBXOfficeXPGradientTheme,
   // TBXOffice2003Theme, TBXDock2003,
   // TBXBlueGradientXPTheme,
   //
-  TBXNexos2Theme, TBXNexos3Theme, TBXNexos4Theme, TBXNexos5Theme, TBXNexosXTheme,
-  TBXOfficeCTheme, TBXOfficeKTheme, TBXReliferTheme, TBXRomaTheme,
-  TBXSentimoXTheme, TBXUxThemes, TBXXitoTheme,
-  TBXStripesTheme, TBXStatusBars, TBXToolPals, TBXLists,
-  TBXDefaultXPTheme, TBXWhidbeyTheme, TBXZezioTheme,
-  TBXDkPanels;
+  // TBXNexos2Theme, TBXNexos3Theme, TBXNexos4Theme, TBXNexos5Theme, TBXNexosXTheme,
+  // TBXOfficeCTheme, TBXOfficeKTheme, TBXReliferTheme, TBXRomaTheme,
+  // TBXSentimoXTheme, TBXUxThemes, TBXXitoTheme,
+  // TBXStripesTheme, TBXStatusBars, TBXToolPals, TBXLists,
+  // TBXDefaultXPTheme, TBXWhidbeyTheme, TBXZezioTheme,
+  // TBXDkPanels;
 
 const
   WM_DELAYLOADED = WM_USER + 1001;
@@ -420,7 +420,6 @@ type
     procedure acToggleTranslatedExecute(Sender: TObject);
     procedure acTestExceptionHandlerExecute(Sender: TObject);
     procedure acFullScreenExecute(Sender: TObject);
-    procedure cbThemesChange(Sender: TObject; const Text: string);
     procedure popEditPopup(Sender: TObject);
     procedure acToolsCustomizeExecute(Sender: TObject);
     procedure TBXSubmenuItem1Select(Sender: TTBCustomItem;
@@ -434,6 +433,7 @@ type
     procedure acConfigSuspiciousExecute(Sender: TObject);
     procedure acDictEditExecute(Sender: TObject);
     procedure mnuPluginsPopup(Sender: TTBCustomItem; FromLink: Boolean);
+    procedure cbThemesChange(Sender: TObject);
   private
     { Private declarations }
     OpenOrigDlg, OpenTransDlg: TEncodingOpenDialog;
@@ -492,13 +492,11 @@ type
       const AFileName: string);
     procedure StopMonitor(var AMonitor: TFileMonitorThread);
     procedure UseDictionary;
-    procedure DoWriteObject(Sender, AnObject: TObject; const APropName: string;
+    procedure DoWriteObject(Sender, AnObject: TObject; const APropName: WideString;
       var ASection, AName, AValue: WideString);
     procedure DoSaveExtra(Sender: TObject; ini: TWideCustomIniFile);
-    procedure DoAllowWriting(Sender, AnObject: TObject;
-      const APropName: string; var ATranslate: boolean);
-    procedure DoReadObject(Sender, AnObject: TObject; const PropName,
-      Section: string; var Value: WideString);
+    procedure DoAllowWriting(Sender, AnObject: TObject; const APropName: WideString; var ATranslate: boolean);
+    procedure DoReadObject(Sender, AnObject: TObject; const PropName, Section: WideString; var Value: WideString);
     procedure ScrollToTop;
     procedure SaveEditChanges;
     function GetFilename(const Default: string): string;
@@ -629,10 +627,11 @@ begin
     // load shortcuts
     LoadActionShortCutsFromFile(alMain, GetUserShortcutFile);
     // get all available themes
-    cbThemes.Strings.Clear;
+
+    cbThemes.Lines.Clear;
     for i := 0 to ThemeSwitcher.ThemeCount - 1 do
-      cbThemes.Strings.Add(ThemeSwitcher.Themes[i]);
-    TStringlist(cbThemes.Strings).Sorted := true; // NB!!! might be dangerous if internal calss changes!
+      cbThemes.Lines.Add(ThemeSwitcher.Themes[i]);
+    cbThemes.Lines.Sort; 
     cbThemes.Text := GlobalAppOptions.Theme;
     // must call ThemeSwitcher manually: cbThemes.OnChange is not triggered when assigning directly to Text property
     ThemeSwitcher.Theme := GlobalAppOptions.Theme;
@@ -1398,7 +1397,7 @@ type
   THackPersistent = class(TPersistent);
 
 procedure TfrmMain.DoWriteObject(Sender, AnObject: TObject;
-  const APropName: string; var ASection, AName, AValue: WideString);
+  const APropName: WideString; var ASection, AName, AValue: WideString);
 
   function GetOwnerComponent(AComponent: TComponent): string;
   var
@@ -1512,14 +1511,12 @@ begin
   ini.WriteString('Translator', 'Version', GetAppVersion);
 end;
 
-procedure TfrmMain.DoReadObject(Sender, AnObject: TObject; const PropName,
-  Section: string; var Value: WideString);
+procedure TfrmMain.DoReadObject(Sender, AnObject: TObject; const PropName, Section: WideString; var Value: WideString);
 begin
   Value := GlobalLanguageFile.Translate(Section, Value, Value);
 end;
 
-procedure TfrmMain.DoAllowWriting(Sender, AnObject: TObject;
-  const APropName: string; var ATranslate: boolean);
+procedure TfrmMain.DoAllowWriting(Sender, AnObject: TObject; const APropName: WideString; var ATranslate: boolean);
 begin
   ATranslate := (AnObject <> lblViewDetails) and
     (AnObject <> lvTranslateStrings.Columns[0]) and (AnObject <> lvTranslateStrings.Columns[1]) and
@@ -3258,11 +3255,6 @@ begin
   SetWindowPlacement(Handle, @P);
 end;
 
-procedure TfrmMain.cbThemesChange(Sender: TObject; const Text: string);
-begin
-  ThemeSwitcher.Theme := Text;
-end;
-
 procedure TfrmMain.DoTranslateSuggestionClick(Sender: TObject);
 begin
   reTranslation.SelText := (Sender as TTBXItem).Caption;
@@ -3941,6 +3933,11 @@ end;
 procedure TfrmMain.acDictEditExecute(Sender: TObject);
 begin
   TfrmDictEdit.Edit(FDict);
+end;
+
+procedure TfrmMain.cbThemesChange(Sender: TObject);
+begin
+  ThemeSwitcher.Theme := cbThemes.Text;
 end;
 
 end.

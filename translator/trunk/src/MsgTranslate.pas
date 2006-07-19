@@ -25,9 +25,9 @@ uses
   SysUtils, WideIniFiles, Classes;
 
 type
-  TTranslateEvent = procedure(Sender, AnObject: TObject; const APropName, ASection: string; var AValue: WideString) of object;
-  TTemplateEvent = procedure(Sender, AnObject: TObject; const APropName: string; var ASection, AName, AValue: WideString) of object;
-  TCheckTranslateEvent = procedure(Sender, AnObject: TObject; const APropName: string; var ATranslate: boolean) of object;
+  TTranslateEvent = procedure(Sender, AnObject: TObject; const APropName, ASection: WideString; var AValue: WideString) of object;
+  TTemplateEvent = procedure(Sender, AnObject: TObject; const APropName: WideString; var ASection, AName, AValue: WideString) of object;
+  TCheckTranslateEvent = procedure(Sender, AnObject: TObject; const APropName: WideString; var ATranslate: boolean) of object;
 
   TSaveTranslationEvent = procedure(Sender: TObject; ini: TWideCustomIniFile) of object;
   IApplicationTranslator = interface
@@ -43,7 +43,7 @@ type
     FOnWrite: TTemplateEvent;
     FOnRead: TTranslateEvent;
     FOnWriteAdditional: TSaveTranslationEvent;
-    FFilename: string;
+    FFilename: WideString;
     FOnReading: TCheckTranslateEvent;
     FOnWriting: TCheckTranslateEvent;
     procedure WriteTranslationSub(IniFile: TWideCustomIniFile; AnObject: TObject);
@@ -52,38 +52,38 @@ type
     function _Release: Integer; stdcall;
     function QueryInterface(const IID: TGUID; out Obj): HRESULT; stdcall;
   protected
-    function DoReading(AnObject: TObject; const PropName: string): boolean;
-    function DoWriting(AnObject: TObject; const PropName: string): boolean;
-    procedure DoReadObject(AnObject: TObject; const PropName, Section: string; var AValue: WideString); dynamic;
-    procedure DoWriteObject(AnObject: TObject; const PropName: string; var ASection, AName, AValue: WideString); dynamic;
+    function DoReading(AnObject: TObject; const PropName: WideString): boolean;
+    function DoWriting(AnObject: TObject; const PropName: WideString): boolean;
+    procedure DoReadObject(AnObject: TObject; const PropName, Section: WideString; var AValue: WideString); dynamic;
+    procedure DoWriteObject(AnObject: TObject; const PropName: WideString; var ASection, AName, AValue: WideString); dynamic;
   public
     { IApplicationTranslator }
     function Translate(const Section, Name, Default: WideString): WideString; stdcall;
 
-    constructor Create(const Filename: string = '');
+    constructor Create(const Filename: WideString = '');
     destructor Destroy; override;
-    function InSkipList(const S: string): boolean;
+    function InSkipList(const S: WideString): boolean;
     function InClassSkipList(AClass: TClass): boolean;
     // TranslateObject iterates over AnObject's published properties and calls OnReading/OnRead for each
-    // string or TStrings type property unless AnObject is in the class skiplist or the
+    // WideString or TStrings type property unless AnObject is in the class skiplist or the
     // property name is in the property skiplist. If it's OK to translate, the
     // new value (gotten from OnRead) is written to the property
     // If the property is a TCollection, it's Items properties are iterated as well (and so on) unless
     // ANObject is in the class skiplist
     // If AnObject is a TComponent, it's Components array is iterated as well even if AnObject
     // is in the class skiplist (and so on)
-    procedure TranslateObject(AnObject: TObject; const Section: string);
-    procedure LoadFromFile(const AFilename: string);
-    procedure SaveToFile(const AFilename: string);
+    procedure TranslateObject(AnObject: TObject; const Section: WideString);
+    procedure LoadFromFile(const AFilename: WideString);
+    procedure SaveToFile(const AFilename: WideString);
     // creates a new template language file with the name AFilename.
     // AnObject is written and then iterated (if it is a TComponent with Components)
-    procedure CreateTemplate(const AFilename: string; AnObject: TObject);
+    procedure CreateTemplate(const AFilename: WideString; AnObject: TObject);
     // add a class to skip when reading / writing
     procedure SkipClass(AClass: TClass);
     // add a published property skip (for all classes) when reading / writing
-    procedure SkipProperty(const PropName: string);
+    procedure SkipProperty(const PropName: WideString);
 
-    property Filename: string read FFilename;
+    property Filename: WideString read FFilename;
     property SkipList: TStrings read FSkipList;
     property ClassSkipList: TThreadList read FClassSkipList;
     // OnReading and OnRead are used with TranslateObject:
@@ -103,8 +103,8 @@ type
     property OnWriteAdditional: TSaveTranslationEvent read FOnWriteAdditional write FOnWriteAdditional;
   end;
 
-function DecodeStrings(const S: string): string;
-function EncodeStrings(const S: string): string;
+function DecodeStrings(const S: WideString): WideString;
+function EncodeStrings(const S: WideString): WideString;
 
 resourcestring
   SPropNotFoundFmt = 'Property %s not found';
@@ -113,7 +113,7 @@ implementation
 uses
   TypInfo, TntClasses;
 
-function DecodeStrings(const S: string): string;
+function DecodeStrings(const S: WideString): WideString;
 var
   i, j, l: integer;
 begin
@@ -169,7 +169,12 @@ begin
 //  Result := Tnt_WideStringReplace(S, '\n', SLineBreak, [rfReplaceAll]);
 end;
 
-function EncodeStrings(const S: string): string;
+function EncodeStrings(const S: WideString): WideString;
+const
+  TAB = WideChar(#9);
+  CR = WideChar(#10);
+  LF = WideChar(#13);
+  WBackSlash = WideChar('\');
 var
   i, j: integer;
 begin
@@ -178,16 +183,16 @@ begin
   SetLength(Result, Length(S) * 2); // every character in S is a #9, #10 or #13...
   for i := 1 to Length(S) do
   begin
-    if S[i] in [#9, #10, #13, '\'] then
+    if S[i] in [TAB, CR, LF, WBackSlash] then
     begin
       Inc(j);
       Result[j] := '\';
       Inc(j);
       case S[i] of
-        #9: Result[j] := 't';
-        #10: Result[j] := 'n';
-        #13: Result[j] := 'r';
-        '\': Dec(j); // Result[j] := '\';
+        TAB: Result[j] := 't';
+        CR: Result[j] := 'n';
+        LF: Result[j] := 'r';
+        WBackSlash: Dec(j); // Result[j] := '\';
       end;
     end
     else
@@ -222,7 +227,7 @@ begin
     Result := E_NOINTERFACE;
 end;
 
-constructor TAppLanguage.Create(const Filename: string);
+constructor TAppLanguage.Create(const Filename: WideString);
 begin
   inherited Create;
   FSkipList := TStringlist.Create;
@@ -236,7 +241,7 @@ procedure TAppLanguage.WriteTranslationSub(IniFile: TWideCustomIniFile; AnObject
 var
   i, j, Count: integer;
   PropList: PPropList;
-  PropName: string;
+  PropName: WideString;
   PropInfo: PPropInfo;
   sl: TObject;
   ASection, AName, AValue: WideString;
@@ -308,7 +313,7 @@ begin
       WriteTranslationSub(IniFile, TComponent(AnObject).Components[i]);
 end;
 
-procedure TAppLanguage.CreateTemplate(const AFilename: string;
+procedure TAppLanguage.CreateTemplate(const AFilename: WideString;
   AnObject: TObject);
 var
   ini: TWideMemIniFile;
@@ -332,7 +337,7 @@ begin
 end;
 
 procedure TAppLanguage.DoReadObject(AnObject: TObject; const PropName,
-  Section: string; var AValue: WideString);
+  Section: WideString; var AValue: WideString);
 begin
   if Assigned(FOnRead) then
     FOnRead(self, AnObject, PropName, Section, AValue);
@@ -362,19 +367,19 @@ begin
   end;
 end;
 
-function TAppLanguage.InSkipList(const S: string): boolean;
+function TAppLanguage.InSkipList(const S: WideString): boolean;
 begin
   Result := Assigned(FSkipList) and (FSkipList.IndexOf(S) > -1);
 end;
 
-procedure TAppLanguage.LoadFromFile(const AFilename: string);
+procedure TAppLanguage.LoadFromFile(const AFilename: WideString);
 begin
   FreeAndNil(FLangFile);
   FLangFile := TWideMemIniFile.Create(AFilename);
   FFilename := AFilename;
 end;
 
-procedure TAppLanguage.SaveToFile(const AFilename: string);
+procedure TAppLanguage.SaveToFile(const AFilename: WideString);
 begin
   if FLangFile = nil then
     FLangFile := TWideMemIniFile.Create(AFilename)
@@ -394,16 +399,16 @@ begin
   end;
 end;
 
-procedure TAppLanguage.SkipProperty(const PropName: string);
+procedure TAppLanguage.SkipProperty(const PropName: WideString);
 begin
   FSkipList.Add(PropName);
 end;
 
-procedure TAppLanguage.TranslateObject(AnObject: TObject; const Section: string);
+procedure TAppLanguage.TranslateObject(AnObject: TObject; const Section: WideString);
 var
   i, j, Count: integer;
   PropList: PPropList;
-  PropName: string;
+  PropName: WideString;
   PropInfo: PPropInfo;
   sl: TObject;
   ppi: PPropInfo;
@@ -500,14 +505,14 @@ begin
 end;
 
 procedure TAppLanguage.DoWriteObject(AnObject: TObject;
-  const PropName: string; var ASection, AName, AValue: WideString);
+  const PropName: WideString; var ASection, AName, AValue: WideString);
 begin
   if Assigned(FOnWrite) then
     FOnWrite(self, AnObject, PropName, ASection, AName, AValue);
 end;
 
 function TAppLanguage.DoReading(AnObject: TObject;
-  const PropName: string): boolean;
+  const PropName: WideString): boolean;
 begin
   Result := true;
   if Assigned(FOnReading) then
@@ -515,7 +520,7 @@ begin
 end;
 
 function TAppLanguage.DoWriting(AnObject: TObject;
-  const PropName: string): boolean;
+  const PropName: WideString): boolean;
 begin
   Result := true;
   if Assigned(FOnWriting) then

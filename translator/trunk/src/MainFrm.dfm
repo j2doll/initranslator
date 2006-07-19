@@ -82,8 +82,6 @@ object frmMain: TfrmMain
     object tbMenu: TTBXToolbar
       Left = 0
       Top = 0
-      Caption = 'Menu'
-      ChevronHint = 'More Buttons|Click to see more buttons'
       CloseButton = False
       DblClickUndock = True
       DefaultDock = TopDock
@@ -94,9 +92,12 @@ object frmMain: TfrmMain
       Options = [tboLongHintInMenuOnly, tboShowHint]
       ProcessShortCuts = True
       TabOrder = 0
+      Caption = 'Menu'
+      ChevronHint = 'More Buttons|Click to see more buttons'
       object mnuFile: TTBXSubmenuItem
-        Caption = '&File'
         OnSelect = mnuFileSelect
+        Caption = '&File'
+        Hint = ''
         object OpenOriginal1: TTBXItem
           Action = acOpenOrig
         end
@@ -107,6 +108,8 @@ object frmMain: TfrmMain
           Action = acSaveOrigAs
         end
         object TBSeparatorItem3: TTBXSeparatorItem
+          Caption = ''
+          Hint = ''
         end
         object ClearTranslation1: TTBXItem
           Action = acNewTrans
@@ -121,6 +124,8 @@ object frmMain: TfrmMain
           Action = acSaveTransAs
         end
         object N1: TTBXSeparatorItem
+          Caption = ''
+          Hint = ''
         end
         object TBXItem4: TTBXItem
           Action = acImport
@@ -129,19 +134,28 @@ object frmMain: TfrmMain
           Action = acExport
         end
         object TBXSeparatorItem4: TTBXSeparatorItem
+          Caption = ''
+          Hint = ''
         end
         object SelectLanguage1: TTBXItem
           Action = acPreferences
         end
         object TBSeparatorItem16: TTBXSeparatorItem
+          Caption = ''
+          Hint = ''
         end
         object miRecentlyUsed: TTBXSubmenuItem
-          Caption = 'Reopen'
           DropdownCombo = True
+          Caption = 'Reopen'
+          Hint = ''
           object TBMRUListItem1: TTBXMRUListItem
             MRUList = MRUFiles
+            Caption = '(TBX MRU List)'
+            Hint = ''
           end
           object TBSeparatorItem15: TTBXSeparatorItem
+            Caption = ''
+            Hint = ''
           end
           object TBItem31: TTBXItem
             Action = acClearMRU
@@ -151,18 +165,23 @@ object frmMain: TfrmMain
           end
         end
         object N11: TTBXSeparatorItem
+          Caption = ''
+          Hint = ''
         end
         object Exit1: TTBXItem
           Action = acExit
         end
       end
       object Edit1: TTBXSubmenuItem
-        Caption = '&Edit'
         ShortCut = 16474
+        Caption = '&Edit'
+        Hint = ''
         object TBItem14: TTBXItem
           Action = acUndo
         end
         object TBSeparatorItem8: TTBXSeparatorItem
+          Caption = ''
+          Hint = ''
         end
         object TBItem5: TTBXItem
           Action = acCut
@@ -180,6 +199,8 @@ object frmMain: TfrmMain
           Action = acPaste
         end
         object TBSeparatorItem6: TTBXSeparatorItem
+          Caption = ''
+          Hint = ''
         end
         object Find1: TTBXItem
           Action = acFind
@@ -191,6 +212,8 @@ object frmMain: TfrmMain
           Action = acReplace
         end
         object N8: TTBXSeparatorItem
+          Caption = ''
+          Hint = ''
         end
         object ToggleFocus1: TTBXItem
           Action = acToggleFocus
@@ -198,6 +221,7 @@ object frmMain: TfrmMain
       end
       object Navigation1: TTBXSubmenuItem
         Caption = '&Actions'
+        Hint = ''
         object tbxSpellCheck: TTBXItem
           Action = acSpellCheck
         end
@@ -208,6 +232,8 @@ object frmMain: TfrmMain
           Action = acNext
         end
         object About2: TTBXSeparatorItem
+          Caption = ''
+          Hint = ''
         end
         object Previousuntranslated1: TTBXItem
           Action = acPrevUntranslated
@@ -216,11 +242,15 @@ object frmMain: TfrmMain
           Action = acNextUntranslated
         end
         object N2: TTBXSeparatorItem
+          Caption = ''
+          Hint = ''
         end
         object Font1: TTBXItem
           Action = acFont
         end
         object N4: TTBXSeparatorItem
+          Caption = ''
+          Hint = ''
         end
         object Unsort1: TTBXItem
           Action = acRestoreSort
@@ -229,9 +259,12 @@ object frmMain: TfrmMain
           Action = acTrim
         end
         object TBSeparatorItem10: TTBXSeparatorItem
+          Caption = ''
+          Hint = ''
         end
         object TBSubmenuItem3: TTBXSubmenuItem
           Caption = 'Toggle Bookmark'
+          Hint = ''
           object TBItem41: TTBXItem
             Action = acToggleBookmark0
             Images = ilBookmarks
@@ -275,6 +308,7 @@ object frmMain: TfrmMain
         end
         object TBSubmenuItem4: TTBXSubmenuItem
           Caption = 'Goto Bookmark'
+          Hint = ''
           object TBItem51: TTBXItem
             Action = acGotoBookmark0
             Images = ilBookmarks
@@ -317,6 +351,8 @@ object frmMain: TfrmMain
           end
         end
         object TBXSeparatorItem2: TTBXSeparatorItem
+          Caption = ''
+          Hint = ''
         end
         object TBXItem2: TTBXItem
           Action = acConfigureKeyboard
@@ -324,6 +360,7 @@ object frmMain: TfrmMain
       end
       object TBSubmenuItem2: TTBXSubmenuItem
         Caption = '&View'
+        Hint = ''
         object TBItem36: TTBXItem
           Action = acFindUnmatchedShortCut
         end
@@ -334,6 +371,8 @@ object frmMain: TfrmMain
           Action = acConfigSuspicious
         end
         object N9: TTBXSeparatorItem
+          Caption = ''
+          Hint = ''
         end
         object ShowQuotes1: TTBXItem
           Action = acShowQuotes
@@ -342,6 +381,8 @@ object frmMain: TfrmMain
           Action = acViewDetails
         end
         object N10: TTBXSeparatorItem
+          Caption = ''
+          Hint = ''
         end
         object TBItem16: TTBXItem
           Action = acViewComments
@@ -350,10 +391,13 @@ object frmMain: TfrmMain
           Action = acViewOrphans
         end
         object TBXSeparatorItem3: TTBXSeparatorItem
+          Caption = ''
+          Hint = ''
         end
         object TBXVisibilityToggleItem1: TTBXVisibilityToggleItem
-          Caption = 'Tools'
           Control = tbTools
+          Caption = 'Tools'
+          Hint = ''
         end
         object TBXItem8: TTBXItem
           Action = acFullScreen
@@ -361,6 +405,7 @@ object frmMain: TfrmMain
       end
       object Dictionary1: TTBXSubmenuItem
         Caption = '&Dictionary'
+        Hint = ''
         object CreateDictionary1: TTBXItem
           Action = acDictCreate
         end
@@ -371,6 +416,8 @@ object frmMain: TfrmMain
           Action = acDictSave
         end
         object N5: TTBXSeparatorItem
+          Caption = ''
+          Hint = ''
         end
         object Translatewithdictionary1: TTBXItem
           Action = acDictTranslate
@@ -379,24 +426,30 @@ object frmMain: TfrmMain
           Action = acDictAdd
         end
         object N6: TTBXSeparatorItem
+          Caption = ''
+          Hint = ''
         end
         object TBXItem16: TTBXItem
           Action = acDictEdit
         end
         object TBXSeparatorItem8: TTBXSeparatorItem
+          Caption = ''
+          Hint = ''
         end
         object acDictInvert1: TTBXItem
           Action = acDictInvert
         end
       end
       object mnuPlugins: TTBXSubmenuItem
-        Caption = '&Plugins'
         Visible = False
         OnPopup = mnuPluginsPopup
+        Caption = '&Plugins'
+        Hint = ''
       end
       object TBXSubmenuItem1: TTBXSubmenuItem
-        Caption = 'T&ools'
         OnSelect = TBXSubmenuItem1Select
+        Caption = 'T&ools'
+        Hint = ''
         object TBXItem10: TTBXItem
           Action = acToolsCustomize
           Caption = 'Customize...'
@@ -404,10 +457,13 @@ object frmMain: TfrmMain
       end
       object Help1: TTBXSubmenuItem
         Caption = '&Help'
+        Hint = ''
         object Help2: TTBXItem
           Action = acHelp
         end
         object N7: TTBXSeparatorItem
+          Caption = ''
+          Hint = ''
         end
         object About1: TTBXItem
           Action = acAbout
@@ -417,8 +473,6 @@ object frmMain: TfrmMain
     object tbTools: TTBXToolbar
       Left = 0
       Top = 23
-      Caption = 'Tools'
-      ChevronHint = 'More Buttons|Click to see more buttons'
       DblClickUndock = True
       DefaultDock = TopDock
       DockPos = 0
@@ -428,10 +482,14 @@ object frmMain: TfrmMain
       Images = il16
       Options = [tboLongHintInMenuOnly, tboShowHint]
       TabOrder = 1
+      Caption = 'Tools'
+      ChevronHint = 'More Buttons|Click to see more buttons'
       object TBItem1: TTBXItem
         Action = acOpenOrig
       end
       object TBSeparatorItem2: TTBXSeparatorItem
+        Caption = ''
+        Hint = ''
       end
       object TBItem2: TTBXItem
         Action = acNewTrans
@@ -443,6 +501,8 @@ object frmMain: TfrmMain
         Action = acSaveTrans
       end
       object TBSeparatorItem1: TTBXSeparatorItem
+        Caption = ''
+        Hint = ''
       end
       object TBItem12: TTBXItem
         Action = acCut
@@ -454,6 +514,8 @@ object frmMain: TfrmMain
         Action = acPaste
       end
       object TBSeparatorItem7: TTBXSeparatorItem
+        Caption = ''
+        Hint = ''
       end
       object TBItem9: TTBXItem
         Action = acFind
@@ -462,6 +524,8 @@ object frmMain: TfrmMain
         Action = acReplace
       end
       object TBSeparatorItem12: TTBXSeparatorItem
+        Caption = ''
+        Hint = ''
       end
       object TBItem18: TTBXItem
         Action = acPrevUntranslated
@@ -470,23 +534,27 @@ object frmMain: TfrmMain
         Action = acNextUntranslated
       end
       object TBSeparatorItem4: TTBXSeparatorItem
+        Caption = ''
+        Hint = ''
       end
       object TBItem27: TTBXItem
         Action = acDictTranslate
       end
       object TBSeparatorItem5: TTBXSeparatorItem
+        Caption = ''
+        Hint = ''
       end
       object TBItem29: TTBXItem
         Action = acHelp
       end
       object TBXSeparatorItem1: TTBXSeparatorItem
+        Caption = ''
+        Hint = ''
       end
       object cbThemes: TTBXComboBoxItem
         AutoCheck = True
-        Caption = 'Themes'
         DisplayMode = nbdmTextOnlyInMenus
         EditWidth = 135
-        Hint = 'Shows available themes'
         ShortCut = 24660
         ExtendedAccept = True
         FontSettings.Name = 'MS Shell Dlg 2'
@@ -495,6 +563,8 @@ object frmMain: TfrmMain
         DropDownList = True
         MaxVisibleItems = 25
         MinListWidth = 135
+        Caption = 'Themes'
+        Hint = 'Shows available themes'
       end
     end
   end
@@ -3782,6 +3852,8 @@ object frmMain: TfrmMain
       Action = acUndo
     end
     object N13: TTBXSeparatorItem
+      Caption = ''
+      Hint = ''
     end
     object Cut1: TTBXItem
       Action = acCut
@@ -3793,6 +3865,8 @@ object frmMain: TfrmMain
       Action = acPaste
     end
     object N14: TTBXSeparatorItem
+      Caption = ''
+      Hint = ''
     end
     object TBItem54: TTBXItem
       Action = acReplaceEverywhere
@@ -3801,14 +3875,19 @@ object frmMain: TfrmMain
       Action = acSelectAll
     end
     object TBSeparatorItem9: TTBXSeparatorItem
+      Caption = ''
+      Hint = ''
     end
     object TBItem17: TTBXItem
       Action = acAsciiValues
     end
     object TBXSeparatorItem6: TTBXSeparatorItem
+      Caption = ''
+      Hint = ''
     end
     object smiDictionary: TTBXSubmenuItem
       Caption = 'Dictionary'
+      Hint = ''
     end
   end
   object popList: TTBXPopupMenu
@@ -3825,6 +3904,8 @@ object frmMain: TfrmMain
       Action = acDictAdd
     end
     object TBSeparatorItem14: TTBXSeparatorItem
+      Caption = ''
+      Hint = ''
     end
     object TBItem24: TTBXItem
       Action = acNextUntranslated
@@ -3833,6 +3914,8 @@ object frmMain: TfrmMain
       Action = acPrevUntranslated
     end
     object TBSeparatorItem11: TTBXSeparatorItem
+      Caption = ''
+      Hint = ''
     end
     object TBItem53: TTBXItem
       Action = acClearAllTranslations
@@ -3841,11 +3924,15 @@ object frmMain: TfrmMain
       Action = acReplaceEverywhere
     end
     object TBXSeparatorItem5: TTBXSeparatorItem
+      Caption = ''
+      Hint = ''
     end
     object TBXItem5: TTBXItem
       Action = acToggleTranslated
     end
     object TBXSeparatorItem7: TTBXSeparatorItem
+      Caption = ''
+      Hint = ''
     end
     object TBXItem12: TTBXItem
       Action = acAddItem

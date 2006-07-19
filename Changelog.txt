@@ -1,5 +1,14 @@
 Ini Translator Changelog
 ========================
+2006-07-20:
+- A few new strings in Default.lng
+- Fixed Arabic.lng (removed obsolete strings, added new)
+- Better ftp script
+- Converted several string->WideString, TStrings->TTntStrings for better Unicode support
+- Fixed open/save dialogs (with encode combo) to work with Unicode
+- Fixed issue where the translation edit would be marked as modified when the options dialog was opened
+- Fixed issue where the translation could be saved with the wrong encoding when a monitored file was reloaded
+
 2006-07-19:
 - Released version 1.9.0.6 on SourceForge
 - Several extra themes removed since they are not supported by tbx 2.2

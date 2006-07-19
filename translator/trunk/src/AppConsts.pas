@@ -100,6 +100,8 @@ resourcestring
   SErrOrigTextEmpty = 'Original text cannot be empty';
   SErrSectionNameExists = 'An item with the specified Section and Name already exists';
   SDictTranslationCompleted = 'Translating with dictionary finished';
+  SSelectLanguageFile = 'Select a language file';
+  SSelectHelpFile = 'Select a help file';
 
 const
   SLngExt = 'lng';

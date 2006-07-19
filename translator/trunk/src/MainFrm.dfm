@@ -597,7 +597,6 @@ object frmMain: TfrmMain
     Align = alClient
     BevelOuter = bvNone
     BorderWidth = 4
-    Caption = 'pnlBack'
     TabOrder = 5
     object splitHorz: TSplitter
       Left = 4
@@ -630,7 +629,7 @@ object frmMain: TfrmMain
         BevelInner = bvRaised
         BevelOuter = bvLowered
         TabOrder = 0
-        object lblTrans: TLabel
+        object lblTrans: TTntLabel
           Left = 8
           Top = 5
           Width = 57
@@ -669,7 +668,7 @@ object frmMain: TfrmMain
         BevelInner = bvRaised
         BevelOuter = bvLowered
         TabOrder = 2
-        object lblOrig: TLabel
+        object lblOrig: TTntLabel
           Left = 8
           Top = 4
           Width = 40
@@ -1306,7 +1305,7 @@ object frmMain: TfrmMain
       OnExecute = acTrimExecute
     end
   end
-  object SaveDictDlg: TSaveDialog
+  object SaveDictDlg: TTntSaveDialog
     DefaultExt = 'dct'
     Filter = 'Dictionary files|*.dct;*.cat|All files|*.*'
     InitialDir = '.'
@@ -1315,7 +1314,7 @@ object frmMain: TfrmMain
     Left = 78
     Top = 192
   end
-  object OpenDictDlg: TOpenDialog
+  object OpenDictDlg: TTntOpenDialog
     DefaultExt = 'dct'
     Filter = 'Dictionary files|*.dct;*.cat|All files|*.*'
     InitialDir = '.'

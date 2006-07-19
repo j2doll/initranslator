@@ -112,7 +112,7 @@ object frmTools: TfrmTools
     Anchors = [akTop, akRight]
     TabOrder = 4
   end
-  object pnlEditTool: TPanel
+  object pnlEditTool: TTntPanel
     Left = 1
     Top = 174
     Width = 417
@@ -332,7 +332,7 @@ object frmTools: TfrmTools
       Action = acWait
       TabOrder = 10
     end
-    object chkShell: TCheckBox
+    object chkShell: TTntCheckBox
       Left = 14
       Top = 152
       Width = 131
@@ -370,138 +370,171 @@ object frmTools: TfrmTools
     Left = 16
     Top = 40
     object OriginalLine1: TTBXItem
-      Caption = 'Original Line'
       OnClick = ArgumentsClick
+      Caption = 'Original Line'
+      Hint = ''
     end
     object OriginalText1: TTBXItem
       Tag = 1
-      Caption = 'Original Text'
       OnClick = ArgumentsClick
+      Caption = 'Original Text'
+      Hint = ''
     end
     object OriginalPath1: TTBXItem
       Tag = 2
-      Caption = 'Original Path'
       OnClick = ArgumentsClick
+      Caption = 'Original Path'
+      Hint = ''
     end
     object OriginalDirectory1: TTBXItem
       Tag = 3
-      Caption = 'Original Directory'
       OnClick = ArgumentsClick
+      Caption = 'Original Directory'
+      Hint = ''
     end
     object OriginalName1: TTBXItem
       Tag = 4
-      Caption = 'Original Name'
       OnClick = ArgumentsClick
+      Caption = 'Original Name'
+      Hint = ''
     end
     object OriginalExtension1: TTBXItem
       Tag = 5
-      Caption = 'Original Extension'
       OnClick = ArgumentsClick
+      Caption = 'Original Extension'
+      Hint = ''
     end
     object N1: TTBXSeparatorItem
+      Caption = ''
+      Hint = ''
     end
     object ranslationLine1: TTBXItem
       Tag = 6
-      Caption = 'Translation Line'
       OnClick = ArgumentsClick
+      Caption = 'Translation Line'
+      Hint = ''
     end
     object ranslationText1: TTBXItem
       Tag = 7
-      Caption = 'Translation Text'
       OnClick = ArgumentsClick
+      Caption = 'Translation Text'
+      Hint = ''
     end
     object ranslationPath1: TTBXItem
       Tag = 8
-      Caption = 'Translation Path'
       OnClick = ArgumentsClick
+      Caption = 'Translation Path'
+      Hint = ''
     end
     object ranslationDirectory1: TTBXItem
       Tag = 9
-      Caption = 'Translation Directory'
       OnClick = ArgumentsClick
+      Caption = 'Translation Directory'
+      Hint = ''
     end
     object ranslationName1: TTBXItem
       Tag = 10
-      Caption = 'Translation Name'
       OnClick = ArgumentsClick
+      Caption = 'Translation Name'
+      Hint = ''
     end
     object ranslationExtension1: TTBXItem
       Tag = 11
-      Caption = 'Translation Extension'
       OnClick = ArgumentsClick
+      Caption = 'Translation Extension'
+      Hint = ''
     end
     object N2: TTBXSeparatorItem
+      Caption = ''
+      Hint = ''
     end
     object DictionaryPath1: TTBXItem
       Tag = 12
-      Caption = 'Dictionary Path'
       OnClick = ArgumentsClick
+      Caption = 'Dictionary Path'
+      Hint = ''
     end
     object DictionaryDirectory1: TTBXItem
       Tag = 13
-      Caption = 'Dictionary Directory'
       OnClick = ArgumentsClick
+      Caption = 'Dictionary Directory'
+      Hint = ''
     end
     object DictionaryName1: TTBXItem
       Tag = 14
-      Caption = 'Dictionary Name'
       OnClick = ArgumentsClick
+      Caption = 'Dictionary Name'
+      Hint = ''
     end
     object DictionaryExtension1: TTBXItem
       Tag = 15
-      Caption = 'Dictionary Extension'
       OnClick = ArgumentsClick
+      Caption = 'Dictionary Extension'
+      Hint = ''
     end
     object TBXSeparatorItem1: TTBXSeparatorItem
+      Caption = ''
+      Hint = ''
     end
     object TBItem1: TTBItem
-      Caption = 'Application Directory'
       OnClick = ArgumentsClick
+      Caption = 'Application Directory'
+      Hint = ''
     end
     object TBXItem2: TTBXItem
       Tag = 16
-      Caption = 'Windows Directory'
       OnClick = ArgumentsClick
+      Caption = 'Windows Directory'
+      Hint = ''
     end
     object TBXItem1: TTBXItem
       Tag = 17
-      Caption = 'System Directory'
       OnClick = ArgumentsClick
+      Caption = 'System Directory'
+      Hint = ''
     end
   end
   object popInitialDir: TTBXPopupMenu
     Left = 56
     Top = 40
     object OriginalPath2: TTBXItem
-      Caption = 'Original Directory'
       OnClick = InitialDirClick
+      Caption = 'Original Directory'
+      Hint = ''
     end
     object ranslationPath2: TTBXItem
       Tag = 1
-      Caption = 'Translation Directory'
       OnClick = InitialDirClick
+      Caption = 'Translation Directory'
+      Hint = ''
     end
     object DictionaryPath2: TTBXItem
       Tag = 2
-      Caption = 'Dictionary Directory'
       OnClick = InitialDirClick
+      Caption = 'Dictionary Directory'
+      Hint = ''
     end
     object ApplicationPath1: TTBXItem
       Tag = 3
-      Caption = 'Application Directory'
       OnClick = InitialDirClick
+      Caption = 'Application Directory'
+      Hint = ''
     end
     object TBXSeparatorItem2: TTBXSeparatorItem
+      Caption = ''
+      Hint = ''
     end
     object TBXItem3: TTBXItem
       Tag = 4
-      Caption = 'Windows Directory'
       OnClick = InitialDirClick
+      Caption = 'Windows Directory'
+      Hint = ''
     end
     object TBXItem4: TTBXItem
       Tag = 5
-      Caption = 'System Directory'
       OnClick = InitialDirClick
+      Caption = 'System Directory'
+      Hint = ''
     end
   end
   object alTools: TTntActionList
@@ -713,6 +746,8 @@ object frmTools: TfrmTools
       Action = acDelete
     end
     object TBXSeparatorItem3: TTBXSeparatorItem
+      Caption = ''
+      Hint = ''
     end
     object TBXItem6: TTBXItem
       Action = acMoveUp

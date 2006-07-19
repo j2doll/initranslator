@@ -35,10 +35,10 @@ type
     FCaptureOutput: boolean;
     FWaitForCompletion: boolean;
     FPromptForArguments: boolean;
-    FInitialDirectory: string;
-    FArguments: string;
-    FTitle: string;
-    FCommand: string;
+    FInitialDirectory: WideString;
+    FArguments: WideString;
+    FTitle: WideString;
+    FCommand: WideString;
     FUseShellExecute: boolean;
     FShortCut: Word;
     function GetAsString: string;
@@ -47,10 +47,10 @@ type
     procedure Assign(Source: TPersistent); override;
     property AsString: string read GetAsString write SetAsString;
   published
-    property Title: string read FTitle write FTitle;
-    property Command: string read FCommand write FCommand;
-    property Arguments: string read FArguments write FArguments;
-    property InitialDirectory: string read FInitialDirectory write FInitialDirectory;
+    property Title: WideString read FTitle write FTitle;
+    property Command: WideString read FCommand write FCommand;
+    property Arguments: WideString read FArguments write FArguments;
+    property InitialDirectory: WideString read FInitialDirectory write FInitialDirectory;
     property CaptureOutput: boolean read FCaptureOutput write FCaptureOutput;
     property PromptForArguments: boolean read FPromptForArguments write FPromptForArguments;
     property WaitForCompletion: boolean read FWaitForCompletion write FWaitForCompletion;
@@ -66,7 +66,7 @@ type
     constructor Create;
     procedure Assign(Source: TPersistent); override;
     function Add: TToolItem;
-    function IndexOf(const Title: string): integer;
+    function IndexOf(const Title: WideString): integer;
     procedure Exchange(Index1, Index2: integer);
     procedure LoadFromIni(ini: TCustomIniFile);
     procedure SaveToIni(ini: TCustomIniFile);
@@ -238,9 +238,9 @@ begin
 end;
 
 function TToolItem.GetAsString: string;
-var S: TTntStringlist;
+var S: TStringlist;
 begin
-  S := TTntStringlist.Create;
+  S := TStringlist.Create;
   try
     S.Add(Title);
     S.Add(Command);
@@ -258,9 +258,9 @@ begin
 end;
 
 procedure TToolItem.SetAsString(const Value: string);
-var S: TTntStringlist;
+var S: TStringlist;
 begin
-  S := TTntStringlist.Create;
+  S := TStringlist.Create;
   try
     S.CommaText := Value;
     if S.Count > 0 then
@@ -326,7 +326,7 @@ begin
   Result := TToolItem(inherited Items[Index]);
 end;
 
-function TToolItems.IndexOf(const Title: string): integer;
+function TToolItems.IndexOf(const Title: WideString): integer;
 begin
   for Result := 0 to Count - 1 do
     if WideSameText(Items[Result].Title, Title) then

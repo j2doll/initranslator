@@ -29,7 +29,7 @@ interface
 uses
   Windows, Messages, SysUtils, Classes, Graphics, Controls, Forms, Dialogs,
   StdCtrls, ExtCtrls,
-  TntForms, TntStdCtrls, TntDialogs;
+  TntForms, TntClasses, TntSysUtils, TntStdCtrls, TntDialogs;
 
 type
   TfrmEncoding = class(TTntForm)
@@ -41,18 +41,18 @@ type
     procedure Initialize;
     procedure WMNCDestroy(var Message: TWMNCDestroy); message WM_NCDESTROY;
   public
-    constructor Create(OpenDialog: TOpenDialog); reintroduce;
+    constructor Create(OpenDialog: TTntOpenDialog); reintroduce;
     destructor Destroy; override;
   end;
 
-  TEncodingOpenDialog = class(TOpenDialog)
+  TEncodingOpenDialog = class(TTntOpenDialog)
   private
     FEncodingIndex, FSelectedIndex: integer;
-    FEncodings: TStrings;
+    FEncodings: TTntStrings;
     FForm: TfrmEncoding;
     FEncodingLabel: WideString;
     procedure SetEncodingIndex(const Value: integer);
-    procedure SetEncodings(const Value: TStrings);
+    procedure SetEncodings(const Value: TTntStrings);
   protected
     procedure DoShow; override;
     procedure DoClose; override;
@@ -61,7 +61,7 @@ type
     destructor Destroy; override;
     function Execute: boolean; override;
   published
-    property Encodings: TStrings read FEncodings write SetEncodings;
+    property Encodings: TTntStrings read FEncodings write SetEncodings;
     property EncodingLabel: WideString read FEncodingLabel write FEncodingLabel;
     property EncodingIndex: integer read FEncodingIndex write SetEncodingIndex default 0;
   end;
@@ -82,7 +82,7 @@ uses
 
 { TfrmEncoding }
 
-constructor TfrmEncoding.Create(OpenDialog: TOpenDialog);
+constructor TfrmEncoding.Create(OpenDialog: TTntOpenDialog);
 begin
   FParentWnd := GetParent(OpenDialog.Handle);
   Initialize;
@@ -137,7 +137,7 @@ end;
 constructor TEncodingOpenDialog.Create(AOwner: TComponent);
 begin
   inherited;
-  FEncodings := TStringlist.Create;
+  FEncodings := TTntStringlist.Create;
   FEncodingLabel := SEncoding;
 end;
 
@@ -187,7 +187,7 @@ begin
     FForm.cbEncodings.ItemIndex := Value;
 end;
 
-procedure TEncodingOpenDialog.SetEncodings(const Value: TStrings);
+procedure TEncodingOpenDialog.SetEncodings(const Value: TTntStrings);
 begin
   FEncodings.Assign(Value);
   if FForm <> nil then
@@ -201,7 +201,10 @@ end;
 
 function TEncodingSaveDialog.Execute: boolean;
 begin
-  Result := DoExecute(@GetSaveFileName);
+  if Win32PlatformIsUnicode then
+    Result := DoExecuteW(@GetSaveFileNameW)
+  else
+    Result := DoExecute(@GetSaveFileNameA);
   if Result then
     FEncodingIndex := FSelectedIndex
   else if CommDlgExtendedError = FNERR_INVALIDFILENAME then

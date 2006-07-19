@@ -52,10 +52,10 @@ type
     FItems, FOrphans: ITranslationItems;
     FImport: boolean;
     function DoTranslate(const S: WideString): WideString;
-    function LoadPlugins(const PluginFolder: string; ForImport: boolean): integer;
+    function LoadPlugins(const PluginFolder: WideString; ForImport: boolean): integer;
   public
     { Public declarations }
-    class function Edit(const Items, Orphans: ITranslationItems; const PluginFolder: string;
+    class function Edit(const Items, Orphans: ITranslationItems; const PluginFolder: WideString;
       const DoImport: boolean; var ItemIndex, CapabilitesSupported: integer): boolean;
   end;
 
@@ -130,7 +130,7 @@ end;
 { TfrmImportExport }
 
 class function TfrmImportExport.Edit(const Items, Orphans: ITranslationItems;
-  const PluginFolder: string; const DoImport: boolean; var ItemIndex, CapabilitesSupported: integer): boolean;
+  const PluginFolder: WideString; const DoImport: boolean; var ItemIndex, CapabilitesSupported: integer): boolean;
 var
   frmImportExport: TfrmImportExport;
   i: integer;
@@ -194,13 +194,13 @@ begin
     (TLibItem(lvItems.Selected.Data).Parser.Capabilities and CAP_CONFIGURE = CAP_CONFIGURE);
 end;
 
-function TfrmImportExport.LoadPlugins(const PluginFolder: string;
+function TfrmImportExport.LoadPlugins(const PluginFolder: WideString;
   ForImport: boolean): integer;
 const
   cCapability: array[boolean] of integer = (CAP_EXPORT, CAP_IMPORT);
 var
   F: TSearchRec;
-  APath: string;
+  APath: WideString;
   li: TListItem;
   LibItem: TLibItem;
 begin

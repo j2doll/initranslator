@@ -22,7 +22,7 @@ unit MsgTranslate;
 
 interface
 uses
-  SysUtils, WideIniFiles, Classes;
+  SysUtils, WideIniFiles, Classes, TntClasses;
 
 type
   TTranslateEvent = procedure(Sender, AnObject: TObject; const APropName, ASection: WideString; var AValue: WideString) of object;
@@ -38,7 +38,7 @@ type
   TAppLanguage = class(TObject, IUnknown, IApplicationTranslator)
   private
     FLangFile: TWideMemIniFile;
-    FSkipList: TStrings;
+    FSkipList: TTntStrings;
     FClassSkipList: TThreadList;
     FOnWrite: TTemplateEvent;
     FOnRead: TTranslateEvent;
@@ -65,7 +65,7 @@ type
     function InSkipList(const S: WideString): boolean;
     function InClassSkipList(AClass: TClass): boolean;
     // TranslateObject iterates over AnObject's published properties and calls OnReading/OnRead for each
-    // WideString or TStrings type property unless AnObject is in the class skiplist or the
+    // WideString or TTntStrings type property unless AnObject is in the class skiplist or the
     // property name is in the property skiplist. If it's OK to translate, the
     // new value (gotten from OnRead) is written to the property
     // If the property is a TCollection, it's Items properties are iterated as well (and so on) unless
@@ -84,7 +84,7 @@ type
     procedure SkipProperty(const PropName: WideString);
 
     property Filename: WideString read FFilename;
-    property SkipList: TStrings read FSkipList;
+    property SkipList: TTntStrings read FSkipList;
     property ClassSkipList: TThreadList read FClassSkipList;
     // OnReading and OnRead are used with TranslateObject:
     // Return false in ATranslate if this object/property shouldn't be read
@@ -111,7 +111,7 @@ resourcestring
 
 implementation
 uses
-  TypInfo, TntClasses;
+  TypInfo;
 
 function DecodeStrings(const S: WideString): WideString;
 var
@@ -230,8 +230,8 @@ end;
 constructor TAppLanguage.Create(const Filename: WideString);
 begin
   inherited Create;
-  FSkipList := TStringlist.Create;
-  TStringlist(FSkipList).Sorted := true;
+  FSkipList := TTntStringlist.Create;
+  TTntStringlist(FSkipList).Sorted := true;
   FClassSkipList := TThreadList.Create;
   if FileExists(Filename) then
     LoadFromFile(Filename);

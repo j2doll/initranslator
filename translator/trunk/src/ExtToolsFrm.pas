@@ -26,7 +26,7 @@ uses
   Menus,
   BaseForm, AppOptions, ShortCutEdit,
   TntMenus, TntButtons, TntStdCtrls, TntDialogs, TB2Item, TntActnList,
-  TBX;
+  TBX, TntExtCtrls;
 
 type
   TTestToolItemClickEvent = procedure(Sender: TObject; ToolItem: TToolItem) of object;
@@ -70,7 +70,7 @@ type
     TBXSeparatorItem2: TTBXSeparatorItem;
     TBXItem3: TTBXItem;
     TBXItem4: TTBXItem;
-    pnlEditTool: TPanel;
+    pnlEditTool: TTntPanel;
     Label2: TTntLabel;
     Label3: TTntLabel;
     Label4: TTntLabel;
@@ -84,7 +84,7 @@ type
     btnInitDir: TTntBitBtn;
     chkPrompt: TTntCheckBox;
     chkWait: TTntCheckBox;
-    chkShell: TCheckBox;
+    chkShell: TTntCheckBox;
     btnTest: TTntButton;
     TBItem1: TTBItem;
     lblShortCut: TTntLabel;
@@ -142,7 +142,7 @@ type
     edShortCut: TShortCutEdit;
     procedure SaveCurrentTool;
     procedure LoadCurrentTool;
-    function NewToolTitle: string;
+    function NewToolTitle: WideString;
   public
     { Public declarations }
     class function Edit(Options: TAppOptions; MainActionList: TActionList; TestClickEvent: TTestToolItemClickEvent): boolean;
@@ -299,18 +299,18 @@ begin
   lblShortCut.FocusControl := edShortCut;
 end;
 
-function TfrmTools.NewToolTitle: string;
+function TfrmTools.NewToolTitle: WideString;
 var
   i: integer;
   S: string;
 begin
   i := 1;
   S := Translate(Application.MainForm.ClassName, SNewToolNameFmt);
-  Result := Format(S, [i]);
+  Result := WideFormat(S, [i]);
   while FTools.IndexOf(Result) >= 0 do
   begin
     Inc(i);
-    Result := Format(S, [i]);
+    Result := WideFormat(S, [i]);
   end;
 end;
 

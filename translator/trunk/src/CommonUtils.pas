@@ -19,7 +19,7 @@ unit CommonUtils;
 
 interface
 uses
-  SysUtils, Controls, Classes;
+  SysUtils, Controls, Classes, TntClasses;
 
 procedure InfoMsg(const AText, ACaption: WideString);
 procedure AboutMsg(const AText, ACaption: WideString);
@@ -39,14 +39,14 @@ function WinDir: string;
 
 function MatchesString(const SubStr, Str: WideString; WholeLine, CaseSense, Fuzzy: boolean): boolean;
 function StripKey(const S, StripChars: WideString; ReallyStrip: boolean): WideString;
-procedure StripKeys(Strings: TStrings; StripChars: WideString; ReallyStrip: boolean);
+procedure StripKeys(Strings: TTntStrings; StripChars: WideString; ReallyStrip: boolean);
 function trimCRLFRight(const S: WideString): WideString;
 function strBetween(const S: WideString; StartChar, EndChar: WideChar): WideString;
 function StrDefault(const S, Default: WideString): WideString;
 
 function MyWideDequotedStr(const S: WideString; Quote: WideChar): WideString;
 function MyWideQuotedStr(const S: WideString; Quote: WideChar): WideString;
-function GetMinimizedFilename(const AFilename: string; Minimize: boolean): string;
+function GetMinimizedFilename(const AFilename: WideString; Minimize: boolean): WideString;
 function DoubleQuoteString(const S: WideString; CheckString: boolean = true): WideString;
 
 function RunProcess(const Filename, Params: string; WorkingDir: string;
@@ -343,7 +343,7 @@ begin
   end;
 end;
 
-procedure StripKeys(Strings: TStrings; StripChars: WideString; ReallyStrip: boolean);
+procedure StripKeys(Strings: TTntStrings; StripChars: WideString; ReallyStrip: boolean);
 var
   i: integer;
 begin
@@ -382,10 +382,10 @@ begin
     Result := S;
 end;
 
-function GetMinimizedFilename(const AFilename: string; Minimize: boolean): string;
+function GetMinimizedFilename(const AFilename: WideString; Minimize: boolean): WideString;
 begin
   if Minimize then
-    Result := ChangeFileExt(ExtractFileName(AFilename), '')
+    Result := WideChangeFileExt(WideExtractFileName(AFilename), '')
   else
     Result := AFilename;
 end;

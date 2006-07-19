@@ -26,8 +26,8 @@ uses
 
 procedure TBMRULoadFromIni(MRU: TTBXMRUList);
 procedure TBMRUSaveToIni(MRU: TTBXMRUList);
-procedure TBMRULoadFromReg(MRU: TTBXMRUList; RootKey: Cardinal; const Path: string);
-procedure TBMRUSaveToReg(MRU: TTBXMRUList; RootKey: Cardinal; const Path: string);
+procedure TBMRULoadFromReg(MRU: TTBXMRUList; RootKey: Cardinal; const Path: WideString);
+procedure TBMRUSaveToReg(MRU: TTBXMRUList; RootKey: Cardinal; const Path: WideString);
 // "Fuzzy" in this context just means "remove all white space and control characters before comparing SubStr and Str"
 function DetectEncoding(const FileName: string): TEncoding;
 function GetAppVersion: string;
@@ -37,7 +37,7 @@ function ActionShortCutInUse(AM: TActionList; ShortCut: Word): boolean;
 function FindActionShortCut(AM: TActionList; ShortCut: Word): TCustomAction;
 function RemoveActionShortCut(AM: TActionList; ShortCut: Word): integer;
 function Translate(const ASection, AMsg: WideString): WideString;
-function MyShortCutToText(ShortCut: TShortCut): string;
+function MyShortCutToText(ShortCut: TShortCut): WideString;
 function BinarySearch(AList: TList; L, R: integer; CompareItem: Pointer; CompareFunc: TListSortCompare; var Index: integer): boolean;
 
 function GlobalLanguageFile: TAppLanguage;
@@ -152,7 +152,7 @@ begin
     Result := AMsg;
 end;
 
-function AnsiUpperCaseFirst(const S: string): string;
+function AnsiUpperCaseFirst(const S: WideString): WideString;
 var i: integer;
 begin
   if S = '' then
@@ -160,13 +160,15 @@ begin
   else
     Result := AnsiUpperCase(S[1]) + AnsiLowerCase(Copy(S, 2, MaxInt));
   for i := 2 to Length(Result) do
-    if (Result[i - 1] in [#0..#32, '_', '-', '+', '\', '/', ':', ';', '.']) then
-      Result[i] := AnsiUpperCase(Result[i])[1];
+    if (Result[i - 1] in [WideChar(#0)..WideChar(#32), WideChar('_'),
+      WideChar('-'), WideChar('+'), WideChar('\'), WideChar('/'), WideChar(':'),
+      WideChar(';'), WideChar('.')]) then
+      Result[i] := WideUpperCase(Result[i])[1];
 end;
 
-function MyShortCutToText(ShortCut: TShortCut): string;
+function MyShortCutToText(ShortCut: TShortCut): WideString;
 var
-  ACtrl, AShift, AAlt: string;
+  ACtrl, AShift, AAlt: WideString;
   i: integer;
 begin
   Result := ShortCutToText(ShortCut);
@@ -198,7 +200,7 @@ begin
   Result := AutoDetectCharacterSet(Filename);
 end;
 
-procedure TBMRULoadFromReg(MRU: TTBXMRUList; RootKey: DWORD; const Path: string);
+procedure TBMRULoadFromReg(MRU: TTBXMRUList; RootKey: DWORD; const Path: WideString);
 var
   ini: TRegIniFile;
 begin
@@ -212,7 +214,7 @@ begin
   end;
 end;
 
-procedure TBMRUSaveToReg(MRU: TTBXMRUList; RootKey: DWORD; const Path: string);
+procedure TBMRUSaveToReg(MRU: TTBXMRUList; RootKey: DWORD; const Path: WideString);
 var
   ini: TRegIniFile;
 begin
@@ -351,7 +353,7 @@ end;
 procedure HandleFileCreateException(Sender: TObject; E: Exception; const Filename: string);
 begin
   if E is EFCreateError then
-    ErrMsg(Format(Translate(Sender.ClassName, SErrCreateFileFmt), [Filename]), Translate(Sender.ClassName, SErrorCaption))
+    ErrMsg(WideFormat(Translate(Sender.ClassName, SErrCreateFileFmt), [Filename]), Translate(Sender.ClassName, SErrorCaption))
   else
     Application.HandleException(Sender);
 end;
@@ -390,7 +392,7 @@ function PidlToPath(IdList: PItemIdList): string;
 begin
   SetLength(Result, MAX_PATH);
   if SHGetPathFromIdList(IdList, PChar(Result)) then
-    Result := string(PChar(Result))
+    Result := WideString(PChar(Result))
   else
     Result := '';
 end;

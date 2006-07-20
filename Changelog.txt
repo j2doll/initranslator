@@ -1,6 +1,7 @@
 Ini Translator Changelog
 ========================
 2006-07-20:
+- Released version 1.9.0.7 on SourceForge
 - A few new strings in Default.lng
 - Fixed Arabic.lng (removed obsolete strings, added new)
 - Better ftp script

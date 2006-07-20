@@ -125,14 +125,14 @@ NEWS_NOTIFY
               <Property MultiValue="0" name="Value" type="String">0</Property>
               </Object>
             <Object Class="TPersistParam" XMLID="{61C26F12-53A5-41FA-8F60-F567944EDE65}"><Property MultiValue="0" name="Caption" type="String">&amp;amp;Build:</Property>
-              <Property MultiValue="0" name="DefaultValue" type="String">0</Property>
+              <Property MultiValue="0" name="DefaultValue" type="String">7</Property>
               <Property name="InUse" type="Boolean">True</Property>
               <Property name="List" type="TStrings"><![CDATA[]]>
                 </Property>
               <Property MultiValue="0" name="Name" type="String">VERSION_BUILD</Property>
               <Property name="ParamType" type="TParamType">ptText</Property>
               <Property name="SelectAll" type="Boolean">False</Property>
-              <Property MultiValue="0" name="Value" type="String">5</Property>
+              <Property MultiValue="0" name="Value" type="String">7</Property>
               </Object>
             <Object Class="TPersistParam" XMLID="{28FC62C4-FC12-476C-9160-9F4C1D681AA6}"><Property MultiValue="0" name="Caption" type="String">&amp;amp;Upload to SourceForge</Property>
               <Property MultiValue="0" name="DefaultValue" type="String">true</Property>
@@ -142,7 +142,7 @@ NEWS_NOTIFY
               <Property MultiValue="0" name="Name" type="String">FTP_UPLOAD</Property>
               <Property name="ParamType" type="TParamType">ptBoolean</Property>
               <Property name="SelectAll" type="Boolean">False</Property>
-              <Property MultiValue="0" name="Value" type="String">False</Property>
+              <Property MultiValue="0" name="Value" type="String">True</Property>
               </Object>
             <Object Class="TPersistParam" XMLID="{A87FF9FF-5CA9-4448-A4E0-99D1CBD999B7}"><Property MultiValue="0" name="Caption" type="String">Send out &amp;amp;notifications</Property>
               <Property MultiValue="0" name="DefaultValue" type="String">true</Property>
@@ -195,7 +195,7 @@ NEWS_NOTIFY
               <Property name="AutoIncBuild" type="WordBool">False</Property>
               <Property name="AutoUpdateFileVersion" type="Boolean">True</Property>
               <Property name="BuildAll" type="WordBool">True</Property>
-              <Property name="BuildVersion" type="Integer">5</Property>
+              <Property name="BuildVersion" type="Integer">7</Property>
               <Property name="CodePage" type="Integer">1252</Property>
               <Property name="CompilerVersion" type="Integer">4</Property>
               <Property MultiValue="0" name="Description" type="String">IniTranslator</Property>
@@ -234,13 +234,13 @@ NEWS_NOTIFY
               <Property name="UseVersionFromDOF" type="Boolean">False</Property>
               <Property MultiValue="1" name="VersionInfoKeys" type="WideString"><![CDATA[CompanyName=Peter Thörnqvist
 FileDescription=Ini Language Translator
-FileVersion=1.9.0.5
+FileVersion=1.9.0.7
 InternalName=translator.exe
 LegalCopyright=Copyright (c) 2003-2004 by Peter Thörnqvist; all rights reserved
 LegalTrademarks=
 OriginalFilename=translator.exe
 ProductName=Ini Translator
-ProductVersion=1.9.0.5
+ProductVersion=1.9.0.7
 Webpage=http://initranslator.sourceforge.net
 License=Mozilla Public License 1.1
 Comments=Latest version at http://initranslator.sourceforge.net
@@ -325,7 +325,7 @@ Action.SetVersionInfoKey("ProductVersion",Action.GetVersionInfoKey("FileVersion"
               <Property name="AutoIncBuild" type="WordBool">False</Property>
               <Property name="AutoUpdateFileVersion" type="Boolean">False</Property>
               <Property name="BuildAll" type="WordBool">True</Property>
-              <Property name="BuildVersion" type="Integer">5</Property>
+              <Property name="BuildVersion" type="Integer">7</Property>
               <Property name="CodePage" type="Integer">1252</Property>
               <Property name="CompilerVersion" type="Integer">4</Property>
               <Property MultiValue="0" name="Description" type="String">MsDictBuild</Property>
@@ -453,7 +453,7 @@ Action.BuildVersion   = VERSION_BUILD;
               <Property name="AutoIncBuild" type="WordBool">False</Property>
               <Property name="AutoUpdateFileVersion" type="Boolean">True</Property>
               <Property name="BuildAll" type="WordBool">True</Property>
-              <Property name="BuildVersion" type="Integer">5</Property>
+              <Property name="BuildVersion" type="Integer">7</Property>
               <Property name="CodePage" type="Integer">1252</Property>
               <Property name="CompilerVersion" type="Integer">4</Property>
               <Property MultiValue="0" name="Description" type="String">PO DLL</Property>
@@ -492,7 +492,7 @@ Action.BuildVersion   = VERSION_BUILD;
               <Property name="UseVersionFromDOF" type="Boolean">False</Property>
               <Property MultiValue="1" name="VersionInfoKeys" type="WideString"><![CDATA[CompanyName=IniTranslator
 FileDescription=PO Plugin for IniTranslator
-FileVersion=1.9.0.5
+FileVersion=1.9.0.7
 InternalName=POParser.dll
 LegalCopyright=Copyright (c) 2003-2004 by Peter Thornqvist; all rights reserved
 LegalTrademarks=
@@ -579,7 +579,7 @@ Action.BuildVersion   = VERSION_BUILD;
               <Property name="AutoIncBuild" type="WordBool">False</Property>
               <Property name="AutoUpdateFileVersion" type="Boolean">True</Property>
               <Property name="BuildAll" type="WordBool">True</Property>
-              <Property name="BuildVersion" type="Integer">5</Property>
+              <Property name="BuildVersion" type="Integer">7</Property>
               <Property name="CodePage" type="Integer">1252</Property>
               <Property name="CompilerVersion" type="Integer">4</Property>
               <Property MultiValue="0" name="Description" type="String">Generic php DLL</Property>
@@ -618,7 +618,7 @@ Action.BuildVersion   = VERSION_BUILD;
               <Property name="UseVersionFromDOF" type="Boolean">False</Property>
               <Property MultiValue="1" name="VersionInfoKeys" type="WideString"><![CDATA[CompanyName=IniTranslator
 FileDescription=PHP Plugin for IniTranslator
-FileVersion=1.9.0.5
+FileVersion=1.9.0.7
 InternalName=PHPParser.dll
 LegalCopyright=Copyright (c) 2003-2004 by Peter Thornqvist; all rights reserved
 LegalTrademarks=
@@ -705,7 +705,7 @@ Action.BuildVersion   = VERSION_BUILD;
               <Property name="AutoIncBuild" type="WordBool">False</Property>
               <Property name="AutoUpdateFileVersion" type="Boolean">True</Property>
               <Property name="BuildAll" type="WordBool">True</Property>
-              <Property name="BuildVersion" type="Integer">5</Property>
+              <Property name="BuildVersion" type="Integer">7</Property>
               <Property name="CodePage" type="Integer">1252</Property>
               <Property name="CompilerVersion" type="Integer">4</Property>
               <Property MultiValue="0" name="Description" type="String">phpNuke DLL</Property>
@@ -744,7 +744,7 @@ Action.BuildVersion   = VERSION_BUILD;
               <Property name="UseVersionFromDOF" type="Boolean">False</Property>
               <Property MultiValue="1" name="VersionInfoKeys" type="WideString"><![CDATA[CompanyName=IniTranslator
 FileDescription=phpNuke Plugin for IniTranslator
-FileVersion=1.9.0.5
+FileVersion=1.9.0.7
 InternalName=phpNukeParser.dll
 LegalCopyright=Copyright (c) 2003-2004 by Peter Thornqvist; all rights reserved
 LegalTrademarks=
@@ -831,7 +831,7 @@ Action.BuildVersion   = VERSION_BUILD;
               <Property name="AutoIncBuild" type="WordBool">False</Property>
               <Property name="AutoUpdateFileVersion" type="Boolean">True</Property>
               <Property name="BuildAll" type="WordBool">True</Property>
-              <Property name="BuildVersion" type="Integer">5</Property>
+              <Property name="BuildVersion" type="Integer">7</Property>
               <Property name="CodePage" type="Integer">1252</Property>
               <Property name="CompilerVersion" type="Integer">4</Property>
               <Property MultiValue="0" name="Description" type="String">Mozilla DTD DLL</Property>
@@ -870,7 +870,7 @@ Action.BuildVersion   = VERSION_BUILD;
               <Property name="UseVersionFromDOF" type="Boolean">False</Property>
               <Property MultiValue="1" name="VersionInfoKeys" type="WideString"><![CDATA[CompanyName=IniTranslator
 FileDescription=Mozilla DTD Plugin for IniTranslator
-FileVersion=1.9.0.5
+FileVersion=1.9.0.7
 InternalName=MozillaDTDParser.dll
 LegalCopyright=Copyright (c) 2003-2004 by Peter Thornqvist; all rights reserved
 LegalTrademarks=
@@ -957,7 +957,7 @@ Action.BuildVersion   = VERSION_BUILD;
               <Property name="AutoIncBuild" type="WordBool">False</Property>
               <Property name="AutoUpdateFileVersion" type="Boolean">True</Property>
               <Property name="BuildAll" type="WordBool">True</Property>
-              <Property name="BuildVersion" type="Integer">5</Property>
+              <Property name="BuildVersion" type="Integer">7</Property>
               <Property name="CodePage" type="Integer">1252</Property>
               <Property name="CompilerVersion" type="Integer">4</Property>
               <Property MultiValue="0" name="Description" type="String">Mozilla Properties DLL</Property>
@@ -996,7 +996,7 @@ Action.BuildVersion   = VERSION_BUILD;
               <Property name="UseVersionFromDOF" type="Boolean">False</Property>
               <Property MultiValue="1" name="VersionInfoKeys" type="WideString"><![CDATA[CompanyName=IniTranslator
 FileDescription=Mozilla Properties Plugin for IniTranslator
-FileVersion=1.9.0.5
+FileVersion=1.9.0.7
 InternalName=MozillaPropsParser.dll
 LegalCopyright=Copyright (c) 2003-2004 by Peter Thornqvist; all rights reserved
 LegalTrademarks=
@@ -1083,7 +1083,7 @@ Action.BuildVersion   = VERSION_BUILD;
               <Property name="AutoIncBuild" type="WordBool">False</Property>
               <Property name="AutoUpdateFileVersion" type="Boolean">True</Property>
               <Property name="BuildAll" type="WordBool">True</Property>
-              <Property name="BuildVersion" type="Integer">5</Property>
+              <Property name="BuildVersion" type="Integer">7</Property>
               <Property name="CodePage" type="Integer">1252</Property>
               <Property name="CompilerVersion" type="Integer">4</Property>
               <Property MultiValue="0" name="Description" type="String">IBForums DLL</Property>
@@ -1122,7 +1122,7 @@ Action.BuildVersion   = VERSION_BUILD;
               <Property name="UseVersionFromDOF" type="Boolean">False</Property>
               <Property MultiValue="1" name="VersionInfoKeys" type="WideString"><![CDATA[CompanyName=IniTranslator
 FileDescription=IB Forums Plugin for IniTranslator
-FileVersion=1.9.0.5
+FileVersion=1.9.0.7
 InternalName=IBForumsParser.dll
 LegalCopyright=Copyright (c) 2003-2004 by Peter Thornqvist; all rights reserved
 LegalTrademarks=
@@ -1209,7 +1209,7 @@ Action.BuildVersion   = VERSION_BUILD;
               <Property name="AutoIncBuild" type="WordBool">False</Property>
               <Property name="AutoUpdateFileVersion" type="Boolean">True</Property>
               <Property name="BuildAll" type="WordBool">True</Property>
-              <Property name="BuildVersion" type="Integer">5</Property>
+              <Property name="BuildVersion" type="Integer">7</Property>
               <Property name="CodePage" type="Integer">1252</Property>
               <Property name="CompilerVersion" type="Integer">4</Property>
               <Property MultiValue="0" name="Description" type="String">SciTE DLL</Property>
@@ -1248,7 +1248,7 @@ Action.BuildVersion   = VERSION_BUILD;
               <Property name="UseVersionFromDOF" type="Boolean">False</Property>
               <Property MultiValue="1" name="VersionInfoKeys" type="WideString"><![CDATA[CompanyName=IniTranslator
 FileDescription=SciTE Plugin for IniTranslator
-FileVersion=1.9.0.5
+FileVersion=1.9.0.7
 InternalName=SciTEParser.dll
 LegalCopyright=Copyright (c) 2003-2004 by Peter Thornqvist; all rights reserved
 LegalTrademarks=
@@ -1335,7 +1335,7 @@ Action.BuildVersion   = VERSION_BUILD;
               <Property name="AutoIncBuild" type="WordBool">False</Property>
               <Property name="AutoUpdateFileVersion" type="Boolean">True</Property>
               <Property name="BuildAll" type="WordBool">True</Property>
-              <Property name="BuildVersion" type="Integer">5</Property>
+              <Property name="BuildVersion" type="Integer">7</Property>
               <Property name="CodePage" type="Integer">1252</Property>
               <Property name="CompilerVersion" type="Integer">4</Property>
               <Property MultiValue="0" name="Description" type="String">Oleg DLL</Property>
@@ -1374,7 +1374,7 @@ Action.BuildVersion   = VERSION_BUILD;
               <Property name="UseVersionFromDOF" type="Boolean">False</Property>
               <Property MultiValue="1" name="VersionInfoKeys" type="WideString"><![CDATA[CompanyName=IniTranslator
 FileDescription=Oleg Translator Plugin for IniTranslator
-FileVersion=1.9.0.5
+FileVersion=1.9.0.7
 InternalName=OlegParser.dll
 LegalCopyright=Copyright (c) 2003-2004 by Peter Thornqvist; all rights reserved
 LegalTrademarks=
@@ -1962,7 +1962,7 @@ Peter Thornqvist
         <Property MultiValue="0" name="Name" type="String">VERSION_RELEASE</Property>
         <Property name="VariableType" type="TFBVariableType">vtProject</Property>
         </Object>
-      <Object Class="TFBVariable" XMLID="{2C0ECC00-A68D-45F6-9BBA-67E2C178ACCA}"><Property MultiValue="0" name="DefaultValue" type="String">1</Property>
+      <Object Class="TFBVariable" XMLID="{2C0ECC00-A68D-45F6-9BBA-67E2C178ACCA}"><Property MultiValue="0" name="DefaultValue" type="String">7</Property>
         <Property name="IsMacro" type="Boolean">False</Property>
         <Property name="MakeEnv" type="Boolean">False</Property>
         <Property MultiValue="0" name="Name" type="String">VERSION_BUILD</Property>

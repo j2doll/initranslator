@@ -587,15 +587,16 @@ begin
     if FileExists(GlobalAppOptions.OriginalFile) then
     begin
       OpenOrigDlg.FileName := GlobalAppOptions.OriginalFile;
-//      OpenOrigDlg.EncodingIndex := GlobalAppOptions.OrigEncoding;
+      OpenOrigDlg.EncodingIndex := GlobalAppOptions.OrigEncoding;
+      SaveTransDlg.EncodingIndex := GlobalAppOptions.OrigEncoding;
       SetFileAndFilter(OpenOrigDlg.FileName, OpenOrigDlg.FilterIndex);
       LoadOriginal(OpenOrigDlg.FileName, TEncoding(OpenOrigDlg.EncodingIndex)); // ??
     end;
     if FileExists(GlobalAppOptions.TranslationFile) then
     begin
       OpenTransDlg.FileName := GlobalAppOptions.TranslationFile;
-//      OpenTransDlg.EncodingIndex := GlobalAppOptions.TransEncoding;
-//      SaveTransDlg.EncodingIndex := OpenTransDlg.EncodingIndex;
+      OpenTransDlg.EncodingIndex := GlobalAppOptions.TransEncoding;
+      SaveTransDlg.EncodingIndex := GlobalAppOptions.TransEncoding;
       if FFileName = '' then
         SetFileAndFilter(OpenTransDlg.FileName, OpenTransDlg.FilterIndex);
       LoadTranslation(OpenTransDlg.FileName, TEncoding(OpenTransDlg.EncodingIndex)); // ??
@@ -1352,6 +1353,7 @@ procedure TfrmMain.SetFileAndFilter(const FileName: string; FilterIndex: integer
 begin
   FFileName := FileName;
   OpenOrigDlg.FilterIndex := FilterIndex;
+  SaveOrigDlg.FilterIndex := FilterIndex;
   OpenTransDlg.FilterIndex := FilterIndex;
   SaveTransDlg.FilterIndex := FilterIndex;
 end;

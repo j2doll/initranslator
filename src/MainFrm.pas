@@ -446,7 +446,7 @@ type
     SaveTransDlg, SaveOrigDlg: TEncodingSaveDialog;
     FFindReplace: TFindReplace;
     FTranslateFile: TTranslateFiles;
-    FLastFindText, FFileName: WideString;
+    FLastFindText, FLastFolder: WideString;
     FModified: boolean;
     FDict: TDictionaryItems;
     FCommandProcessor: boolean;
@@ -471,10 +471,11 @@ type
     procedure LoadSettings(FirstLoad: boolean);
     procedure SaveSettings;
     procedure LoadTranslate;
-    procedure LoadOriginal(const FileName: string; Encoding: TEncoding);
-    procedure LoadTranslation(const FileName: string; Encoding: TEncoding);
+    function LoadOriginal(const FileName: string; Encoding: TEncoding):TEncoding;
+    function LoadTranslation(const FileName: string; Encoding: TEncoding):TEncoding;
     function SaveTranslation(const FileName: string; Encoding: TEncoding): boolean;
     function SaveTranslationAs(const FileName: string; Encoding: TEncoding): boolean;
+    function SaveOriginal(const FileName: string; Encoding: TEncoding): boolean;
     function SaveOrigAs(const FileName: string; Encoding: TEncoding): boolean;
     procedure SetModified(const Value: boolean);
     function GetModified: boolean;
@@ -505,8 +506,7 @@ type
     procedure DoReadObject(Sender, AnObject: TObject; const PropName, Section: WideString; var Value: WideString);
     procedure ScrollToTop;
     procedure SaveEditChanges;
-    function GetFilename(const Default: string): string;
-    procedure SetFileAndFilter(const FileName: string; FilterIndex: integer);
+    function GetFilename(const Filename: string): string;
     procedure MoveCommentWindow;
     procedure WMDropFiles(var Message: TWmDropFiles); message WM_DROPFILES;
     procedure WMWindowPosChanged(var Message: TWMWindowPosChanged); message WM_WINDOWPOSCHANGED;
@@ -585,34 +585,14 @@ begin
   begin
     CreateDialogs;
     if FileExists(GlobalAppOptions.OriginalFile) then
-    begin
-      OpenOrigDlg.FileName := GlobalAppOptions.OriginalFile;
-      OpenOrigDlg.EncodingIndex := GlobalAppOptions.OrigEncoding;
-      SaveTransDlg.EncodingIndex := GlobalAppOptions.OrigEncoding;
-      SetFileAndFilter(OpenOrigDlg.FileName, OpenOrigDlg.FilterIndex);
-      LoadOriginal(OpenOrigDlg.FileName, TEncoding(OpenOrigDlg.EncodingIndex)); // ??
-    end;
+      LoadOriginal(GlobalAppOptions.OriginalFile, TEncoding(GlobalAppOptions.OrigEncoding)); // ??
     if FileExists(GlobalAppOptions.TranslationFile) then
-    begin
-      OpenTransDlg.FileName := GlobalAppOptions.TranslationFile;
-      OpenTransDlg.EncodingIndex := GlobalAppOptions.TransEncoding;
-      SaveTransDlg.EncodingIndex := GlobalAppOptions.TransEncoding;
-      if FFileName = '' then
-        SetFileAndFilter(OpenTransDlg.FileName, OpenTransDlg.FilterIndex);
-      LoadTranslation(OpenTransDlg.FileName, TEncoding(OpenTransDlg.EncodingIndex)); // ??
-    end;
+      LoadTranslation(GlobalAppOptions.TranslationFile, TEncoding(GlobalAppOptions.TransEncoding)); // ??
     if FileExists(GlobalAppOptions.DictionaryFile) then
-      OpenDictDlg.FileName := GlobalAppOptions.DictionaryFile;
-
-    if FileExists(OpenDictDlg.FileName) then
-    begin
-      SaveDictDlg.FileName := OpenDictDlg.FileName;
-      LoadDictionary(OpenDictDlg.FileName);
-    end;
+      LoadDictionary(GlobalAppOptions.DictionaryFile);
 
     Caption := GlobalAppOptions.AppTitle;
     Application.Title := Caption;
-    OpenOrigDlg.FilterIndex := GlobalAppOptions.FilterIndex;
     pnlBottom.Height := GlobalAppOptions.SplitterPosition;
     reOriginal.Color := cColorUntranslated;
     TBIniLoadPositions(Self, GetUserAppOptionsFile, cIniToolbarKey);
@@ -648,8 +628,8 @@ begin
     LoadTranslate;
 
   end;
-  UpdateColumn(0, OpenOrigDlg.Filename);
-  UpdateColumn(1, OpenTransDlg.Filename);
+  UpdateColumn(0, GlobalAppOptions.OriginalFile);
+  UpdateColumn(1, GlobalAppOptions.TranslationFile);
 
   lvTranslateStrings.Font := GlobalAppOptions.AppFont;
   reOriginal.Font := GlobalAppOptions.AppFont;
@@ -696,13 +676,7 @@ begin
   else
     W.WindowState := WindowState;
   GlobalAppOptions.WindowInfos[Self] := W;
-  GlobalAppOptions.OriginalFile := OpenOrigDlg.FileName;
-  GlobalAppOptions.TranslationFile := OpenTransDlg.FileName;
-  GlobalAppOptions.DictionaryFile := OpenDictDlg.FileName;
-  GlobalAppOptions.OrigEncoding := OpenOrigDlg.EncodingIndex;
-  GlobalAppOptions.TransEncoding := OpenTransDlg.EncodingIndex;
 
-  GlobalAppOptions.FilterIndex := OpenOrigDlg.FilterIndex;
   GlobalAppOptions.ShowQuotes := acShowQuotes.Checked;
   GlobalAppOptions.AppTitle := SAppTitle;
   GlobalAppOptions.SplitterPosition := pnlBottom.Height;
@@ -865,8 +839,8 @@ begin
         if FileExists(S) then
           LoadTranslation(S, DetectEncoding(S));
       end
-      else if FileExists(OpenTransDlg.Filename) then
-        LoadTranslation(OpenTransDlg.Filename, DetectEncoding(OpenTransDlg.Filename));
+      else if FileExists(GlobalAppOptions.TranslationFile) then
+        LoadTranslation(GlobalAppOptions.TranslationFile, DetectEncoding(GlobalAppOptions.TranslationFile));
     end;
     if (ParamCount >= 3) then
     begin
@@ -879,25 +853,37 @@ begin
   Modified := false;
 end;
 
-procedure TfrmMain.LoadOriginal(const FileName: string; Encoding: TEncoding);
+function TfrmMain.LoadOriginal(const FileName: string; Encoding: TEncoding):TEncoding;
 begin
   WaitCursor;
-  if not CheckModified then
-    Exit;
 
-  if FileExists(OpenOrigDlg.FileName) and not FCommandProcessor then
+  if not CheckModified then
+  begin
+    Result := Encoding;
+    Exit;
+  end;
+
+  if FileExists(Filename) and not FCommandProcessor then
   begin
     FCapabilitesSupported := 0;
-    AddMRUFile(OpenOrigDlg.FileName, true);
+    AddMRUFile(FileName, true);
   end;
+
   StopMonitor(FFileMonitors[cOrigMonitor]);
+
   ScrollToTop;
   reOriginal.Clear;
   reTranslation.Clear;
   lvTranslateStrings.Items.Count := 0;
-  OpenOrigDlg.FileName := FileName;
-  FTranslateFile.LoadOriginal(FileName, Encoding);
-  StartMonitor(FFileMonitors[cOrigMonitor], FileName);
+
+  GlobalAppOptions.OriginalFile := Filename;
+  GlobalAppOptions.OrigEncoding := Ord(Encoding);
+  FLastFolder := ExtractFilePath(Filename);
+
+  Result := FTranslateFile.LoadOriginal(FileName, Encoding);
+  GlobalAppOptions.OrigEncoding := Ord(Result);
+  StartMonitor(FFileMonitors[cOrigMonitor], Filename);
+
   if not FCommandProcessor then
   begin
     lvTranslateStrings.Items.Count := FTranslateFile.Items.Count;
@@ -907,24 +893,32 @@ begin
   acRestoreSortExecute(nil);
 end;
 
-procedure TfrmMain.LoadTranslation(const FileName: string; Encoding: TEncoding);
+function TfrmMain.LoadTranslation(const FileName: string; Encoding: TEncoding):TEncoding;
 begin
   WaitCursor;
   if not CheckModified then
+  begin
+    Result := Encoding;
     Exit;
+  end;
   StopMonitor(FFileMonitors[cTransMonitor]);
   reOriginal.Clear;
   reTranslation.Clear;
   ScrollToTop;
   lvTranslateStrings.Items.Count := 0;
-  OpenTransDlg.FileName := FileName;
-  SaveTransDlg.FileName := FileName;
+
+  GlobalAppOptions.TranslationFile := Filename;
+  GlobalAppOptions.TransEncoding := Ord(Encoding);
+  FLastFolder := ExtractFilePath(Filename);
+
   AddMRUFile(FileName, false);
 
-  FTranslateFile.LoadTranslation(FileName, Encoding);
+  Result := FTranslateFile.LoadTranslation(FileName, Encoding);
+  GlobalAppOptions.TransEncoding := Ord(Result);
   StartMonitor(FFileMonitors[cTransMonitor], FileName);
   lvTranslateStrings.Items.Count := FTranslateFile.Items.Count;
   lvTranslateStrings.Invalidate;
+
   if Visible then
   begin
     if lvTranslateStrings.CanFocus then
@@ -956,7 +950,6 @@ begin
   // stop the monitor thread
   StopMonitor(FFileMonitors[cTransMonitor]);
   // avoid false alarms when original = translation
-//  if AnsiCompareFilename(Filename,OpenOrigDlg.Filename) = 0 then
   StopMonitor(FFileMonitors[cOrigMonitor]);
   SaveEditChanges;
   //  DeleteFile(Filename); // clear old content
@@ -966,15 +959,16 @@ begin
     on E: Exception do
       HandleFileCreateException(Self, E, FileName);
   end;
-  OpenTransDlg.FileName := FileName;
-  SaveTransDlg.FileName := FileName;
-  SetFileAndFilter(FileName, SaveTransDlg.FilterIndex);
+  GlobalAppOptions.TranslationFile := Filename;
+  GlobalAppOptions.TransEncoding := Ord(Encoding);
+  FLastFolder := ExtractFilePath(Filename);
+
   UpdateColumn(1, FileName);
   Result := true;
   Modified := false;
   // resume the monitor thread
   StartMonitor(FFileMonitors[cTransMonitor], FileName);
-  StartMonitor(FFileMonitors[cOrigMonitor], OpenOrigDlg.FileName);
+  StartMonitor(FFileMonitors[cOrigMonitor], GlobalAppOptions.OriginalFile);
   lvTranslateStrings.Invalidate;
   lvTranslateStrings.ItemIndex := i;
 end;
@@ -982,32 +976,67 @@ end;
 function TfrmMain.SaveTranslationAs(const FileName: string; Encoding: TEncoding): boolean;
 begin
   Result := false;
-  SaveTransDlg.FileName := GetFilename(FileName);
+  SaveTransDlg.FileName := GetFilename(Filename);
+  SaveTransDlg.FilterIndex := GlobalAppOptions.FilterIndex;
+  SaveTransDlg.EncodingIndex := Ord(Encoding);
+  
   if SaveTransDlg.Execute then
   begin
-    SetFileAndFilter(SaveTransDlg.FileName, SaveTransDlg.FilterIndex);
+    GlobalAppOptions.FilterIndex := SaveTransDlg.FilterIndex;
     SaveTranslation(SaveTransDlg.FileName, TEncoding(SaveTransDlg.EncodingIndex));
     Result := true;
   end;
 end;
 
+function TfrmMain.SaveOriginal(const FileName: string; Encoding: TEncoding): boolean;
+var
+  i: integer;
+begin
+  i := lvTranslateStrings.ItemIndex;
+  if FileName = '' then
+  begin
+    Result := SaveOrigAs(FileName, Encoding);
+    Exit;
+  end;
+  WaitCursor;
+
+  // stop the monitor thread
+  StopMonitor(FFileMonitors[cTransMonitor]);
+  // avoid false alarms when original = translation
+  StopMonitor(FFileMonitors[cOrigMonitor]);
+  SaveEditChanges;
+  //  DeleteFile(Filename); // clear old content
+  try
+    FTranslateFile.SaveOriginal(FileName, Encoding);
+  except
+    on E: Exception do
+      HandleFileCreateException(Self, E, FileName);
+  end;
+
+  GlobalAppOptions.OriginalFile := Filename;
+  GlobalAppOptions.OrigEncoding := Ord(Encoding);
+  FLastFolder := ExtractFilePath(Filename);
+
+  UpdateColumn(0, FileName);
+  Result := true;
+  Modified := false;
+  // resume the monitor thread
+  StartMonitor(FFileMonitors[cTransMonitor], GlobalAppOptions.TranslationFile);
+  StartMonitor(FFileMonitors[cOrigMonitor], GlobalAppOptions.OriginalFile);
+  lvTranslateStrings.Invalidate;
+  lvTranslateStrings.ItemIndex := i;
+end;
+
 function TfrmMain.SaveOrigAs(const FileName: string; Encoding: TEncoding): boolean;
 begin
   Result := false;
-  SaveOrigDlg.FileName := Filename;
+  SaveOrigDlg.FileName := GetFilename(Filename);
   SaveOrigDlg.EncodingIndex := Ord(Encoding);
+  SaveOrigDlg.FilterIndex := GlobalAppOptions.FilterIndex;
   if SaveOrigDlg.Execute then
   begin
-    StopMonitor(FFileMonitors[cOrigMonitor]);
-    try
-      FTranslateFile.SaveOriginal(SaveOrigDlg.FileName, TEncoding(SaveOrigDlg.EncodingIndex));
-    except
-      on E: Exception do
-        HandleFileCreateException(Self, E, SaveOrigDlg.FileName);
-    end;
-    OpenOrigDlg.FileName := SaveOrigDlg.FileName;
-    UpdateColumn(0, OpenOrigDlg.FileName);
-    StartMonitor(FFileMonitors[cOrigMonitor], OpenOrigDlg.FileName);
+    GlobalAppOptions.FilterIndex := SaveOrigDlg.FilterIndex;
+    SaveOriginal(SaveOrigDlg.Filename, TEncoding(SaveOrigDlg.EncodingIndex));
     Result := true;
   end;
 end;
@@ -1043,6 +1072,7 @@ begin
   if acDictInvert.Checked then
     acDictInvert.Execute; // toggle invert
   FDict.LoadFromFile(FileName);
+  GlobalAppOptions.DictionaryFile := Filename;
   if not acDictInvert.Checked and GlobalAppOptions.InvertDictionary then
     acDictInvert.Execute; // toggle invert
   StartMonitor(FFileMonitors[cDictMonitor], FileName);
@@ -1056,6 +1086,7 @@ begin
   StopMonitor(FFileMonitors[cDictMonitor]);
   try
     FDict.SaveToFile(SaveDictDlg.FileName);
+    GlobalAppOptions.DictionaryFile := Filename;
   except
     on E: Exception do
       HandleFileCreateException(Self, E, SaveDictDlg.Filename);
@@ -1267,8 +1298,9 @@ begin
   for i := 0 to StatusBar1.Panels.Count - 1 do
     StatusBar1.Panels[i].Hint := StatusBar1.Panels[i].Caption;
 
-  UpdateColumn(0, OpenOrigDlg.FileName);
-  UpdateColumn(1, OpenTransDlg.FileName);
+  UpdateColumn(0, GlobalAppOptions.OriginalFile);
+  UpdateColumn(1, GlobalAppOptions.TranslationFile);
+
 end;
 
 procedure TfrmMain.DoThreadTerminate(Sender: TObject);
@@ -1294,13 +1326,13 @@ begin
     begin
       // in case Original and Translation is the same file...
       StopMonitor(FFileMonitors[cTransMonitor]);
-      if FileExists(SaveTransDlg.FileName) then
-        SaveTranslation(SaveTransDlg.FileName, AutoDetectCharacterSet(SaveTransDlg.FileName));
-      LoadOriginal(FileName, TEncoding(OpenOrigDlg.EncodingIndex));
-      LoadTranslation(OpenTransDlg.FileName, TEncoding(OpenTransDlg.EncodingIndex));
+//      if FileExists(GlobalAppOptions.TranslationFile) then
+//        SaveTranslation(GlobalAppOptions.TranslationFile, DetectEncoding(GlobalAppOptions.TranslationFile));
+      LoadOriginal(FileName, TEncoding(GlobalAppOptions.OrigEncoding));
+      LoadTranslation(GlobalAppOptions.TranslationFile, TEncoding(GlobalAppOptions.TransEncoding));
     end
     else if Sender = FFileMonitors[cTransMonitor] then
-      LoadTranslation(FileName, TEncoding(OpenTransDlg.EncodingIndex))
+      LoadTranslation(FileName, TEncoding(GlobalAppOptions.TransEncoding))
     else if Sender = FFileMonitors[cDictMonitor] then
       LoadDictionary(FileName)
     else
@@ -1349,21 +1381,12 @@ begin
   end;
 end;
 
-procedure TfrmMain.SetFileAndFilter(const FileName: string; FilterIndex: integer);
+function TfrmMain.GetFilename(const Filename: string): string;
 begin
-  FFileName := FileName;
-  OpenOrigDlg.FilterIndex := FilterIndex;
-  SaveOrigDlg.FilterIndex := FilterIndex;
-  OpenTransDlg.FilterIndex := FilterIndex;
-  SaveTransDlg.FilterIndex := FilterIndex;
-end;
-
-function TfrmMain.GetFilename(const Default: string): string;
-begin
-  if GlobalAppOptions.GlobalPath then
-    Result := ExtractFilePath(FFileName) + ExtractFileName(Default)
+  if GlobalAppOptions.GlobalPath and (FLastFolder <> '') then
+    Result := IncludeTrailingPathDelimiter(FLastFolder) + ExtractFileName(Filename)
   else
-    Result := Default;
+    Result := Filename;
   Result := ExcludeTrailingPathDelimiter(Result);
 end;
 
@@ -1741,14 +1764,14 @@ begin
             // find out where it was dropped so we can load the right file
             if not DragQueryPoint(Message.Drop, P) or PtInRect(Rect(0, 0, Width div 2, Height), P) then
             begin
-              OpenOrigDlg.FileName := buf;
-              LoadOriginal(OpenOrigDlg.FileName, DetectEncoding(OpenOrigDlg.FileName));
+              GlobalAppOptions.OriginalFile := buf;
+              LoadOriginal(GlobalAppOptions.OriginalFile, DetectEncoding(GlobalAppOptions.OriginalFile));
               acNewTrans.Execute;
             end
             else
             begin
-              OpenTransDlg.FileName := buf;
-              LoadTranslation(OpenTransDlg.FileName, DetectEncoding(OpenTransDlg.FileName));
+              GlobalAppOptions.TranslationFile := buf;
+              LoadTranslation(GlobalAppOptions.TranslationFile, DetectEncoding(GlobalAppOptions.TranslationFile));
             end;
           end;
         end;
@@ -1794,7 +1817,6 @@ begin
     Encodings.Add(Translate(ClassName, SANSI));
     Encodings.Add(Translate(ClassName, SUTF8));
     Encodings.Add(Translate(ClassName, SUnicode));
-    EncodingIndex := GlobalAppOptions.OrigEncoding;
   end;
 
   OpenTransDlg := TEncodingOpenDialog.Create(Self);
@@ -1807,7 +1829,6 @@ begin
     Encodings.Add(Translate(ClassName, SANSI));
     Encodings.Add(Translate(ClassName, SUTF8));
     Encodings.Add(Translate(ClassName, SUnicode));
-    EncodingIndex := GlobalAppOptions.TransEncoding;
   end;
   SaveTransDlg := TEncodingSaveDialog.Create(Self);
   with SaveTransDlg do
@@ -1820,7 +1841,6 @@ begin
     Encodings.Add(Translate(ClassName, SANSI));
     Encodings.Add(Translate(ClassName, SUTF8));
     Encodings.Add(Translate(ClassName, SUnicode));
-    EncodingIndex := GlobalAppOptions.TransEncoding;
   end;
   SaveOrigDlg := TEncodingSaveDialog.Create(Self);
   with SaveOrigDlg do
@@ -1833,7 +1853,6 @@ begin
     Encodings.Add(Translate(ClassName, SANSI));
     Encodings.Add(Translate(ClassName, SUTF8));
     Encodings.Add(Translate(ClassName, SUnicode));
-    EncodingIndex := GlobalAppOptions.OrigEncoding;
   end;
 end;
 
@@ -1844,7 +1863,7 @@ begin
   begin
     case YesNoCancel(Translate(ClassName, SSavePrompt), Translate(ClassName, SConfirmCaption)) of
       IDYES:
-        Result := SaveTranslation(OpenTransDlg.FileName, TEncoding(OpenTransDlg.EncodingIndex));
+        Result := SaveTranslation(GlobalAppOptions.TranslationFile, TEncoding(GlobalAppOptions.TransEncoding));
       IDNO: Result := true; // do nothing
       IDCANCEL:
         Result := false;
@@ -1896,9 +1915,9 @@ var
   S: string;
 begin
   if AOriginal then
-    S := WideFormat('%s [%s]', [FileName, OpenTransDlg.FileName])
+    S := WideFormat('%s [%s]', [FileName, GlobalAppOptions.TranslationFile])
   else
-    S := WideFormat('%s [%s]', [OpenOrigDlg.FileName, FileName]);
+    S := WideFormat('%s [%s]', [GlobalAppOptions.OriginalFile, FileName]);
   MRUFiles.Add(S);
 end;
 
@@ -1915,12 +1934,9 @@ begin
     Orig := FileName;
   end;
   if (Orig <> '') and FileExists(Orig) then
-  begin
-    SetFileAndFilter(Orig, OpenOrigDlg.FilterIndex);
-    LoadOriginal(Orig, TEncoding(OpenOrigDlg.EncodingIndex));
-  end;
+    LoadOriginal(Orig, DetectEncoding(Orig));
   if (Trans <> '') and FileExists(Trans) then
-    LoadTranslation(Trans, TEncoding(OpenTransDlg.EncodingIndex))
+    LoadTranslation(Trans, DetectEncoding(Trans))
   else
     acOpenTrans.Execute;
 end;
@@ -2114,16 +2130,17 @@ begin
     ErrMsg(Translate(ClassName, SErrDictEmpty), Translate(ClassName, SInfoCaption));
     Exit;
   end;
+  SaveDictDlg.FileName := GlobalAppOptions.DictionaryFile;
   if SaveDictDlg.Execute then
   begin
     SaveDictionary(SaveDictDlg.FileName);
-    OpenDictDlg.FileName := SaveDictDlg.FileName;
     UpdateStatus;
   end;
 end;
 
 procedure TfrmMain.acDictLoadExecute(Sender: TObject);
 begin
+  OpenDictDlg.Filename := GlobalAppOptions.DictionaryFile;
   if OpenDictDlg.Execute then
   begin
     LoadDictionary(OpenDictDlg.FileName);
@@ -2306,10 +2323,12 @@ procedure TfrmMain.acOpenOrigExecute(Sender: TObject);
 begin
   if not CheckModified then
     Exit;
-  OpenOrigDlg.FileName := GetFilename(OpenOrigDlg.FileName);
+  OpenOrigDlg.FileName := GetFilename(GlobalAppOptions.OriginalFile);
+  OpenOrigDlg.FilterIndex := GlobalAppOptions.FilterIndex;
+  OpenOrigDlg.EncodingIndex := GlobalAppOptions.OrigEncoding;
   if OpenOrigDlg.Execute then
   begin
-    SetFileAndFilter(OpenOrigDlg.FileName, OpenOrigDlg.FilterIndex);
+    GlobalAppOptions.FilterIndex := OpenOrigDlg.FilterIndex;
     Modified := false;
     LoadOriginal(OpenOrigDlg.FileName, TEncoding(OpenOrigDlg.EncodingIndex));
     acOpenTrans.Execute;
@@ -2320,10 +2339,12 @@ procedure TfrmMain.acOpenTransExecute(Sender: TObject);
 begin
   if not CheckModified then
     Exit;
-  OpenTransDlg.FileName := GetFilename(OpenTransDlg.FileName);
+  OpenTransDlg.FileName := GetFilename(GlobalAppOptions.TranslationFile);
+  OpenTransDlg.FilterIndex := GlobalAppOptions.FilterIndex;
+  OpenTransDlg.EncodingIndex := GlobalAppOptions.TransEncoding;
   if OpenTransDlg.Execute then
   begin
-    SetFileAndFilter(OpenTransDlg.FileName, OpenTransDlg.FilterIndex);
+    GlobalAppOptions.FilterIndex := OpenOrigDlg.FilterIndex;
     Modified := false;
     LoadTranslation(OpenTransDlg.FileName, TEncoding(OpenTransDlg.EncodingIndex));
     // jump directly to first untranslated item (if available)
@@ -2334,22 +2355,22 @@ end;
 procedure TfrmMain.acSaveTransExecute(Sender: TObject);
 begin
   //  if not HandleImportedSave then
-  SaveTranslation(SaveTransDlg.FileName, TEncoding(SaveTransDlg.EncodingIndex));
+  SaveTranslation(GlobalAppOptions.TranslationFile, TEncoding(GlobalAppOptions.TransEncoding));
 end;
 
 procedure TfrmMain.acSaveTransAsExecute(Sender: TObject);
 begin
-  SaveTranslationAs(SaveTransDlg.FileName, TEncoding(SaveTransDlg.EncodingIndex));
+  SaveTranslationAs(GlobalAppOptions.TranslationFile, TEncoding(GlobalAppOptions.TransEncoding));
 end;
 
 procedure TfrmMain.acSaveOriginalExecute(Sender: TObject);
 begin
-  SaveTranslation(SaveTransDlg.FileName, TEncoding(SaveTransDlg.EncodingIndex));
+  SaveOriginal(GlobalAppOptions.OriginalFile, TEncoding(GlobalAppOptions.OrigEncoding));
 end;
 
 procedure TfrmMain.acSaveOrigAsExecute(Sender: TObject);
 begin
-  SaveOrigAs(OpenOrigDlg.FileName, TEncoding(OpenOrigDlg.EncodingIndex));
+  SaveOrigAs(GlobalAppOptions.OriginalFile, TEncoding(GlobalAppOptions.OrigEncoding));
 end;
 
 procedure TfrmMain.acPrevExecute(Sender: TObject);
@@ -2646,8 +2667,7 @@ begin
       lvTranslateStrings.Selected :=
         lvTranslateStrings.Items[j];
   end;
-  OpenTransDlg.FileName := '';
-  SaveTransDlg.FileName := '';
+  GlobalAppOptions.TranslationFile := '';
   UpdateStatus;
 end;
 
@@ -3139,10 +3159,8 @@ begin
     StopMonitor(FFileMonitors[cOrigMonitor]);
     StopMonitor(FFileMonitors[cTransMonitor]);
     //    StopMonitor(FFileMonitors[cDictMonitor]);
-    FFileName := '';
-    OpenOrigDlg.FileName := '';
-    OpenTransDlg.FileName := '';
-    SaveTransDlg.FileName := '';
+    GlobalAppOptions.TranslationFile := '';
+    GlobalAppOptions.OriginalFIle := '';
     acRestoreSort.Execute;
     Modified := true;
   end;
@@ -3560,10 +3578,10 @@ begin
   else
     S := reOriginal.SelText;
   Result := Tnt_WideStringReplace(Result, '$(OrigText)', S, [rfReplaceAll, rfIgnoreCase]);
-  Result := Tnt_WideStringReplace(Result, '$(OrigPath)', OpenOrigDlg.FileName, [rfReplaceAll, rfIgnoreCase]);
-  Result := Tnt_WideStringReplace(Result, '$(OrigDir)', ExtractFilePath(OpenOrigDlg.FileName), [rfReplaceAll, rfIgnoreCase]);
-  Result := Tnt_WideStringReplace(Result, '$(OrigName)', ChangeFileExt(ExtractFilename(OpenOrigDlg.FileName), ''), [rfReplaceAll, rfIgnoreCase]);
-  Result := Tnt_WideStringReplace(Result, '$(OrigExt)', ExtractFileExt(OpenOrigDlg.FileName), [rfReplaceAll, rfIgnoreCase]);
+  Result := Tnt_WideStringReplace(Result, '$(OrigPath)', GlobalAppOptions.OriginalFile, [rfReplaceAll, rfIgnoreCase]);
+  Result := Tnt_WideStringReplace(Result, '$(OrigDir)', ExtractFilePath(GlobalAppOptions.OriginalFile), [rfReplaceAll, rfIgnoreCase]);
+  Result := Tnt_WideStringReplace(Result, '$(OrigName)', ChangeFileExt(ExtractFilename(GlobalAppOptions.OriginalFile), ''), [rfReplaceAll, rfIgnoreCase]);
+  Result := Tnt_WideStringReplace(Result, '$(OrigExt)', ExtractFileExt(GlobalAppOptions.OriginalFile), [rfReplaceAll, rfIgnoreCase]);
 
   Result := Tnt_WideStringReplace(Result, '$(TransLine)', reTranslation.Text, [rfReplaceAll, rfIgnoreCase]);
   if reTranslation.SelLength = 0 then
@@ -3571,10 +3589,10 @@ begin
   else
     S := reTranslation.SelText;
   Result := Tnt_WideStringReplace(Result, '$(TransText)', S, [rfReplaceAll, rfIgnoreCase]);
-  Result := Tnt_WideStringReplace(Result, '$(TransPath)', OpenTransDlg.FileName, [rfReplaceAll, rfIgnoreCase]);
-  Result := Tnt_WideStringReplace(Result, '$(TransDir)', ExtractFilePath(OpenTransDlg.FileName), [rfReplaceAll, rfIgnoreCase]);
-  Result := Tnt_WideStringReplace(Result, '$(TransName)', ChangeFileExt(ExtractFilename(OpenTransDlg.FileName), ''), [rfReplaceAll, rfIgnoreCase]);
-  Result := Tnt_WideStringReplace(Result, '$(TransExt)', ExtractFileExt(OpenTransDlg.FileName), [rfReplaceAll, rfIgnoreCase]);
+  Result := Tnt_WideStringReplace(Result, '$(TransPath)', GlobalAppOptions.TranslationFile, [rfReplaceAll, rfIgnoreCase]);
+  Result := Tnt_WideStringReplace(Result, '$(TransDir)', ExtractFilePath(GlobalAppOptions.TranslationFile), [rfReplaceAll, rfIgnoreCase]);
+  Result := Tnt_WideStringReplace(Result, '$(TransName)', ChangeFileExt(ExtractFilename(GlobalAppOptions.TranslationFile), ''), [rfReplaceAll, rfIgnoreCase]);
+  Result := Tnt_WideStringReplace(Result, '$(TransExt)', ExtractFileExt(GlobalAppOptions.TranslationFile), [rfReplaceAll, rfIgnoreCase]);
 
   Result := Tnt_WideStringReplace(Result, '$(DictPath)', OpenDictDlg.FileName, [rfReplaceAll, rfIgnoreCase]);
   Result := Tnt_WideStringReplace(Result, '$(DictDir)', ExtractFilePath(OpenDictDlg.FileName), [rfReplaceAll, rfIgnoreCase]);
@@ -3954,6 +3972,7 @@ procedure TfrmMain.cbThemesChange(Sender: TObject);
 begin
   ThemeSwitcher.Theme := cbThemes.Text;
 end;
+
 
 end.
 

@@ -22,7 +22,7 @@ interface
 uses
   SysUtils, Classes, Controls, ActnList, ActnMan,
   MsgTranslate, AppConsts, AppOptions,
-  TBXExtItems;
+  TntClasses, TBXExtItems;
 
 procedure TBMRULoadFromIni(MRU: TTBXMRUList);
 procedure TBMRUSaveToIni(MRU: TTBXMRUList);
@@ -52,13 +52,14 @@ function GetAppStoragePath: string;
 function AutoDetectCharacterSet(Stream:TStream):TEncoding;overload;
 function AutoDetectCharacterSet(const Filename:string):TEncoding;overload;
 function AutoDetectCharacterSet(const S:WideString):TEncoding;overload;
+function FileCharSetToEncoding(CharSet:TTntStreamCharSet):TEncoding;
 
 
 implementation
 uses
   Windows, Forms, Dialogs, Math,
   Registry, IniFiles, StrUtils, Menus, Consts, ShFolder,
-  TntSysUtils, TntClasses, CommonUtils, ShlObj, ActiveX;
+  TntSysUtils, CommonUtils, ShlObj, ActiveX;
 
 var
   FLanguageFile: TAppLanguage = nil;
@@ -95,6 +96,15 @@ begin
     Result := AutoDetectCharacterSet(T);
   finally
     T.Free;
+  end;
+end;
+function FileCharSetToEncoding(CharSet:TTntStreamCharSet):TEncoding;
+begin
+  case CharSet of
+    csAnsi: Result := feAnsi;
+    csUnicode: Result := feUnicode;
+    csUnicodeSwapped: Result := feUnicodeSwapped;
+    csUtf8: Result := feUtf8;
   end;
 end;
 

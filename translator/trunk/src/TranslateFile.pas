@@ -23,7 +23,7 @@ unit TranslateFile;
 
 interface
 uses
-  Classes, SysUtils, AppConsts, TransIntf, TNTSysUtils;
+  Classes, SysUtils, AppConsts, AppUtils, TransIntf, TNTSysUtils;
 
 type
   TTranslationItems = class;
@@ -145,8 +145,8 @@ type
     // Orphans are the items in the translation file that didn't match up with
     // any items in the original file
     property Orphans: ITranslationItems read FOrphans;
-    procedure LoadOriginal(const Filename: WideString; Encoding: TEncoding);
-    procedure LoadTranslation(const Filename: WideString; Encoding: TEncoding);
+    function LoadOriginal(const Filename: WideString; Encoding: TEncoding):TEncoding;
+    function LoadTranslation(const Filename: WideString; Encoding: TEncoding):TEncoding;
     procedure SaveOriginal(const Filename: WideString; Encoding: TEncoding);
     procedure SaveTranslation(const Filename: WideString; Encoding: TEncoding);
     // various delimiters used to parse the file (should probably not be changed)
@@ -500,7 +500,19 @@ begin
   inherited;
 end;
 
-procedure TTranslateFiles.LoadOriginal(const Filename: WideString; Encoding: TEncoding);
+function AutoDetectCharSet(const Filename:string):TTntStreamCharSet;
+var
+  Stream: TStream;
+begin
+  Stream := TTntFileStream.Create(FileName, fmOpenRead or fmShareDenyWrite);
+  try
+    Result := AutoDetectCharacterSet(Stream);
+  finally
+    Stream.Free;
+  end;
+end;
+
+function TTranslateFiles.LoadOriginal(const Filename: WideString; Encoding: TEncoding):TEncoding;
 var
   S, FComments: TTntStringlist;
   ASection: WideString;
@@ -513,9 +525,23 @@ begin
   S := TTntStringlist.Create;
   FComments := TTntStringlist.Create;
   try
-    S.LoadFromFile(Filename);
-//    if Encoding = feUTF8 then
-//      S.AnsiStrings.Text := UTF8Decode(S.AnsiStrings.Text);
+    if AutoDetectCharSet(Filename) = csAnsi then // only use the requested encoding if the file has no BOM
+    begin
+    case Encoding of
+      feAnsi:
+        S.AnsiStrings.LoadFromFile(Filename);
+      feUTF8:
+      begin
+        S.AnsiStrings.LoadFromFileEx(Filename, CP_UTF8);
+        S.AnsiStrings.Text := UTF8Decode(S.AnsiStrings.Text);
+      end;
+      feUnicode:
+        S.LoadFromFile(Filename);
+    end
+    end
+    else
+      S.LoadFromFile(Filename);
+    Result := FileCharSetToEncoding(S.LastFileCharSet);
     for i := 0 to S.Count - 1 do
     begin
       if WideTextPos(CommentChar, S[i]) = 1 then
@@ -544,7 +570,7 @@ begin
   end;
 end;
 
-procedure TTranslateFiles.LoadTranslation(const Filename: WideString; Encoding: TEncoding);
+function TTranslateFiles.LoadTranslation(const Filename: WideString; Encoding: TEncoding):TEncoding;
 var
   S, FComments: TTNTStringlist;
   ASection: WideString;
@@ -562,12 +588,20 @@ begin
     for i := 0 to Items.Count - 1 do
       Items[i].Translated := false;
     Items.Sort := stSection;
-//    if Encoding <> feUnicode then
-//      S.AnsiStrings.LoadFromFile(Filename)
-//    else
-    S.LoadFromFile(Filename);
-//    if Encoding = feUTF8 then
-//      S.AnsiStrings.Text := UTF8Decode(S.AnsiStrings.Text);
+    if AutoDetectCharSet(Filename) = csAnsi then // only use the requested encoding if the file has no BOM
+    begin
+    case Encoding of
+      feAnsi:
+        S.AnsiStrings.LoadFromFile(Filename);
+      feUTF8:
+        S.AnsiStrings.LoadFromFileEx(Filename, CP_UTF8);
+      feUnicode:
+        S.LoadFromFile(Filename);
+    end
+    end
+    else
+      S.LoadFromFile(Filename);
+    Result := FileCharSetToEncoding(S.LastFileCharSet);
     for i := 0 to S.Count - 1 do
     begin
       if WideTextPos(CommentChar, S[i]) = 1 then

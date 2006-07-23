@@ -44,6 +44,7 @@ const
 
   TOOL_ENABLED = 1;
   TOOL_CHECKED = 2;
+  TOOL_VISIBLE = 4;
 
 type
   ITranslationItems = interface;

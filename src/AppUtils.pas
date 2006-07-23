@@ -101,10 +101,11 @@ end;
 function FileCharSetToEncoding(CharSet:TTntStreamCharSet):TEncoding;
 begin
   case CharSet of
-    csAnsi: Result := feAnsi;
     csUnicode: Result := feUnicode;
     csUnicodeSwapped: Result := feUnicodeSwapped;
     csUtf8: Result := feUtf8;
+  else
+    Result := feAnsi;
   end;
 end;
 

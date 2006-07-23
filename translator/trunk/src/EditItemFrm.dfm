@@ -1,13 +1,15 @@
 inherited frmEditItem: TfrmEditItem
   Left = 434
   Top = 176
-  ActiveControl = cbSections
   BorderIcons = [biSystemMenu]
+  BorderStyle = bsDialog
   Caption = 'Edit Item'
   ClientHeight = 453
-  ClientWidth = 442
+  ClientWidth = 446
   Constraints.MinHeight = 480
+  Constraints.MinWidth = 450
   OnCreate = TntFormCreate
+  OnShow = TntFormShow
   PixelsPerInch = 96
   TextHeight = 13
   object Label1: TTntLabel
@@ -43,7 +45,7 @@ inherited frmEditItem: TfrmEditItem
     FocusControl = edName
   end
   object btnOK: TTntButton
-    Left = 259
+    Left = 263
     Top = 418
     Width = 80
     Height = 23
@@ -54,7 +56,7 @@ inherited frmEditItem: TfrmEditItem
     TabOrder = 4
   end
   object btnCancel: TTntButton
-    Left = 347
+    Left = 351
     Top = 418
     Width = 80
     Height = 23
@@ -67,7 +69,7 @@ inherited frmEditItem: TfrmEditItem
   object cbSections: TTntComboBox
     Left = 8
     Top = 24
-    Width = 426
+    Width = 430
     Height = 21
     BevelInner = bvNone
     BevelKind = bkFlat
@@ -79,7 +81,7 @@ inherited frmEditItem: TfrmEditItem
   object edOriginal: TTntRichEdit
     Left = 8
     Top = 112
-    Width = 426
+    Width = 430
     Height = 60
     Anchors = [akLeft, akTop, akRight]
     BevelInner = bvNone
@@ -89,13 +91,14 @@ inherited frmEditItem: TfrmEditItem
     PlainText = True
     ScrollBars = ssBoth
     TabOrder = 2
+    WantReturns = False
     WordWrap = False
     OnKeyDown = DoKeyDown
   end
   object edTranslation: TTntRichEdit
     Left = 8
     Top = 192
-    Width = 426
+    Width = 430
     Height = 60
     Anchors = [akLeft, akTop, akRight, akBottom]
     BevelInner = bvNone
@@ -105,13 +108,14 @@ inherited frmEditItem: TfrmEditItem
     PlainText = True
     ScrollBars = ssBoth
     TabOrder = 3
+    WantReturns = False
     WordWrap = False
     OnKeyDown = DoKeyDown
   end
   object edName: TEdit
     Left = 8
     Top = 69
-    Width = 426
+    Width = 430
     Height = 21
     Anchors = [akLeft, akTop, akRight]
     BevelInner = bvNone
@@ -123,7 +127,7 @@ inherited frmEditItem: TfrmEditItem
   object pcComments: TTntPageControl
     Left = 8
     Top = 264
-    Width = 426
+    Width = 430
     Height = 133
     ActivePage = tabOriginal
     Anchors = [akLeft, akRight, akBottom]
@@ -135,7 +139,7 @@ inherited frmEditItem: TfrmEditItem
       object edOrigComments: TTntRichEdit
         Left = 0
         Top = 0
-        Width = 414
+        Width = 418
         Height = 98
         Align = alClient
         BevelInner = bvNone
@@ -155,8 +159,8 @@ inherited frmEditItem: TfrmEditItem
       object edTransComment: TTntRichEdit
         Left = 0
         Top = 0
-        Width = 414
-        Height = 101
+        Width = 418
+        Height = 98
         Align = alClient
         BevelInner = bvNone
         BevelOuter = bvRaised

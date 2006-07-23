@@ -559,7 +559,7 @@ var
 
 implementation
 uses
-  ShellAPI, StrUtils, TntClipbrd,
+  ShellAPI, StrUtils, TntWindows, TntClipbrd, TntWideStrUtils, 
 {$IFDEF USEADDICTSPELLCHECKER}
   ad3ParseEngine,
 {$ENDIF USEADDICTSPELLCHECKER}
@@ -3568,7 +3568,7 @@ end;
 
 function TfrmMain.MacroReplace(const AMacros: WideString): WideString;
 var
-  S: string;
+  S, tmp: WideString;
 begin
   Result := AMacros;
 
@@ -3577,27 +3577,30 @@ begin
     S := reOriginal.Text
   else
     S := reOriginal.SelText;
+  tmp := GlobalAppOptions.OriginalFile;
   Result := Tnt_WideStringReplace(Result, '$(OrigText)', S, [rfReplaceAll, rfIgnoreCase]);
-  Result := Tnt_WideStringReplace(Result, '$(OrigPath)', GlobalAppOptions.OriginalFile, [rfReplaceAll, rfIgnoreCase]);
-  Result := Tnt_WideStringReplace(Result, '$(OrigDir)', ExtractFilePath(GlobalAppOptions.OriginalFile), [rfReplaceAll, rfIgnoreCase]);
-  Result := Tnt_WideStringReplace(Result, '$(OrigName)', ChangeFileExt(ExtractFilename(GlobalAppOptions.OriginalFile), ''), [rfReplaceAll, rfIgnoreCase]);
-  Result := Tnt_WideStringReplace(Result, '$(OrigExt)', ExtractFileExt(GlobalAppOptions.OriginalFile), [rfReplaceAll, rfIgnoreCase]);
+  Result := Tnt_WideStringReplace(Result, '$(OrigPath)', tmp, [rfReplaceAll, rfIgnoreCase]);
+  Result := Tnt_WideStringReplace(Result, '$(OrigDir)', tmp, [rfReplaceAll, rfIgnoreCase]);
+  Result := Tnt_WideStringReplace(Result, '$(OrigName)', ChangeFileExt(ExtractFilename(tmp), ''), [rfReplaceAll, rfIgnoreCase]);
+  Result := Tnt_WideStringReplace(Result, '$(OrigExt)', ExtractFileExt(tmp), [rfReplaceAll, rfIgnoreCase]);
 
   Result := Tnt_WideStringReplace(Result, '$(TransLine)', reTranslation.Text, [rfReplaceAll, rfIgnoreCase]);
   if reTranslation.SelLength = 0 then
     S := reTranslation.Text
   else
     S := reTranslation.SelText;
+  tmp := GlobalAppOptions.TranslationFile;
   Result := Tnt_WideStringReplace(Result, '$(TransText)', S, [rfReplaceAll, rfIgnoreCase]);
-  Result := Tnt_WideStringReplace(Result, '$(TransPath)', GlobalAppOptions.TranslationFile, [rfReplaceAll, rfIgnoreCase]);
-  Result := Tnt_WideStringReplace(Result, '$(TransDir)', ExtractFilePath(GlobalAppOptions.TranslationFile), [rfReplaceAll, rfIgnoreCase]);
-  Result := Tnt_WideStringReplace(Result, '$(TransName)', ChangeFileExt(ExtractFilename(GlobalAppOptions.TranslationFile), ''), [rfReplaceAll, rfIgnoreCase]);
-  Result := Tnt_WideStringReplace(Result, '$(TransExt)', ExtractFileExt(GlobalAppOptions.TranslationFile), [rfReplaceAll, rfIgnoreCase]);
+  Result := Tnt_WideStringReplace(Result, '$(TransPath)', tmp, [rfReplaceAll, rfIgnoreCase]);
+  Result := Tnt_WideStringReplace(Result, '$(TransDir)', ExtractFilePath(tmp), [rfReplaceAll, rfIgnoreCase]);
+  Result := Tnt_WideStringReplace(Result, '$(TransName)', ChangeFileExt(ExtractFilename(tmp), ''), [rfReplaceAll, rfIgnoreCase]);
+  Result := Tnt_WideStringReplace(Result, '$(TransExt)', ExtractFileExt(tmp), [rfReplaceAll, rfIgnoreCase]);
 
-  Result := Tnt_WideStringReplace(Result, '$(DictPath)', OpenDictDlg.FileName, [rfReplaceAll, rfIgnoreCase]);
-  Result := Tnt_WideStringReplace(Result, '$(DictDir)', ExtractFilePath(OpenDictDlg.FileName), [rfReplaceAll, rfIgnoreCase]);
-  Result := Tnt_WideStringReplace(Result, '$(DictName)', ChangeFileExt(ExtractFilename(OpenDictDlg.FileName), ''), [rfReplaceAll, rfIgnoreCase]);
-  Result := Tnt_WideStringReplace(Result, '$(DictExt)', ExtractFileExt(OpenDictDlg.FileName), [rfReplaceAll, rfIgnoreCase]);
+  tmp := GlobalAppOptions.DictionaryFile;
+  Result := Tnt_WideStringReplace(Result, '$(DictPath)', tmp, [rfReplaceAll, rfIgnoreCase]);
+  Result := Tnt_WideStringReplace(Result, '$(DictDir)', ExtractFilePath(tmp), [rfReplaceAll, rfIgnoreCase]);
+  Result := Tnt_WideStringReplace(Result, '$(DictName)', ChangeFileExt(ExtractFilename(tmp), ''), [rfReplaceAll, rfIgnoreCase]);
+  Result := Tnt_WideStringReplace(Result, '$(DictExt)', ExtractFileExt(tmp), [rfReplaceAll, rfIgnoreCase]);
 
   Result := Tnt_WideStringReplace(Result, '$(AppDir)', ExtractFilePath(Application.ExeName), [rfReplaceAll, rfIgnoreCase]);
   Result := Tnt_WideStringReplace(Result, '$(WinDir)', WinDir, [rfReplaceAll, rfIgnoreCase]);
@@ -3634,7 +3637,8 @@ begin
 
   if ATool.UseShellExecute then
   begin
-    ReturnValue := ShellExecute(Handle, nil, PChar(string(Cmd)), PChar(string(Args)), PChar(string(Dir)), SW_SHOWNORMAL);
+
+    ReturnValue := Tnt_ShellExecuteW(Handle, nil, PWideChar(Cmd), PWideChar(Args), PWideChar(Dir), SW_SHOWNORMAL);
     if ReturnValue <= 32 then
       ReturnValue := GetLastError
     else

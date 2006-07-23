@@ -1,0 +1,24 @@
+[Compiler]
+UnsafeType=0
+UnsafeCode=0
+UnsafeCast=0
+[Directories]
+OutputDir=..\..\bin\plugins
+UnitOutputDir=..\..\dcu
+[Version Info]
+IncludeVerInfo=1
+AutoIncBuild=0
+MajorVer=1
+MinorVer=9
+Release=0
+Build=8
+[Version Info Keys]
+CompanyName=Peter Thörnqvist
+FileDescription=Treeview Plugin for IniTranslator
+FileVersion=1.9.0.8
+InternalName=ToolTreeView
+LegalCopyright=Copyright (c) 2006 by Peter Thörnqvist; all rights reserved
+LegalTrademarks=
+OriginalFilename=ToolTreeView.dll
+ProductName=IniTranslator
+ProductVersion=1.9.0.8

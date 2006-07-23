@@ -1,6 +1,6 @@
-{@abstract(Tool plugin demo implementation) }
+{@abstract("Tool" Plugin displaying the content in a treeview) }
 {
-  Copyright © 2003-2006 by Peter Thornqvist; all rights reserved
+  Copyright © 2006 by Peter Thornqvist; all rights reserved
 
   Developer(s):
     p3 - peter3 att users dott sourceforge dott net
@@ -15,7 +15,7 @@
    the specific language governing rights and limitations under the License.
 }
 
-// $Id:$
+// $Id$
 unit ToolPluginDemoImpl;
 
 interface

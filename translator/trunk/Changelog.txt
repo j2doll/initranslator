@@ -1,5 +1,14 @@
 Ini Translator Changelog
 ========================
+2006-07-23:
+- New tool plugin (ToolTreeView): dísplays the content in a treeview and allows editing of original and translation strings
+- Minor fixes for unicode support
+- Several sizeable forms converted to unsizeable dialogs
+
+2006-07-22:
+- Cleaned the code handling loading and saving of files and fixed a few bugs
+- When opening a file, the encoding is auto-adjusted to match the actual encoding of the file, not what the user thinks is the encoding. This also changes the encoding for saving the file
+- 
 2006-07-20:
 - Released version 1.9.0.7 on SourceForge
 - A few new strings in Default.lng

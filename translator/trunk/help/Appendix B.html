@@ -46,7 +46,7 @@
 				<td>Save the edits to the translation file</td>
 			</tr>
 			<tr>
-				<td width="390">Save Translation As</td>
+				<td width="390">Save Translation As...</td>
 				<td width="60"></td>
 				<td>Save the translation to a file with another name</td>
 			</tr>
@@ -54,6 +54,16 @@
 				<td width="390">Preferences</td>
 				<td width="60">Alt+Enter</td>
 				<td>Shows the Preferences dialog</td>
+			</tr>
+			<tr>
+				<td width="390">Import...</td>
+				<td width="60">&nbsp;</td>
+				<td>Displayed if any import plugins are installed</td>
+			</tr>
+			<tr>
+				<td width="390">Export..</td>
+				<td width="60">&nbsp;</td>
+				<td>Displayed if any export plugins are installed</td>
 			</tr>
 			<tr>
 				<td width="390">Reopen</td>
@@ -137,7 +147,7 @@
 				<th width="390" colspan="3">
 					Actions</th></tr>
 			<TR>
-				<TD width="390">Spelling</TD>
+				<TD width="390">Spelling...</TD>
 				<TD width="60">F7</TD>
 				<TD>Displays the spell check dialog</TD>
 			</TR>
@@ -162,7 +172,7 @@
 				<td>Moves to the next untranslated item (if there is one)</td>
 			</tr>
 			<tr>
-				<td width="390">Font</td>
+				<td width="390">Font...</td>
 				<td width="60">Ctrl+Shift+F</td>
 				<td>Shows a dialog that allows you to change the font for the application</td>
 			</tr>
@@ -175,6 +185,11 @@
 					regardless of the current sorting in the list.</td>
 			</tr>
 			<tr>
+				<td width="390">Trim...</td>
+				<td width="60">Ctr+Shift+T</td>
+				<td>Displays the trim dialog</td>
+			</tr>
+			<tr>
 				<td width="390">Toggle Bookmark (0..9)</td>
 				<td width="60">Ctrl+Shift+0..Ctrl+Shift+9</td>
 				<td>Toggles a bookmark on or off</td>
@@ -185,20 +200,12 @@
 				<td>Select item where bookmark is located</td>
 			</tr>
 			<tr>
-				<td width="390">Configure Keyboard</td>
+				<td width="390">Configure Keyboard...</td>
 				<td width="60"></td>
 				<td>Displays a dialog where you can change the shortcut keys for the commands in 
 					the program. Shortcuts are saved in a file named translator.alf in the 
 					application folder</td>
 			</tr>
-			<tr>
-				<th width="390" colspan="3">
-                    Tools</th></tr>
-            <tr>
-				<td width="390">Customize</td>
-				<td width="60"></td>
-				<td>Displays the External Tools dialog&nbsp;</td>
-            </tr>
 			<tr>
 				<th width="390" colspan="3">
 					View</th></tr>
@@ -257,19 +264,20 @@
 			</tr>
 			<tr>
 				<th width="390" colspan="3">
-					Dictionary</th></tr>
+					Dictionary</th>
+			</tr>
 			<tr>
-				<td width="390">New Dictionary</td>
+				<td width="390">New Dictionary...</td>
 				<td width="60">Ctrl+Alt+N</td>
 				<td>Creates a new or adds new items to the currently loaded dictionary</td>
 			</tr>
 			<tr>
-				<td width="390">Load Dictionary</td>
+				<td width="390">Load Dictionary...</td>
 				<td width="60">Ctrl+Alt+O</td>
 				<td>Loads a previously saved dictionary</td>
 			</tr>
 			<tr>
-				<td width="390">Save Dictionary</td>
+				<td width="390">Save Dictionary...</td>
 				<td width="60">Ctrl+Alt+S</td>
 				<td>Saves the currently loaded or created dictionary to a file</td>
 			</tr>
@@ -286,11 +294,25 @@
 					nothing happens. If the dictionary is inverted, the item is adjusted to match.</td>
 			</tr>
 			<tr>
+				<td width="390">Edit Dictionary...</td>
+				<td width="60">Ctrl+Alt+E</td>
+				<td>Displasy the edit dictionary dialog</td>
+			</tr>
+			<tr>
 				<td width="390">Invert Dictionary</td>
 				<td width="60">Ctrl+Alt+I</td>
 				<td>Inverts the dictionary, i.e an english - german dictionary becomes a 
 					german-english dictionary</td>
 			</tr>
+			<tr>
+				<th width="390" colspan="3">
+                    Tools</th>
+			</tr>
+			<tr>
+				<td width="390">Customize...</td>
+				<td width="60"></td>
+				<td>Displays the External Tools dialog&nbsp;</td>
+            </tr>
 			<tr>
 				<th width="390" colspan="3">
 					Help</th></tr>
@@ -300,7 +322,7 @@
 				<td>Shows this help document in the default viewer</td>
 			</tr>
 			<tr>
-				<td width="390">About</td>
+				<td width="390">About...</td>
 				<td width="60"></td>
 				<td>Displays a dialog with copyright notice, version information and credits</td>
 			</tr>
@@ -354,6 +376,27 @@
 				<td width="60">Ctrl+Shift+H</td>
 				<td>Uses the current translation to translate all other matching original items 
 					(works like Replace All)</td>
+			</tr>
+			<tr>
+				<td width="390">Translated</td>
+				<td width="60">Ctrl+T</td>
+				<td>Indicates whether the item has been translated or not. CLick 
+				to toggle indicator on/off.</td>
+			</tr>
+			<tr>
+				<td width="390">Add Item...</td>
+				<td width="60">Ctrl+Ins</td>
+				<td>Adds a new item to both original and translation.</td>
+			</tr>
+			<tr>
+				<td width="390">Edit Item...</td>
+				<td width="60">Shift+Ins</td>
+				<td>Edit both original and translation of the current item.</td>
+			</tr>
+			<tr>
+				<td width="390">Delete Item...</td>
+				<td width="60">Ctrl+Del</td>
+				<td>Deletes the current item in both original and translation.</td>
 			</tr>
 		</table>
 		<br>

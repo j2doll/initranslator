@@ -141,14 +141,13 @@ end;
 
 function TUppercaseDemoPlugin.Status(const Items, Orphans: ITranslationItems): Integer;
 begin
+  Result := TOOL_VISIBLE;
   if Items.Count > 0 then
   begin
-    Result := TOOL_ENABLED; // can't do anything unless there are items...
+    Result := Result or TOOL_ENABLED; // can't do anything unless there are items...
     if FClicked then
       Result := Result or TOOL_CHECKED;
-  end
-  else
-    Result := 0;
+  end;
 end;
 
 { TLowercaseDemoPlugin }
@@ -208,14 +207,13 @@ end;
 
 function TLowercaseDemoPlugin.Status(const Items, Orphans: ITranslationItems): Integer;
 begin
+  Result := TOOL_VISIBLE;
   if Items.Count > 0 then
   begin
-    Result := TOOL_ENABLED; // can't do anything unless there are items...
+    Result := Result or TOOL_ENABLED; // can't do anything unless there are items...
     if FClicked then
       Result := Result or TOOL_CHECKED;
-  end
-  else
-    Result := 0;
+  end;
 end;
 
 end.

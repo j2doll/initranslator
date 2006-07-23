@@ -62,11 +62,10 @@ end;
 
 function TToolTreeViewPlugin.DisplayName: WideString;
 begin
-  Result := 'Edit as tree';
+  Result := '&Tree view';
 end;
 
-function TToolTreeViewPlugin.Execute(const Items,
-  Orphans: ITranslationItems): HRESULT;
+function TToolTreeViewPlugin.Execute(const Items, Orphans: ITranslationItems): HRESULT;
 begin
   if TfrmToolTreeView.Edit(Items) then
     Result := S_OK
@@ -88,10 +87,9 @@ end;
 function TToolTreeViewPlugin.Status(const Items,
   Orphans: ITranslationItems): Integer;
 begin
+  Result := TOOL_VISIBLE;
   if Items.Count > 0 then
-    Result := TOOL_ENABLED
-  else
-    Result := 0;
+    Result := Result or TOOL_ENABLED;
 end;
 
 { TToolTreeViewPlugins }

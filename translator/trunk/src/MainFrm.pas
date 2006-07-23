@@ -3563,6 +3563,7 @@ begin
       AStatus := Status(FTranslateFile.Items, FTranslateFile.Orphans);
     mnuPlugins[i].Enabled := AStatus and TOOL_ENABLED = TOOL_ENABLED;
     mnuPlugins[i].Checked := AStatus and TOOL_CHECKED = TOOL_CHECKED;
+    mnuPlugins[i].Visible := AStatus and TOOL_VISIBLE = TOOL_VISIBLE; 
   end;
 end;
 

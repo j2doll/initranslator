@@ -22,7 +22,8 @@ uses
   SysUtils,
   Classes,
   TransIntf in '..\TransIntf.pas',
-  ToolTreeViewImpl in 'ToolTreeViewImpl.pas';
+  ToolTreeViewImpl in 'ToolTreeViewImpl.pas',
+  ToolTreeViewFrm in 'ToolTreeViewFrm.pas' {frmToolTreeView: TTntForm};
 
 {$R *.res}
 function InstallPlugin(out ToolItems: IToolItems): HResult; stdcall;

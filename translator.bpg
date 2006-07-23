@@ -12,7 +12,7 @@ BRCC = $(ROOT)\bin\brcc32.exe $**
 PROJECTS = ConsoleTest.exe IBForumsParser.dll MozillaDTDParser.dll \
   MozillaPropsParser.dll MSDictBuild.exe MSDictParser.dll OlegParser.dll \
   OOGSIParser.dll PHPNukeParser.dll PHPParser.dll PolyGlotParser.dll POParser.dll \
-  SciTEParser.dll TMXParser.dll ToolPluginDemo.dll translator.exe
+  SciTEParser.dll TMXParser.dll ToolPluginDemo.dll ToolTreeView.dll translator.exe
 #------------------------------------------------------------------------------
 default: $(PROJECTS)
 #------------------------------------------------------------------------------
@@ -63,6 +63,9 @@ PolyGlotParser.dll: src\PolyglotPlugin\PolyGlotParser.dpr
   $(DCC)
 
 ToolPluginDemo.dll: src\ToolPluginDemo\ToolPluginDemo.dpr
+  $(DCC)
+
+ToolTreeView.dll: src\ToolTreeView\ToolTreeView.dpr
   $(DCC)
 
 

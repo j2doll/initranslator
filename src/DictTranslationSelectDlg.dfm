@@ -1,5 +1,6 @@
 inherited frmDictTranslationSelect: TfrmDictTranslationSelect
   ActiveControl = edTranslation
+  BorderStyle = bsDialog
   Caption = 'Select Translation'
   ClientHeight = 363
   ClientWidth = 402

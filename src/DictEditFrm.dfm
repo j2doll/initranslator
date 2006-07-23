@@ -1,7 +1,10 @@
 inherited frmDictEdit: TfrmDictEdit
+  BorderStyle = bsDialog
   Caption = 'Edit Dictionary'
-  ClientHeight = 452
-  ClientWidth = 494
+  ClientHeight = 348
+  ClientWidth = 372
+  Constraints.MinHeight = 300
+  Constraints.MinWidth = 315
   PixelsPerInch = 96
   TextHeight = 13
   object TntLabel1: TTntLabel
@@ -21,15 +24,15 @@ inherited frmDictEdit: TfrmDictEdit
   end
   object TntBevel1: TTntBevel
     Left = 1
-    Top = 412
-    Width = 492
+    Top = 308
+    Width = 370
     Height = 4
     Anchors = [akLeft, akRight, akBottom]
     Shape = bsTopLine
   end
   object TntLabel3: TTntLabel
     Left = 8
-    Top = 424
+    Top = 320
     Width = 30
     Height = 13
     Anchors = [akLeft, akBottom]
@@ -39,7 +42,7 @@ inherited frmDictEdit: TfrmDictEdit
   object cbOriginal: TTntComboBox
     Left = 8
     Top = 32
-    Width = 473
+    Width = 351
     Height = 21
     BevelKind = bkFlat
     Anchors = [akLeft, akTop, akRight]
@@ -49,7 +52,7 @@ inherited frmDictEdit: TfrmDictEdit
     OnChange = cbOriginalChange
   end
   object btnAddOriginal: TTntButton
-    Left = 296
+    Left = 190
     Top = 64
     Width = 80
     Height = 23
@@ -58,7 +61,7 @@ inherited frmDictEdit: TfrmDictEdit
     TabOrder = 1
   end
   object btnRemoveOriginal: TTntButton
-    Left = 384
+    Left = 278
     Top = 64
     Width = 80
     Height = 23
@@ -69,8 +72,8 @@ inherited frmDictEdit: TfrmDictEdit
   object lbTranslations: TTntListBox
     Left = 8
     Top = 96
-    Width = 473
-    Height = 265
+    Width = 351
+    Height = 161
     Anchors = [akLeft, akTop, akRight, akBottom]
     BevelKind = bkFlat
     BorderStyle = bsNone
@@ -81,8 +84,8 @@ inherited frmDictEdit: TfrmDictEdit
   end
   object edTranslation: TTntEdit
     Left = 8
-    Top = 377
-    Width = 291
+    Top = 273
+    Width = 169
     Height = 21
     Anchors = [akLeft, akRight, akBottom]
     BevelKind = bkFlat
@@ -90,8 +93,8 @@ inherited frmDictEdit: TfrmDictEdit
     TabOrder = 4
   end
   object btnAddTranslation: TTntButton
-    Left = 312
-    Top = 376
+    Left = 190
+    Top = 272
     Width = 80
     Height = 23
     Action = acAddTranslation
@@ -99,8 +102,8 @@ inherited frmDictEdit: TfrmDictEdit
     TabOrder = 5
   end
   object btnRemoveTranslation: TTntButton
-    Left = 400
-    Top = 376
+    Left = 278
+    Top = 272
     Width = 80
     Height = 23
     Action = acRemoveTranslation
@@ -108,8 +111,8 @@ inherited frmDictEdit: TfrmDictEdit
     TabOrder = 6
   end
   object btnOK: TTntButton
-    Left = 312
-    Top = 421
+    Left = 190
+    Top = 317
     Width = 80
     Height = 23
     Anchors = [akRight, akBottom]
@@ -119,8 +122,8 @@ inherited frmDictEdit: TfrmDictEdit
     TabOrder = 8
   end
   object btnCancel: TTntButton
-    Left = 400
-    Top = 421
+    Left = 278
+    Top = 317
     Width = 80
     Height = 23
     Anchors = [akRight, akBottom]
@@ -131,8 +134,8 @@ inherited frmDictEdit: TfrmDictEdit
   end
   object cbFilter: TTntComboBox
     Left = 48
-    Top = 420
-    Width = 249
+    Top = 316
+    Width = 127
     Height = 21
     BevelKind = bkTile
     Style = csDropDownList
@@ -142,15 +145,15 @@ inherited frmDictEdit: TfrmDictEdit
     TabOrder = 7
     Text = 'All items'
     OnChange = cbFilterChange
-    Items.WideStrings = (
+    Items.Strings = (
       'All items'
       'Items with translations'
       'Items without translations')
   end
   object alDictEdit: TTntActionList
     OnUpdate = alDictEditUpdate
-    Left = 192
-    Top = 168
+    Left = 32
+    Top = 16
     object acAddOriginal: TTntAction
       Caption = 'A&dd'
       OnExecute = acAddOriginalExecute

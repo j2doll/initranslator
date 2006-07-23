@@ -49,7 +49,7 @@ function MyWideQuotedStr(const S: WideString; Quote: WideChar): WideString;
 function GetMinimizedFilename(const AFilename: WideString; Minimize: boolean): WideString;
 function DoubleQuoteString(const S: WideString; CheckString: boolean = true): WideString;
 
-function RunProcess(const Filename, Params: string; WorkingDir: string;
+function RunProcess(const Filename, Params: WideString; WorkingDir: WideString;
   const WaitUntilTerminated, WaitUntilIdle: Boolean; const ShowCmd: Integer; var ResultCode: Cardinal): Boolean;
 function SubStrCount(const SubStr, Str: WideString): integer;
 function WideContainsChar(Ch: WideChar; const S: WideString): boolean;
@@ -58,7 +58,7 @@ function IsCharPunct(const S:WideChar):boolean;
 
 implementation
 uses
-  Windows, Forms, Dialogs, Math, Registry, StrUtils, TntSysUtils, TntWideStrUtils;
+  Windows, Forms, Dialogs, Math, Registry, StrUtils, TntSysUtils, TntWideStrUtils, TntWindows;
 
 function MyWideDequotedStr(const S: WideString; Quote: WideChar): WideString;
 // var LText:PWideChar;
@@ -393,7 +393,7 @@ end;
 function DoubleQuoteString(const S: WideString; CheckString: boolean = true): WideString;
 begin
   if not CheckString or (Pos(' ', S) > 0) then
-    Result := AnsiQuotedStr(S, '"')
+    Result := WideQuotedStr(S, '"')
   else
     Result := S;
 end;
@@ -411,12 +411,12 @@ end;
 
 // from Inno Setup
 
-function RunProcess(const Filename, Params: string; WorkingDir: string;
+function RunProcess(const Filename, Params: WideString; WorkingDir: WideString;
   const WaitUntilTerminated, WaitUntilIdle: Boolean; const ShowCmd: Integer; var ResultCode: Cardinal): Boolean;
 var
-  CmdLine: string;
-  WorkingDirP: PChar;
-  StartupInfo: TStartupInfo;
+  CmdLine: WideString;
+  WorkingDirP: PWideChar;
+  StartupInfo: TStartupInfoW;
   ProcessInfo: TProcessInformation;
 begin
   Result := False;
@@ -430,10 +430,10 @@ begin
   StartupInfo.dwFlags := STARTF_USESHOWWINDOW;
   StartupInfo.wShowWindow := ShowCmd;
   if WorkingDir <> '' then
-    WorkingDirP := PChar(WorkingDir)
+    WorkingDirP := PWideChar(WorkingDir)
   else
     WorkingDirP := nil;
-  if not CreateProcess(nil, PChar(CmdLine), nil, nil, False, 0, nil,
+  if not Tnt_CreateProcessW(nil, PWideChar(CmdLine), nil, nil, False, 0, nil,
     WorkingDirP, StartupInfo, ProcessInfo) then
   begin
     ResultCode := GetLastError;

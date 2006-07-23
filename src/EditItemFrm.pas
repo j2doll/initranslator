@@ -45,6 +45,7 @@ type
     procedure TntFormCreate(Sender: TObject);
     procedure DoKeyDown(Sender: TObject; var Key: Word;
       Shift: TShiftState);
+    procedure TntFormShow(Sender: TObject);
   private
     { Private declarations }
   public
@@ -84,6 +85,10 @@ begin
     frm.edTranslation.Text := AItem.Translation;
     frm.edOrigComments.Text := AItem.OrigComments;
     frm.edTransComment.Text := AItem.TransComments;
+    If IsNewItem then
+      frm.ActiveControl := frm.cbSections
+    else
+      frm.ActiveControl := frm.edTranslation;
     Result := frm.ShowModal = mrOK;
     if Result then
     begin
@@ -110,6 +115,15 @@ procedure TfrmEditItem.DoKeyDown(Sender: TObject; var Key: Word;
 begin
   if Key = VK_RETURN then
     Key := 0;
+end;
+
+procedure TfrmEditItem.TntFormShow(Sender: TObject);
+begin
+  if (ActiveControl = edTranslation) and edTranslation.CanFocus then
+  begin
+    edTranslation.SelectAll;
+    edTranslation.SetFocus;
+  end;
 end;
 
 end.

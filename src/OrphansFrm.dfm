@@ -4,9 +4,12 @@ object frmOrphans: TfrmOrphans
   Width = 445
   Height = 340
   ActiveControl = lvOrphaned
+  BorderIcons = [biSystemMenu]
   BorderWidth = 2
   Caption = 'Orphaned Items'
   Color = clBtnFace
+  Constraints.MinHeight = 200
+  Constraints.MinWidth = 300
   Font.Charset = DEFAULT_CHARSET
   Font.Color = clWindowText
   Font.Height = -11

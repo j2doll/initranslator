@@ -20,11 +20,11 @@ unit WideIniFiles;
 
 interface
 uses
-  SysUtils, Classes, TntClasses;
+  Windows, SysUtils, Classes, TntClasses;
 
 type
   EWideIniFileException = class(Exception);
-  
+
   TWideCustomIniFile = class(TObject)
   private
     FFileName: WideString;
@@ -130,10 +130,27 @@ type
     property CaseSensitive: Boolean read GetCaseSensitive write SetCaseSensitive;
   end;
 
-
+  TWideIniFile = class(TWideMemIniFile)
+  public
+    destructor Destroy; override;
+    function ReadString(const Section, Ident, Default: WideString): WideString; override;
+    procedure WriteString(const Section, Ident, Value: WideString); override;
+    procedure ReadSection(const Section: WideString; Strings: TTntStrings); override;
+    procedure ReadSections(Strings: TTntStrings); override;
+    procedure ReadSectionValues(const Section: WideString; Strings: TTntStrings); override;
+    procedure EraseSection(const Section: WideString); override;
+    procedure DeleteKey(const Section, Ident: WideString); override;
+    procedure UpdateFile; override;
+  end;
 
 implementation
+uses
+  TntSysUtils, TntWideStrUtils, RTLConsts;
 
+function PChar2(const S: WideString): PChar;
+begin
+  Result := PChar(string(S));
+end;
 
 { TWideCustomIniFile }
 
@@ -162,7 +179,7 @@ var
 begin
   IntStr := ReadString(Section, Ident, '');
   if (Length(IntStr) > 2) and (IntStr[1] = '0') and
-     ((IntStr[2] = 'X') or (IntStr[2] = 'x')) then
+    ((IntStr[2] = 'X') or (IntStr[2] = 'x')) then
     IntStr := '$' + Copy(IntStr, 3, Maxint);
   Result := StrToIntDef(IntStr, Default);
 end;
@@ -190,8 +207,8 @@ begin
   except
     on EConvertError do
       // Ignore EConvertError exceptions
-    else
-      raise;
+  else
+    raise;
   end;
 end;
 
@@ -207,8 +224,8 @@ begin
   except
     on EConvertError do
       // Ignore EConvertError exceptions
-    else
-      raise;
+  else
+    raise;
   end;
 end;
 
@@ -224,8 +241,8 @@ begin
   except
     on EConvertError do
       // Ignore EConvertError exceptions
-    else
-      raise;
+  else
+    raise;
   end;
 end;
 
@@ -241,8 +258,8 @@ begin
   except
     on EConvertError do
       // Ignore EConvertError exceptions
-    else
-      raise;
+  else
+    raise;
   end;
 end;
 
@@ -285,7 +302,6 @@ begin
     S.Free;
   end;
 end;
-
 
 function TWideCustomIniFile.ReadBinaryStream(const Section,
   Name: WideString; Value: TStream): Integer;
@@ -428,9 +444,9 @@ function TWideHashedStringList.IndexOf(const S: WideString): Integer;
 begin
   UpdateValueHash;
   if not CaseSensitive then
-    Result :=  FValueHash.ValueOf(AnsiUpperCase(S))
+    Result := FValueHash.ValueOf(AnsiUpperCase(S))
   else
-    Result :=  FValueHash.ValueOf(S);
+    Result := FValueHash.ValueOf(S);
 end;
 
 function TWideHashedStringList.IndexOfName(const Name: WideString): Integer;
@@ -448,8 +464,9 @@ var
   P: Integer;
   Key: WideString;
 begin
-  if FNameHashValid then Exit;
-  
+  if FNameHashValid then
+    Exit;
+
   if FNameHash = nil then
     FNameHash := TWideStringHash.Create
   else
@@ -474,8 +491,9 @@ procedure TWideHashedStringList.UpdateValueHash;
 var
   I: Integer;
 begin
-  if FValueHashValid then Exit;
-  
+  if FValueHashValid then
+    Exit;
+
   if FValueHash = nil then
     FValueHash := TWideStringHash.Create
   else
@@ -569,7 +587,8 @@ begin
     begin
       List.Add('[' + FSections[I] + ']');
       Strings := TTntStrings(FSections.Objects[I]);
-      for J := 0 to Strings.Count - 1 do List.Add(Strings[J]);
+      for J := 0 to Strings.Count - 1 do
+        List.Add(Strings[J]);
       List.Add('');
     end;
   finally
@@ -696,18 +715,17 @@ begin
       if (S[1] = '[') and (S[Length(S)] = ']') then
       begin
         Delete(S, 1, 1);
-        SetLength(S, Length(S)-1);
+        SetLength(S, Length(S) - 1);
         Strings := AddSection(Trim(S));
       end
-      else
-        if Strings <> nil then
-        begin
-          J := Pos('=', S);
-          if J > 0 then // remove spaces before and after '='
-            Strings.Add(Trim(Copy(S, 1, J-1)) + '=' + Trim(Copy(S, J+1, MaxInt)) )
-          else
-            Strings.Add(S);
-        end;
+      else if Strings <> nil then
+      begin
+        J := Pos('=', S);
+        if J > 0 then // remove spaces before and after '='
+          Strings.Add(Trim(Copy(S, 1, J - 1)) + '=' + Trim(Copy(S, J + 1, MaxInt)))
+        else
+          Strings.Add(S);
+      end;
   end;
 end;
 
@@ -743,4 +761,202 @@ begin
     Strings.Add(S);
 end;
 
+{ TWideIniFile }
+
+procedure TWideIniFile.DeleteKey(const Section, Ident: WideString);
+begin
+  if Win32PlatformIsUnicode then
+    WritePrivateProfileStringW(PWideChar(Section), PWideChar(Ident), nil, PWideChar(FFileName))
+  else
+    WritePrivateProfileStringA(PChar2(Section), PChar2(Ident), nil, PChar2(FFileName));
+end;
+
+destructor TWideIniFile.Destroy;
+begin
+  UpdateFile;
+  inherited Destroy;
+end;
+
+procedure TWideIniFile.EraseSection(const Section: WideString);
+begin
+  if Win32PlatformIsUnicode then
+  begin
+    if not WritePrivateProfileStringW(PWideChar(Section), nil, nil, PWideChar(FFileName)) then
+      raise EWideIniFileException.CreateResFmt(@SIniFileWriteError, [FileName]);
+  end
+  else
+    if not WritePrivateProfileStringA(PChar2(Section), nil, nil, PChar2(FFileName)) then
+      raise EWideIniFileException.CreateResFmt(@SIniFileWriteError, [FileName]);
+
+end;
+
+procedure TWideIniFile.ReadSection(const Section: WideString;
+  Strings: TTntStrings);
+const
+  BufSize = 16384;
+var
+  WBuffer, P: PWideChar;
+  ABuffer, P2: PChar;
+begin
+  WBuffer := nil;
+  ABuffer := nil;
+  if Win32PlatformIsUnicode then
+    GetMem(WBuffer, BufSize * 2)
+  else
+    GetMem(ABuffer, BufSize);
+  try
+    Strings.BeginUpdate;
+    try
+      Strings.Clear;
+      if Win32PlatformIsUnicode then
+      begin
+        if GetPrivateProfileStringW(PWideChar(Section), nil, nil, WBuffer, BufSize,
+          PWideChar(FFileName)) <> 0 then
+        begin
+          P := WBuffer;
+          while P^ <> #0 do
+          begin
+            Strings.Add(P);
+            Inc(P, WStrLen(P) + 1);
+          end;
+        end;
+      end
+      else
+      begin
+        if GetPrivateProfileStringA(PChar2(Section), nil, nil, ABuffer, BufSize,
+          PChar2(FFileName)) <> 0 then
+        begin
+          P2 := ABuffer;
+          while P2^ <> #0 do
+          begin
+            Strings.Add(P2);
+            Inc(P2, StrLen(P2) + 1);
+          end;
+        end;
+      end;
+    finally
+      Strings.EndUpdate;
+    end;
+  finally
+    if Win32PlatformIsUnicode then
+      FreeMem(WBuffer, BufSize * 2)
+    else
+      FreeMem(ABuffer, BufSize);
+  end;
+end;
+
+procedure TWideIniFile.ReadSections(Strings: TTntStrings);
+const
+  BufSize = 16384;
+var
+  WBuffer, P: PWideChar;
+  ABuffer, P2: PChar;
+begin
+  WBuffer := nil;
+  ABuffer := nil;
+  if Win32PlatformIsUnicode then
+    GetMem(WBuffer, BufSize * 2)
+  else
+    GetMem(ABuffer, BufSize);
+  try
+    Strings.BeginUpdate;
+    try
+      Strings.Clear;
+      if Win32PlatformIsUnicode then
+      begin
+        if GetPrivateProfileStringW(nil, nil, nil, WBuffer, BufSize,
+          PWideChar(FFileName)) <> 0 then
+        begin
+          P := WBuffer;
+          while P^ <> #0 do
+          begin
+            Strings.Add(P);
+            Inc(P, WStrLen(P) + 1);
+          end;
+        end
+      end
+      else
+      begin
+        if GetPrivateProfileStringA(nil, nil, nil, ABuffer, BufSize,
+          PChar2(FFileName)) <> 0 then
+        begin
+          P2 := ABuffer;
+          while P2^ <> #0 do
+          begin
+            Strings.Add(P2);
+            Inc(P2, StrLen(P2) + 1);
+          end;
+        end
+
+      end;
+    finally
+      Strings.EndUpdate;
+    end;
+  finally
+    if Win32PlatformIsUnicode then
+      FreeMem(WBuffer, BufSize * 2)
+    else
+      FreeMem(ABuffer, BufSize);
+  end;
+end;
+
+procedure TWideIniFile.ReadSectionValues(const Section: WideString;
+  Strings: TTntStrings);
+var
+  KeyList: TTntStringList;
+  I: Integer;
+begin
+  KeyList := TTntStringList.Create;
+  try
+    ReadSection(Section, KeyList);
+    Strings.BeginUpdate;
+    try
+      Strings.Clear;
+      for I := 0 to KeyList.Count - 1 do
+        Strings.Add(KeyList[I] + WideChar('=') + ReadString(Section, KeyList[I], ''))
+    finally
+      Strings.EndUpdate;
+    end;
+  finally
+    KeyList.Free;
+  end;
+end;
+
+function TWideIniFile.ReadString(const Section, Ident,
+  Default: WideString): WideString;
+var
+  WBuffer: array[0..2047] of WideChar;
+  ABuffer: array[0..2047] of Char;
+begin
+  if Win32PlatformIsUnicode then
+    SetString(Result, WBuffer, GetPrivateProfileStringW(PWideChar(Section),
+      PWideChar(Ident), PWideChar(Default), WBuffer, SizeOf(WBuffer), PWideChar(FFileName)))
+  else
+    SetString(Result, ABuffer, GetPrivateProfileStringA(PChar2(Section),
+      PChar2(Ident), PChar2(Default), ABuffer, SizeOf(ABuffer), PChar2(FFileName)));
+end;
+
+procedure TWideIniFile.UpdateFile;
+begin
+  if Win32PlatformIsUnicode then
+    WritePrivateProfileStringW(nil, nil, nil, PWideChar(FFileName))
+  else
+    WritePrivateProfileStringA(nil, nil, nil, PChar2(FFileName))
+end;
+
+procedure TWideIniFile.WriteString(const Section, Ident,
+  Value: WideString);
+begin
+  if Win32PlatformIsUnicode then
+  begin
+    if not WritePrivateProfileStringW(PWideChar(Section), PWideChar(Ident),
+      PWideChar(Value), PWideChar(FFileName)) then
+      raise EWideIniFileException.CreateResFmt(@SIniFileWriteError, [FileName]);
+  end
+  else if not WritePrivateProfileStringA(PChar2(Section), PChar2(Ident),
+    PChar2(Value), PChar2(FFileName)) then
+    raise EWideIniFileException.CreateResFmt(@SIniFileWriteError, [FileName]);
+end;
+
 end.
+

@@ -20,7 +20,7 @@ unit TMXParserImpl;
 
 interface
 uses
-  Classes, Types, TntClasses, TransIntf;
+  Classes, Types, TntClasses, TntSysUtils, TransIntf;
 
 type
   TTMXParser = class(TInterfacedObject, IUnknown, IFileParser)
@@ -46,31 +46,36 @@ type
 
 implementation
 uses
-  SysUtils, Forms, IniFiles, PreviewExportFrm, TMXImportFrm, XMLDoc, xmldom;
+  SysUtils, Forms, IniFiles, PreviewExportFrm, TMXImportFrm,
+  xmlintf, xmldoc, xmldom;
 
 const
   cTMXFilter = 'TMX Files (*.tmx)|*.tmx|All files (*.*)|*.*';
-  cTMXImportTitle  = 'Import from TMX file';
-  cTMXExportTitle  = 'Export to TMX file';
-  
+  cTMXImportTitle = 'Import from TMX file';
+  cTMXExportTitle = 'Export to TMX file';
+
 var
-  FXMLImport:TXMLDocument = nil;
+  XML: WideString = '';
 
 { TTMXParser }
 
 procedure TTMXParser.BuildPreview(Items: ITranslationItems; Strings: TTntStrings);
-var FXMLExport:TXMLDocument;
+var
+  i: integer;
+  TI: ItranslationItem;
 begin
-  FXMLExport := TXMLDocument.Create(nil);
-  if FXMLImport <> nil then
-    FXMLExport.XML := FXMLImport.XML;
-  Strings.Assign(FXMLExport.XML);
-  // TODO
+  for i := 0 to Items.Count - 1 do
+  begin
+    TI := Items[i];
+//    XML := Tnt_WideStringReplace(XML, Items[i].OrigComments, Items[i].Original, [rfReplaceall]);
+    XML := Tnt_WideStringReplace(XML, TI.TransComments, TI.Translation, [rfReplaceAll]);
+  end;
+  Strings.Text := XML;
 end;
 
 function TTMXParser.Capabilities: Integer;
 begin
-  Result := CAP_IMPORT or CAP_EXPORT;
+  Result := CAP_IMPORT or CAP_EXPORT or CAP_ITEM_EDIT;
 end;
 
 function TTMXParser.Configure(Capability: Integer): HRESULT;
@@ -115,7 +120,7 @@ begin
     S := TTntStringlist.Create;
     try
       BuildPreview(Items, S);
-      if TfrmExport.Execute(FOrigFile, cTMXExportTitle , cTMXFilter, '.', 'tmx', S) then
+      if TfrmExport.Execute(FOrigFile, cTMXExportTitle, cTMXFilter, '.', 'tmx', S) then
       begin
         S.SaveToFile(FOrigFile);
         Result := S_OK;
@@ -136,17 +141,20 @@ type
   TFoundItems = set of TFoundItem;
 
 var
-  NodeList:IDOMNodeList;
-  Node, ChildNode:IDOMNode;
-  i:integer;
-  TI:ITranslationItem;
-  FFoundItems:TFoundItems;
-  function IsOriginal(const Attributes:IDOMNamedNodeMap):boolean;
+  NodeList: IDOMNodeList;
+  Node, ChildNode: IDOMNodeEx;
+  i: integer;
+  TI: ITranslationItem;
+  FFoundItems: TFoundItems;
+  FXMLImport: IXMLDocument;
+
+  function IsOriginal(const Attributes: IDOMNamedNodeMap): boolean;
   begin
     Result := (Attributes <> nil) and (Attributes.getNamedItem('xml:lang') <> nil)
       and WideSameText(Attributes.getNamedItem('xml:lang').nodeValue, FOrigLang);
   end;
-  function IsTranslation(const Attributes:IDOMNamedNodeMap):boolean;
+
+  function IsTranslation(const Attributes: IDOMNamedNodeMap): boolean;
   begin
     Result := (Attributes <> nil) and (Attributes.getNamedItem('xml:lang') <> nil)
       and WideSameText(Attributes.getNamedItem('xml:lang').nodeValue, FTransLang);
@@ -161,57 +169,58 @@ begin
     if TfrmImport.Execute(FOrigFile, FOrigLang, FTransLang, cTMXImportTitle, cTMXFilter, '.', 'tmx') then
     begin
       // TODO
-      if FXMLImport = nil then
-        FXMLImport := TXMLDocument.Create(nil);
-      FXMLImport.LoadFromFile(FOrigFile);
-      if FXMLImport.DOMDocument <> nil then
-      begin
-        NodeList := FXMLImport.DOMDocument.getElementsByTagName('tuv');
-        if NodeList <> nil then
-          for i := 0 to NodeList.length - 1 do
-          begin
-            Node := NodeList.item[i];
-            if IsOriginal(Node.attributes) then
+      FXMLImport := TXMLDocument.Create(nil);
+      try
+        FXMLImport.LoadFromFile(FOrigFile);
+//        FXMLImport.SaveToXML(XML);
+//        FXMLImport := LoadXMLData(XML);
+
+        if FXMLImport.DOMDocument <> nil then
+        begin
+          NodeList := FXMLImport.DOMDocument.getElementsByTagName('tuv');
+          if NodeList <> nil then
+            for i := 0 to NodeList.length - 1 do
             begin
-              ChildNode := Node.firstChild;
-              if (ChildNode <> nil) and (ChildNode.nodeName = 'seg') then
+              Node := NodeList.item[i] as IDOMNodeEx;
+              if IsOriginal(Node.attributes) then
               begin
-                ChildNode := ChildNode.firstChild;
-                if ChildNode <> nil then
+                ChildNode := Node.firstChild as IDOMNodeEx;
+                if (ChildNode <> nil) and (ChildNode.nodeName = 'seg') then
                 begin
                   if TI = nil then
                     TI := Items.Add;
-                  TI.Original := ChildNode.nodeValue;
+                  TI.Original := ChildNode.xml;
+//                TI.OrigComments := ChildNode.xml;
                   Include(FFoundItems, fiOriginal);
-                end;            
-              end;
-            end
-            else if IsTranslation(Node.attributes) then
-            begin
-              ChildNode := Node.firstChild;
-              if (ChildNode <> nil) and (ChildNode.nodeName = 'seg') then
+                end;
+              end
+              else if IsTranslation(Node.attributes) then
               begin
-                ChildNode := ChildNode.firstChild;
-                if ChildNode <> nil then
+                ChildNode := Node.firstChild as IDOMNodeEx;
+                if (ChildNode <> nil) and (ChildNode.nodeName = 'seg') then
                 begin
                   if TI = nil then
                     TI := Items.Add;
-                  TI.Translation := ChildNode.nodeValue;
+                  TI.Translation := ChildNode.xml;
+                  TI.TransComments := ChildNode.xml;
                   Include(FFoundItems, fiTranslation);
                 end;
               end;
+              if FFoundItems = [fiTranslation, fiOriginal] then
+              begin
+                if TI <> nil then
+                  TI.Translated := TI.Translation <> '';
+                TI := nil;
+                FFoundItems := [];
+              end;
             end;
-            if FFoundItems = [fiTranslation, fiOriginal] then
-            begin
-              if TI <> nil then
-                TI.Translated := TI.Translation <> '';
-              TI := nil;
-              FFoundItems := [];
-            end;
-          end;
+        end;
+        SaveSettings;
+//        FXMLImport.SaveToXML(XML);
+        Result := S_OK;
+      finally
+        FXMLImport := nil;
       end;
-      SaveSettings;
-      Result := S_OK;
     end;
   except
     Application.HandleException(self);
@@ -256,3 +265,4 @@ begin
 end;
 
 end.
+

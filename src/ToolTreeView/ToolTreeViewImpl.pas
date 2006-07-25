@@ -33,7 +33,6 @@ type
   private
     FOldAppHandle:Cardinal;
   public
-
     function About: WideString; safecall;
     function DisplayName: WideString; safecall;
     function Execute(const Items, Orphans: ITranslationItems): HRESULT; safecall;

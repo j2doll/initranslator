@@ -20,7 +20,7 @@ unit AppOptions;
 
 interface
 uses
-  Classes, Forms, Types, SysUtils, Graphics, IniFiles;
+  Classes, Forms, Types, SysUtils, Graphics, WideIniFiles;
 
 type
   PAppWindowInfo = ^TAppWindowInfo;
@@ -68,8 +68,8 @@ type
     function Add: TToolItem;
     function IndexOf(const Title: WideString): integer;
     procedure Exchange(Index1, Index2: integer);
-    procedure LoadFromIni(ini: TCustomIniFile);
-    procedure SaveToIni(ini: TCustomIniFile);
+    procedure LoadFromIni(ini: TWideCustomIniFile);
+    procedure SaveToIni(ini: TWideCustomIniFile);
     property Items[Index: integer]: TToolItem read GetItem write SetItem; default;
   end;
 
@@ -127,8 +127,8 @@ type
     FMisMatchEndControl: boolean;
     FDictIgnoreNonEmpty: boolean;
     FDictEditFilter: Integer;
-    procedure ReadWindowInfos(ini: TCustomIniFile);
-    procedure WriteWindowInfos(ini: TCustomIniFile);
+    procedure ReadWindowInfos(ini: TWideCustomIniFile);
+    procedure WriteWindowInfos(ini: TWideCustomIniFile);
     function GetWindowInfo(AForm: TForm): TAppWindowInfo;
     procedure SetWindowInfo(AForm: TForm; const Value: TAppWindowInfo);
     procedure SetTools(const Value: TToolItems);
@@ -194,8 +194,8 @@ type
     property ShowFullNameInColumns: boolean read FShowFullNameInColumns write FShowFullNameInColumns default false;
     property Tools: TToolItems read FTools write SetTools;
 
-    property DictIgnoreNonEmpty:boolean read FDictIgnoreNonEmpty write FDictIgnoreNonEmpty;
-    property DictEditFilter:Integer read FDictEditFilter write FDictEditFilter;
+    property DictIgnoreNonEmpty: boolean read FDictIgnoreNonEmpty write FDictIgnoreNonEmpty;
+    property DictEditFilter: Integer read FDictEditFilter write FDictEditFilter;
   end;
 
 implementation
@@ -334,26 +334,13 @@ begin
   Result := -1;
 end;
 
-procedure TToolItems.LoadFromIni(ini: TCustomIniFile);
+procedure TToolItems.LoadFromIni(ini: TWideCustomIniFile);
 var
   i: integer;
-  S: TStringlist;
-
-  function ValueFromIndex(S: TStrings; i: integer): string;
-  begin
-    if (i >= 0) and (i < S.Count) then
-    begin
-      Result := S[i];
-      i := Pos('=', Result);
-      if i > 0 then
-        Result := Copy(Result, i + 1, MaxInt)
-      else
-        Result := '';
-    end;
-  end;
+  S: TTntStringlist;
 begin
   Clear;
-  S := TStringlist.Create;
+  S := TTntStringlist.Create;
   try
     ini.ReadSectionValues('External Tools', S);
     for i := 0 to S.Count - 1 do
@@ -363,7 +350,7 @@ begin
   end;
 end;
 
-procedure TToolItems.SaveToIni(ini: TCustomIniFile);
+procedure TToolItems.SaveToIni(ini: TWideCustomIniFile);
 var i: integer;
 begin
   ini.EraseSection('External Tools');
@@ -447,12 +434,12 @@ begin
 end;
 {$J- }
 
-procedure TAppOptions.ReadWindowInfos(ini: TCustomIniFile);
+procedure TAppOptions.ReadWindowInfos(ini: TWideCustomIniFile);
 var
   i: integer;
-  S: TStringlist;
+  S: TTntStringlist;
 
-  procedure DecodeInfo(const Name, Value: string);
+  procedure DecodeInfo(const Name, Value: WideString);
   var P: PAppWindowInfo;
   begin
     // format of Value: Left;Top;Right;Bottom;WindowState
@@ -472,11 +459,11 @@ var
   end;
 begin
   ClearWindowInfos;
-  S := TStringlist.Create;
+  S := TTntStringlist.Create;
   try
     ini.ReadSectionValues('Windows', S);
     for i := 0 to S.Count - 1 do
-      DecodeInfo(S.Names[i], S.Values[S.Names[i]]);
+      DecodeInfo(S.Names[i], ValueFromIndex(S, i));
   finally
     S.Free;
   end;
@@ -484,11 +471,11 @@ end;
 
 procedure TAppOptions.LoadFromFile(AFilename: string);
 var
-  ini: TMemIniFile;
+  ini: TWideMemIniFile;
 begin
   if AFilename = '' then
     AFilename := GetAppStoragePath + 'translator.ini';
-  ini := TMemIniFile.Create(AFilename);
+  ini := TWideMemIniFile.Create(AFilename);
   try
     FFilename := AFilename;
     FAppFont.Name := ini.ReadString('Font', 'Font.Name', FAppFont.Name);
@@ -559,16 +546,16 @@ begin
   end;
 end;
 
-procedure TAppOptions.WriteWindowInfos(ini: TCustomIniFile);
+procedure TAppOptions.WriteWindowInfos(ini: TWideCustomIniFile);
 var
   i: integer;
 
-  function EncodeInfo(Info: TAppWindowInfo): string;
+  function EncodeInfo(Info: TAppWindowInfo): WideString;
   begin
     // format of value: Left;Top;Right;Bottom;WindowState;
     with Info.BoundsRect do
       Result :=
-        Format('%d;%d;%d;%d;%d;', [Left, Top, Right, Bottom, Ord(Info.WindowState)]);
+        WideFormat('%d;%d;%d;%d;%d;', [Left, Top, Right, Bottom, Ord(Info.WindowState)]);
   end;
 begin
   ini.EraseSection('Windows');
@@ -579,11 +566,11 @@ end;
 
 procedure TAppOptions.SaveToFile(AFilename: string);
 var
-  ini: TMemIniFile;
+  ini: TWideMemIniFile;
 begin
   if AFilename = '' then
     AFilename := GetAppStoragePath + 'translator.ini';
-  ini := TMemIniFile.Create(AFilename);
+  ini := TWideMemIniFile.Create(AFilename);
   try
     FFilename := AFilename;
     ini.WriteString('Font', 'Font.Name', FAppFont.Name);
@@ -715,3 +702,4 @@ begin
 end;
 
 end.
+

@@ -290,7 +290,7 @@ begin
       begin
         AItem := TDictionaryItem.Create;
         AItem.Original := AFile.Names[i];
-        AValues.CommaText := AFile.ValueFromIndex[i];
+        AValues.CommaText := ValueFromIndex(AFile, i);
         AItem.Translations := AValues;
         Add(AItem);
       end;

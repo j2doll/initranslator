@@ -1977,6 +1977,7 @@ begin
   ACount := FTranslateFile.Items.Count;
   acUndo.Enabled := reTranslation.Focused and Modified;
   acDictSave.Enabled := FDict.Count > 0;
+  acDictEdit.Enabled := acDictSave.Enabled;
   acDictTranslate.Enabled := (FDict.Count > 0) and (ACount > 0);
   acDictAdd.Enabled := (Index > -1) and (FTranslateFile.Items[Index].Original <> '') and (FTranslateFile.Items[Index].Translation <> '');
 
@@ -3555,16 +3556,20 @@ end;
 
 procedure TfrmMain.mnuPluginsPopup(Sender: TTBCustomItem; FromLink: Boolean);
 var
-  i, AStatus: integer;
+  i, AStatus, aVisibleCount: integer;
 begin
+  aVisibleCount := 0;
   for i := 0 to mnuPlugins.Count - 1 do
   begin
     with TExternalToolItem(mnuPlugins[i].Tag) do
       AStatus := Status(FTranslateFile.Items, FTranslateFile.Orphans);
     mnuPlugins[i].Enabled := AStatus and TOOL_ENABLED = TOOL_ENABLED;
     mnuPlugins[i].Checked := AStatus and TOOL_CHECKED = TOOL_CHECKED;
-    mnuPlugins[i].Visible := AStatus and TOOL_VISIBLE = TOOL_VISIBLE; 
+    mnuPlugins[i].Visible := AStatus and TOOL_VISIBLE = TOOL_VISIBLE;
+    if mnuPlugins[i].Visible then
+      Inc(aVisibleCount);
   end;
+  mnuPlugins.Visible := aVisibleCount > 0;
 end;
 
 function TfrmMain.MacroReplace(const AMacros: WideString): WideString;

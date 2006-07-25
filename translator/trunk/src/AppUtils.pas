@@ -49,36 +49,39 @@ function GetUserAppOptionsFile: string;
 procedure HandleFileCreateException(Sender: TObject; E: Exception; const Filename: string);
 function GetSpecialFolderLocation(const Folder: Integer): string;
 function GetAppStoragePath: string;
-function AutoDetectCharacterSet(Stream:TStream):TEncoding;overload;
-function AutoDetectCharacterSet(const Filename:string):TEncoding;overload;
-function AutoDetectCharacterSet(const S:WideString):TEncoding;overload;
-function FileCharSetToEncoding(CharSet:TTntStreamCharSet):TEncoding;
+function AutoDetectCharacterSet(Stream: TStream): TEncoding; overload;
+function AutoDetectCharacterSet(const Filename: string): TEncoding; overload;
+function AutoDetectCharacterSet(const S: WideString): TEncoding; overload;
+function FileCharSetToEncoding(CharSet: TTntStreamCharSet): TEncoding;
 
+// for Delphi 6
+function ValueFromIndex(S: TTntStrings; i: integer): WideString; overload;
+function ValueFromIndex(S: TStrings; i: integer): string; overload;
 
 implementation
 uses
-  Windows, Forms, Dialogs, Math,
-  Registry, IniFiles, StrUtils, Menus, Consts, ShFolder,
+  Windows, Forms, Dialogs, Math, Registry,
+  WideIniFiles, StrUtils, Menus, Consts, ShFolder,
   TntSysUtils, CommonUtils, ShlObj, ActiveX;
 
 var
   FLanguageFile: TAppLanguage = nil;
   FAppOptions: TAppOptions = nil;
 
-function AutoDetectCharacterSet(Stream:TStream):TEncoding;
+function AutoDetectCharacterSet(Stream: TStream): TEncoding;
 begin
   case TntClasses.AutoDetectCharacterSet(Stream) of
-  csAnsi: Result := feAnsi;
-  csUnicode: Result := feUnicode;
-  csUnicodeSwapped: Result := feUnicodeSwapped;
-  csUtf8: Result := feUtf8;
+    csAnsi: Result := feAnsi;
+    csUnicode: Result := feUnicode;
+    csUnicodeSwapped: Result := feUnicodeSwapped;
+    csUtf8: Result := feUtf8;
   else
     Result := feAnsi;
   end;
 end;
 
-function AutoDetectCharacterSet(const Filename:string):TEncoding;
-var F:TTntFileStream;
+function AutoDetectCharacterSet(const Filename: string): TEncoding;
+var F: TTntFileStream;
 begin
   F := TTntFileStream.Create(Filename, fmOpenRead or fmShareDenyNone);
   try
@@ -88,8 +91,8 @@ begin
   end;
 end;
 
-function AutoDetectCharacterSet(const S:WideString):TEncoding;
-var T:TStringStream;
+function AutoDetectCharacterSet(const S: WideString): TEncoding;
+var T: TStringStream;
 begin
   T := TStringStream.Create(S);
   try
@@ -98,7 +101,8 @@ begin
     T.Free;
   end;
 end;
-function FileCharSetToEncoding(CharSet:TTntStreamCharSet):TEncoding;
+
+function FileCharSetToEncoding(CharSet: TTntStreamCharSet): TEncoding;
 begin
   case CharSet of
     csUnicode: Result := feUnicode;
@@ -173,7 +177,7 @@ begin
   for i := 2 to Length(Result) do
     if (Result[i - 1] in [WideChar(#0)..WideChar(#32), WideChar('_'),
       WideChar('-'), WideChar('+'), WideChar('\'), WideChar('/'), WideChar(':'),
-      WideChar(';'), WideChar('.')]) then
+        WideChar(';'), WideChar('.')]) then
       Result[i] := WideUpperCase(Result[i])[1];
 end;
 
@@ -240,22 +244,40 @@ begin
 end;
 
 procedure TBMRULoadFromIni(MRU: TTBXMRUList);
-var ini:TIniFile;
+var
+  ini: TWideIniFile;
+  I: Integer;
+  S: WideString;
 begin
-  ini := TIniFile.Create(GetUserAppOptionsFile);
+  ini := TWideIniFile.Create(GetUserAppOptionsFile);
   try
-    MRU.LoadFromIni(ini, cIniMRUKey);
+    MRU.Items.Clear;
+
+    for I := 1 to MRU.MaxItems do
+    begin
+      S := Ini.ReadString(cIniMRUKey, MRU.Prefix + IntToStr(I), '');
+      if S <> '' then
+        MRU.Items.Add(S);
+    end;
   finally
     ini.Free;
   end;
 end;
 
 procedure TBMRUSaveToIni(MRU: TTBXMRUList);
-var ini:TIniFile;
+var
+  ini: TWideIniFile;
+  I: Integer;
 begin
-  ini := TIniFile.Create(GetUserAppOptionsFile);
+  ini := TWideIniFile.Create(GetUserAppOptionsFile);
   try
-    MRU.SaveToIni(ini, cIniMRUKey);
+    for I := 1 to MRU.MaxItems do
+    begin
+      if I <= MRU.Items.Count then
+        Ini.WriteString(cIniMRUKey, MRU.Prefix + IntToStr(I), MRU.Items[I - 1])
+      else
+        Ini.DeleteKey(cIniMRUKey, MRU.Prefix + IntToStr(I));
+    end;
   finally
     ini.Free;
   end;
@@ -433,6 +455,31 @@ begin
   ForceDirectories(Result);
 end;
 
+function ValueFromIndex(S: TTntStrings; i: integer): WideString;
+begin
+  if (i >= 0) and (i < S.Count) then
+  begin
+    Result := S[i];
+    i := Pos('=', Result);
+    if i > 0 then
+      Result := Copy(Result, i + 1, MaxInt)
+    else
+      Result := '';
+  end;
+end;
+
+function ValueFromIndex(S: TStrings; i: integer): string;
+var tmp: TTntStringlist;
+begin
+  tmp := TTntStringlist.Create;
+  try
+    tmp.Assign(S);
+    Result := ValueFromIndex(tmp, i);
+  finally
+    tmp.Free;
+  end;
+end;
+
 initialization
 
 finalization
@@ -440,3 +487,4 @@ finalization
   FreeAndNil(FLanguageFile);
 
 end.
+

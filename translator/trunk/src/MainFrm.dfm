@@ -44,21 +44,23 @@ object frmMain: TfrmMain
         Tag = 0
       end
       item
-        Size = 200
+        Size = 120
         Tag = 0
       end
       item
         Alignment = taRightJustify
         Control = pbTranslated
         Framed = False
-        Size = 10
+        Size = 200
         StretchPriority = 1
         Tag = 0
+        TextTruncation = twEndEllipsis
       end
       item
+        Alignment = taRightJustify
         Framed = False
-        MaxSize = 24
-        Size = 24
+        MaxSize = 32
+        Size = 32
         Tag = 0
       end>
     UseSystemFont = False
@@ -652,20 +654,12 @@ object frmMain: TfrmMain
       end
       object TBXSeparatorItem1: TSpTBXSeparatorItem
       end
-      object cbThemes: TSpTBXComboBoxItem
-        AutoCheck = True
-        Caption = 'Themes'
+      object SpTBXSubmenuItem1: TSpTBXSubmenuItem
         DisplayMode = nbdmTextOnlyInMenus
-        EditWidth = 135
-        Hint = 'Shows available themes'
-        ShortCut = 24660
-        ExtendedAccept = True
-        FontSettings.Name = 'MS Shell Dlg 2'
-        ReadOnly = True
-        OnChange = cbThemesChange
-        DropDownList = True
-        MaxVisibleItems = 25
-        MinListWidth = 135
+        DropdownCombo = True
+        CaptionW = 'Themes'
+        object SpTBXThemeGroupItem1: TSpTBXThemeGroupItem
+        end
       end
     end
   end

@@ -51,17 +51,17 @@
 				<DT>Initial directory</DT>
 				<DD>Specifies the working directory of the tool. Use the Arrow button to select 
 						directories. You can select more than one.
-        <dt>ShortCut Key</dt><dd>Specifies the shortcut key used to invoke the tool. Press
+        <dt>Shortcut Key</dt><dd>Specifies the shortcut key used to invoke the tool. Press
           the shortcut key combination when the shortcut key edit field has the focus to assign
           a new shortcut to the selected tool. If the assigned shortcut is already in use
-          anywhere else in the program, the tool item is displayed enclosed in !&gt; and &lt;!-
+          anywhere else in the program, the tool item is displayed enclosed in !&gt; and &lt;!.
           For an example, see the <b>Character Map</b> tool in the image above: it has the
           same shortcut key as the <b>Copy from Name</b> menu item. To remove a shortcut key,
           either press the backspace key or click the <b>Clear</b> button.</dd><DT>Use ShellExecute</DT>
 				  <DD>Some tools works better when run using the ShellExecute API function. It's not easy to 
 							specify any rule for this, so you will have to use trial and error to find the 
-							best way to launch an application. Note that when this opton is 
-							enabled, <STRONG>Wait for completion</STRONG> is disabled. </DD>
+							best way to launch an application. Note that when 
+					using ShellExecute, <STRONG>Wait for completion</STRONG> is disabled. </DD>
 				<DT>Prompt for arguments
 				</DT>
 				  <DD>Displays the <B>Arguments </B>dialog box to allow you to enter or edit values 
@@ -70,7 +70,9 @@
 				  <DD>Specifies whether Ini Translator should wait for the tool to close before 
 							returning. This is useful if the tool processes one of the files 
 							currently loaded in Ini Translator and you need to wait until the tool has 
-							finished with it.</DD>
+							finished with it. Note that most standard Windows 
+					programs actually return immediately, but most command line 
+					tools do not.</DD>
 				<DT>Test</DT>
           <DD>Click the Test button to test the currently selected tool item without having to close the dialog. This can significantly speed up the process of configuring a tool correctly.</DD>
 			</DL>
@@ -84,122 +86,122 @@
 				<TR>
 					<TH width="10%" nowrap>
 						Name</TH>
-					<TH width="10%" nowrap>
+					<TH width="9%" nowrap>
 						Argument</TH>
 					<TH>
 						Description</TH>
 				</TR>
 				<TR>
-					<TD>Original Line</TD>
-					<TD>
+					<TD nowrap>Original Line</TD>
+					<TD nowrap>
 						$(OrigLine)
 					</TD>
 					<TD>
 						The entire text of the current original item</TD>
 				</TR>
 				<TR>
-					<TD>Original Text</TD>
-					<TD>
+					<TD nowrap>Original Text</TD>
+					<TD nowrap>
 						$(OrigText)
 					</TD>
 					<TD>
 						The selected text of the current original item</TD>
 				</TR>
 				<TR>
-					<TD>Original Path</TD>
-					<TD>
+					<TD nowrap>Original Path</TD>
+					<TD nowrap>
 						$(OrigPath)
 					</TD>
 					<TD>Full path and filename of the current original file</TD>
 				</TR>
 				<TR>
-					<TD>Original Directory</TD>
-					<TD>
+					<TD nowrap>Original Directory</TD>
+					<TD nowrap>
 						$(OrigDir)
 					</TD>
 					<TD>Path of the current original file</TD>
 				</TR>
 				<TR>
-					<TD>Original Name</TD>
-					<TD>
+					<TD nowrap>Original Name</TD>
+					<TD nowrap>
 						$(OrigName)
 					</TD>
 					<TD>Filename of the current original file, without path</TD>
 				</TR>
 				<TR>
-					<TD>Original&nbsp; Extension</TD>
-					<TD>
+					<TD nowrap>Original&nbsp; Extension</TD>
+					<TD nowrap>
 						$(OrigExt)
 					</TD>
 					<TD>File extension of the current original file, including leading dot</TD>
 				</TR>
 				<TR>
-					<TD>Translation Line</TD>
-					<TD>$(TransLine)</TD>
+					<TD nowrap>Translation Line</TD>
+					<TD nowrap>$(TransLine)</TD>
 					<TD>
 						The entire text of the current&nbsp;translation item</TD>
 				</TR>
 				<TR>
-					<TD>Translation Text</TD>
-					<TD>
+					<TD nowrap>Translation Text</TD>
+					<TD nowrap>
 						$(TransText)
 					</TD>
 					<TD>
 						The selected text of the current translation item</TD>
 				</TR>
 				<TR>
-					<TD>Translation Path</TD>
-					<TD>$(TransPath)</TD>
+					<TD nowrap>Translation Path</TD>
+					<TD nowrap>$(TransPath)</TD>
 					<TD>Full path and filename of the current translation file</TD>
 				</TR>
 				<TR>
-					<TD>Translation Directory</TD>
-					<TD>$(TransDir)</TD>
+					<TD nowrap>Translation Directory</TD>
+					<TD nowrap>$(TransDir)</TD>
 					<TD>Path of the current translation file</TD>
 				</TR>
 				<TR>
-					<TD>Translation Name</TD>
-					<TD>$(TransName)</TD>
+					<TD nowrap>Translation Name</TD>
+					<TD nowrap>$(TransName)</TD>
 					<TD>Filename of the current translation file, without path</TD>
 				</TR>
 				<TR>
-					<TD>Translation Extension</TD>
-					<TD>$(TransExt)</TD>
+					<TD nowrap>Translation Extension</TD>
+					<TD nowrap>$(TransExt)</TD>
 					<TD>File extension of the current&nbsp;translation&nbsp;file, including leading dot</TD>
 				</TR>
 				<TR>
-					<TD>Dictionary Path</TD>
-					<TD>$(DictPath)</TD>
+					<TD nowrap>Dictionary Path</TD>
+					<TD nowrap>$(DictPath)</TD>
 					<TD>Full path and filename of the current dictionary file</TD>
 				</TR>
 				<TR>
-					<TD>Dictionary Directory</TD>
-					<TD>$(DictDir)</TD>
+					<TD nowrap>Dictionary Directory</TD>
+					<TD nowrap>$(DictDir)</TD>
 					<TD>Path of the current dictionary file</TD>
 				</TR>
 				<TR>
-					<TD>Dictionary Name</TD>
-					<TD>$(DictName)</TD>
+					<TD nowrap>Dictionary Name</TD>
+					<TD nowrap>$(DictName)</TD>
 					<TD>Filename of the current dictionary file, without path</TD>
 				</TR>
 				<TR>
-					<TD>Dictionary Extension</TD>
-					<TD>$(DictExt)</TD>
+					<TD nowrap>Dictionary Extension</TD>
+					<TD nowrap>$(DictExt)</TD>
 					<TD>File extension of the current original file, including leading dot</TD>
 				</TR>
 				<TR>
-					<TD>Application Directory</TD>
-					<TD>$(AppDir)</TD>
+					<TD nowrap>Application Directory</TD>
+					<TD nowrap>$(AppDir)</TD>
 					<TD>Path to the Ini Translator application</TD>
 				</TR>
 				<TR>
-					<TD>Windows Directory</TD>
-					<TD>$(WinDir)</TD>
+					<TD nowrap>Windows Directory</TD>
+					<TD nowrap>$(WinDir)</TD>
 					<TD>Path to the Windows folder</TD>
 				</TR>
 				<TR>
-					<TD>System Directory</TD>
-					<TD>
+					<TD nowrap>System Directory</TD>
+					<TD nowrap>
 						$(SysDir)
 					</TD>
 					<TD>Path to the Windows System folder</TD>

@@ -34,7 +34,7 @@ object frmTools: TfrmTools
     Height = 13
     Caption = 'Me&nu Contents:'
   end
-  object lbContents: TListBox
+  object lbContents: TTntListBox
     Left = 10
     Top = 29
     Width = 312
@@ -325,6 +325,7 @@ object frmTools: TfrmTools
       TabOrder = 9
     end
     object chkWait: TTntCheckBox
+      Tag = -1
       Left = 283
       Top = 152
       Width = 126
@@ -398,7 +399,7 @@ object frmTools: TfrmTools
       OnClick = ArgumentsClick
       CaptionW = 'Original Extension'
     end
-    object N1: TTBXSeparatorItem
+    object N1: TSpTBXSeparatorItem
     end
     object ranslationLine1: TSpTBXItem
       Tag = 6
@@ -430,7 +431,7 @@ object frmTools: TfrmTools
       OnClick = ArgumentsClick
       CaptionW = 'Translation Extension'
     end
-    object N2: TTBXSeparatorItem
+    object N2: TSpTBXSeparatorItem
     end
     object DictionaryPath1: TSpTBXItem
       Tag = 12
@@ -452,7 +453,7 @@ object frmTools: TfrmTools
       OnClick = ArgumentsClick
       CaptionW = 'Dictionary Extension'
     end
-    object TBXSeparatorItem1: TTBXSeparatorItem
+    object TBXSeparatorItem1: TSpTBXSeparatorItem
     end
     object TBItem1: TSpTBXItem
       OnClick = ArgumentsClick
@@ -491,7 +492,7 @@ object frmTools: TfrmTools
       OnClick = InitialDirClick
       CaptionW = 'Application Directory'
     end
-    object TBXSeparatorItem2: TTBXSeparatorItem
+    object TBXSeparatorItem2: TSpTBXSeparatorItem
     end
     object TBXItem3: TSpTBXItem
       Tag = 4
@@ -714,7 +715,7 @@ object frmTools: TfrmTools
       Action = acDelete
       CaptionW = '&Delete'
     end
-    object TBXSeparatorItem3: TTBXSeparatorItem
+    object TBXSeparatorItem3: TSpTBXSeparatorItem
     end
     object TBXItem6: TSpTBXItem
       Action = acMoveUp

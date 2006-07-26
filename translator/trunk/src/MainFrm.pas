@@ -53,12 +53,13 @@ uses
   TBXDefaultXPTheme, TBXWhidbeyTheme, TBXZezioTheme,
   //
   // TBXOfficeXPGradientTheme,
-  // TBXOffice2003Theme,
+  TBXOffice2003Theme,
   //  TBXDock2003,
   // TBXBlueGradientXPTheme,
   //
 {$ENDIF USEOLDTBX}
-  TBXDkPanels, SpTBXItem, SpTBXEditors;
+  // SpTBXLib (http://club.telepolis.com/silverpointdev/sptbxlib)
+  TBXDkPanels, SpTBXItem, SpTBXEditors, SpTBXControls;
 
 const
   WM_DELAYLOADED = WM_USER + 1001;
@@ -275,9 +276,7 @@ type
     TBItem56: TSpTBXItem;
     acViewOrphans: TTntAction;
     ThemeSwitcher: TTBXSwitcher;
-    cbThemes: TSpTBXComboBoxItem;
     TBXSeparatorItem1: TSpTBXSeparatorItem;
-    pbTranslated: TTntProgressBar;
     acSaveOrigAs: TTntAction;
     TBXItem1: TSpTBXItem;
     acConfigureKeyboard: TTntAction;
@@ -338,6 +337,9 @@ type
     TBXItem16: TSpTBXItem;
     TBXSeparatorItem8: TSpTBXSeparatorItem;
     mnuPlugins: TSpTBXSubmenuItem;
+    pbTranslated: TTntProgressBar;
+    SpTBXSubmenuItem1: TSpTBXSubmenuItem;
+    SpTBXThemeGroupItem1: TSpTBXThemeGroupItem;
     procedure FormCreate(Sender: TObject);
     procedure FormCloseQuery(Sender: TObject; var CanClose: boolean);
     procedure lvTranslateStringsChange(Sender: TObject; Item: TListItem;
@@ -440,7 +442,6 @@ type
     procedure acConfigSuspiciousExecute(Sender: TObject);
     procedure acDictEditExecute(Sender: TObject);
     procedure mnuPluginsPopup(Sender: TTBCustomItem; FromLink: Boolean);
-    procedure cbThemesChange(Sender: TObject; const Text: WideString);
   private
     { Private declarations }
     OpenOrigDlg, OpenTransDlg: TEncodingOpenDialog;
@@ -576,7 +577,6 @@ uses
 
 procedure TfrmMain.LoadSettings(FirstLoad: boolean);
 var
-  i: integer;
   m: boolean;
 begin
   WaitCursor;
@@ -614,13 +614,6 @@ begin
     TBMRULoadFromIni(MRUFiles);
     // load shortcuts
     LoadActionShortCutsFromFile(alMain, GetUserShortcutFile);
-
-    // get all available themes
-    cbThemes.Strings.Clear;
-    for i := 0 to ThemeSwitcher.ThemeCount - 1 do
-      cbThemes.Strings.Add(ThemeSwitcher.Themes[i]);
-    TTntStringlist(cbThemes.Strings).Sort;
-    cbThemes.Text := GlobalAppOptions.Theme;
 
     // must call ThemeSwitcher manually: cbThemes.OnChange is not triggered when assigning directly to Text property
     ThemeSwitcher.Theme := GlobalAppOptions.Theme;
@@ -700,7 +693,7 @@ begin
   GlobalAppOptions.SearchUp := FFindReplace.SearchUp;
   GlobalAppOptions.FuzzySearch := FFindReplace.FuzzySearch;
   GlobalAppOptions.FindInIndex := Ord(FFindReplace.FindInIndex);
-  GlobalAppOptions.Theme := cbThemes.Text;
+  GlobalAppOptions.Theme := ThemeSwitcher.Theme;
 
   TBIniSavePositions(Self, GetUserAppOptionsFile, cIniToolbarKey);
   TBMRUSaveToIni(MRUFiles);
@@ -1437,9 +1430,6 @@ begin
   inherited;
   MoveCommentWindow;
 end;
-
-type
-  THackPersistent = class(TPersistent);
 
 procedure TfrmMain.DoWriteObject(Sender, AnObject: TObject;
   const APropName: WideString; var ASection, AName, AValue: WideString);
@@ -2215,11 +2205,13 @@ begin
   GlobalLanguageFile.SkipClass(TCustomEdit);
   GlobalLanguageFile.SkipClass(TTBXStatusBar);
   GlobalLanguageFile.SkipClass(TTBXStatusPanel);
-  GlobalLanguageFile.SkipClass(TTBXSeparatorItem);
-  GlobalLanguageFile.SkipClass(TTBXComboBoxItem);
+  GlobalLanguageFile.SkipClass(TSpTBXSeparatorItem);
+  GlobalLanguageFile.SkipClass(TSpTBXThemeGroupItem);
   GlobalLanguageFile.SkipClass(TTBXSwitcher);
   GlobalLanguageFile.SkipClass(TTBXMRUList);
   GlobalLanguageFile.SkipClass(TProgressBar);
+  GlobalLanguageFile.SkipClass(TTBXSeparatorItem);
+  GlobalLanguageFile.SkipClass(TTBXComboBoxItem);
 
   DragAcceptFiles(Handle, true);
   ToolbarFont.CharSet := DEFAULT_CHARSET;
@@ -2414,7 +2406,7 @@ procedure TfrmMain.acAboutExecute(Sender: TObject);
 var
   S: WideString;
 begin
-  S := WideFormat(Translate(ClassName, SFmtAboutText), [Caption, GetAppVersion]);
+  S := WideFormat(Translate(ClassName, SFmtAboutText), [Caption, GetAppVersion, GetCurrentYear]);
   AboutMsg(S, WideFormat(Translate(ClassName, SFmtAboutCaption), [Caption]));
 end;
 
@@ -2682,8 +2674,18 @@ begin
 end;
 
 procedure TfrmMain.acCreateTranslationFileExecute(Sender: TObject);
+// We don't create TfrmFindReplace because we get it's strings through
+// the TFindReplace class (as it is the owner of TfrmFindReplace) automatically
+// We don't need to create TfrmMain (obviously) or TfrmComments since it is auto-created
+const
+  cTranslatableForms:array [0..10] of TFormClass =
+    (TfrmOptions, TfrmOrphans,TfrmConfigKbd,TfrmImportExport, TfrmTools, TfrmPromptArgs,
+     TfrmEditItem, TfrmTrim, TfrmConfigSuspicious, TfrmDictTranslationSelect,
+     TfrmDictEdit);
+
 var
-  frm1, frm2, frm3, frm4, frm5, frm6, frm7, frm8, frm9, frm10, frm11: TfrmBase;
+  i:integer;
+  AForms:array[0..10] of TForm;
 begin
   with TTntSaveDialog.Create(nil) do
   try
@@ -2691,36 +2693,20 @@ begin
     Title := Translate(ClassName, SSaveTranslationTemplate);
     if Execute then
     begin
-      DeleteFile(FileName);
+      DeleteFile(FileName); // make sure there are no redundant items in the file
       GlobalLanguageFile.OnWriting := DoAllowWriting;
       GlobalLanguageFile.OnWrite := DoWriteObject;
       GlobalLanguageFile.OnWriteAdditional := DoSaveExtra;
-      // create the forms so we can access their properties
-      frm1 := TfrmOptions.Create(Application);
-      frm2 := TfrmOrphans.Create(Application);
-      frm3 := TfrmConfigKbd.Create(Application);
-      frm4 := TfrmImportExport.Create(Application);
-      frm5 := TfrmTools.Create(Application);
-      frm6 := TfrmPromptArgs.Create(Application);
-      frm7 := TfrmEditItem.Create(Application);
-      frm8 := TfrmTrim.Create(Application);
-      frm9 := TfrmConfigSuspicious.Create(Application);
-      frm10 := TfrmDictTranslationSelect.Create(Application);
-      frm11 := TfrmDictEdit.Create(Application);
+      // Create the forms so we can access their properties
+      // (I wonder if there is a more generic way to create all forms in an application?)
+      for i := Low(cTranslatableForms) to High(cTranslatableForms) do
+        AForms[i] := cTranslatableForms[i].Create(Application);
       try
+        // this call iterates all the forms of the app and gets the translatable strings
         GlobalLanguageFile.CreateTemplate(FileName, Application);
       finally
-        frm1.Free;
-        frm2.Free;
-        frm3.Free;
-        frm4.Free;
-        frm5.Free;
-        frm6.Free;
-        frm7.Free;
-        frm8.Free;
-        frm9.Free;
-        frm10.Free;
-        frm11.Free;
+      for i := Low(cTranslatableForms) to High(cTRanslatableForms) do
+        AForms[i].Free;
       end;
     end;
   finally
@@ -3300,13 +3286,13 @@ end;
 
 procedure TfrmMain.DoTranslateSuggestionClick(Sender: TObject);
 begin
-  reTranslation.SelText := (Sender as TTBXItem).Caption;
+  reTranslation.SelText := (Sender as TSpTBXItem).Caption;
 end;
 
 procedure TfrmMain.popEditPopup(Sender: TObject);
 var
   R: TCustomEdit;
-  M: TTBXItem;
+  M: TSpTBXItem;
   i, j: integer;
   S: WideString;
 begin
@@ -3326,7 +3312,7 @@ begin
     if i >= 0 then
       for j := 0 to FDict[i].Translations.Count - 1 do
       begin
-        M := TTBXItem.Create(popEdit);
+        M := TSpTBXItem.Create(popEdit);
         M.Caption := FDict[i].Translations[j];
         M.OnClick := DoTranslateSuggestionClick;
         smiDictionary.Add(M);
@@ -3334,7 +3320,7 @@ begin
   end;
   if i < 0 then
   begin
-    M := TTBXItem.Create(popEdit);
+    M := TSpTBXItem.Create(popEdit);
     M.Caption := SNoCategory;
     smiDictionary.Add(M);
   end;
@@ -3489,7 +3475,7 @@ end;
 procedure TfrmMain.BuildToolMenu(Parent: TTBCustomItem);
 var
   P: TSpTBXSubmenuItem;
-  M: TTBXItem;
+  M: TSpTBXItem;
   i: integer;
 begin
   P := Parent as TSpTBXSubmenuItem;
@@ -3504,7 +3490,7 @@ begin
         P.Add(TTBXSeparatorItem.Create(Parent))
       else
       begin
-        M := TTBXItem.Create(P);
+        M := TSpTBXItem.Create(P);
         M.Caption := GlobalAppOptions.Tools[i].Title;
         M.Tag := integer(GlobalAppOptions.Tools[i]);
         M.ShortCut := GlobalAppOptions.Tools[i].ShortCut;
@@ -3541,7 +3527,7 @@ end;
 
 procedure TfrmMain.BuildExternalToolMenu(Parent: TTBCustomItem);
 var
-  M: TTBXItem;
+  M: TSpTBXItem;
   i: integer;
   E: TExternalToolItem;
 begin
@@ -3550,7 +3536,7 @@ begin
   for i := 0 to FExternalToolItems.Count - 1 do
   begin
     E := FExternalToolItems[i];
-    M := TTBXItem.Create(Parent);
+    M := TSpTBXItem.Create(Parent);
     M.Caption := Translate(ClassName, E.DisplayName);
     M.OnClick := DoExternalToolClick;
     M.Images := FExternalToolItems.Images;
@@ -3670,7 +3656,7 @@ end;
 
 procedure TfrmMain.DoToolMenuClick(Sender: TObject);
 begin
-  ExecuteTool(TToolItem(TTBXITem(Sender).Tag));
+  ExecuteTool(TToolItem(TSpTBXItem(Sender).Tag));
 end;
 
 procedure TfrmMain.DoTestToolClick(Sender: TObject; Tool: TToolItem);
@@ -3978,11 +3964,6 @@ end;
 procedure TfrmMain.acDictEditExecute(Sender: TObject);
 begin
   TfrmDictEdit.Edit(FDict);
-end;
-
-procedure TfrmMain.cbThemesChange(Sender: TObject; const Text: WideString);
-begin
-  ThemeSwitcher.Theme := Text;
 end;
 
 end.

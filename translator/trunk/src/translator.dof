@@ -1,3 +1,6 @@
+[FileVersion]
+Version=7.0
+[Compiler]
 UnsafeType=0
 UnsafeCode=0
 UnsafeCast=0
@@ -20,7 +23,7 @@ AutoIncBuild=1
 MajorVer=1
 MinorVer=9
 Release=0
-Build=12
+Build=13
 Debug=0
 PreRelease=0
 Special=0
@@ -31,13 +34,13 @@ CodePage=1252
 [Version Info Keys]
 CompanyName=Peter Thörnqvist
 FileDescription=Ini Language Translator
-FileVersion=1.9.0.12
+FileVersion=1.9.0.13
 InternalName=translator.exe
 LegalCopyright=Copyright (c) 2003-2006 by Peter Thörnqvist; all rights reserved
 LegalTrademarks=
 OriginalFilename=translator.exe
 ProductName=Ini Translator
-ProductVersion=1.9.0.12
+ProductVersion=1.9
 Webpage=http://initranslator.sourceforge.net
 License=Mozilla Public License 1.1
 Comments=Latest version at http://initranslator.sourceforge.net

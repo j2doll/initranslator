@@ -1,8 +1,9 @@
 Ini Translator Changelog
 ========================
 2006-07-26:
-- Reverted to Toolbar 2000 2.1.8, TBX 2.1 beta 1 and now use SpTBXLib for Unicode enabling. There were too many bugs with TBX 2.2 alpha
+- Reverted to TB2k 2.1.8, TBX 2.1 beta 1 and now use SpTBXLib 1.7 for Unicode enabling. There were too many bugs with TBX 2.2 alpha
 - Converted from TBX -> SpTBX
+- Some additional features added to ToolTreeView plugin
 
 2006-07-25:
 - Remaining "string" that shoudln't/can't be changed, has been renamed "AnsiString", remaining "PChar" that shoudln't/can't be changed, renamed to "PAnsiChar"

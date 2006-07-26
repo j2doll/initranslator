@@ -1,87 +1,61 @@
 NOTE: this is only for people building the sources themselves!
 
-To get the program to display menu shortcuts the way other programs do (i.e in the order Ctrl+Shift+Alt), you need to make some modifications to TB2Common.pas and TB2Item.pas.
+Changes for Toolbar2000, version 2.1.8
+--------------------------------------
+To get the program to display menu shortcuts the way other programs do (i.e in the order Ctrl+Shift+Alt), you need to make some modifications to TB2Item.pas.
 
-TB2Common.pas:
-==============
+
+TB2Item.pas:
+===========
 
 * Add the following just above the implementation keyword:
 
 function MyShortCutToText(ShortCut: TShortCut): string;
 
-* Change the uses clause in the implementation section to this:
 
-implementation
+* Change the uses clause in the implementation section to include the Consts unit:
+
 uses
-  Consts, Menus, TB2Version;
+  MMSYSTEM, TB2Consts, TB2Common, IMM, TB2Acc, Types, Consts;
 
 
-* Add the following code to the end of the unit:
+* Add the following somewhere within the units implementation section:
 
-type
-  TMenuKeyCap = (mkcBkSp, mkcTab, mkcEsc, mkcEnter, mkcSpace, mkcPgUp,
-    mkcPgDn, mkcEnd, mkcHome, mkcLeft, mkcUp, mkcRight, mkcDown, mkcIns,
-    mkcDel, mkcShift, mkcCtrl, mkcAlt);
-
+// this does the same as ShortCutToText with the only
+// difference that the modifier keys are returned in the 
+// order ctrl+shift+alt instead of shift+ctrl+alt
+function MyShortCutToText(ShortCut: TShortCut): WideString;
 var
-  MenuKeyCaps: array[TMenuKeyCap] of string = (
-    SmkcBkSp, SmkcTab, SmkcEsc, SmkcEnter, SmkcSpace, SmkcPgUp,
-    SmkcPgDn, SmkcEnd, SmkcHome, SmkcLeft, SmkcUp, SmkcRight,
-    SmkcDown, SmkcIns, SmkcDel, SmkcShift, SmkcCtrl, SmkcAlt);
-
-function GetSpecialName(ShortCut: TShortCut): string;
-var
-  ScanCode: Integer;
-  KeyName: array[0..255] of Char;
+  ACtrl, AShift, AAlt: WideString;
+  i:integer;
 begin
-  Result := '';
-  ScanCode := MapVirtualKey(WordRec(ShortCut).Lo, 0) shl 16;
-  if ScanCode <> 0 then
+  Result := ShortCutToText(ShortCut);
+  if Pos('+',Result) > 0 then
   begin
-    GetKeyNameText(ScanCode, KeyName, SizeOf(KeyName));
-    Result := KeyName;
+    if Pos(SmkcShift, Result) > 0 then
+      AShift := SmkcShift
+    else
+      AShift := '';
+    if Pos(SmkcCtrl, Result) > 0 then
+      ACtrl := SmkcCtrl
+    else
+      ACtrl := '';
+    if Pos(SmkcAlt, Result) > 0 then
+      AAlt := SmkcAlt
+    else
+      AAlt := '';
+    for i := Length(Result) downto 1 do
+      if Result[i] = '+' then
+        Break;
+    Result := ACtrl + AShift + AAlt + Copy(Result, i + 1, Maxint);
   end;
 end;
 
-// this is an exact duplicate of ShortCutToText with the only
-// difference that modifier keys are in the order ctrl+shift+alt
-// instead of shift+ctrl+alt
-function MyShortCutToText(ShortCut: TShortCut): string;
-var
-  Name: string;
-begin
-  case WordRec(ShortCut).Lo of
-    $08, $09:
-      Name := MenuKeyCaps[TMenuKeyCap(Ord(mkcBkSp) + WordRec(ShortCut).Lo - $08)];
-    $0D: Name := MenuKeyCaps[mkcEnter];
-    $1B: Name := MenuKeyCaps[mkcEsc];
-    $20..$28:
-      Name := MenuKeyCaps[TMenuKeyCap(Ord(mkcSpace) + WordRec(ShortCut).Lo - $20)];
-    $2D..$2E:
-      Name := MenuKeyCaps[TMenuKeyCap(Ord(mkcIns) + WordRec(ShortCut).Lo - $2D)];
-    $30..$39: Name := Chr(WordRec(ShortCut).Lo - $30 + Ord('0'));
-    $41..$5A: Name := Chr(WordRec(ShortCut).Lo - $41 + Ord('A'));
-    $60..$69: Name := Chr(WordRec(ShortCut).Lo - $60 + Ord('0'));
-    $70..$87: Name := 'F' + IntToStr(WordRec(ShortCut).Lo - $6F);
-  else
-    Name := GetSpecialName(ShortCut);
-  end;
-  if Name <> '' then
-  begin
-    Result := '';
-    if ShortCut and scCtrl <> 0 then Result := Result + MenuKeyCaps[mkcCtrl];
-    if ShortCut and scShift <> 0 then Result := Result + MenuKeyCaps[mkcShift];
-    if ShortCut and scAlt <> 0 then Result := Result + MenuKeyCaps[mkcAlt];
-    Result := Result + Name;
-  end
-  else Result := '';
-end;
 
-TB2Item.pas:
-===========
+
 * Change all "ShortCutToText" into "MyShortCutToText"
 
-If you don't want to modify your standard Tb2k sources, copy TB2Common and TB2Item to the IniTranslator /src folder and make the changes there. Note that this will not work if you are building IniTranslator with run-time packages.
+If you don't want to modify your standard Tb2k source, copy TB2Item to the IniTranslator /src folder and make the changes there. Note that this will not work if you are building IniTranslator with run-time packages.
 
 
 

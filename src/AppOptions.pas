@@ -20,7 +20,8 @@ unit AppOptions;
 
 interface
 uses
-  Classes, Forms, Types, SysUtils, Graphics, WideIniFiles;
+  Classes, Forms, Types, SysUtils, Graphics, WideIniFiles,
+  TntClasses;
 
 type
   PAppWindowInfo = ^TAppWindowInfo;
@@ -41,11 +42,11 @@ type
     FCommand: WideString;
     FUseShellExecute: boolean;
     FShortCut: Word;
-    function GetAsString: string;
-    procedure SetAsString(const Value: string);
+    function GetAsString: WideString;
+    procedure SetAsString(const Value: WideString);
   public
     procedure Assign(Source: TPersistent); override;
-    property AsString: string read GetAsString write SetAsString;
+    property AsString: WideString read GetAsString write SetAsString;
   published
     property Title: WideString read FTitle write FTitle;
     property Command: WideString read FCommand write FCommand;
@@ -75,7 +76,7 @@ type
 
   TAppOptions = class
   private
-    FWindowInfos: TStrings;
+    FWindowInfos: TTntStrings;
     FInvertDictionary: boolean;
     FSaveFormPos: boolean;
     FSaveOnReturn: boolean;
@@ -87,12 +88,12 @@ type
     FSaveMinMaxState: boolean;
     FSplitterPosition: integer;
     FAppTitle: WideString;
-    FOriginalFile: string;
-    FLanguageFile: string;
-    FTranslationFile: string;
-    FHelpFile: string;
-    FDictionaryFile: string;
-    FFilename: string;
+    FOriginalFile: WideString;
+    FLanguageFile: WideString;
+    FTranslationFile: WideString;
+    FHelpFile: WideString;
+    FDictionaryFile: WideString;
+    FFilename: WideString;
     FAppFont: TFont;
     FFilterIndex: integer;
     FGlobalPath: boolean;
@@ -108,7 +109,7 @@ type
     FTransEncoding: integer;
     FOrigEncoding: integer;
     FMonitorFiles: boolean;
-    FTheme: string;
+    FTheme: WideString;
     FFuzzySearch: boolean;
     FDictIgnoreSpeedKeys: boolean;
     FShowFullNameInColumns: boolean;
@@ -118,8 +119,8 @@ type
     FTrimWhiteSpace: boolean;
     FTrimHow: integer;
     FTrimWhere: integer;
-    FTrimWhat: string;
-    FMisMatchItems: string;
+    FTrimWhat: WideString;
+    FMisMatchItems: WideString;
     FMisMatchTrailingSpaces: boolean;
     FMisMatchLeadingSpaces: boolean;
     FMisMatchIdentical: boolean;
@@ -133,12 +134,12 @@ type
     procedure SetWindowInfo(AForm: TForm; const Value: TAppWindowInfo);
     procedure SetTools(const Value: TToolItems);
   public
-    constructor Create(const AFilename: string);
+    constructor Create(const AFilename: WideString);
     destructor Destroy; override;
     procedure ClearWindowInfos;
-    procedure SaveToFile(AFilename: string);
-    procedure LoadFromFile(AFilename: string);
-    property Filename: string read FFilename;
+    procedure SaveToFile(AFilename: WideString);
+    procedure LoadFromFile(AFilename: WideString);
+    property Filename: WideString read FFilename;
     property WindowInfos[AForm: TForm]: TAppWindowInfo read GetWindowInfo write SetWindowInfo;
   public
     property ShowQuotes: boolean read FShowQuotes write FShowQuotes;
@@ -151,22 +152,22 @@ type
     property ShowToolTips: boolean read FShowToolTips write FShowToolTips;
     property ShowToolTipShortCuts: boolean read FShowToolTipShortCuts write FShowToolTipShortCuts;
     property DictIgnoreSpeedKeys: boolean read FDictIgnoreSpeedKeys write FDictIgnoreSpeedKeys;
-    property LanguageFile: string read FLanguageFile write FLanguageFile;
+    property LanguageFile: WideString read FLanguageFile write FLanguageFile;
     property GlobalPath: boolean read FGlobalPath write FGlobalPath;
     property UseTranslationEverywhere: boolean read FUseTranslationEverywhere write FUseTranslationEverywhere;
     property AutoFocusTranslation: boolean read FAutoFocusTranslation write FAutoFocusTranslation;
-    property HelpFile: string read FHelpFile write FHelpFile;
-    property DictionaryFile: string read FDictionaryFile write FDictionaryFile;
-    property TranslationFile: string read FTranslationFile write FTranslationFile;
+    property HelpFile: WideString read FHelpFile write FHelpFile;
+    property DictionaryFile: WideString read FDictionaryFile write FDictionaryFile;
+    property TranslationFile: WideString read FTranslationFile write FTranslationFile;
     property TransEncoding: integer read FTransEncoding write FTransEncoding;
-    property OriginalFile: string read FOriginalFile write FOriginalFile;
+    property OriginalFile: WideString read FOriginalFile write FOriginalFile;
     property OrigEncoding: integer read FOrigEncoding write FOrigEncoding;
     property SplitterPosition: integer read FSplitterPosition write FSplitterPosition default 160;
     property FilterIndex: integer read FFilterIndex write FFilterIndex default 1;
     property AppTitle: WideString read FAppTitle write FAppTitle;
     property AppFont: TFont read FAppFont;
     property MonitorFiles: boolean read FMonitorFiles write FMonitorFiles default true;
-    property Theme: string read FTheme write FTheme;
+    property Theme: WideString read FTheme write FTheme;
     // find replace
     property FindText: WideString read FFindText write FFindText;
     property ReplaceText: WideString read FReplaceText write FReplaceText;
@@ -178,12 +179,12 @@ type
     property FuzzySearch: boolean read FFuzzySearch write FFuzzySearch;
     property FindInIndex: integer read FFindInIndex write FFindInIndex;
     // trim
-    property TrimWhat: string read FTrimWhat write FTrimWhat;
+    property TrimWhat: WideString read FTrimWhat write FTrimWhat;
     property TrimWhere: integer read FTrimWhere write FTrimWhere;
     property TrimHow: integer read FTrimHow write FTrimHow;
     property TrimWhiteSpace: boolean read FTrimWhiteSpace write FTrimWhiteSpace;
 
-    property MisMatchItems: string read FMisMatchItems write FMisMatchItems;
+    property MisMatchItems: WideString read FMisMatchItems write FMisMatchItems;
     property MisMatchLeadingSpaces: boolean read FMisMatchLeadingSpaces write FMisMatchLeadingSpaces;
     property MisMatchTrailingSpaces: boolean read FMisMatchTrailingSpaces write FMisMatchTrailingSpaces;
     property MisMatchEndControl: boolean read FMisMatchEndControl write FMisMatchEndControl;
@@ -200,24 +201,24 @@ type
 
 implementation
 uses
-  StrUtils, AppConsts, TntClasses, AppUtils;
+  StrUtils, AppConsts, AppUtils, TntSysUtils;
 
-function StrToFontStyles(const S: string): TFontStyles;
+function StrToFontStyles(const S: WideString): TFontStyles;
 begin
   Result := [];
-  if AnsiPos('B', S) > 0 then
+  if Pos('B', S) > 0 then
     Include(Result, fsBold);
-  if AnsiPos('I', S) > 0 then
+  if Pos('I', S) > 0 then
     Include(Result, fsItalic);
-  if AnsiPos('U', S) > 0 then
+  if Pos('U', S) > 0 then
     Include(Result, fsUnderline);
-  if AnsiPos('S', S) > 0 then
+  if Pos('S', S) > 0 then
     Include(Result, fsStrikeout);
 end;
 
-function FontStylesToStr(Styles: TFontStyles): string;
+function FontStylesToStr(Styles: TFontStyles): WideString;
 const
-  cStyles: array[TFontStyle] of PChar = ('B', 'I', 'U', 'S');
+  cStyles: array[TFontStyle] of PWideChar = ('B', 'I', 'U', 'S');
 var
   i: TFontStyle;
 begin
@@ -237,10 +238,10 @@ begin
     inherited;
 end;
 
-function TToolItem.GetAsString: string;
-var S: TStringlist;
+function TToolItem.GetAsString: WideString;
+var S: TTntStringlist;
 begin
-  S := TStringlist.Create;
+  S := TTntStringlist.Create;
   try
     S.Add(Title);
     S.Add(Command);
@@ -257,10 +258,10 @@ begin
   end;
 end;
 
-procedure TToolItem.SetAsString(const Value: string);
-var S: TStringlist;
+procedure TToolItem.SetAsString(const Value: WideString);
+var S: TTntStringlist;
 begin
-  S := TStringlist.Create;
+  S := TTntStringlist.Create;
   try
     S.CommaText := Value;
     if S.Count > 0 then
@@ -272,13 +273,13 @@ begin
     if S.Count > 3 then
       InitialDirectory := S[3];
     if S.Count > 4 then
-      CaptureOutput := SameText(S[4], 'true');
+      CaptureOutput := WideSameText(S[4], 'true');
     if S.Count > 5 then
-      PromptForArguments := SameText(S[5], 'true');
+      PromptForArguments := WideSameText(S[5], 'true');
     if S.Count > 6 then
-      WaitForCompletion := SameText(S[6], 'true');
+      WaitForCompletion := WideSameText(S[6], 'true');
     if S.Count > 7 then
-      UseShellExecute := SameText(S[7], 'true');
+      UseShellExecute := WideSameText(S[7], 'true');
     if S.Count > 8 then
       ShortCut := StrToIntDef(S[8], ShortCut);
   finally
@@ -373,7 +374,7 @@ begin
   FWindowInfos.Clear;
 end;
 
-constructor TAppOptions.Create(const AFilename: string);
+constructor TAppOptions.Create(const AFilename: WideString);
 resourcestring
   sDefault = 'Default';
 begin
@@ -382,14 +383,14 @@ begin
   // set defaults
   FAppFont := TFont.Create;
   FAppFont.Name := 'MS Shell Dlg 2';
-  FWindowInfos := TStringlist.Create;
-  TStringlist(FWindowInfos).Sorted := true;
+  FWindowInfos := TTntStringlist.Create;
+  TTntStringlist(FWindowInfos).Sorted := true;
 
   SplitterPosition := 160;
   SaveFormPos := true;
   SaveMinMaxState := true;
   AppTitle := SAppTitle;
-  HelpFile := ExtractFilePath(Application.ExeName) + 'help\translator.html';
+  HelpFile := WideExtractFilePath(Application.ExeName) + 'help\translator.html';
   FilterIndex := 1;
   PinCommentWindow := true;
   MonitorFiles := true;
@@ -408,12 +409,12 @@ end;
 
 {$J+ }
 
-function strtok(Search, Delim: string): string;
+function strtok(Search, Delim: WideString): WideString;
 const
 
   I: integer = 1;
   Len: integer = 0;
-  PrvStr: string = '';
+  PrvStr: WideString = '';
 begin
   Result := '';
   if Search <> '' then
@@ -424,9 +425,9 @@ begin
   end;
   if PrvStr = '' then
     Exit;
-  while (i <= Len) and (AnsiPos(PrvStr[i], Delim) > 0) do
+  while (i <= Len) and (Pos(PrvStr[i], Delim) > 0) do
     Inc(I);
-  while (i <= Len) and (AnsiPos(PrvStr[i], Delim) = 0) do
+  while (i <= Len) and (Pos(PrvStr[i], Delim) = 0) do
   begin
     Result := Result + PrvStr[i];
     Inc(i);
@@ -469,7 +470,7 @@ begin
   end;
 end;
 
-procedure TAppOptions.LoadFromFile(AFilename: string);
+procedure TAppOptions.LoadFromFile(AFilename: WideString);
 var
   ini: TWideMemIniFile;
 begin
@@ -564,7 +565,7 @@ begin
       EncodeInfo(PAppWindowInfo(FWindowInfos.Objects[i])^));
 end;
 
-procedure TAppOptions.SaveToFile(AFilename: string);
+procedure TAppOptions.SaveToFile(AFilename: WideString);
 var
   ini: TWideMemIniFile;
 begin
@@ -641,7 +642,7 @@ end;
 function TAppOptions.GetWindowInfo(AForm: TForm): TAppWindowInfo;
 var
   i: integer;
-  AName: string;
+  AName: WideString;
 begin
   Result.BoundsRect := AForm.BoundsRect;
   Result.WindowState := AForm.WindowState;
@@ -661,12 +662,11 @@ begin
   end;
 end;
 
-procedure TAppOptions.SetWindowInfo(AForm: TForm;
-  const Value: TAppWindowInfo);
+procedure TAppOptions.SetWindowInfo(AForm: TForm; const Value: TAppWindowInfo);
 var
   i: integer;
   P: PAppWindowInfo;
-  AName: string;
+  AName: WideString;
 begin
   if not SaveFormPos then
     Exit;

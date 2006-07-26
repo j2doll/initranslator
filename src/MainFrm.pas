@@ -49,15 +49,16 @@ uses
   TBXNexos2Theme, TBXNexos3Theme, TBXNexos4Theme, TBXNexos5Theme, TBXNexosXTheme,
   TBXOfficeCTheme, TBXOfficeKTheme, TBXReliferTheme, TBXRomaTheme,
   TBXSentimoXTheme, TBXUxThemes, TBXXitoTheme,
-  TBXStatusBars, TBXToolPals, TBXLists,
+  TBXToolPals, TBXLists,
   TBXDefaultXPTheme, TBXWhidbeyTheme, TBXZezioTheme,
   //
   // TBXOfficeXPGradientTheme,
-  // TBXOffice2003Theme, TBXDock2003,
+  // TBXOffice2003Theme,
+  //  TBXDock2003,
   // TBXBlueGradientXPTheme,
   //
 {$ENDIF USEOLDTBX}
-  TBXDkPanels;
+  TBXDkPanels, SpTBXItem, SpTBXEditors;
 
 const
   WM_DELAYLOADED = WM_USER + 1001;
@@ -105,119 +106,119 @@ type
     acPaste: TTntAction;
     acSelectAll: TTntEditSelectAll;
     acUndo: TTntAction;
-    TopDock: TTBXDock;
-    tbMenu: TTBXToolbar;
-    mnuFile: TTBXSubmenuItem;
-    OpenOriginal1: TTBXItem;
-    ClearTranslation1: TTBXItem;
-    OpenTranslation1: TTBXItem;
-    SaveTranslation1: TTBXItem;
-    SaveTranslationAs1: TTBXItem;
-    N1: TTBXSeparatorItem;
-    SelectLanguage1: TTBXItem;
-    N11: TTBXSeparatorItem;
-    Exit1: TTBXItem;
-    Edit1: TTBXSubmenuItem;
-    acCopyFromOriginal1: TTBXItem;
-    Find1: TTBXItem;
-    FindNext1: TTBXItem;
-    Replace1: TTBXItem;
-    N8: TTBXSeparatorItem;
-    ToggleFocus1: TTBXItem;
-    N9: TTBXSeparatorItem;
-    Navigation1: TTBXSubmenuItem;
-    Previous1: TTBXItem;
-    Next1: TTBXItem;
-    About2: TTBXSeparatorItem;
-    Previousuntranslated1: TTBXItem;
-    Nextuntranslated1: TTBXItem;
-    N2: TTBXSeparatorItem;
-    Font1: TTBXItem;
-    N4: TTBXSeparatorItem;
-    ShowQuotes1: TTBXItem;
-    Unsort1: TTBXItem;
-    N10: TTBXSeparatorItem;
-    ShowDetails1: TTBXItem;
-    Dictionary1: TTBXSubmenuItem;
-    LoadDictionary1: TTBXItem;
-    SaveDictionary1: TTBXItem;
-    N5: TTBXSeparatorItem;
-    CreateDictionary1: TTBXItem;
-    N6: TTBXSeparatorItem;
-    Translatewithdictionary1: TTBXItem;
-    acDictInvert1: TTBXItem;
-    Help1: TTBXSubmenuItem;
-    Help2: TTBXItem;
-    N7: TTBXSeparatorItem;
-    About1: TTBXItem;
-    TBSeparatorItem3: TTBXSeparatorItem;
-    TBDock1: TTBXDock;
-    TBDock2: TTBXDock;
-    TBDock3: TTBXDock;
-    TBItem5: TTBXItem;
-    TBItem6: TTBXItem;
-    TBItem7: TTBXItem;
-    TBSeparatorItem6: TTBXSeparatorItem;
+    TopDock: TSpTBXDock;
+    tbMenu: TSpTBXToolbar;
+    mnuFile: TSpTBXSubmenuItem;
+    OpenOriginal1: TSpTBXItem;
+    ClearTranslation1: TSpTBXItem;
+    OpenTranslation1: TSpTBXItem;
+    SaveTranslation1: TSpTBXItem;
+    SaveTranslationAs1: TSpTBXItem;
+    N1: TSpTBXSeparatorItem;
+    SelectLanguage1: TSpTBXItem;
+    N11: TSpTBXSeparatorItem;
+    Exit1: TSpTBXItem;
+    Edit1: TSpTBXSubmenuItem;
+    acCopyFromOriginal1: TSpTBXItem;
+    Find1: TSpTBXItem;
+    FindNext1: TSpTBXItem;
+    Replace1: TSpTBXItem;
+    N8: TSpTBXSeparatorItem;
+    ToggleFocus1: TSpTBXItem;
+    N9: TSpTBXSeparatorItem;
+    Navigation1: TSpTBXSubmenuItem;
+    Previous1: TSpTBXItem;
+    Next1: TSpTBXItem;
+    About2: TSpTBXSeparatorItem;
+    Previousuntranslated1: TSpTBXItem;
+    Nextuntranslated1: TSpTBXItem;
+    N2: TSpTBXSeparatorItem;
+    Font1: TSpTBXItem;
+    N4: TSpTBXSeparatorItem;
+    ShowQuotes1: TSpTBXItem;
+    Unsort1: TSpTBXItem;
+    N10: TSpTBXSeparatorItem;
+    ShowDetails1: TSpTBXItem;
+    Dictionary1: TSpTBXSubmenuItem;
+    LoadDictionary1: TSpTBXItem;
+    SaveDictionary1: TSpTBXItem;
+    N5: TSpTBXSeparatorItem;
+    CreateDictionary1: TSpTBXItem;
+    N6: TSpTBXSeparatorItem;
+    Translatewithdictionary1: TSpTBXItem;
+    acDictInvert1: TSpTBXItem;
+    Help1: TSpTBXSubmenuItem;
+    Help2: TSpTBXItem;
+    N7: TSpTBXSeparatorItem;
+    About1: TSpTBXItem;
+    TBSeparatorItem3: TSpTBXSeparatorItem;
+    TBDock1: TSpTBXDock;
+    TBDock2: TSpTBXDock;
+    TBDock3: TSpTBXDock;
+    TBItem5: TSpTBXItem;
+    TBItem6: TSpTBXItem;
+    TBItem7: TSpTBXItem;
+    TBSeparatorItem6: TSpTBXSeparatorItem;
     acCopyFromName: TTntAction;
-    TBItem13: TTBXItem;
+    TBItem13: TSpTBXItem;
     acPreferences: TTntAction;
     acViewComments: TTntAction;
-    TBItem14: TTBXItem;
-    TBSeparatorItem8: TTBXSeparatorItem;
+    TBItem14: TSpTBXItem;
+    TBSeparatorItem8: TSpTBXSeparatorItem;
     acAsciiValues: TTntAction;
-    TBItem16: TTBXItem;
-    popEdit: TTBXPopupMenu;
-    Undo1: TTBXItem;
-    N13: TTBXSeparatorItem;
-    Cut1: TTBXItem;
-    Copy1: TTBXItem;
-    Paste1: TTBXItem;
-    N14: TTBXSeparatorItem;
-    SelectAll1: TTBXItem;
-    TBSeparatorItem9: TTBXSeparatorItem;
-    TBItem17: TTBXItem;
-    popList: TTBXPopupMenu;
-    TBItem20: TTBXItem;
-    TBItem21: TTBXItem;
-    TBItem24: TTBXItem;
-    TBItem25: TTBXItem;
-    TBSeparatorItem14: TTBXSeparatorItem;
-    tbTools: TTBXToolbar;
-    TBItem1: TTBXItem;
-    TBSeparatorItem2: TTBXSeparatorItem;
-    TBItem2: TTBXItem;
-    TBItem3: TTBXItem;
-    TBItem4: TTBXItem;
-    TBSeparatorItem1: TTBXSeparatorItem;
-    TBItem12: TTBXItem;
-    TBItem10: TTBXItem;
-    TBItem8: TTBXItem;
-    TBSeparatorItem7: TTBXSeparatorItem;
-    TBItem9: TTBXItem;
-    TBItem11: TTBXItem;
-    TBSeparatorItem12: TTBXSeparatorItem;
-    TBItem18: TTBXItem;
-    TBItem19: TTBXItem;
-    TBSeparatorItem4: TTBXSeparatorItem;
-    TBItem27: TTBXItem;
-    TBSeparatorItem5: TTBXSeparatorItem;
-    TBItem29: TTBXItem;
+    TBItem16: TSpTBXItem;
+    popEdit: TSpTBXPopupMenu;
+    Undo1: TSpTBXItem;
+    N13: TSpTBXSeparatorItem;
+    Cut1: TSpTBXItem;
+    Copy1: TSpTBXItem;
+    Paste1: TSpTBXItem;
+    N14: TSpTBXSeparatorItem;
+    SelectAll1: TSpTBXItem;
+    TBSeparatorItem9: TSpTBXSeparatorItem;
+    TBItem17: TSpTBXItem;
+    popList: TSpTBXPopupMenu;
+    TBItem20: TSpTBXItem;
+    TBItem21: TSpTBXItem;
+    TBItem24: TSpTBXItem;
+    TBItem25: TSpTBXItem;
+    TBSeparatorItem14: TSpTBXSeparatorItem;
+    tbTools: TSpTBXToolbar;
+    TBItem1: TSpTBXItem;
+    TBSeparatorItem2: TSpTBXSeparatorItem;
+    TBItem2: TSpTBXItem;
+    TBItem3: TSpTBXItem;
+    TBItem4: TSpTBXItem;
+    TBSeparatorItem1: TSpTBXSeparatorItem;
+    TBItem12: TSpTBXItem;
+    TBItem10: TSpTBXItem;
+    TBItem8: TSpTBXItem;
+    TBSeparatorItem7: TSpTBXSeparatorItem;
+    TBItem9: TSpTBXItem;
+    TBItem11: TSpTBXItem;
+    TBSeparatorItem12: TSpTBXSeparatorItem;
+    TBItem18: TSpTBXItem;
+    TBItem19: TSpTBXItem;
+    TBSeparatorItem4: TSpTBXSeparatorItem;
+    TBItem27: TSpTBXItem;
+    TBSeparatorItem5: TSpTBXSeparatorItem;
+    TBItem29: TSpTBXItem;
     MRUFiles: TTBXMRUList;
     TBMRUListItem1: TTBXMRUListItem;
-    miRecentlyUsed: TTBXSubmenuItem;
+    miRecentlyUsed: TSpTBXSubmenuItem;
     acClearMRU: TTntAction;
     acClearInvalidMRU: TTntAction;
-    TBSeparatorItem15: TTBXSeparatorItem;
-    TBItem31: TTBXItem;
-    TBItem32: TTBXItem;
-    TBSeparatorItem16: TTBXSeparatorItem;
+    TBSeparatorItem15: TSpTBXSeparatorItem;
+    TBItem31: TSpTBXItem;
+    TBItem32: TSpTBXItem;
+    TBSeparatorItem16: TSpTBXSeparatorItem;
     acFindUnmatchedShortCut: TTntAction;
     acHome: TTntAction;
     acEnd: TTntAction;
     acPageUp: TTntAction;
     acPageDown: TTntAction;
-    TBSubmenuItem2: TTBXSubmenuItem;
-    TBItem36: TTBXItem;
+    TBSubmenuItem2: TSpTBXSubmenuItem;
+    TBItem36: TSpTBXItem;
     ilBookmarks: TImageList;
     acGotoBookmark1: TTntAction;
     acGotoBookmark2: TTntAction;
@@ -239,60 +240,60 @@ type
     acToggleBookmark9: TTntAction;
     acToggleBookmark0: TTntAction;
     acGotoBookmark3: TTntAction;
-    TBSubmenuItem3: TTBXSubmenuItem;
-    TBSubmenuItem4: TTBXSubmenuItem;
-    TBItem22: TTBXItem;
-    TBItem23: TTBXItem;
-    TBItem26: TTBXItem;
-    TBItem28: TTBXItem;
-    TBItem30: TTBXItem;
-    TBItem37: TTBXItem;
-    TBItem38: TTBXItem;
-    TBItem39: TTBXItem;
-    TBItem40: TTBXItem;
-    TBItem41: TTBXItem;
-    TBItem42: TTBXItem;
-    TBItem43: TTBXItem;
-    TBItem44: TTBXItem;
-    TBItem45: TTBXItem;
-    TBItem46: TTBXItem;
-    TBItem47: TTBXItem;
-    TBItem48: TTBXItem;
-    TBItem49: TTBXItem;
-    TBItem50: TTBXItem;
-    TBItem51: TTBXItem;
+    TBSubmenuItem3: TSpTBXSubmenuItem;
+    TBSubmenuItem4: TSpTBXSubmenuItem;
+    TBItem22: TSpTBXItem;
+    TBItem23: TSpTBXItem;
+    TBItem26: TSpTBXItem;
+    TBItem28: TSpTBXItem;
+    TBItem30: TSpTBXItem;
+    TBItem37: TSpTBXItem;
+    TBItem38: TSpTBXItem;
+    TBItem39: TSpTBXItem;
+    TBItem40: TSpTBXItem;
+    TBItem41: TSpTBXItem;
+    TBItem42: TSpTBXItem;
+    TBItem43: TSpTBXItem;
+    TBItem44: TSpTBXItem;
+    TBItem45: TSpTBXItem;
+    TBItem46: TSpTBXItem;
+    TBItem47: TSpTBXItem;
+    TBItem48: TSpTBXItem;
+    TBItem49: TSpTBXItem;
+    TBItem50: TSpTBXItem;
+    TBItem51: TSpTBXItem;
     alBookmarks: TTntActionList;
-    TBSeparatorItem10: TTBXSeparatorItem;
+    TBSeparatorItem10: TSpTBXSeparatorItem;
     acClearAllTranslations: TTntAction;
     acReplaceEverywhere: TTntAction;
-    TBSeparatorItem11: TTBXSeparatorItem;
-    TBItem52: TTBXItem;
-    TBItem53: TTBXItem;
-    TBItem54: TTBXItem;
+    TBSeparatorItem11: TSpTBXSeparatorItem;
+    TBItem52: TSpTBXItem;
+    TBItem53: TSpTBXItem;
+    TBItem54: TSpTBXItem;
     acNextSuspicious: TTntAction;
-    TBItem55: TTBXItem;
-    TBItem56: TTBXItem;
+    TBItem55: TSpTBXItem;
+    TBItem56: TSpTBXItem;
     acViewOrphans: TTntAction;
     ThemeSwitcher: TTBXSwitcher;
-    cbThemes: TTBXComboBoxItem;
-    TBXSeparatorItem1: TTBXSeparatorItem;
+    cbThemes: TSpTBXComboBoxItem;
+    TBXSeparatorItem1: TSpTBXSeparatorItem;
     pbTranslated: TTntProgressBar;
     acSaveOrigAs: TTntAction;
-    TBXItem1: TTBXItem;
+    TBXItem1: TSpTBXItem;
     acConfigureKeyboard: TTntAction;
-    TBXSeparatorItem2: TTBXSeparatorItem;
-    TBXItem2: TTBXItem;
-    TBXSeparatorItem3: TTBXSeparatorItem;
-    TBXVisibilityToggleItem1: TTBXVisibilityToggleItem;
+    TBXSeparatorItem2: TSpTBXSeparatorItem;
+    TBXItem2: TSpTBXItem;
+    TBXSeparatorItem3: TSpTBXSeparatorItem;
+    TBXVisibilityToggleItem1: TSpTBXItem;
     MainFontDlg: TFontDialog;
     acImport: TTntAction;
     acExport: TTntAction;
-    TBXSeparatorItem4: TTBXSeparatorItem;
-    TBXItem3: TTBXItem;
-    TBXItem4: TTBXItem;
+    TBXSeparatorItem4: TSpTBXSeparatorItem;
+    TBXItem3: TSpTBXItem;
+    TBXItem4: TSpTBXItem;
     acToggleTranslated: TTntAction;
-    TBXSeparatorItem5: TTBXSeparatorItem;
-    TBXItem5: TTBXItem;
+    TBXSeparatorItem5: TSpTBXSeparatorItem;
+    TBXItem5: TSpTBXItem;
     pnlBack: TTntPanel;
     splitHorz: TSplitter;
     pnlBottom: TTntPanel;
@@ -308,35 +309,35 @@ type
     lblViewDetails: TLabel;
     acTestExceptionHandler: TTntAction;
     acDictAdd: TTntAction;
-    TBXItem6: TTBXItem;
-    TBXItem7: TTBXItem;
+    TBXItem6: TSpTBXItem;
+    TBXItem7: TSpTBXItem;
     acFullScreen: TTntAction;
-    TBXItem8: TTBXItem;
-    TBXSeparatorItem6: TTBXSeparatorItem;
-    smiDictionary: TTBXSubmenuItem;
+    TBXItem8: TSpTBXItem;
+    TBXSeparatorItem6: TSpTBXSeparatorItem;
+    smiDictionary: TSpTBXSubmenuItem;
     acSpellCheck: TTntAction;
-    tbxSpellCheck: TTBXItem;
+    tbxSpellCheck: TSpTBXItem;
     acToolsCustomize: TTntAction;
-    TBXItem10: TTBXItem;
-    TBXSubmenuItem1: TTBXSubmenuItem;
+    TBXItem10: TSpTBXItem;
+    TBXSubmenuItem1: TSpTBXSubmenuItem;
     acNoRichEditTntAction: TTntAction;
     acDeleteItem: TTntAction;
     acEditItem: TTntAction;
     acAddItem: TTntAction;
-    TBXSeparatorItem7: TTBXSeparatorItem;
-    TBXItem9: TTBXItem;
-    TBXItem11: TTBXItem;
-    TBXItem12: TTBXItem;
+    TBXSeparatorItem7: TSpTBXSeparatorItem;
+    TBXItem9: TSpTBXItem;
+    TBXItem11: TSpTBXItem;
+    TBXItem12: TSpTBXItem;
     acSaveOriginal: TTntAction;
-    TBXItem13: TTBXItem;
-    TBXItem14: TTBXItem;
+    TBXItem13: TSpTBXItem;
+    TBXItem14: TSpTBXItem;
     acTrim: TTntAction;
     acConfigSuspicious: TTntAction;
-    TBXItem15: TTBXItem;
+    TBXItem15: TSpTBXItem;
     acDictEdit: TTntAction;
-    TBXItem16: TTBXItem;
-    TBXSeparatorItem8: TTBXSeparatorItem;
-    mnuPlugins: TTBXSubmenuItem;
+    TBXItem16: TSpTBXItem;
+    TBXSeparatorItem8: TSpTBXSeparatorItem;
+    mnuPlugins: TSpTBXSubmenuItem;
     procedure FormCreate(Sender: TObject);
     procedure FormCloseQuery(Sender: TObject; var CanClose: boolean);
     procedure lvTranslateStringsChange(Sender: TObject; Item: TListItem;
@@ -439,7 +440,7 @@ type
     procedure acConfigSuspiciousExecute(Sender: TObject);
     procedure acDictEditExecute(Sender: TObject);
     procedure mnuPluginsPopup(Sender: TTBCustomItem; FromLink: Boolean);
-    procedure cbThemesChange(Sender: TObject);
+    procedure cbThemesChange(Sender: TObject; const Text: WideString);
   private
     { Private declarations }
     OpenOrigDlg, OpenTransDlg: TEncodingOpenDialog;
@@ -471,12 +472,12 @@ type
     procedure LoadSettings(FirstLoad: boolean);
     procedure SaveSettings;
     procedure LoadTranslate;
-    function LoadOriginal(const FileName: string; Encoding: TEncoding):TEncoding;
-    function LoadTranslation(const FileName: string; Encoding: TEncoding):TEncoding;
-    function SaveTranslation(const FileName: string; Encoding: TEncoding): boolean;
-    function SaveTranslationAs(const FileName: string; Encoding: TEncoding): boolean;
-    function SaveOriginal(const FileName: string; Encoding: TEncoding): boolean;
-    function SaveOrigAs(const FileName: string; Encoding: TEncoding): boolean;
+    function LoadOriginal(const FileName: WideString; Encoding: TEncoding):TEncoding;
+    function LoadTranslation(const FileName: WideString; Encoding: TEncoding):TEncoding;
+    function SaveTranslation(const FileName: WideString; Encoding: TEncoding): boolean;
+    function SaveTranslationAs(const FileName: WideString; Encoding: TEncoding): boolean;
+    function SaveOriginal(const FileName: WideString; Encoding: TEncoding): boolean;
+    function SaveOrigAs(const FileName: WideString; Encoding: TEncoding): boolean;
     procedure SetModified(const Value: boolean);
     function GetModified: boolean;
     function SearchFromCurrent(const FindText: WideString; CaseSense, WholeWord,
@@ -485,18 +486,17 @@ type
     function AddQuotes(const S: WideString): WideString;
     function RemoveQuotes(const S: WideString): WideString;
     procedure CreateDict(ClearList: boolean);
-    procedure LoadDictionary(const FileName: string);
-    procedure SaveDictionary(const FileName: string);
+    procedure LoadDictionary(const FileName: WideString);
+    procedure SaveDictionary(const FileName: WideString);
     procedure HandleCommandLine;
     // returns false if the application should be terminated
     function ProcessCommand(const ACommand: WideString): boolean;
     // lods a file with commands and processes them
-    procedure ProcessCommands(const CommandFile: string);
-    procedure DoMonitoredFileChange(Sender: TObject; const FileName: string;
-      var AContinue, AReset: boolean);
+    procedure ProcessCommands(const CommandFile: WideString);
+    procedure DoMonitoredFileChange(Sender: TObject; const FileName: WideString; var AContinue, AReset: boolean);
     procedure DoThreadTerminate(Sender: TObject);
     procedure StartMonitor(var AMonitor: TFileMonitorThread;
-      const AFileName: string);
+      const AFileName: WideString);
     procedure StopMonitor(var AMonitor: TFileMonitorThread);
     procedure UseDictionary;
     procedure DoWriteObject(Sender, AnObject: TObject; const APropName: WideString;
@@ -506,7 +506,7 @@ type
     procedure DoReadObject(Sender, AnObject: TObject; const PropName, Section: WideString; var Value: WideString);
     procedure ScrollToTop;
     procedure SaveEditChanges;
-    function GetFilename(const Filename: string): string;
+    function GetFilename(const Filename: WideString): WideString;
     procedure MoveCommentWindow;
     procedure WMDropFiles(var Message: TWmDropFiles); message WM_DROPFILES;
     procedure WMWindowPosChanged(var Message: TWMWindowPosChanged); message WM_WINDOWPOSCHANGED;
@@ -526,11 +526,11 @@ type
     procedure DoFindReplaceAll(Sender: TObject);
     procedure CreateDialogs;
     procedure FixXPPanelBug;
-    procedure AddMRUFile(const FileName: string; AOriginal: boolean);
-    procedure OpenMRUFiles(const FileName: string);
-    function MRUFileExists(const FileName: string): boolean;
+    procedure AddMRUFile(const FileName: WideString; AOriginal: boolean);
+    procedure OpenMRUFiles(const FileName: WideString);
+    function MRUFileExists(const FileName: WideString): boolean;
     procedure DoCommentModified(Sender: TObject; const AText: WideString);
-    procedure UpdateColumn(Index: integer; const AFileName: string);
+    procedure UpdateColumn(Index: integer; const AFileName: WideString);
     procedure DoTranslateSuggestionClick(Sender: TObject);
     procedure BuildToolMenu(Parent: TTBCustomItem);
     procedure BuildExternalToolMenu(Parent: TTBCustomItem);
@@ -584,11 +584,11 @@ begin
   if FirstLoad then
   begin
     CreateDialogs;
-    if FileExists(GlobalAppOptions.OriginalFile) then
+    if WideFileExists(GlobalAppOptions.OriginalFile) then
       LoadOriginal(GlobalAppOptions.OriginalFile, TEncoding(GlobalAppOptions.OrigEncoding)); // ??
-    if FileExists(GlobalAppOptions.TranslationFile) then
+    if WideFileExists(GlobalAppOptions.TranslationFile) then
       LoadTranslation(GlobalAppOptions.TranslationFile, TEncoding(GlobalAppOptions.TransEncoding)); // ??
-    if FileExists(GlobalAppOptions.DictionaryFile) then
+    if WideFileExists(GlobalAppOptions.DictionaryFile) then
       LoadDictionary(GlobalAppOptions.DictionaryFile);
 
     Caption := GlobalAppOptions.AppTitle;
@@ -614,20 +614,21 @@ begin
     TBMRULoadFromIni(MRUFiles);
     // load shortcuts
     LoadActionShortCutsFromFile(alMain, GetUserShortcutFile);
-    // get all available themes
 
-    cbThemes.Lines.Clear;
+    // get all available themes
+    cbThemes.Strings.Clear;
     for i := 0 to ThemeSwitcher.ThemeCount - 1 do
-      cbThemes.Lines.Add(ThemeSwitcher.Themes[i]);
-    cbThemes.Lines.Sort;
+      cbThemes.Strings.Add(ThemeSwitcher.Themes[i]);
+    TTntStringlist(cbThemes.Strings).Sort;
     cbThemes.Text := GlobalAppOptions.Theme;
+
     // must call ThemeSwitcher manually: cbThemes.OnChange is not triggered when assigning directly to Text property
     ThemeSwitcher.Theme := GlobalAppOptions.Theme;
     PostMessage(Handle, WM_DELAYLOADED, Handle, 0);
     acRestoreSortExecute(nil);
     LoadTranslate;
-
   end;
+
   UpdateColumn(0, GlobalAppOptions.OriginalFile);
   UpdateColumn(1, GlobalAppOptions.TranslationFile);
 
@@ -717,7 +718,7 @@ var
   i: integer;
 begin
   Result := true;
-  i := AnsiPos(' ', ACommand);
+  i := Pos(WideChar(' '), ACommand);
   if i > 0 then
   begin
     tmp := trim(Copy(ACommand, 1, i - 1));
@@ -728,19 +729,19 @@ begin
     tmp := trim(ACommand);
     tmp2 := '';
   end;
-  if WideSameText('OPENORIG', tmp) and FileExists(tmp2) then
+  if WideSameText('OPENORIG', tmp) and WideFileExists(tmp2) then
     LoadOriginal(tmp2, feAnsi)
-  else if WideSameText('OPENORIGUC', tmp) and FileExists(tmp2) then
+  else if WideSameText('OPENORIGUC', tmp) and WideFileExists(tmp2) then
     LoadOriginal(tmp2, feUnicode)
-  else if WideSameText('OPENORIGUTF8', tmp) and FileExists(tmp2) then
+  else if WideSameText('OPENORIGUTF8', tmp) and WideFileExists(tmp2) then
     LoadOriginal(tmp2, feUTF8)
-  else if WideSameText('OPENTRANS', tmp) and FileExists(tmp2) then
+  else if WideSameText('OPENTRANS', tmp) and WideFileExists(tmp2) then
     LoadTranslation(tmp2, feAnsi)
-  else if WideSameText('OPENTRANSUC', tmp) and FileExists(tmp2) then
+  else if WideSameText('OPENTRANSUC', tmp) and WideFileExists(tmp2) then
     LoadTranslation(tmp2, feUnicode)
-  else if WideSameText('OPENTRANSUTF8', tmp) and FileExists(tmp2) then
+  else if WideSameText('OPENTRANSUTF8', tmp) and WideFileExists(tmp2) then
     LoadTranslation(tmp2, feUTF8)
-  else if WideSameText('OPENDICT', tmp) and FileExists(tmp2) then
+  else if WideSameText('OPENDICT', tmp) and WideFileExists(tmp2) then
     LoadDictionary(tmp2)
   else if WideSameText('SAVETRANS', tmp) then
   begin
@@ -782,12 +783,12 @@ begin
     Result := false;
 end;
 
-procedure TfrmMain.ProcessCommands(const CommandFile: string);
+procedure TfrmMain.ProcessCommands(const CommandFile: WideString);
 var
-  S: TStringlist;
+  S: TTntStringlist;
   i: integer;
 begin
-  if not FileExists(CommandFile) then
+  if not WideFileExists(CommandFile) then
     ErrMsg(WideFormat(Translate(ClassName, SFmtFileNotFound), [CommandFile]), Translate(ClassName, SErrorCaption))
   else
   begin
@@ -796,7 +797,7 @@ begin
     ShowWindow(Application.Handle, SW_MINIMIZE);
     SendMessage(Handle, WM_SETREDRAW, 0, 0);
     try
-      S := TStringlist.Create;
+      S := TTntStringlist.Create;
       try
         S.LoadFromFile(CommandFile);
         for i := 0 to S.Count - 1 do
@@ -820,7 +821,7 @@ end;
 
 procedure TfrmMain.HandleCommandLine;
 var
-  S: string;
+  S: AnsiString;
 begin
   UpdateColumn(0, '');
   UpdateColumn(1, '');
@@ -831,21 +832,21 @@ begin
     if (ParamCount >= 1) then
     begin
       S := ExpandUNCFileName(ParamStr(1));
-      if FileExists(S) then
+      if WideFileExists(S) then
         LoadOriginal(S, DetectEncoding(S));
       if (ParamCount >= 2) then
       begin
         S := ExpandUNCFileName(ParamStr(2));
-        if FileExists(S) then
+        if WideFileExists(S) then
           LoadTranslation(S, DetectEncoding(S));
       end
-      else if FileExists(GlobalAppOptions.TranslationFile) then
+      else if WideFileExists(GlobalAppOptions.TranslationFile) then
         LoadTranslation(GlobalAppOptions.TranslationFile, DetectEncoding(GlobalAppOptions.TranslationFile));
     end;
     if (ParamCount >= 3) then
     begin
       S := ExpandUNCFileName(ParamStr(3));
-      if FileExists(S) then
+      if WideFileExists(S) then
         LoadDictionary(S);
     end;
   end;
@@ -853,7 +854,7 @@ begin
   Modified := false;
 end;
 
-function TfrmMain.LoadOriginal(const FileName: string; Encoding: TEncoding):TEncoding;
+function TfrmMain.LoadOriginal(const FileName: WideString; Encoding: TEncoding):TEncoding;
 begin
   WaitCursor;
 
@@ -863,7 +864,7 @@ begin
     Exit;
   end;
 
-  if FileExists(Filename) and not FCommandProcessor then
+  if WideFileExists(Filename) and not FCommandProcessor then
   begin
     FCapabilitesSupported := 0;
     AddMRUFile(FileName, true);
@@ -878,7 +879,7 @@ begin
 
   GlobalAppOptions.OriginalFile := Filename;
   GlobalAppOptions.OrigEncoding := Ord(Encoding);
-  FLastFolder := ExtractFilePath(Filename);
+  FLastFolder := WideExtractFilePath(Filename);
 
   Result := FTranslateFile.LoadOriginal(FileName, Encoding);
   GlobalAppOptions.OrigEncoding := Ord(Result);
@@ -893,7 +894,7 @@ begin
   acRestoreSortExecute(nil);
 end;
 
-function TfrmMain.LoadTranslation(const FileName: string; Encoding: TEncoding):TEncoding;
+function TfrmMain.LoadTranslation(const FileName: WideString; Encoding: TEncoding):TEncoding;
 begin
   WaitCursor;
   if not CheckModified then
@@ -909,7 +910,7 @@ begin
 
   GlobalAppOptions.TranslationFile := Filename;
   GlobalAppOptions.TransEncoding := Ord(Encoding);
-  FLastFolder := ExtractFilePath(Filename);
+  FLastFolder := WideExtractFilePath(Filename);
 
   AddMRUFile(FileName, false);
 
@@ -935,7 +936,7 @@ begin
   acRestoreSortExecute(nil);
 end;
 
-function TfrmMain.SaveTranslation(const FileName: string; Encoding: TEncoding): boolean;
+function TfrmMain.SaveTranslation(const FileName: WideString; Encoding: TEncoding): boolean;
 var
   i: integer;
 begin
@@ -961,7 +962,7 @@ begin
   end;
   GlobalAppOptions.TranslationFile := Filename;
   GlobalAppOptions.TransEncoding := Ord(Encoding);
-  FLastFolder := ExtractFilePath(Filename);
+  FLastFolder := WideExtractFilePath(Filename);
 
   UpdateColumn(1, FileName);
   Result := true;
@@ -973,7 +974,7 @@ begin
   lvTranslateStrings.ItemIndex := i;
 end;
 
-function TfrmMain.SaveTranslationAs(const FileName: string; Encoding: TEncoding): boolean;
+function TfrmMain.SaveTranslationAs(const FileName: WideString; Encoding: TEncoding): boolean;
 begin
   Result := false;
   SaveTransDlg.FileName := GetFilename(Filename);
@@ -988,7 +989,7 @@ begin
   end;
 end;
 
-function TfrmMain.SaveOriginal(const FileName: string; Encoding: TEncoding): boolean;
+function TfrmMain.SaveOriginal(const FileName: WideString; Encoding: TEncoding): boolean;
 var
   i: integer;
 begin
@@ -1015,7 +1016,7 @@ begin
 
   GlobalAppOptions.OriginalFile := Filename;
   GlobalAppOptions.OrigEncoding := Ord(Encoding);
-  FLastFolder := ExtractFilePath(Filename);
+  FLastFolder := WideExtractFilePath(Filename);
 
   UpdateColumn(0, FileName);
   Result := true;
@@ -1027,7 +1028,7 @@ begin
   lvTranslateStrings.ItemIndex := i;
 end;
 
-function TfrmMain.SaveOrigAs(const FileName: string; Encoding: TEncoding): boolean;
+function TfrmMain.SaveOrigAs(const FileName: WideString; Encoding: TEncoding): boolean;
 begin
   Result := false;
   SaveOrigDlg.FileName := GetFilename(Filename);
@@ -1062,7 +1063,7 @@ begin
   UpdateStatus;
 end;
 
-procedure TfrmMain.LoadDictionary(const FileName: string);
+procedure TfrmMain.LoadDictionary(const FileName: WideString);
 begin
   WaitCursor;
   if not CheckDictModified then
@@ -1079,7 +1080,7 @@ begin
   UpdateStatus;
 end;
 
-procedure TfrmMain.SaveDictionary(const FileName: string);
+procedure TfrmMain.SaveDictionary(const FileName: WideString);
 begin
   WaitCursor;
   // stop the monitor thread
@@ -1238,14 +1239,22 @@ var
   i: integer;
 
   // NB! Pass in Font.Size for StartSize and MinSize. AWidth is max width in pixels. Returns positive Font.Height
-
-  function CalcMaxFontSize(ACanvas: TCanvas; const S: string; AWidth: integer; StartSize, MinSize: integer): integer;
+  function WideGetTextExtentPoint32(DC: HDC; Str: PWideChar; Count: Integer;
+  var Size: TSize): BOOL;
+  begin
+    if Win32PlatformIsUnicode then
+      Result := GetTextExtentPoint32W(DC, Str, Count, Size)
+    else
+      Result := GetTextExtentPoint32A(DC, PAnsiChar(AnsiString(Str)), Count, Size);
+  end;
+  
+  function CalcMaxFontSize(ACanvas: TCanvas; const S: WideString; AWidth: integer; StartSize, MinSize: integer): integer;
   var
     aSize: TSize;
   begin
     ACanvas.Font.Size := StartSize;
     Result := StartSize;
-    while GetTextExtentPoint32(ACanvas.Handle, PChar(S), Length(S), aSize) do
+    while WideGetTextExtentPoint32(ACanvas.Handle, PWideChar(S), Length(S), aSize) do
     begin
       if aSize.cx <= AWidth then
       begin
@@ -1312,7 +1321,7 @@ begin
       FFileMonitors[i] := nil;
 end;
 
-procedure TfrmMain.DoMonitoredFileChange(Sender: TObject; const FileName: string; var AContinue, AReset: boolean);
+procedure TfrmMain.DoMonitoredFileChange(Sender: TObject; const FileName: WideString; var AContinue, AReset: boolean);
 begin
   if GetActiveWindow <> Handle then
   begin
@@ -1326,7 +1335,7 @@ begin
     begin
       // in case Original and Translation is the same file...
       StopMonitor(FFileMonitors[cTransMonitor]);
-//      if FileExists(GlobalAppOptions.TranslationFile) then
+//      if WideFileExists(GlobalAppOptions.TranslationFile) then
 //        SaveTranslation(GlobalAppOptions.TranslationFile, DetectEncoding(GlobalAppOptions.TranslationFile));
       LoadOriginal(FileName, TEncoding(GlobalAppOptions.OrigEncoding));
       LoadTranslation(GlobalAppOptions.TranslationFile, TEncoding(GlobalAppOptions.TransEncoding));
@@ -1342,9 +1351,9 @@ begin
     AContinue := true;
 end;
 
-procedure TfrmMain.StartMonitor(var AMonitor: TFileMonitorThread; const AFileName: string);
+procedure TfrmMain.StartMonitor(var AMonitor: TFileMonitorThread; const AFileName: WideString);
 begin
-  if GlobalAppOptions.MonitorFiles and FileExists(AFileName) then
+  if GlobalAppOptions.MonitorFiles and WideFileExists(AFileName) then
   begin
     StopMonitor(AMonitor);
     AMonitor := TFileMonitorThread.Create(AFileName);
@@ -1381,13 +1390,13 @@ begin
   end;
 end;
 
-function TfrmMain.GetFilename(const Filename: string): string;
+function TfrmMain.GetFilename(const Filename: WideString): WideString;
 begin
   if GlobalAppOptions.GlobalPath and (FLastFolder <> '') then
-    Result := IncludeTrailingPathDelimiter(FLastFolder) + ExtractFileName(Filename)
+    Result := WideIncludeTrailingPathDelimiter(FLastFolder) + WideExtractFileName(Filename)
   else
     Result := Filename;
-  Result := ExcludeTrailingPathDelimiter(Result);
+  Result := WideExcludeTrailingPathDelimiter(Result);
 end;
 
 procedure TfrmMain.MoveCommentWindow;
@@ -1461,7 +1470,7 @@ end;
 procedure TfrmMain.DoSaveExtra(Sender: TObject; ini: TWideCustomIniFile);
 var
   i: integer;
-  S: string;
+  S: WideString;
 begin
   // write out all resourcestrings
   ini.WriteString(ClassName, EncodeStrings(SFmtAboutText), EncodeStrings(SFmtAboutText));
@@ -1749,7 +1758,7 @@ procedure TfrmMain.WMDropFiles(var Message: TWmDropFiles);
 var
   ACount: integer;
   P: TPoint;
-  buf: array[0..MAX_PATH] of char;
+  buf: array[0..MAX_PATH] of AnsiChar;
 begin
   // find out where we are
   ACount := DragQueryFile(Message.Drop, $FFFFFFFF, nil, 0);
@@ -1759,7 +1768,7 @@ begin
       1:
         begin
           DragQueryFile(Message.Drop, 0, buf, sizeof(buf));
-          if FileExists(buf) then
+          if WideFileExists(buf) then
           begin
             // find out where it was dropped so we can load the right file
             if not DragQueryPoint(Message.Drop, P) or PtInRect(Rect(0, 0, Width div 2, Height), P) then
@@ -1778,22 +1787,22 @@ begin
       2:
         begin
           DragQueryFile(Message.Drop, 0, buf, sizeof(buf));
-          if FileExists(buf) then
+          if WideFileExists(buf) then
             LoadOriginal(buf, DetectEncoding(buf));
           DragQueryFile(Message.Drop, 1, buf, sizeof(buf));
-          if FileExists(buf) then
+          if WideFileExists(buf) then
             LoadTranslation(buf, DetectEncoding(buf));
         end;
     else // more than 2
       begin
         DragQueryFile(Message.Drop, 0, buf, sizeof(buf));
-        if FileExists(buf) then
+        if WideFileExists(buf) then
           LoadOriginal(buf, DetectEncoding(buf));
         DragQueryFile(Message.Drop, 1, buf, sizeof(buf));
-        if FileExists(buf) then
+        if WideFileExists(buf) then
           LoadTranslation(buf, DetectEncoding(buf));
         DragQueryFile(Message.Drop, 2, buf, sizeof(buf));
-        if FileExists(buf) then
+        if WideFileExists(buf) then
           LoadDictionary(buf);
       end;
     end;
@@ -1910,9 +1919,9 @@ begin
 end;
 {$ENDIF}
 
-procedure TfrmMain.AddMRUFile(const FileName: string; AOriginal: boolean);
+procedure TfrmMain.AddMRUFile(const FileName: WideString; AOriginal: boolean);
 var
-  S: string;
+  S: WideString;
 begin
   if AOriginal then
     S := WideFormat('%s [%s]', [FileName, GlobalAppOptions.TranslationFile])
@@ -1921,9 +1930,9 @@ begin
   MRUFiles.Add(S);
 end;
 
-procedure TfrmMain.OpenMRUFiles(const FileName: string);
+procedure TfrmMain.OpenMRUFiles(const FileName: WideString);
 var
-  Orig, Trans: string;
+  Orig, Trans: WideString;
 begin
   Orig := trim(Copy(FileName, 1, Pos('[', FileName) - 1));
   if Orig <> '' then
@@ -1933,17 +1942,17 @@ begin
     Trans := '';
     Orig := FileName;
   end;
-  if (Orig <> '') and FileExists(Orig) then
+  if (Orig <> '') and WideFileExists(Orig) then
     LoadOriginal(Orig, DetectEncoding(Orig));
-  if (Trans <> '') and FileExists(Trans) then
+  if (Trans <> '') and WideFileExists(Trans) then
     LoadTranslation(Trans, DetectEncoding(Trans))
   else
     acOpenTrans.Execute;
 end;
 
-function TfrmMain.MRUFileExists(const FileName: string): boolean;
+function TfrmMain.MRUFileExists(const FileName: WideString): boolean;
 var
-  Orig, Trans: string;
+  Orig, Trans: WideString;
 begin
   Orig := trim(Copy(FileName, 1, Pos('[', FileName) - 1));
   if Orig <> '' then
@@ -1953,7 +1962,7 @@ begin
     Trans := '';
     Orig := FileName;
   end;
-  Result := (Orig <> '') and (Trans <> '') and FileExists(Orig) and FileExists(Trans);
+  Result := (Orig <> '') and (Trans <> '') and WideFileExists(Orig) and WideFileExists(Trans);
 end;
 
 // frmMain event handlers
@@ -2606,11 +2615,11 @@ end;
 
 procedure TfrmMain.acHelpExecute(Sender: TObject);
 begin
-  if not FileExists(GlobalAppOptions.HelpFile) then
+  if not WideFileExists(GlobalAppOptions.HelpFile) then
     ErrMsg(WideFormat(Translate(ClassName, SFmtErrHelpNotFound), [GlobalAppOptions.HelpFile]),
       Translate(ClassName, SErrorCaption))
   else
-    ShellExecute(Handle, '', PChar(GlobalAppOptions.HelpFile), nil, nil, SW_SHOWNORMAL);
+    Tnt_ShellExecuteW(Handle, '', PWideChar(GlobalAppOptions.HelpFile), nil, nil, SW_SHOWNORMAL);
   //
 end;
 
@@ -2809,7 +2818,7 @@ end;
 
 procedure TfrmMain.acAsciiValuesExecute(Sender: TObject);
 var
-  S, T: string;
+  S, T: WideString;
   i: integer;
 begin
   if reOriginal.Focused then
@@ -3049,7 +3058,7 @@ var
     end;
   end;
 
-  function IsSameEndControl(const Original, Translation: string): boolean;
+  function IsSameEndControl(const Original, Translation: WideString): boolean;
   begin
     Result := not GlobalAppOptions.MisMatchEndControl or WideSameStr(EndControl(Original), EndControl(Translation));
   end;
@@ -3154,7 +3163,7 @@ begin
   reOriginal.Clear;
   reTranslation.Clear;
   if TfrmImportExport.Edit(FTranslateFile.Items, FTranslateFile.Orphans,
-    ExtractFilePath(Application.ExeName) + 'plugins', true, FImportIndex, FCapabilitesSupported) then
+    WideExtractFilePath(Application.ExeName) + 'plugins', true, FImportIndex, FCapabilitesSupported) then
   begin
     // make sure the "Save As" dialog is shown on Ctrl+S to prevent inadverent saving to wrong file
     StopMonitor(FFileMonitors[cOrigMonitor]);
@@ -3177,7 +3186,7 @@ var
 begin
   //  (FTranslateFile.Items as ITranslationItems)._AddRef;
   WaitCursor;
-  TfrmImportExport.Edit(FTranslateFile.Items, FTranslateFile.Orphans, ExtractFilePath(Application.ExeName) + 'plugins',
+  TfrmImportExport.Edit(FTranslateFile.Items, FTranslateFile.Orphans, WideExtractFilePath(Application.ExeName) + 'plugins',
     false, FImportIndex, Dummy);
   lvTranslateStrings.Items.Count := FTranslateFile.Items.Count;
 end;
@@ -3206,7 +3215,7 @@ begin
       FTranslateFile.Items[Index].TransComments := MakeComment(AText);
 end;
 
-procedure TfrmMain.UpdateColumn(Index: integer; const AFileName: string);
+procedure TfrmMain.UpdateColumn(Index: integer; const AFileName: WideString);
 begin
   case Index of
     0:
@@ -3299,7 +3308,7 @@ var
   R: TCustomEdit;
   M: TTBXItem;
   i, j: integer;
-  S: string;
+  S: WideString;
 begin
   smiDictionary.Clear;
   if popEdit.PopupComponent is TCustomEdit then
@@ -3378,7 +3387,7 @@ begin
   reTranslationExit(reTranslation);
 end;
 
-procedure WriteToFile(const Name, Value: string);
+procedure WriteToFile(const Name, Value: WideString);
 begin
   with TWideMemIniFile.Create(ChangeFileExt(Application.ExeName, '.spl')) do
   try
@@ -3391,7 +3400,7 @@ end;
 
 procedure TfrmMain.SpellCheckGetString(Sender: TObject; LanguageString: TSpellLanguageString; var Text: string);
 var
-  AText: string;
+  AText: WideString;
 begin
   AText := Text;
   Text := GlobalLanguageFile.Translate('SpellChecker', Text, Text);
@@ -3479,11 +3488,11 @@ end;
 
 procedure TfrmMain.BuildToolMenu(Parent: TTBCustomItem);
 var
-  P: TTBXSubmenuItem;
+  P: TSpTBXSubmenuItem;
   M: TTBXItem;
   i: integer;
 begin
-  P := Parent as TTBXSubmenuItem;
+  P := Parent as TSpTBXSubmenuItem;
   while P.Count > 1 do
     P.Delete(P.Count - 1); //remove previous menu items
   if GlobalAppOptions.Tools.Count > 0 then
@@ -3536,7 +3545,7 @@ var
   i: integer;
   E: TExternalToolItem;
 begin
-  FExternalToolItems := TExternalToolItems.Create(ExtractFilePath(Application.ExeName) + 'plugins');
+  FExternalToolItems := TExternalToolItems.Create(WideExtractFilePath(Application.ExeName) + 'plugins');
   Parent.Clear;
   for i := 0 to FExternalToolItems.Count - 1 do
   begin
@@ -3587,8 +3596,8 @@ begin
   Result := Tnt_WideStringReplace(Result, '$(OrigText)', S, [rfReplaceAll, rfIgnoreCase]);
   Result := Tnt_WideStringReplace(Result, '$(OrigPath)', tmp, [rfReplaceAll, rfIgnoreCase]);
   Result := Tnt_WideStringReplace(Result, '$(OrigDir)', tmp, [rfReplaceAll, rfIgnoreCase]);
-  Result := Tnt_WideStringReplace(Result, '$(OrigName)', ChangeFileExt(ExtractFilename(tmp), ''), [rfReplaceAll, rfIgnoreCase]);
-  Result := Tnt_WideStringReplace(Result, '$(OrigExt)', ExtractFileExt(tmp), [rfReplaceAll, rfIgnoreCase]);
+  Result := Tnt_WideStringReplace(Result, '$(OrigName)', WideChangeFileExt(WideExtractFilename(tmp), ''), [rfReplaceAll, rfIgnoreCase]);
+  Result := Tnt_WideStringReplace(Result, '$(OrigExt)', WideExtractFileExt(tmp), [rfReplaceAll, rfIgnoreCase]);
 
   Result := Tnt_WideStringReplace(Result, '$(TransLine)', reTranslation.Text, [rfReplaceAll, rfIgnoreCase]);
   if reTranslation.SelLength = 0 then
@@ -3598,17 +3607,17 @@ begin
   tmp := GlobalAppOptions.TranslationFile;
   Result := Tnt_WideStringReplace(Result, '$(TransText)', S, [rfReplaceAll, rfIgnoreCase]);
   Result := Tnt_WideStringReplace(Result, '$(TransPath)', tmp, [rfReplaceAll, rfIgnoreCase]);
-  Result := Tnt_WideStringReplace(Result, '$(TransDir)', ExtractFilePath(tmp), [rfReplaceAll, rfIgnoreCase]);
-  Result := Tnt_WideStringReplace(Result, '$(TransName)', ChangeFileExt(ExtractFilename(tmp), ''), [rfReplaceAll, rfIgnoreCase]);
-  Result := Tnt_WideStringReplace(Result, '$(TransExt)', ExtractFileExt(tmp), [rfReplaceAll, rfIgnoreCase]);
+  Result := Tnt_WideStringReplace(Result, '$(TransDir)', WideExtractFilePath(tmp), [rfReplaceAll, rfIgnoreCase]);
+  Result := Tnt_WideStringReplace(Result, '$(TransName)', WideChangeFileExt(WideExtractFilename(tmp), ''), [rfReplaceAll, rfIgnoreCase]);
+  Result := Tnt_WideStringReplace(Result, '$(TransExt)', WideExtractFileExt(tmp), [rfReplaceAll, rfIgnoreCase]);
 
   tmp := GlobalAppOptions.DictionaryFile;
   Result := Tnt_WideStringReplace(Result, '$(DictPath)', tmp, [rfReplaceAll, rfIgnoreCase]);
-  Result := Tnt_WideStringReplace(Result, '$(DictDir)', ExtractFilePath(tmp), [rfReplaceAll, rfIgnoreCase]);
-  Result := Tnt_WideStringReplace(Result, '$(DictName)', ChangeFileExt(ExtractFilename(tmp), ''), [rfReplaceAll, rfIgnoreCase]);
-  Result := Tnt_WideStringReplace(Result, '$(DictExt)', ExtractFileExt(tmp), [rfReplaceAll, rfIgnoreCase]);
+  Result := Tnt_WideStringReplace(Result, '$(DictDir)', WideExtractFilePath(tmp), [rfReplaceAll, rfIgnoreCase]);
+  Result := Tnt_WideStringReplace(Result, '$(DictName)', WideChangeFileExt(WideExtractFilename(tmp), ''), [rfReplaceAll, rfIgnoreCase]);
+  Result := Tnt_WideStringReplace(Result, '$(DictExt)', WideExtractFileExt(tmp), [rfReplaceAll, rfIgnoreCase]);
 
-  Result := Tnt_WideStringReplace(Result, '$(AppDir)', ExtractFilePath(Application.ExeName), [rfReplaceAll, rfIgnoreCase]);
+  Result := Tnt_WideStringReplace(Result, '$(AppDir)', WideExtractFilePath(Application.ExeName), [rfReplaceAll, rfIgnoreCase]);
   Result := Tnt_WideStringReplace(Result, '$(WinDir)', WinDir, [rfReplaceAll, rfIgnoreCase]);
   Result := Tnt_WideStringReplace(Result, '$(SysDir)', SysDir, [rfReplaceAll, rfIgnoreCase]);
 end;
@@ -3627,7 +3636,6 @@ procedure TfrmMain.ExecuteTool(ATool: TToolItem);
 var
   Cmd, Args, Dir: WideString;
   ReturnValue: Cardinal;
-  FOutput: TStringlist;
 begin
   Cmd := MacroReplace(ATool.Command);
   if ATool.PromptForArguments then
@@ -3643,7 +3651,6 @@ begin
 
   if ATool.UseShellExecute then
   begin
-
     ReturnValue := Tnt_ShellExecuteW(Handle, nil, PWideChar(Cmd), PWideChar(Args), PWideChar(Dir), SW_SHOWNORMAL);
     if ReturnValue <= 32 then
       ReturnValue := GetLastError
@@ -3652,14 +3659,9 @@ begin
   end
   else
   begin
-    FOutput := TStringlist.Create;
-    try
-      if RunProcess(trim(Cmd), trim(Args), trim(Dir), ATool.WaitForCompletion,
-        ATool.WaitForCompletion, SW_SHOWNORMAL, ReturnValue) then
+    if RunProcess(trim(Cmd), trim(Args), trim(Dir), ATool.WaitForCompletion,
+      ATool.WaitForCompletion, SW_SHOWNORMAL, ReturnValue) then
         ReturnValue := 0;
-    finally
-      FOutput.Free;
-    end;
   end;
 
   if (ReturnValue <> 0) and (ATool.WaitForCompletion or ATool.UseShellExecute) then
@@ -3978,11 +3980,10 @@ begin
   TfrmDictEdit.Edit(FDict);
 end;
 
-procedure TfrmMain.cbThemesChange(Sender: TObject);
+procedure TfrmMain.cbThemesChange(Sender: TObject; const Text: WideString);
 begin
-  ThemeSwitcher.Theme := cbThemes.Text;
+  ThemeSwitcher.Theme := Text;
 end;
-
 
 end.
 

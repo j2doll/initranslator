@@ -316,7 +316,8 @@ object frmOptions: TfrmOptions
     Font.Height = -11
     Font.Name = 'MS Shell Dlg 2'
     Font.Style = []
-    Options = [fdAnsiOnly, fdNoSimulations, fdNoVectorFonts]
+    Device = fdBoth
+    Options = []
     Left = 310
     Top = 176
   end

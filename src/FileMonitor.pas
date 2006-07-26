@@ -26,15 +26,15 @@ const
   WM_THREADRESUME = WM_USER + 101;
 
 type
-  TFileMonitorEvent = procedure(Sender: TObject; const Filename: string; var AContinue, AReset: boolean) of object;
+  TFileMonitorEvent = procedure(Sender: TObject; const Filename: WideString; var AContinue, AReset: boolean) of object;
   TFileMonitorThread = class(TThread)
   private
     FOnChange: TFileMonitorEvent;
-    FFilename: string;
+    FFilename: WideString;
     FFileAge: integer;
     FTimeOut: integer;
     procedure Change; dynamic;
-    procedure SetFilename(const Value: string);
+    procedure SetFilename(const Value: WideString);
   protected
     procedure Execute; override;
     // override these to check for other changes in the file (like attributes)
@@ -44,14 +44,16 @@ type
 
     procedure WmThreadResume(var Msg: TMessage); message WM_THREADRESUME;
   public
-    constructor Create(const AFilename: string; ATimeOut: integer = 200);
+    constructor Create(const AFilename: WideString; ATimeOut: integer = 200);
     // changing the filename will reset the monitor thread (calls InitMonitor)
-    property Filename: string read FFilename write SetFilename;
+    property Filename: WideString read FFilename write SetFilename;
     property OnChange: TFileMonitorEvent read FOnChange write FOnChange;
   end;
 
 implementation
-
+uses
+  TntSysUtils;
+  
 resourcestring
   SFmtMonitorFileNotFound = 'File "%s" not found: cannot monitor a nonexistent file!';
 
@@ -74,9 +76,9 @@ begin
   end;
 end;
 
-constructor TFileMonitorThread.Create(const AFilename: string; ATimeOut: integer);
+constructor TFileMonitorThread.Create(const AFilename: WideString; ATimeOut: integer);
 begin
-  if (AFilename = '') or not FileExists(AFilename) then
+  if (AFilename = '') or not WideFileExists(AFilename) then
     raise Exception.CreateFmt(SFmtMonitorFileNotFound, [AFilename]);
 
   inherited Create(true);
@@ -90,7 +92,7 @@ procedure TFileMonitorThread.Execute;
 begin
   while not Terminated and not Suspended do
   begin
-    if not FileExists(FFilename) then
+    if not WideFileExists(FFilename) then
     begin
       Synchronize(Change); // file was deleted, so let user know
       Terminate;
@@ -116,11 +118,11 @@ begin
   FFileAge := FileAge(Filename);
 end;
 
-procedure TFileMonitorThread.SetFilename(const Value: string);
+procedure TFileMonitorThread.SetFilename(const Value: WideString);
 var
   DoResume: boolean;
 begin
-  if (Value = '') or not FileExists(Value) then
+  if (Value = '') or not WideFileExists(Value) then
     raise Exception.CreateFmt(SFmtMonitorFileNotFound, [Value]);
   DoResume := not Suspended;
   if DoResume then

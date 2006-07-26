@@ -9,10 +9,10 @@ MAKE = $(ROOT)\bin\make.exe -$(MAKEFLAGS) -f$**
 DCC = $(ROOT)\bin\dcc32.exe $**
 BRCC = $(ROOT)\bin\brcc32.exe $**
 #------------------------------------------------------------------------------
-PROJECTS = ConsoleTest.exe IBForumsParser.dll MozillaDTDParser.dll \
-  MozillaPropsParser.dll MSDictBuild.exe MSDictParser.dll OlegParser.dll \
-  OOGSIParser.dll PHPNukeParser.dll PHPParser.dll PolyGlotParser.dll POParser.dll \
-  SciTEParser.dll TMXParser.dll ToolPluginDemo.dll ToolTreeView.dll translator.exe
+PROJECTS = IBForumsParser.dll MozillaDTDParser.dll MozillaPropsParser.dll \
+  MSDictBuild.exe MSDictParser.dll OlegParser.dll OOGSIParser.dll \
+  PHPNukeParser.dll PHPParser.dll PolyGlotParser.dll POParser.dll SciTEParser.dll \
+  TMXParser.dll ToolTreeView.dll translator.exe
 #------------------------------------------------------------------------------
 default: $(PROJECTS)
 #------------------------------------------------------------------------------
@@ -44,9 +44,6 @@ SciTEParser.dll: src\SciTEPlugin\SciTEParser.dpr
 OOGSIParser.dll: src\OpenOfficeGSIPlugin\OOGSIParser.dpr
   $(DCC)
 
-ConsoleTest.exe: dunit\ConsoleTest.dpr
-  $(DCC)
-
 OlegParser.dll: src\OlegPlugin\OlegParser.dpr
   $(DCC)
 
@@ -60,9 +57,6 @@ TMXParser.dll: src\TMXPlugin\TMXParser.dpr
   $(DCC)
 
 PolyGlotParser.dll: src\PolyglotPlugin\PolyGlotParser.dpr
-  $(DCC)
-
-ToolPluginDemo.dll: src\ToolPluginDemo\ToolPluginDemo.dpr
   $(DCC)
 
 ToolTreeView.dll: src\ToolTreeView\ToolTreeView.dpr

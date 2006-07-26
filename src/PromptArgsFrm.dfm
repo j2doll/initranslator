@@ -131,91 +131,91 @@ object frmPromptArgs: TfrmPromptArgs
     ModalResult = 1
     TabOrder = 3
   end
-  object popArguments: TTBXPopupMenu
+  object popArguments: TSpTBXPopupMenu
     Left = 368
     Top = 48
-    object OriginalLine1: TTBXItem
-      Caption = 'Original Line'
+    object OriginalLine1: TSpTBXItem
       OnClick = ArgumentsClick
+      CaptionW = 'Original Line'
     end
-    object OriginalText1: TTBXItem
+    object OriginalText1: TSpTBXItem
       Tag = 1
-      Caption = 'Original Text'
       OnClick = ArgumentsClick
+      CaptionW = 'Original Text'
     end
-    object OriginalPath1: TTBXItem
+    object OriginalPath1: TSpTBXItem
       Tag = 2
-      Caption = 'Original Path'
       OnClick = ArgumentsClick
+      CaptionW = 'Original Path'
     end
-    object OriginalDirectory1: TTBXItem
+    object OriginalDirectory1: TSpTBXItem
       Tag = 3
-      Caption = 'Original Directory'
       OnClick = ArgumentsClick
+      CaptionW = 'Original Directory'
     end
-    object OriginalName1: TTBXItem
+    object OriginalName1: TSpTBXItem
       Tag = 4
-      Caption = 'Original Name'
       OnClick = ArgumentsClick
+      CaptionW = 'Original Name'
     end
-    object OriginalExtension1: TTBXItem
+    object OriginalExtension1: TSpTBXItem
       Tag = 5
-      Caption = 'Original Extension'
       OnClick = ArgumentsClick
+      CaptionW = 'Original Extension'
     end
     object N1: TTBXSeparatorItem
     end
-    object ranslationLine1: TTBXItem
+    object ranslationLine1: TSpTBXItem
       Tag = 6
-      Caption = 'Translation Line'
       OnClick = ArgumentsClick
+      CaptionW = 'Translation Line'
     end
-    object ranslationText1: TTBXItem
+    object ranslationText1: TSpTBXItem
       Tag = 7
-      Caption = 'Translation Text'
       OnClick = ArgumentsClick
+      CaptionW = 'Translation Text'
     end
-    object ranslationPath1: TTBXItem
+    object ranslationPath1: TSpTBXItem
       Tag = 8
-      Caption = 'Translation Path'
       OnClick = ArgumentsClick
+      CaptionW = 'Translation Path'
     end
-    object ranslationDirectory1: TTBXItem
+    object ranslationDirectory1: TSpTBXItem
       Tag = 9
-      Caption = 'Translation Directory'
       OnClick = ArgumentsClick
+      CaptionW = 'Translation Directory'
     end
-    object ranslationName1: TTBXItem
+    object ranslationName1: TSpTBXItem
       Tag = 10
-      Caption = 'Translation Name'
       OnClick = ArgumentsClick
+      CaptionW = 'Translation Name'
     end
-    object ranslationExtension1: TTBXItem
+    object ranslationExtension1: TSpTBXItem
       Tag = 11
-      Caption = 'Translation Extension'
       OnClick = ArgumentsClick
+      CaptionW = 'Translation Extension'
     end
     object N2: TTBXSeparatorItem
     end
-    object DictionaryPath1: TTBXItem
+    object DictionaryPath1: TSpTBXItem
       Tag = 12
-      Caption = 'Dictionary Path'
       OnClick = ArgumentsClick
+      CaptionW = 'Dictionary Path'
     end
-    object DictionaryDirectory1: TTBXItem
+    object DictionaryDirectory1: TSpTBXItem
       Tag = 13
-      Caption = 'Dictionary Directory'
       OnClick = ArgumentsClick
+      CaptionW = 'Dictionary Directory'
     end
-    object DictionaryName1: TTBXItem
+    object DictionaryName1: TSpTBXItem
       Tag = 14
-      Caption = 'Dictionary Name'
       OnClick = ArgumentsClick
+      CaptionW = 'Dictionary Name'
     end
-    object DictionaryExtension1: TTBXItem
+    object DictionaryExtension1: TSpTBXItem
       Tag = 15
-      Caption = 'Dictionary Extension'
       OnClick = ArgumentsClick
+      CaptionW = 'Dictionary Extension'
     end
     object TBXSeparatorItem1: TTBXSeparatorItem
     end
@@ -223,15 +223,15 @@ object frmPromptArgs: TfrmPromptArgs
       Caption = 'Application Directory'
       OnClick = ArgumentsClick
     end
-    object TBXItem2: TTBXItem
+    object TBXItem2: TSpTBXItem
       Tag = 16
-      Caption = 'Windows Directory'
       OnClick = ArgumentsClick
+      CaptionW = 'Windows Directory'
     end
-    object TBXItem1: TTBXItem
+    object TBXItem1: TSpTBXItem
       Tag = 17
-      Caption = 'System Directory'
       OnClick = ArgumentsClick
+      CaptionW = 'System Directory'
     end
   end
 end

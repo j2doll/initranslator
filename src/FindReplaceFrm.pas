@@ -154,7 +154,7 @@ type
 
 implementation
 uses
-  AppUtils, MsgTranslate, Clipbrd;
+  AppUtils, MsgTranslate, TntClipbrd;
 
 {$R *.dfm}
 

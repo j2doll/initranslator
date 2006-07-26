@@ -25,7 +25,7 @@ interface
 uses
   Windows, Messages, SysUtils, Classes, Graphics, Controls, Forms, Dialogs,
   StdCtrls, ExtCtrls, ActnList, ComCtrls, ShortCutEdit,
-  TntForms, TntClasses, TntActnList, TntStdCtrls, TntComCtrls;
+  TntForms, TntClasses, TntControls, TntActnList, TntStdCtrls, TntComCtrls;
 
 type
   TFrmKbdCfg = class(TTntFrame)
@@ -75,13 +75,13 @@ type
     FActionList: TTntActionList;
     FOnClose: TNotifyEvent;
     FModified: boolean;
-    FTempStoreFilename: string;
+    FTempStoreFilename: WideString;
     function GetCurrentAction: TTntAction;
     function GetShortCutAssignee(ShortCut: TShortCut): TTntAction;
-    procedure SetTempStoreFilename(const Value: string);
+    procedure SetTempStoreFilename(const Value: WideString);
     procedure CheckTempName;
     procedure ClearCatList;
-    function GetTempStoreFilename: string;
+    function GetTempStoreFilename: WideString;
     procedure CopyToCommands(S: TTntStrings);
     function DoTranslate(const S: WideString): WideString;
   public
@@ -91,7 +91,7 @@ type
 
     destructor Destroy; override;
     procedure AdjustControls;
-    property TempStoreFilename: string read GetTempStoreFilename write SetTempStoreFilename;
+    property TempStoreFilename: WideString read GetTempStoreFilename write SetTempStoreFilename;
     property OnClose: TNotifyEvent read FOnClose write FOnClose;
     property Modified: boolean read FModified;
   end;
@@ -99,18 +99,20 @@ type
 const
   ACTION_HIDDEN_TAG = -1;
 
-procedure SaveActionShortCutsToFile(AL: TTntActionList; Filename: string);
-procedure LoadActionShortCutsFromFile(AL: TTntActionList; Filename: string);
+procedure SaveActionShortCutsToFile(AL: TTntActionList; Filename: WideString);
+procedure LoadActionShortCutsFromFile(AL: TTntActionList; Filename: WideString);
 
 implementation
 uses
-  TntMenus, Menus, AppConsts, AppUtils, CommonUtils, MsgTranslate, TntSysUtils;
+  Menus, // for ShortCutToKey
+  AppConsts, AppUtils, CommonUtils, MsgTranslate,
+  TntWindows, TntMenus, TntSysUtils, TntWideStrUtils;
 
 {$R *.dfm}
 
 // format: Action.Name;Action.ShortCut;Action.SecondaryShortCuts[0]#27Action.SecondaryShortCuts[1]#27...
 
-procedure SaveActionShortCutsToFile(AL: TTntActionList; Filename: string);
+procedure SaveActionShortCutsToFile(AL: TTntActionList; Filename: WideString);
 var i: integer;
   A: TTntAction;
   S: TTntStringlist;
@@ -133,7 +135,7 @@ end;
 
 // TTntActionList.FindComponent doesn't work (FComponents = nil)...
 
-function FindAction(AL: TTntActionList; const AName: string): TTntAction;
+function FindAction(AL: TTntActionList; const AName: WideString): TTntAction;
 var i: integer;
 begin
   for i := 0 to AL.ActionCount - 1 do
@@ -145,7 +147,7 @@ begin
   Result := nil;
 end;
 
-procedure LoadActionShortCutsFromFile(AL: TTntActionList; Filename: string);
+procedure LoadActionShortCutsFromFile(AL: TTntActionList; Filename: WideString);
 var
   i, j: integer;
   A: TTntAction;
@@ -154,7 +156,7 @@ var
 begin
   if Filename = '' then
     Filename := GetAppStoragePath + 'translator.alf';
-  if not FileExists(Filename) then
+  if not WideFileExists(Filename) then
     Exit;
   S := TTntStringlist.Create;
   try
@@ -181,7 +183,7 @@ end;
 
 procedure TFrmKbdCfg.acAddExecute(Sender: TObject);
 var A: TTntAction;
-  S: string;
+  S: WideString;
 begin
   if edShortCut.ShortCut = 0 then
     Exit;
@@ -289,7 +291,7 @@ end;
 procedure TFrmKbdCfg.EditShortCuts(AActionList: TTntActionList);
 var
   i, j: integer;
-  S: string;
+  S: WideString;
   A: TTntAction;
   ActList: TTntStringlist;
 begin
@@ -340,7 +342,7 @@ end;
 
 function TFrmKbdCfg.GetShortCutAssignee(ShortCut: TShortCut): TTntAction;
 var i: integer;
-  S: string;
+  S: WideString;
   A: TTntAction;
 begin
   Result := nil;
@@ -396,14 +398,15 @@ begin
     FOnClose(self);
 end;
 
-procedure TFrmKbdCfg.SetTempStoreFilename(const Value: string);
+procedure TFrmKbdCfg.SetTempStoreFilename(const Value: WideString);
 begin
   FTempStoreFilename := Value;
   CheckTempName;
 end;
 
 procedure TFrmKbdCfg.CheckTempName;
-var bufFile: array[0..MAX_PATH] of char;
+var
+  bufFile: array[0..MAX_PATH] of AnsiChar;
   nSize: Cardinal;
 begin
   if FTempStoreFilename = '' then
@@ -411,11 +414,11 @@ begin
     nSize := sizeof(bufFile);
     GetTempPath(nSize, bufFile);
     if GetTempFileName(bufFile, 'CKB', 0, bufFile) <> 0 then
-      FTempStoreFilename := string(bufFile);
+      FTempStoreFilename := bufFile;
   end;
 end;
 
-function TFrmKbdCfg.GetTempStoreFilename: string;
+function TFrmKbdCfg.GetTempStoreFilename: WideString;
 begin
   CheckTempName;
   Result := FTempStoreFilename;
@@ -425,7 +428,7 @@ procedure TFrmKbdCfg.lvCommandsSelectItem(Sender: TObject; Item: TListItem;
   Selected: Boolean);
 var
   A: TTntAction;
-  S: string;
+  S: WideString;
   i: integer;
 begin
   if not Selected then
@@ -448,7 +451,7 @@ begin
       lbCurrentShortCuts.Items.AnsiStrings.AddStrings(A.SecondaryShortCuts);
     end;
     S := DoTranslate(A.Hint);
-    lblDescription.Caption := GetLongHint(S);
+    lblDescription.Caption := WideGetLongHint(S);
   end;
 end;
 

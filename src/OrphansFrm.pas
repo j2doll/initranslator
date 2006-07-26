@@ -28,7 +28,8 @@ uses
   Dialogs, ComCtrls, StdCtrls, ExtCtrls,
   ActnList,
   BaseForm, TranslateFile, TransIntf,
-  TntClasses, TntComCtrls, TntStdCtrls, TntActnList, TntMenus, TntExtCtrls;
+  TntClasses, TntComCtrls, TntStdCtrls, TntActnList, TntMenus, TntExtCtrls,
+  TB2Item, TBX, SpTBXItem;
 
 type
   TfrmOrphans = class(TfrmBase)
@@ -38,8 +39,8 @@ type
     Panel2: TTntPanel;
     lblSection: TTntLabel;
     alOrphans: TTntActionList;
-    PopupMenu1: TTntPopupMenu;
-    Copy1: TTntMenuItem;
+    PopupMenu1: TSpTBXPopupMenu;
+    Copy1: TSpTBXItem;
     acCopy: TTntAction;
     procedure lvOrphanedResize(Sender: TObject);
     procedure acCopyExecute(Sender: TObject);
@@ -56,7 +57,7 @@ type
 
 implementation
 uses
-  AppUtils, Clipbrd;
+  AppUtils, TntClipbrd;
 
 {$R *.dfm}
 
@@ -87,13 +88,13 @@ begin
 end;
 
 procedure TfrmOrphans.acCopyExecute(Sender: TObject);
-var S: string;
+var S: WideString;
 begin
   S := lvOrphaned.Selected.SubItems[0];
   if S = '' then
     S := lvOrphaned.Selected.Caption;
   if S <> '' then
-    Clipboard.AsText := S;
+    TntClipboard.AsWideText := S;
 end;
 
 procedure TfrmOrphans.alOrphansUpdate(Action: TBasicAction;

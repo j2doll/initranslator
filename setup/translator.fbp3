@@ -125,7 +125,7 @@ NEWS_NOTIFY
               <Property MultiValue="0" name="Value" type="String">0</Property>
               </Object>
             <Object Class="TPersistParam" XMLID="{61C26F12-53A5-41FA-8F60-F567944EDE65}"><Property MultiValue="0" name="Caption" type="String">&amp;amp;Build:</Property>
-              <Property MultiValue="0" name="DefaultValue" type="String">7</Property>
+              <Property MultiValue="0" name="DefaultValue" type="String">10</Property>
               <Property name="InUse" type="Boolean">True</Property>
               <Property name="List" type="TStrings"><![CDATA[]]>
                 </Property>
@@ -135,7 +135,7 @@ NEWS_NOTIFY
               <Property MultiValue="0" name="Value" type="String">7</Property>
               </Object>
             <Object Class="TPersistParam" XMLID="{28FC62C4-FC12-476C-9160-9F4C1D681AA6}"><Property MultiValue="0" name="Caption" type="String">&amp;amp;Upload to SourceForge</Property>
-              <Property MultiValue="0" name="DefaultValue" type="String">true</Property>
+              <Property MultiValue="0" name="DefaultValue" type="String">false</Property>
               <Property name="InUse" type="Boolean">True</Property>
               <Property name="List" type="TStrings"><![CDATA[]]>
                 </Property>
@@ -145,7 +145,7 @@ NEWS_NOTIFY
               <Property MultiValue="0" name="Value" type="String">True</Property>
               </Object>
             <Object Class="TPersistParam" XMLID="{A87FF9FF-5CA9-4448-A4E0-99D1CBD999B7}"><Property MultiValue="0" name="Caption" type="String">Send out &amp;amp;notifications</Property>
-              <Property MultiValue="0" name="DefaultValue" type="String">true</Property>
+              <Property MultiValue="0" name="DefaultValue" type="String">false</Property>
               <Property name="InUse" type="Boolean">True</Property>
               <Property name="List" type="TStrings"><![CDATA[]]>
                 </Property>

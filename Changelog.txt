@@ -1,9 +1,21 @@
 Ini Translator Changelog
 ========================
+2006-07-26:
+- Reverted to Toolbar 2000 2.1.8, TBX 2.1 beta 1 and now use SpTBXLib for Unicode enabling. There were too many bugs with TBX 2.2 alpha
+- Converted from TBX -> SpTBX
+
+2006-07-25:
+- Remaining "string" that shoudln't/can't be changed, has been renamed "AnsiString", remaining "PChar" that shoudln't/can't be changed, renamed to "PAnsiChar"
+- Changed remaining string->WideString, PChar->PWideChar, TStrings->TTntStrings, TStringlist->TTntStringlist
+- Implemented TWideIniFile
+- From now on, the configuration file is always read and written as unicode
+- Some fixes to TMX parser but still doesn't work 100% (especially when exporting). Maybe need another XML parser?
+
 2006-07-23:
 - New tool plugin (ToolTreeView): dísplays the content in a treeview and allows editing of original and translation strings
 - Minor fixes for unicode support
 - Several sizeable forms converted to unsizeable dialogs
+- New icon from Michael Kogan (photonx)
 
 2006-07-22:
 - Cleaned the code handling loading and saving of files and fixed a few bugs

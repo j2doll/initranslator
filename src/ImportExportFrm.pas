@@ -61,7 +61,7 @@ type
 
 implementation
 uses
-  AppConsts, AppUtils;
+  AppConsts, AppUtils, TntWindows, TntSysUtils;
 
 {$R *.dfm}
 var
@@ -69,12 +69,12 @@ var
 
 type
   TLibItem = class
-    LibName: string;
+    LibName: WideString;
     LibHandle: HMODULE;
     Parser: IFileParser;
   end;
 
-function InternalLoadLibrary(const LibName: string): TLibItem;
+function InternalLoadLibrary(const LibName: WideString): TLibItem;
 var
   LibHandle: HMODULE;
   ExportFunc: TExportFunc;
@@ -83,16 +83,16 @@ begin
   Result := nil;
   // find already loaded DLL's
   for i := 0 to FLoadedLibs.Count - 1 do
-    if AnsiSameText(TLibItem(FLoadedLibs[i]).LibName, LibName) then
+    if WideSameText(TLibItem(FLoadedLibs[i]).LibName, LibName) then
     begin
       Result := FLoadedLibs[i];
       Exit;
     end;
   // check if this module is already in the adress space
-  LibHandle := GetModuleHandle(PChar(LibName));
+  LibHandle := GetModuleHandle(PAnsiChar(AnsiString(LibName)));
   // load DLL
   if LibHandle = 0 then
-    LibHandle := LoadLibrary(PChar(LibName));
+    LibHandle := Tnt_LoadLibraryW(PWideChar(LibName));
   // check for the exported function
   if LibHandle <> 0 then
   begin
@@ -199,18 +199,18 @@ function TfrmImportExport.LoadPlugins(const PluginFolder: WideString;
 const
   cCapability: array[boolean] of integer = (CAP_EXPORT, CAP_IMPORT);
 var
-  F: TSearchRec;
+  F: TSearchRecW;
   APath: WideString;
   li: TListItem;
   LibItem: TLibItem;
 begin
   Result := 0;
-  APath := IncludeTrailingPathDelimiter(PluginFolder);
+  APath := WideIncludeTrailingPathDelimiter(PluginFolder);
 {$WARN SYMBOL_PLATFORM OFF}
-  if FindFirst(APath + '*.dll', faAnyFile and not (faDirectory or faVolumeID), F) = 0 then
+  if WideFindFirst(APath + '*.dll', faAnyFile and not (faDirectory or faVolumeID), F) = 0 then
   try
     repeat
-      if FileExists(APath + F.Name) then
+      if WideFileExists(APath + F.Name) then
       begin
         LibItem := InternalLoadLibrary(APath + F.Name);
         if LibItem <> nil then
@@ -226,9 +226,9 @@ begin
           end;
         end;
       end;
-    until FindNext(F) <> 0;
+    until WideFindNext(F) <> 0;
   finally
-    FindClose(F);
+    WideFindClose(F);
   end;
   if lvItems.Items.Count = 0 then
   begin

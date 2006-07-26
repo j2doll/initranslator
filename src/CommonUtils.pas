@@ -27,15 +27,14 @@ procedure ErrMsg(const AText, ACaption: WideString);
 function YesNo(const AText, ACaption: WideString): boolean;
 function YesNoCancel(const AText, ACaption: WideString): integer;
 
-function GetCmdSwitchValue(const Switch: string; SwitchChars: TSysCharSet;
-  var Value: string; IgnoreCase: boolean): boolean;
+function GetCmdSwitchValue(const Switch: AnsiString; SwitchChars: TSysCharSet; var Value: AnsiString; IgnoreCase: boolean): boolean;
 function ScreenCursor(ACursor: TCursor): IUnknown;
 function WaitCursor: IUnknown;
 
-function StripChars(const S: string; Ch: TSysCharSet): string; overload;
+function StripChars(const S: AnsiString; Ch: TSysCharSet): AnsiString; overload;
 function StripChars(const S: WideString; const Ch: WideString): WideString; overload;
-function SysDir: string;
-function WinDir: string;
+function SysDir: WideString;
+function WinDir: WideString;
 
 function MatchesString(const SubStr, Str: WideString; WholeLine, CaseSense, Fuzzy: boolean): boolean;
 function StripKey(const S, StripChars: WideString; ReallyStrip: boolean): WideString;
@@ -58,7 +57,8 @@ function IsCharPunct(const S:WideChar):boolean;
 
 implementation
 uses
-  Windows, Forms, Dialogs, Math, Registry, StrUtils, TntSysUtils, TntWideStrUtils, TntWindows;
+  Windows, Forms, Dialogs, Math, Registry, StrUtils,
+  TntWindows, TntSysUtils, TntWideStrUtils;
 
 function MyWideDequotedStr(const S: WideString; Quote: WideChar): WideString;
 // var LText:PWideChar;
@@ -84,7 +84,7 @@ begin
     Result := Quote + S + Quote;
 end;
 
-function StripChars(const S: string; Ch: TSysCharSet): string;
+function StripChars(const S: AnsiString; Ch: TSysCharSet): AnsiString;
 var
   i, j: integer;
 begin
@@ -121,16 +121,27 @@ begin
 end;
 
 function trimCRLFRight(const S: WideString): WideString;
+var i:integer;
 begin
-  Result := trimRight(Tnt_WideStringReplace(S, WideString(#13#10), WideString(' '), [rfReplaceAll]));
+  Result := S;
+  i := Length(Result);
+  while (i >= 1) and (Result[i] in [WideChar(#10), WideChar(#13)]) do
+    Dec(i);
+  if i >= 0 then
+    SetLength(Result, i);
+end;
+
+function WideMessageBox(hWnd: HWND; lpText, lpCaption: PWideChar; uType: UINT): Integer;
+begin
+  if Win32PlatformIsUnicode then
+    Result := MessageBoxW(hWnd, lpText, lpCaption, uType)
+  else
+    Result := MessageBoxA(hWnd, PAnsiChar(lpText), PAnsiChar(lpCaption), uType);
 end;
 
 procedure InfoMsg(const AText, ACaption: WideString);
 begin
-  if Win32PlatformIsUnicode then
-    MessageBoxW(GetFocus, PWideChar(AText), PWideChar(ACaption), MB_OK or MB_ICONINFORMATION)
-  else
-    MessageBox(GetFocus, PChar(string(AText)), PChar(string(ACaption)), MB_OK or MB_ICONINFORMATION);
+  WideMessageBox(GetFocus, PWideChar(AText), PWideChar(ACaption), MB_OK or MB_ICONINFORMATION)
 end;
 
 procedure AboutMsg(const AText, ACaption: WideString);
@@ -139,7 +150,7 @@ var
   ParamsA: TMsgBoxParamsA;
 begin
   // if there's no icon, display an info box instead
-  if FindResource(hInstance, PChar('MAINICON'), RT_GROUP_ICON) = 0 then
+  if FindResource(hInstance, PAnsiChar('MAINICON'), RT_GROUP_ICON) = 0 then
   begin
     InfoMsg(AText, ACaption);
     Exit;
@@ -173,10 +184,10 @@ begin
       cbSize := sizeof(TMsgBoxParamsA);
       hwndOwner := GetActiveWindow;
       hInstance := SysInit.hInstance;
-      lpszText := PChar(string(AText));
-      lpszCaption := PChar(string(ACaption));
+      lpszText := PAnsiChar(AnsiString(AText));
+      lpszCaption := PAnsiChar(AnsiString(ACaption));
       dwStyle := MB_OK or MB_USERICON;
-      lpszIcon := PChar('MAINICON');
+      lpszIcon := PAnsiChar('MAINICON');
       dwContextHelpId := 0;
       lpfnMsgBoxCallback := nil;
       dwLanguageId := GetUserDefaultLangID;
@@ -187,33 +198,24 @@ end;
 
 procedure ErrMsg(const AText, ACaption: WideString);
 begin
-  if Win32PlatformIsUnicode then
-    MessageBoxW(GetFocus, PWideChar(AText), PWideChar(ACaption), MB_OK or MB_ICONERROR)
-  else
-    MessageBox(GetFocus, PChar(string(AText)), PChar(string(ACaption)), MB_OK or MB_ICONERROR);
+  WideMessageBox(GetFocus, PWideChar(AText), PWideChar(ACaption), MB_OK or MB_ICONERROR)
 end;
 
 function YesNo(const AText, ACaption: WideString): boolean;
 begin
-  if Win32PlatformIsUnicode then
-    Result := MessageBoxW(GetFocus, PWideChar(AText), PWideChar(ACaption), MB_YESNO or MB_ICONQUESTION) = IDYES
-  else
-    Result := MessageBox(GetFocus, PChar(string(AText)), PChar(string(ACaption)), MB_YESNO or MB_ICONQUESTION) = IDYES
+  Result := WideMessageBox(GetFocus, PWideChar(AText), PWideChar(ACaption), MB_YESNO or MB_ICONQUESTION) = IDYES
 end;
 
 function YesNoCancel(const AText, ACaption: WideString): integer;
 begin
-  if Win32PlatformIsUnicode then
-    Result := MessageBoxW(GetFocus, PWideChar(AText), PWideChar(ACaption), MB_YESNOCANCEL or MB_ICONQUESTION)
-  else
-    Result := MessageBox(GetFocus, PChar(string(AText)), PChar(string(ACaption)), MB_YESNOCANCEL or MB_ICONQUESTION);
+  Result := WideMessageBox(GetFocus, PWideChar(AText), PWideChar(ACaption), MB_YESNOCANCEL or MB_ICONQUESTION)
 end;
 
-function GetCmdSwitchValue(const Switch: string; SwitchChars: TSysCharSet; var
-  Value: string; IgnoreCase: boolean): boolean;
+function GetCmdSwitchValue(const Switch: AnsiString; SwitchChars: TSysCharSet; var
+  Value: AnsiString; IgnoreCase: boolean): boolean;
 var
   i: integer;
-  S: string;
+  S: AnsiString;
 begin
   Result := false;
   for i := 1 to ParamCount do
@@ -222,9 +224,9 @@ begin
     if (SwitchChars = []) or (S[1] in SwitchChars) then
     begin
       if IgnoreCase then
-        Result := InRange(AnsiPos(AnsiUpperCase(Switch), AnsiUpperCase(S)), 1, 2)
+        Result := InRange(Pos(AnsiUpperCase(Switch), AnsiUpperCase(S)), 1, 2)
       else
-        Result := InRange(AnsiPos(Switch, S), 1, 2);
+        Result := InRange(Pos(Switch, S), 1, 2);
       if Result then
       begin
         Value := trim(Copy(S, Length(Switch) + Ord(SwitchChars <> []) + 1, MaxInt));
@@ -269,18 +271,18 @@ begin
   Result := ScreenCursor(crHourGlass);
 end;
 
-function SysDir: string;
+function SysDir: WideString;
 var
-  buf: array[0..MAX_PATH] of char;
+  buf: array[0..MAX_PATH] of WideChar;
 begin
-  SetString(Result, buf, GetSystemDirectory(buf, sizeof(buf)));
+  SetString(Result, buf, Tnt_GetSystemDirectoryW(buf, sizeof(buf)));
 end;
 
-function WinDir: string;
+function WinDir: WideString;
 var
-  buf: array[0..MAX_PATH] of char;
+  buf: array[0..MAX_PATH] of WideChar;
 begin
-  SetString(Result, buf, GetWindowsDirectory(buf, sizeof(buf)));
+  SetString(Result, buf, Tnt_GetWindowsDirectoryW(buf, sizeof(buf)));
 end;
 
 function MatchesString(const SubStr, Str: WideString; WholeLine, CaseSense, Fuzzy: boolean): boolean;
@@ -424,7 +426,7 @@ begin
   if Params <> '' then
     CmdLine := CmdLine + ' ' + Params;
   if WorkingDir = '' then
-    WorkingDir := ExcludeTrailingPathDelimiter(ExtractFilePath(Filename));
+    WorkingDir := WideExcludeTrailingPathDelimiter(WideExtractFilePath(Filename));
   FillChar(StartupInfo, SizeOf(StartupInfo), 0);
   StartupInfo.cb := SizeOf(StartupInfo);
   StartupInfo.dwFlags := STARTF_USESHOWWINDOW;

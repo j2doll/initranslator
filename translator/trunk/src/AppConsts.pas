@@ -126,7 +126,7 @@ const
   cRegMRUKey = '\Software\Peter3\Ini Translator\';
   cIniToolbarKey = 'Toolbars';
   cIniMRUKey = 'MRU';
-  cArgsMacros: array[0..18] of PChar =
+  cArgsMacros: array[0..18] of PWideChar =
   (
     '$(OrigLine)',
     '$(OrigText)',
@@ -148,7 +148,7 @@ const
     '$(WinDir)',
     '$(SysDir)'
     );
-  cDirMacros: array[0..5] of PChar =
+  cDirMacros: array[0..5] of PWideChar =
   (
     '$(OrigDir)',
     '$(TransDir)',

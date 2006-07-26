@@ -26,7 +26,7 @@ uses
   Menus, StdActns, ActnList, Buttons,
   BaseForm, TranslateFile, TransIntf,
   TntComCtrls, TntButtons, TntStdCtrls, TntExtCtrls, TntMenus,
-  TntStdActns, TntActnList;
+  TntStdActns, TntActnList, TB2Item, TBX, SpTBXItem;
 
 type
   TCommentModifiedEvent = procedure(Sender: TObject; const AText: WideString) of object;
@@ -40,14 +40,14 @@ type
     reOriginal: TTntRichEdit;
     StatusBar1: TTntStatusBar;
     alComments: TTntActionList;
-    popComments: TTntPopupMenu;
-    Undo1: TTntMenuItem;
-    N1: TTntMenuItem;
-    Cut1: TTntMenuItem;
-    Copy1: TTntMenuItem;
-    Paste1: TTntMenuItem;
-    N2: TTntMenuItem;
-    SelectAll1: TTntMenuItem;
+    popComments: TSpTBXPopupMenu;
+    Undo1: TSpTBXItem;
+    N1: TSpTBXItem;
+    Cut1: TSpTBXItem;
+    Copy1: TSpTBXItem;
+    Paste1: TSpTBXItem;
+    N2: TSpTBXItem;
+    SelectAll1: TSpTBXItem;
     spLocked: TTntSpeedButton;
     acClose: TTntAction;
     EditUndo1: TTntEditUndo;

@@ -29,8 +29,8 @@ procedure TBMRUSaveToIni(MRU: TTBXMRUList);
 procedure TBMRULoadFromReg(MRU: TTBXMRUList; RootKey: Cardinal; const Path: WideString);
 procedure TBMRUSaveToReg(MRU: TTBXMRUList; RootKey: Cardinal; const Path: WideString);
 // "Fuzzy" in this context just means "remove all white space and control characters before comparing SubStr and Str"
-function DetectEncoding(const FileName: string): TEncoding;
-function GetAppVersion: string;
+function DetectEncoding(const FileName: WideString): TEncoding;
+function GetAppVersion: WideString;
 // TODO: add JvCreateProcess from JVCL to add support for capturing output?
 
 function ActionShortCutInUse(AM: TActionList; ShortCut: Word): boolean;
@@ -42,27 +42,27 @@ function BinarySearch(AList: TList; L, R: integer; CompareItem: Pointer; Compare
 
 function GlobalLanguageFile: TAppLanguage;
 function GlobalAppOptions: TAppOptions;
-function GetUserAppDataFolder(const Default: string): string;
-function GetUserShortcutFile: string;
-function GetUserAppOptionsFile: string;
+function GetUserAppDataFolder(const Default: WideString): WideString;
+function GetUserShortcutFile: WideString;
+function GetUserAppOptionsFile: WideString;
 
-procedure HandleFileCreateException(Sender: TObject; E: Exception; const Filename: string);
-function GetSpecialFolderLocation(const Folder: Integer): string;
-function GetAppStoragePath: string;
+procedure HandleFileCreateException(Sender: TObject; E: Exception; const Filename: WideString);
+function GetSpecialFolderLocation(const Folder: Integer): WideString;
+function GetAppStoragePath: WideString;
 function AutoDetectCharacterSet(Stream: TStream): TEncoding; overload;
-function AutoDetectCharacterSet(const Filename: string): TEncoding; overload;
-function AutoDetectCharacterSet(const S: WideString): TEncoding; overload;
+function AutoDetectCharacterSet(const Filename: WideString): TEncoding; overload;
 function FileCharSetToEncoding(CharSet: TTntStreamCharSet): TEncoding;
 
 // for Delphi 6
 function ValueFromIndex(S: TTntStrings; i: integer): WideString; overload;
-function ValueFromIndex(S: TStrings; i: integer): string; overload;
+function ValueFromIndex(S: TStrings; i: integer): AnsiString; overload;
 
 implementation
 uses
   Windows, Forms, Dialogs, Math, Registry,
-  WideIniFiles, StrUtils, Menus, Consts, ShFolder,
-  TntSysUtils, CommonUtils, ShlObj, ActiveX;
+  WideIniFiles, Menus, Consts, ShFolder,
+  CommonUtils, ShlObj, ActiveX,
+  TntWindows, TntSysUtils, TntWideStrUtils;
 
 var
   FLanguageFile: TAppLanguage = nil;
@@ -80,7 +80,7 @@ begin
   end;
 end;
 
-function AutoDetectCharacterSet(const Filename: string): TEncoding;
+function AutoDetectCharacterSet(const Filename: WideString): TEncoding;
 var F: TTntFileStream;
 begin
   F := TTntFileStream.Create(Filename, fmOpenRead or fmShareDenyNone);
@@ -91,16 +91,6 @@ begin
   end;
 end;
 
-function AutoDetectCharacterSet(const S: WideString): TEncoding;
-var T: TStringStream;
-begin
-  T := TStringStream.Create(S);
-  try
-    Result := AutoDetectCharacterSet(T);
-  finally
-    T.Free;
-  end;
-end;
 
 function FileCharSetToEncoding(CharSet: TTntStreamCharSet): TEncoding;
 begin
@@ -127,36 +117,55 @@ begin
   Result := FAppOptions;
 end;
 
-function GetUserAppDataFolder(const Default: string): string;
+function SHGetFolderPathW2(hwnd: HWND; csidl: Integer; hToken: THandle; dwFlags: DWord; pszPath: PWideChar): HRESULT; stdcall; external 'SHFolder.dll' name 'SHGetFolderPathW';
+
+function WideSHGetFolderPath(hwnd: HWND; csidl: Integer; hToken: THandle; dwFlags: DWord; pszPath: PWideChar): HRESULT;
+var AnsiBuff:AnsiString;
+begin
+  if Win32PlatformIsUnicode then
+    Result := SHGetFolderPathW2(hwnd, csidl, hToken, dwFlags, pszPath)
+  else
+  begin
+    SetLength(AnsiBuff, MAX_PATH * 2);
+    Result := SHGetFolderPathA(hwnd, csidl, hToken, dwFlags, PAnsiChar(AnsiBuff));
+    AnsiBuff := AnsiString(PAnsiChar(AnsiBuff));
+    pszPath := WStrPLCopy(pszPath, AnsiBuff, Length(AnsiBuff));
+   end;
+end;
+
+
+function GetUserAppDataFolder(const Default: WideString): WideString;
 begin
   SetLength(Result, MAX_PATH + 1);
-  if not Succeeded(SHGetFolderPath(0, CSIDL_APPDATA, 0, 0, PChar(Result))) then
+  // DONE: it seems SHGetFolderPathW in SHFolder doesn't use PWideChar...
+  if not Succeeded(WideSHGetFolderPath(0, CSIDL_APPDATA, 0, 0, PWideChar(Result))) then
     Result := '';
   if Result = '' then
     Result := Default;
-  Result := string(PChar(Result));
+  Result := WideString(PWideChar(Result)); // strip excessive characters
 end;
 
-function GetUserShortcutFile: string;
+function GetUserShortcutFile: WideString;
 begin
   Result := GetUserAppDataFolder('');
-  if Result <> '' then
-    Result := IncludeTrailingPathDelimiter(Result) + 'IniTranslator'
+  if (Result <> '') and WideDirectoryExists(Result) then
+    Result := WideIncludeTrailingPathDelimiter(Result) + 'IniTranslator'
   else
-    Result := ExtractFilePath(Application.ExeName);
-  ForceDirectories(Result);
-  Result := IncludeTrailingPathDelimiter(Result) + 'translator.alf';
+    Result := WideExtractFilePath(Application.ExeName);
+
+  WideForceDirectories(Result);
+  Result := WideIncludeTrailingPathDelimiter(Result) + 'translator.alf';
 end;
 
-function GetUserAppOptionsFile: string;
+function GetUserAppOptionsFile: WideString;
 begin
   Result := GetUserAppDataFolder('');
-  if Result <> '' then
-    Result := IncludeTrailingPathDelimiter(Result) + 'IniTranslator'
+  if (Result <> '') and WideDirectoryExists(Result) then
+    Result := WideIncludeTrailingPathDelimiter(Result) + 'IniTranslator'
   else
-    Result := ExtractFilePath(Application.ExeName);
-  ForceDirectories(Result);
-  Result := IncludeTrailingPathDelimiter(Result) + 'translator.ini';
+    Result := WideExtractFilePath(Application.ExeName);
+  WideForceDirectories(Result);
+  Result := WideIncludeTrailingPathDelimiter(Result) + 'translator.ini';
 end;
 
 function Translate(const ASection, AMsg: WideString): WideString;
@@ -167,13 +176,13 @@ begin
     Result := AMsg;
 end;
 
-function AnsiUpperCaseFirst(const S: WideString): WideString;
+function WideUpperCaseFirst(const S: WideString): WideString;
 var i: integer;
 begin
   if S = '' then
     Result := ''
   else
-    Result := AnsiUpperCase(S[1]) + AnsiLowerCase(Copy(S, 2, MaxInt));
+    Result := WideUpperCase(S[1]) + WideLowerCase(Copy(S, 2, MaxInt));
   for i := 2 to Length(Result) do
     if (Result[i - 1] in [WideChar(#0)..WideChar(#32), WideChar('_'),
       WideChar('-'), WideChar('+'), WideChar('\'), WideChar('/'), WideChar(':'),
@@ -206,10 +215,10 @@ begin
         Break;
     Result := ACtrl + AShift + AAlt + Copy(Result, i + 1, Maxint);
   end;
-  Result := AnsiUpperCaseFirst(Result);
+  Result := WideUpperCaseFirst(Result);
 end;
 
-function DetectEncoding(const FileName: string): TEncoding;
+function DetectEncoding(const FileName: WideString): TEncoding;
 begin
   { DONE : Fix this later }
   Result := AutoDetectCharacterSet(Filename);
@@ -283,9 +292,9 @@ begin
   end;
 end;
 
-function GetAppVersion: string;
+function GetAppVersion: WideString;
 var
-  FileName: string;
+  FileName: WideString;
   InfoSize, Wnd: DWORD;
   VerBuf: Pointer;
   FI: PVSFixedFileInfo;
@@ -293,13 +302,13 @@ var
 begin
   Result := '1.0.0.0';
   FileName := Application.ExeName;
-  InfoSize := GetFileVersionInfoSize(PChar(FileName), Wnd);
+  InfoSize := Tnt_GetFileVersionInfoSizeW(PWideChar(FileName), Wnd);
   if InfoSize <> 0 then
   begin
     GetMem(VerBuf, InfoSize);
     try
-      if GetFileVersionInfo(PChar(FileName), Wnd, InfoSize, VerBuf) then
-        if VerQueryValue(VerBuf, '\', Pointer(FI), VerSize) then
+      if Tnt_GetFileVersionInfoW(PWideChar(FileName), Wnd, InfoSize, VerBuf) then
+        if Tnt_VerQueryValueW(VerBuf, '\', Pointer(FI), VerSize) then
           Result := Format('%d.%d.%d.%d', [HiWord(FI.dwFileVersionMS), LoWord(FI.dwFileVersionMS), HiWord(FI.dwFileVersionLS), LoWord(FI.dwFileVersionLS)]);
     finally
       FreeMem(VerBuf);
@@ -383,7 +392,7 @@ begin
   Index := L;
 end;
 
-procedure HandleFileCreateException(Sender: TObject; E: Exception; const Filename: string);
+procedure HandleFileCreateException(Sender: TObject; E: Exception; const Filename: WideString);
 begin
   if E is EFCreateError then
     ErrMsg(WideFormat(Translate(Sender.ClassName, SErrCreateFileFmt), [Filename]), Translate(Sender.ClassName, SErrorCaption))
@@ -421,16 +430,16 @@ begin
   end;
 end;
 
-function PidlToPath(IdList: PItemIdList): string;
+function PidlToPath(IdList: PItemIdList): WideString;
 begin
   SetLength(Result, MAX_PATH);
-  if SHGetPathFromIdList(IdList, PChar(Result)) then
-    Result := WideString(PChar(Result))
+  if Tnt_SHGetPathFromIDListW(IdList, PWideChar(Result)) then
+    Result := WideString(PWideChar(Result))
   else
     Result := '';
 end;
 
-function GetSpecialFolderLocation(const Folder: Integer): string;
+function GetSpecialFolderLocation(const Folder: Integer): WideString;
 var
   FolderPidl: PItemIdList;
 begin
@@ -443,16 +452,16 @@ begin
     Result := '';
 end;
 
-function GetAppStoragePath: string;
+function GetAppStoragePath: WideString;
 begin
   // try to get path to \Documents and Settings\<user>\Application Data
   // if that fails, use application install folder
   Result := GetSpecialFolderLocation(CSIDL_APPDATA);
   if Result = '' then
-    Result := IncludeTrailingPathDelimiter(ExtractFilePath(Application.ExeName))
+    Result := WideIncludeTrailingPathDelimiter(WideExtractFilePath(Application.ExeName))
   else
-    Result := IncludeTrailingPathDelimiter(Result) + 'IniTranslator\';
-  ForceDirectories(Result);
+    Result := WideIncludeTrailingPathDelimiter(Result) + 'IniTranslator\';
+  WideForceDirectories(Result);
 end;
 
 function ValueFromIndex(S: TTntStrings; i: integer): WideString;
@@ -468,7 +477,7 @@ begin
   end;
 end;
 
-function ValueFromIndex(S: TStrings; i: integer): string;
+function ValueFromIndex(S: TStrings; i: integer): AnsiString;
 var tmp: TTntStringlist;
 begin
   tmp := TTntStringlist.Create;

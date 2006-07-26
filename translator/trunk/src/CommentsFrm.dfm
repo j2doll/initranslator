@@ -188,29 +188,39 @@ object frmComments: TfrmComments
       OnExecute = acCloseExecute
     end
   end
-  object popComments: TTntPopupMenu
+  object popComments: TSpTBXPopupMenu
     Left = 84
     Top = 42
-    object Undo1: TTntMenuItem
+    object Undo1: TSpTBXItem
       Action = EditUndo1
+      CaptionW = '&Undo'
+      HintW = 'Undo|Reverts the last action'
     end
-    object N1: TTntMenuItem
-      Caption = '-'
+    object N1: TSpTBXItem
+      CaptionW = '-'
     end
-    object Cut1: TTntMenuItem
+    object Cut1: TSpTBXItem
       Action = EditCut1
+      CaptionW = 'Cu&t'
+      HintW = 'Cut|Cuts the selection and puts it on the Clipboard'
     end
-    object Copy1: TTntMenuItem
+    object Copy1: TSpTBXItem
       Action = EditCopy1
+      CaptionW = '&Copy'
+      HintW = 'Copy|Copies the selection and puts it on the Clipboard'
     end
-    object Paste1: TTntMenuItem
+    object Paste1: TSpTBXItem
       Action = EditPaste1
+      CaptionW = '&Paste'
+      HintW = 'Paste|Inserts Clipboard contents'
     end
-    object N2: TTntMenuItem
-      Caption = '-'
+    object N2: TSpTBXItem
+      CaptionW = '-'
     end
-    object SelectAll1: TTntMenuItem
+    object SelectAll1: TSpTBXItem
       Action = EditSelectAll1
+      CaptionW = 'Select &All'
+      HintW = 'Select All|Selects the entire document'
     end
   end
 end

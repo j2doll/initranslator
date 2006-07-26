@@ -33,7 +33,7 @@ uses
   Windows, Messages, SysUtils, Classes, Graphics, Controls, Forms, Dialogs,
   StdCtrls, ExtCtrls, JclDebug, Menus, ComCtrls,
   BaseForm,
-  TntComCtrls, TntStdCtrls, TntExtCtrls;
+  TntWindows, TntClasses, TntSysUtils, TntComCtrls, TntStdCtrls, TntExtCtrls;
 
 const
   UM_CREATEDETAILS = WM_USER + $100;
@@ -45,20 +45,20 @@ type
   TSimpleExceptionLog = class(TObject)
   private
     FLogFileHandle: THandle;
-    FLogFileName: string;
+    FLogFileName: WideString;
     FLogWasEmpty: Boolean;
     function GetLogOpen: Boolean;
   protected
-    function CreateDefaultFileName: string;
+    function CreateDefaultFileName: WideString;
   public
-    constructor Create(const ALogFileName: string = '');
+    constructor Create(const ALogFileName: WideString = '');
     destructor Destroy; override;
     procedure CloseLog;
     procedure OpenLog;
-    procedure Write(const Text: string; Indent: Integer = 0); overload;
-    procedure Write(Strings: TStrings; Indent: Integer = 0); overload;
+    procedure Write(const Text: WideString; Indent: Integer = 0); overload;
+    procedure Write(Strings: TTntStrings; Indent: Integer = 0); overload;
     procedure WriteStamp(SeparatorLen: Integer = 0);
-    property LogFileName: string read FLogFileName;
+    property LogFileName: WideString read FLogFileName;
     property LogOpen: Boolean read GetLogOpen;
   end;
 
@@ -91,7 +91,7 @@ type
     FFullHeight: Integer;
     FSimpleLog: TSimpleExceptionLog;
     procedure CreateDetails;
-    function GetReportAsText: string;
+    function GetReportAsText: WideString;
     procedure ReportToLog;
     procedure SetDetailsVisible(const Value: Boolean);
     procedure UMCreateDetails(var Message: TMessage); message UM_CREATEDETAILS;
@@ -110,7 +110,7 @@ type
     class procedure ExceptionThreadHandler(Thread: TJclDebugThread);
     class procedure ShowException(E: Exception; Thread: TJclDebugThread);
     property DetailsVisible: Boolean read FDetailsVisible write SetDetailsVisible;
-    property ReportAsText: string read GetReportAsText;
+    property ReportAsText: WideString read GetReportAsText;
     property SimpleLog: TSimpleExceptionLog read FSimpleLog;
   end;
 
@@ -124,8 +124,9 @@ implementation
 {$R *.DFM}
 
 uses
-  ClipBrd, Math,
-  JclBase, JclFileUtils, JclHookExcept, JclPeImage, JclStrings, JclSysInfo, JclSysUtils;
+  TntClipBrd, Math,
+  JclBase, JclFileUtils, JclHookExcept, JclPeImage, JclStrings, JclSysInfo, JclSysUtils,
+  TntSystem;
 
 resourcestring
   RsAppError = '%s - application error';
@@ -158,7 +159,7 @@ end;
 
 //--------------------------------------------------------------------------------------------------
 
-function SortModulesListByAddressCompare(List: TStringList; Index1, Index2: Integer): Integer;
+function SortModulesListByAddressCompare(List: TTntStringList; Index1, Index2: Integer): Integer;
 begin
   Result := Integer(List.Objects[Index1]) - Integer(List.Objects[Index2]);
 end;
@@ -246,7 +247,7 @@ end;
 
 //--------------------------------------------------------------------------------------------------
 
-constructor TSimpleExceptionLog.Create(const ALogFileName: string);
+constructor TSimpleExceptionLog.Create(const ALogFileName: WideString);
 begin
   if ALogFileName = '' then
     FLogFileName := CreateDefaultFileName
@@ -257,9 +258,12 @@ end;
 
 //--------------------------------------------------------------------------------------------------
 
-function TSimpleExceptionLog.CreateDefaultFileName: string;
+function TSimpleExceptionLog.CreateDefaultFileName: WideString;
 begin
-  Result := PathExtractFileDirFixed(ParamStr(0)) + PathExtractFileNameNoExt(ParamStr(0)) + '_Err.log';
+
+  Result := WideIncludeTrailingPathDelimiter(WideExtractFileDir(WideParamStr(0))) +
+    WideChangeFileExt(WideExtractFileName(WideParamStr(0)), '') + WideString('_Err.log');
+//  Result := PathExtractFileDirFixed(ParamStr(0)) + PathExtractFileNameNoExt(ParamStr(0)) + '_Err.log';
 end;
 
 //--------------------------------------------------------------------------------------------------
@@ -283,8 +287,8 @@ procedure TSimpleExceptionLog.OpenLog;
 begin
   if not LogOpen then
   begin
-    FLogFileHandle := CreateFile(PChar(FLogFileName), GENERIC_WRITE, FILE_SHARE_READ, nil,
-      OPEN_ALWAYS, FILE_ATTRIBUTE_NORMAL, 0);
+    FLogFileHandle := Tnt_CreateFileW(PWideChar(FLogFileName), GENERIC_WRITE, FILE_SHARE_READ, nil,
+       OPEN_ALWAYS, FILE_ATTRIBUTE_NORMAL, 0);
     if LogOpen then
       FLogWasEmpty := SetFilePointer(FLogFileHandle, 0, nil, FILE_END) = 0;
   end
@@ -294,20 +298,20 @@ end;
 
 //--------------------------------------------------------------------------------------------------
 
-procedure TSimpleExceptionLog.Write(const Text: string; Indent: Integer);
+procedure TSimpleExceptionLog.Write(const Text: WideString; Indent: Integer);
 var
-  S: string;
-  SL: TStringList;
+  S: WideString;
+  SL: TTntStringList;
   I: Integer;
 begin
   if LogOpen then
   begin
-    SL := TStringList.Create;
+    SL := TTntStringList.Create;
     try
       SL.Text := Text;
       for I := 0 to SL.Count - 1 do
       begin
-        S := StringOfChar(' ', Indent) + StrEnsureSuffix(AnsiCrLf, TrimRight(SL[I]));
+        S := StringOfChar(WideChar(' '), Indent) + StrEnsureSuffix(AnsiCrLf, TrimRight(SL[I]));
         FileWrite(Integer(FLogFileHandle), Pointer(S)^, Length(S));
       end;
     finally
@@ -318,7 +322,7 @@ end;
 
 //--------------------------------------------------------------------------------------------------
 
-procedure TSimpleExceptionLog.Write(Strings: TStrings; Indent: Integer);
+procedure TSimpleExceptionLog.Write(Strings: TTntStrings; Indent: Integer);
 var
   I: Integer;
 begin
@@ -364,7 +368,7 @@ end;
 
 procedure TExceptionDialog.CopyReportToClipboard;
 begin
-  ClipBoard.AsText := ReportAsText;
+  TntClipBoard.AsWideText := ReportAsText;
 end;
 
 //--------------------------------------------------------------------------------------------------
@@ -399,20 +403,20 @@ end;
 
 procedure TExceptionDialog.CreateReport(const SystemInfo: TExcDialogSystemInfos);
 const
-  MMXText: array[Boolean] of PChar = ('', 'MMX');
-  FDIVText: array[Boolean] of PChar = (' [FDIV Bug]', '');
+  MMXText: array[Boolean] of PWideChar = ('', 'MMX');
+  FDIVText: array[Boolean] of PWideChar = (' [FDIV Bug]', '');
 var
-  SL: TStringList;
+  SL: TTntStringList;
   I: Integer;
   ModuleName: TFileName;
   CpuInfo: TCpuInfo;
   C: TWinControl;
   NtHeaders: PImageNtHeaders;
   ModuleBase: Cardinal;
-  ImageBaseStr: string;
+  ImageBaseStr: WideString;
   StackList: TJclStackInfoList;
 begin
-  SL := TStringList.Create;
+  SL := TTntStringList.Create;
   try
     // Stack list
     if siStackList in SystemInfo then
@@ -439,7 +443,7 @@ begin
       NextDetailBlock;
     end;
     // Modules list
-    if (siModuleList in SystemInfo) and LoadedModulesList(SL, GetCurrentProcessId) then
+    if (siModuleList in SystemInfo) and LoadedModulesList(SL.AnsiStrings, GetCurrentProcessId) then
     begin
       DetailsMemo.Lines.Add(RsModulesList);
 {$IFDEF DELPHI4}
@@ -586,9 +590,20 @@ end;
 
 //--------------------------------------------------------------------------------------------------
 
-function TExceptionDialog.GetReportAsText: string;
+function StrEnsureSuffix(const Suffix, Text: WideString): WideString;
+var
+  SuffixLen: Integer;
 begin
-  Result := StrEnsureSuffix(AnsiCrLf, TextLabel.Text) + AnsiCrLf + DetailsMemo.Text;
+  SuffixLen := Length(Suffix);
+  if Copy(Text, Length(Text) - SuffixLen + 1, SuffixLen) = Suffix then
+    Result := Text
+  else
+    Result := Text + Suffix;
+end;
+
+function TExceptionDialog.GetReportAsText: WideString;
+begin
+  Result := StrEnsureSuffix(sLineBreak, TextLabel.Text) + sLineBreak + DetailsMemo.Text;
 end;
 
 //--------------------------------------------------------------------------------------------------
@@ -631,7 +646,7 @@ end;
 
 procedure TExceptionDialog.SetDetailsVisible(const Value: Boolean);
 var
-  DetailsCaption: string;
+  DetailsCaption: WideString;
 begin
   FDetailsVisible := Value;
   DetailsCaption := Trim(StrRemoveChars(DetailsBtn.Caption, ['<', '>']));

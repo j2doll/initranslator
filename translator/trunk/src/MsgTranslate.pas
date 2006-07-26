@@ -111,7 +111,7 @@ resourcestring
 
 implementation
 uses
-  TypInfo;
+  TypInfo, TntSysUtils;
 
 function DecodeStrings(const S: WideString): WideString;
 var
@@ -233,7 +233,7 @@ begin
   FSkipList := TTntStringlist.Create;
   TTntStringlist(FSkipList).Sorted := true;
   FClassSkipList := TThreadList.Create;
-  if FileExists(Filename) then
+  if WideFileExists(Filename) then
     LoadFromFile(Filename);
 end;
 

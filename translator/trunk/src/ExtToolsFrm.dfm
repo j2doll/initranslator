@@ -366,175 +366,142 @@ object frmTools: TfrmTools
     Left = 96
     Top = 70
   end
-  object popArguments: TTBXPopupMenu
+  object popArguments: TSpTBXPopupMenu
     Left = 16
     Top = 40
-    object OriginalLine1: TTBXItem
+    object OriginalLine1: TSpTBXItem
       OnClick = ArgumentsClick
-      Caption = 'Original Line'
-      Hint = ''
+      CaptionW = 'Original Line'
     end
-    object OriginalText1: TTBXItem
+    object OriginalText1: TSpTBXItem
       Tag = 1
       OnClick = ArgumentsClick
-      Caption = 'Original Text'
-      Hint = ''
+      CaptionW = 'Original Text'
     end
-    object OriginalPath1: TTBXItem
+    object OriginalPath1: TSpTBXItem
       Tag = 2
       OnClick = ArgumentsClick
-      Caption = 'Original Path'
-      Hint = ''
+      CaptionW = 'Original Path'
     end
-    object OriginalDirectory1: TTBXItem
+    object OriginalDirectory1: TSpTBXItem
       Tag = 3
       OnClick = ArgumentsClick
-      Caption = 'Original Directory'
-      Hint = ''
+      CaptionW = 'Original Directory'
     end
-    object OriginalName1: TTBXItem
+    object OriginalName1: TSpTBXItem
       Tag = 4
       OnClick = ArgumentsClick
-      Caption = 'Original Name'
-      Hint = ''
+      CaptionW = 'Original Name'
     end
-    object OriginalExtension1: TTBXItem
+    object OriginalExtension1: TSpTBXItem
       Tag = 5
       OnClick = ArgumentsClick
-      Caption = 'Original Extension'
-      Hint = ''
+      CaptionW = 'Original Extension'
     end
     object N1: TTBXSeparatorItem
-      Caption = ''
-      Hint = ''
     end
-    object ranslationLine1: TTBXItem
+    object ranslationLine1: TSpTBXItem
       Tag = 6
       OnClick = ArgumentsClick
-      Caption = 'Translation Line'
-      Hint = ''
+      CaptionW = 'Translation Line'
     end
-    object ranslationText1: TTBXItem
+    object ranslationText1: TSpTBXItem
       Tag = 7
       OnClick = ArgumentsClick
-      Caption = 'Translation Text'
-      Hint = ''
+      CaptionW = 'Translation Text'
     end
-    object ranslationPath1: TTBXItem
+    object ranslationPath1: TSpTBXItem
       Tag = 8
       OnClick = ArgumentsClick
-      Caption = 'Translation Path'
-      Hint = ''
+      CaptionW = 'Translation Path'
     end
-    object ranslationDirectory1: TTBXItem
+    object ranslationDirectory1: TSpTBXItem
       Tag = 9
       OnClick = ArgumentsClick
-      Caption = 'Translation Directory'
-      Hint = ''
+      CaptionW = 'Translation Directory'
     end
-    object ranslationName1: TTBXItem
+    object ranslationName1: TSpTBXItem
       Tag = 10
       OnClick = ArgumentsClick
-      Caption = 'Translation Name'
-      Hint = ''
+      CaptionW = 'Translation Name'
     end
-    object ranslationExtension1: TTBXItem
+    object ranslationExtension1: TSpTBXItem
       Tag = 11
       OnClick = ArgumentsClick
-      Caption = 'Translation Extension'
-      Hint = ''
+      CaptionW = 'Translation Extension'
     end
     object N2: TTBXSeparatorItem
-      Caption = ''
-      Hint = ''
     end
-    object DictionaryPath1: TTBXItem
+    object DictionaryPath1: TSpTBXItem
       Tag = 12
       OnClick = ArgumentsClick
-      Caption = 'Dictionary Path'
-      Hint = ''
+      CaptionW = 'Dictionary Path'
     end
-    object DictionaryDirectory1: TTBXItem
+    object DictionaryDirectory1: TSpTBXItem
       Tag = 13
       OnClick = ArgumentsClick
-      Caption = 'Dictionary Directory'
-      Hint = ''
+      CaptionW = 'Dictionary Directory'
     end
-    object DictionaryName1: TTBXItem
+    object DictionaryName1: TSpTBXItem
       Tag = 14
       OnClick = ArgumentsClick
-      Caption = 'Dictionary Name'
-      Hint = ''
+      CaptionW = 'Dictionary Name'
     end
-    object DictionaryExtension1: TTBXItem
+    object DictionaryExtension1: TSpTBXItem
       Tag = 15
       OnClick = ArgumentsClick
-      Caption = 'Dictionary Extension'
-      Hint = ''
+      CaptionW = 'Dictionary Extension'
     end
     object TBXSeparatorItem1: TTBXSeparatorItem
-      Caption = ''
-      Hint = ''
     end
-    object TBItem1: TTBItem
+    object TBItem1: TSpTBXItem
       OnClick = ArgumentsClick
-      Caption = 'Application Directory'
-      Hint = ''
+      CaptionW = 'Application Directory'
     end
-    object TBXItem2: TTBXItem
+    object TBXItem2: TSpTBXItem
       Tag = 16
       OnClick = ArgumentsClick
-      Caption = 'Windows Directory'
-      Hint = ''
+      CaptionW = 'Windows Directory'
     end
-    object TBXItem1: TTBXItem
+    object TBXItem1: TSpTBXItem
       Tag = 17
       OnClick = ArgumentsClick
-      Caption = 'System Directory'
-      Hint = ''
+      CaptionW = 'System Directory'
     end
   end
-  object popInitialDir: TTBXPopupMenu
+  object popInitialDir: TSpTBXPopupMenu
     Left = 56
     Top = 40
-    object OriginalPath2: TTBXItem
+    object OriginalPath2: TSpTBXItem
       OnClick = InitialDirClick
-      Caption = 'Original Directory'
-      Hint = ''
+      CaptionW = 'Original Directory'
     end
-    object ranslationPath2: TTBXItem
+    object ranslationPath2: TSpTBXItem
       Tag = 1
       OnClick = InitialDirClick
-      Caption = 'Translation Directory'
-      Hint = ''
+      CaptionW = 'Translation Directory'
     end
-    object DictionaryPath2: TTBXItem
+    object DictionaryPath2: TSpTBXItem
       Tag = 2
       OnClick = InitialDirClick
-      Caption = 'Dictionary Directory'
-      Hint = ''
+      CaptionW = 'Dictionary Directory'
     end
-    object ApplicationPath1: TTBXItem
+    object ApplicationPath1: TSpTBXItem
       Tag = 3
       OnClick = InitialDirClick
-      Caption = 'Application Directory'
-      Hint = ''
+      CaptionW = 'Application Directory'
     end
     object TBXSeparatorItem2: TTBXSeparatorItem
-      Caption = ''
-      Hint = ''
     end
-    object TBXItem3: TTBXItem
+    object TBXItem3: TSpTBXItem
       Tag = 4
       OnClick = InitialDirClick
-      Caption = 'Windows Directory'
-      Hint = ''
+      CaptionW = 'Windows Directory'
     end
-    object TBXItem4: TTBXItem
+    object TBXItem4: TSpTBXItem
       Tag = 5
       OnClick = InitialDirClick
-      Caption = 'System Directory'
-      Hint = ''
+      CaptionW = 'System Directory'
     end
   end
   object alTools: TTntActionList
@@ -736,24 +703,26 @@ object frmTools: TfrmTools
       FFFF000000000000FFFF00000000000000000000000000000000000000000000
       000000000000}
   end
-  object popContents: TTBXPopupMenu
+  object popContents: TSpTBXPopupMenu
     Left = 96
     Top = 40
-    object TBXItem8: TTBXItem
+    object TBXItem8: TSpTBXItem
       Action = acAdd
+      CaptionW = '&Add'
     end
-    object TBXItem7: TTBXItem
+    object TBXItem7: TSpTBXItem
       Action = acDelete
+      CaptionW = '&Delete'
     end
     object TBXSeparatorItem3: TTBXSeparatorItem
-      Caption = ''
-      Hint = ''
     end
-    object TBXItem6: TTBXItem
+    object TBXItem6: TSpTBXItem
       Action = acMoveUp
+      CaptionW = 'Move &Up'
     end
-    object TBXItem5: TTBXItem
+    object TBXItem5: TSpTBXItem
       Action = acMoveDown
+      CaptionW = 'Move Do&wn'
     end
   end
 end

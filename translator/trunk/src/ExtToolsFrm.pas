@@ -26,7 +26,7 @@ uses
   Menus,
   BaseForm, AppOptions, ShortCutEdit,
   TntMenus, TntButtons, TntStdCtrls, TntDialogs, TB2Item, TntActnList,
-  TBX, TntExtCtrls;
+  TBX, TntExtCtrls, SpTBXItem;
 
 type
   TTestToolItemClickEvent = procedure(Sender: TObject; ToolItem: TToolItem) of object;
@@ -40,36 +40,36 @@ type
     btnUp: TTntButton;
     btnDown: TTntButton;
     odCommand: TTntOpenDialog;
-    popArguments: TTBXPopupMenu;
-    OriginalLine1: TTBXItem;
-    OriginalText1: TTBXItem;
-    OriginalPath1: TTBXItem;
-    OriginalDirectory1: TTBXItem;
-    OriginalName1: TTBXItem;
-    OriginalExtension1: TTBXItem;
+    popArguments: TSpTBXPopupMenu;
+    OriginalLine1: TSpTBXItem;
+    OriginalText1: TSpTBXItem;
+    OriginalPath1: TSpTBXItem;
+    OriginalDirectory1: TSpTBXItem;
+    OriginalName1: TSpTBXItem;
+    OriginalExtension1: TSpTBXItem;
     N1: TTBXSeparatorItem;
-    ranslationLine1: TTBXItem;
-    ranslationText1: TTBXItem;
-    ranslationPath1: TTBXItem;
-    ranslationDirectory1: TTBXItem;
-    ranslationName1: TTBXItem;
-    ranslationExtension1: TTBXItem;
+    ranslationLine1: TSpTBXItem;
+    ranslationText1: TSpTBXItem;
+    ranslationPath1: TSpTBXItem;
+    ranslationDirectory1: TSpTBXItem;
+    ranslationName1: TSpTBXItem;
+    ranslationExtension1: TSpTBXItem;
     N2: TTBXSeparatorItem;
-    DictionaryPath1: TTBXItem;
-    DictionaryDirectory1: TTBXItem;
-    DictionaryName1: TTBXItem;
-    DictionaryExtension1: TTBXItem;
-    popInitialDir: TTBXPopupMenu;
-    OriginalPath2: TTBXItem;
-    ranslationPath2: TTBXItem;
-    DictionaryPath2: TTBXItem;
-    ApplicationPath1: TTBXItem;
+    DictionaryPath1: TSpTBXItem;
+    DictionaryDirectory1: TSpTBXItem;
+    DictionaryName1: TSpTBXItem;
+    DictionaryExtension1: TSpTBXItem;
+    popInitialDir: TSpTBXPopupMenu;
+    OriginalPath2: TSpTBXItem;
+    ranslationPath2: TSpTBXItem;
+    DictionaryPath2: TSpTBXItem;
+    ApplicationPath1: TSpTBXItem;
     TBXSeparatorItem1: TTBXSeparatorItem;
-    TBXItem1: TTBXItem;
-    TBXItem2: TTBXItem;
+    TBXItem1: TSpTBXItem;
+    TBXItem2: TSpTBXItem;
     TBXSeparatorItem2: TTBXSeparatorItem;
-    TBXItem3: TTBXItem;
-    TBXItem4: TTBXItem;
+    TBXItem3: TSpTBXItem;
+    TBXItem4: TSpTBXItem;
     pnlEditTool: TTntPanel;
     Label2: TTntLabel;
     Label3: TTntLabel;
@@ -86,7 +86,7 @@ type
     chkWait: TTntCheckBox;
     chkShell: TTntCheckBox;
     btnTest: TTntButton;
-    TBItem1: TTBItem;
+    TBItem1: TSpTBXItem;
     lblShortCut: TTntLabel;
     btnClear: TTntButton;
     alTools: TTntActionList;
@@ -103,12 +103,12 @@ type
     acArgs: TTntAction;
     acDir: TTntAction;
     ilTools: TImageList;
-    popContents: TTBXPopupMenu;
-    TBXItem5: TTBXItem;
-    TBXItem6: TTBXItem;
+    popContents: TSpTBXPopupMenu;
+    TBXItem5: TSpTBXItem;
+    TBXItem6: TSpTBXItem;
     TBXSeparatorItem3: TTBXSeparatorItem;
-    TBXItem7: TTBXItem;
-    TBXItem8: TTBXItem;
+    TBXItem7: TSpTBXItem;
+    TBXItem8: TSpTBXItem;
     Bevel1: TBevel;
     procedure ArgumentsClick(Sender: TObject);
     procedure InitialDirClick(Sender: TObject);
@@ -116,10 +116,8 @@ type
     procedure edTitleChange(Sender: TObject);
     procedure btnOKClick(Sender: TObject);
     procedure chkShellClick(Sender: TObject);
-    function lbContentsDataFind(Control: TWinControl;
-      FindString: string): Integer;
-    procedure lbContentsData(Control: TWinControl; Index: Integer;
-      var Data: string);
+    function lbContentsDataFind(Control: TWinControl; FindString: String): Integer;
+    procedure lbContentsData(Control: TWinControl; Index: Integer; var Data: String);
     procedure acAddExecute(Sender: TObject);
     procedure acDeleteExecute(Sender: TObject);
     procedure acMoveUpExecute(Sender: TObject);
@@ -302,7 +300,7 @@ end;
 function TfrmTools.NewToolTitle: WideString;
 var
   i: integer;
-  S: string;
+  S: WideString;
 begin
   i := 1;
   S := Translate(Application.MainForm.ClassName, SNewToolNameFmt);
@@ -336,7 +334,7 @@ begin
 end;
 
 function TfrmTools.lbContentsDataFind(Control: TWinControl;
-  FindString: string): Integer;
+  FindString: String): Integer;
 begin
   Result := FTools.IndexOf(FindString);
 end;

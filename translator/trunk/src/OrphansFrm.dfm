@@ -102,11 +102,12 @@ object frmOrphans: TfrmOrphans
       OnExecute = acCopyExecute
     end
   end
-  object PopupMenu1: TTntPopupMenu
+  object PopupMenu1: TSpTBXPopupMenu
     Left = 128
     Top = 144
-    object Copy1: TTntMenuItem
+    object Copy1: TSpTBXItem
       Action = acCopy
+      CaptionW = 'Copy'
     end
   end
 end

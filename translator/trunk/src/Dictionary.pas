@@ -147,7 +147,7 @@ end;
 function TDictionaryItems.Add(var Item: TDictionaryItem): integer;
 begin
   Assert(Item <> nil, 'Item not assigned');
-  ASsert(Item.Original <> '', 'The original string must not be empty');
+  Assert(Item.Original <> '', 'The original string must not be empty');
   if not Find(Item.Original, Result) then
   begin
     FItems.Insert(Result, Item); // add a new item in it's correct position (no need to sort)

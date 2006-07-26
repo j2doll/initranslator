@@ -63,7 +63,7 @@ type
 
 implementation
 uses
-  Windows, CommCtrl;
+  Windows, CommCtrl, TntSysUtils;
 
 { TExternalToolItem }
 
@@ -155,7 +155,7 @@ end;
 procedure TExternalToolItems.LoadPlugins(const PluginFolder: WideString);
 var
   F: TSearchRec;
-  APath: string;
+  APath: WideString;
   i:integer;
   ALibHandle:HModule;
   ToolItems:IToolItems;
@@ -169,12 +169,12 @@ begin
   if FImages = nil then
     FImages := TImageList.Create(nil);
   // load all the matching plugin DLL's into a helper class  
-  APath := IncludeTrailingPathDelimiter(PluginFolder);
+  APath := WideIncludeTrailingPathDelimiter(PluginFolder);
 {$WARN SYMBOL_PLATFORM OFF}
   if SysUtils.FindFirst(APath + '*.dll', faAnyFile and not (faDirectory or faVolumeID), F) = 0 then
   try
     repeat
-      if FileExists(APath + F.Name) then
+      if WideFileExists(APath + F.Name) then
       begin
         ALibHandle := SafeLoadLibrary(APath + F.Name);
         if ALibHandle <> 0 then

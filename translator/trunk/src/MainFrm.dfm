@@ -73,15 +73,17 @@ object frmMain: TfrmMain
       TabOrder = 0
     end
   end
-  object TopDock: TTBXDock
+  object TopDock: TSpTBXDock
     Left = 0
     Top = 0
     Width = 643
     Height = 49
     FixAlign = True
-    object tbMenu: TTBXToolbar
+    object tbMenu: TSpTBXToolbar
       Left = 0
       Top = 0
+      Caption = 'Menu'
+      ChevronHint = 'More Buttons|Click to see more buttons'
       CloseButton = False
       DblClickUndock = True
       DefaultDock = TopDock
@@ -92,387 +94,476 @@ object frmMain: TfrmMain
       Options = [tboLongHintInMenuOnly, tboShowHint]
       ProcessShortCuts = True
       TabOrder = 0
-      Caption = 'Menu'
-      ChevronHint = 'More Buttons|Click to see more buttons'
-      object mnuFile: TTBXSubmenuItem
+      object mnuFile: TSpTBXSubmenuItem
         OnSelect = mnuFileSelect
-        Caption = '&File'
-        Hint = ''
-        object OpenOriginal1: TTBXItem
+        CaptionW = '&File'
+        object OpenOriginal1: TSpTBXItem
           Action = acOpenOrig
+          CaptionW = 'Open Original...'
+          HintW = 'Open original and translation file'
         end
-        object TBXItem13: TTBXItem
+        object TBXItem13: TSpTBXItem
           Action = acSaveOriginal
+          CaptionW = 'Save Original'
+          HintW = 'Save current original file'
         end
-        object TBXItem1: TTBXItem
+        object TBXItem1: TSpTBXItem
           Action = acSaveOrigAs
+          CaptionW = 'Save Original As...'
+          HintW = 'Save current original file with a new filename'
         end
-        object TBSeparatorItem3: TTBXSeparatorItem
-          Caption = ''
-          Hint = ''
+        object TBSeparatorItem3: TSpTBXSeparatorItem
         end
-        object ClearTranslation1: TTBXItem
+        object ClearTranslation1: TSpTBXItem
           Action = acNewTrans
+          CaptionW = 'New Translation'
+          HintW = 'Create new translation'
         end
-        object OpenTranslation1: TTBXItem
+        object OpenTranslation1: TSpTBXItem
           Action = acOpenTrans
+          CaptionW = 'Open Translation...'
+          HintW = 'Open existing translation file'
         end
-        object SaveTranslation1: TTBXItem
+        object SaveTranslation1: TSpTBXItem
           Action = acSaveTrans
+          CaptionW = 'Save Translation'
+          HintW = 'Save current translation file'
         end
-        object SaveTranslationAs1: TTBXItem
+        object SaveTranslationAs1: TSpTBXItem
           Action = acSaveTransAs
+          CaptionW = 'Save Translation As...'
+          HintW = 'Save current translation with a new filename'
         end
-        object N1: TTBXSeparatorItem
-          Caption = ''
-          Hint = ''
+        object N1: TSpTBXSeparatorItem
         end
-        object TBXItem4: TTBXItem
+        object TBXItem4: TSpTBXItem
           Action = acImport
+          CaptionW = 'Import...'
+          HintW = 'Import from an external file or files'
         end
-        object TBXItem3: TTBXItem
+        object TBXItem3: TSpTBXItem
           Action = acExport
+          CaptionW = 'Export...'
+          HintW = 'Export to an external file or files'
         end
-        object TBXSeparatorItem4: TTBXSeparatorItem
-          Caption = ''
-          Hint = ''
+        object TBXSeparatorItem4: TSpTBXSeparatorItem
         end
-        object SelectLanguage1: TTBXItem
+        object SelectLanguage1: TSpTBXItem
           Action = acPreferences
+          CaptionW = 'Preferences...'
+          HintW = 'Display the settings dialog'
         end
-        object TBSeparatorItem16: TTBXSeparatorItem
-          Caption = ''
-          Hint = ''
+        object TBSeparatorItem16: TSpTBXSeparatorItem
         end
-        object miRecentlyUsed: TTBXSubmenuItem
+        object miRecentlyUsed: TSpTBXSubmenuItem
           DropdownCombo = True
-          Caption = 'Reopen'
-          Hint = ''
+          CaptionW = 'Reopen'
           object TBMRUListItem1: TTBXMRUListItem
             MRUList = MRUFiles
-            Caption = '(TBX MRU List)'
-            Hint = ''
           end
-          object TBSeparatorItem15: TTBXSeparatorItem
-            Caption = ''
-            Hint = ''
+          object TBSeparatorItem15: TSpTBXSeparatorItem
           end
-          object TBItem31: TTBXItem
+          object TBItem31: TSpTBXItem
             Action = acClearMRU
+            CaptionW = 'Clear'
+            HintW = 'Clear the MRU list'
           end
-          object TBItem32: TTBXItem
+          object TBItem32: TSpTBXItem
             Action = acClearInvalidMRU
+            CaptionW = 'Remove Invalid'
+            HintW = 'Remove invalid entries from the MRU list'
           end
         end
-        object N11: TTBXSeparatorItem
-          Caption = ''
-          Hint = ''
+        object N11: TSpTBXSeparatorItem
         end
-        object Exit1: TTBXItem
+        object Exit1: TSpTBXItem
           Action = acExit
+          CaptionW = 'Exit'
+          HintW = 'Exit application'
         end
       end
-      object Edit1: TTBXSubmenuItem
+      object Edit1: TSpTBXSubmenuItem
         ShortCut = 16474
-        Caption = '&Edit'
-        Hint = ''
-        object TBItem14: TTBXItem
+        CaptionW = '&Edit'
+        object TBItem14: TSpTBXItem
           Action = acUndo
+          CaptionW = 'Undo'
+          HintW = 'Undo last edit'
         end
-        object TBSeparatorItem8: TTBXSeparatorItem
-          Caption = ''
-          Hint = ''
+        object TBSeparatorItem8: TSpTBXSeparatorItem
         end
-        object TBItem5: TTBXItem
+        object TBItem5: TSpTBXItem
           Action = acCut
+          CaptionW = 'Cut'
+          HintW = 'Cut selected text'
         end
-        object TBItem7: TTBXItem
+        object TBItem7: TSpTBXItem
           Action = acCopy
+          CaptionW = 'Copy'
+          HintW = 'Copy selected text'
         end
-        object acCopyFromOriginal1: TTBXItem
+        object acCopyFromOriginal1: TSpTBXItem
           Action = acCopyFromOriginal
+          CaptionW = 'Copy from Original'
+          HintW = 'Copy the value of Original to Translation'
         end
-        object TBItem13: TTBXItem
+        object TBItem13: TSpTBXItem
           Action = acCopyFromName
+          CaptionW = 'Copy from Name'
+          HintW = 'Copy the value of Name to Translation'
         end
-        object TBItem6: TTBXItem
+        object TBItem6: TSpTBXItem
           Action = acPaste
+          CaptionW = 'Paste'
+          HintW = 'Paste from clipboard'
         end
-        object TBSeparatorItem6: TTBXSeparatorItem
-          Caption = ''
-          Hint = ''
+        object TBSeparatorItem6: TSpTBXSeparatorItem
         end
-        object Find1: TTBXItem
+        object Find1: TSpTBXItem
           Action = acFind
+          CaptionW = 'Find...'
+          HintW = 'Search for text'
         end
-        object FindNext1: TTBXItem
+        object FindNext1: TSpTBXItem
           Action = acFindNext
+          CaptionW = 'Find Next'
+          HintW = 'Continue searching'
         end
-        object Replace1: TTBXItem
+        object Replace1: TSpTBXItem
           Action = acReplace
+          CaptionW = 'Replace...'
+          HintW = 'Replace text'
         end
-        object N8: TTBXSeparatorItem
-          Caption = ''
-          Hint = ''
+        object N8: TSpTBXSeparatorItem
         end
-        object ToggleFocus1: TTBXItem
+        object ToggleFocus1: TSpTBXItem
           Action = acToggleFocus
+          CaptionW = 'Toggle Focus'
+          HintW = 'Toggle focus between list and translation'
         end
       end
-      object Navigation1: TTBXSubmenuItem
-        Caption = '&Actions'
-        Hint = ''
-        object tbxSpellCheck: TTBXItem
+      object Navigation1: TSpTBXSubmenuItem
+        CaptionW = '&Actions'
+        object tbxSpellCheck: TSpTBXItem
           Action = acSpellCheck
+          CaptionW = 'Spelling...'
+          HintW = 'Spell check the translations'
         end
-        object Previous1: TTBXItem
+        object Previous1: TSpTBXItem
           Action = acPrev
+          CaptionW = 'Previous'
+          HintW = 'Go to previous item in list'
         end
-        object Next1: TTBXItem
+        object Next1: TSpTBXItem
           Action = acNext
+          CaptionW = 'Next'
+          HintW = 'Go to next item in list'
         end
-        object About2: TTBXSeparatorItem
-          Caption = ''
-          Hint = ''
+        object About2: TSpTBXSeparatorItem
         end
-        object Previousuntranslated1: TTBXItem
+        object Previousuntranslated1: TSpTBXItem
           Action = acPrevUntranslated
+          CaptionW = 'Prev untranslated'
+          HintW = 'Go to previous untranslated item'
         end
-        object Nextuntranslated1: TTBXItem
+        object Nextuntranslated1: TSpTBXItem
           Action = acNextUntranslated
+          CaptionW = 'Next untranslated'
+          HintW = 'Go to next untranslated item'
         end
-        object N2: TTBXSeparatorItem
-          Caption = ''
-          Hint = ''
+        object N2: TSpTBXSeparatorItem
         end
-        object Font1: TTBXItem
+        object Font1: TSpTBXItem
           Action = acFont
+          CaptionW = 'Font...'
+          HintW = 'Change application font'
         end
-        object N4: TTBXSeparatorItem
-          Caption = ''
-          Hint = ''
+        object N4: TSpTBXSeparatorItem
         end
-        object Unsort1: TTBXItem
+        object Unsort1: TSpTBXItem
           Action = acRestoreSort
+          CaptionW = 'Restore original sort'
+          HintW = 'Restore original sort'
         end
-        object TBXItem14: TTBXItem
+        object TBXItem14: TSpTBXItem
           Action = acTrim
+          CaptionW = 'Trim...'
+          HintW = 'Trim leading and trailing characters'
         end
-        object TBSeparatorItem10: TTBXSeparatorItem
-          Caption = ''
-          Hint = ''
+        object TBSeparatorItem10: TSpTBXSeparatorItem
         end
-        object TBSubmenuItem3: TTBXSubmenuItem
-          Caption = 'Toggle Bookmark'
-          Hint = ''
-          object TBItem41: TTBXItem
+        object TBSubmenuItem3: TSpTBXSubmenuItem
+          CaptionW = 'Toggle Bookmark'
+          object TBItem41: TSpTBXItem
             Action = acToggleBookmark0
             Images = ilBookmarks
+            CaptionW = 'Bookmark 0'
+            HintW = 'Toggle Bookmark 0 on/off'
           end
-          object TBItem40: TTBXItem
+          object TBItem40: TSpTBXItem
             Action = acToggleBookmark1
             Images = ilBookmarks
+            CaptionW = 'Bookmark 1'
+            HintW = 'Toggle Bookmark 1 on/off'
           end
-          object TBItem39: TTBXItem
+          object TBItem39: TSpTBXItem
             Action = acToggleBookmark2
             Images = ilBookmarks
+            CaptionW = 'Bookmark 2'
+            HintW = 'Toggle Bookmark 2 on/off'
           end
-          object TBItem38: TTBXItem
+          object TBItem38: TSpTBXItem
             Action = acToggleBookmark3
             Images = ilBookmarks
+            CaptionW = 'Bookmark 3'
+            HintW = 'Toggle Bookmark 3 on/off'
           end
-          object TBItem37: TTBXItem
+          object TBItem37: TSpTBXItem
             Action = acToggleBookmark4
             Images = ilBookmarks
+            CaptionW = 'Bookmark 4'
+            HintW = 'Toggle Bookmark 4 on/off'
           end
-          object TBItem30: TTBXItem
+          object TBItem30: TSpTBXItem
             Action = acToggleBookmark5
             Images = ilBookmarks
+            CaptionW = 'Bookmark 5'
+            HintW = 'Toggle Bookmark 5 on/off'
           end
-          object TBItem28: TTBXItem
+          object TBItem28: TSpTBXItem
             Action = acToggleBookmark6
             Images = ilBookmarks
+            CaptionW = 'Bookmark 6'
+            HintW = 'Toggle Bookmark 6 on/off'
           end
-          object TBItem26: TTBXItem
+          object TBItem26: TSpTBXItem
             Action = acToggleBookmark7
             Images = ilBookmarks
+            CaptionW = 'Bookmark 7'
+            HintW = 'Toggle Bookmark 7 on/off'
           end
-          object TBItem23: TTBXItem
+          object TBItem23: TSpTBXItem
             Action = acToggleBookmark8
             Images = ilBookmarks
+            CaptionW = 'Bookmark 8'
+            HintW = 'Toggle Bookmark 8 on/off'
           end
-          object TBItem22: TTBXItem
+          object TBItem22: TSpTBXItem
             Action = acToggleBookmark9
             Images = ilBookmarks
+            CaptionW = 'Bookmark 9'
+            HintW = 'Toggle Bookmark 9 on/off'
           end
         end
-        object TBSubmenuItem4: TTBXSubmenuItem
-          Caption = 'Goto Bookmark'
-          Hint = ''
-          object TBItem51: TTBXItem
+        object TBSubmenuItem4: TSpTBXSubmenuItem
+          CaptionW = 'Goto Bookmark'
+          object TBItem51: TSpTBXItem
             Action = acGotoBookmark0
             Images = ilBookmarks
+            CaptionW = 'Bookmark 0'
+            HintW = 'Goto Bookmark 0'
           end
-          object TBItem50: TTBXItem
+          object TBItem50: TSpTBXItem
             Action = acGotoBookmark1
             Images = ilBookmarks
+            CaptionW = 'Bookmark 1'
+            HintW = 'Goto Bookmark 1'
           end
-          object TBItem49: TTBXItem
+          object TBItem49: TSpTBXItem
             Action = acGotoBookmark2
             Images = ilBookmarks
+            CaptionW = 'Bookmark 2'
+            HintW = 'Goto Bookmark 2'
           end
-          object TBItem48: TTBXItem
+          object TBItem48: TSpTBXItem
             Action = acGotoBookmark3
             Images = ilBookmarks
+            CaptionW = 'Bookmark 3'
+            HintW = 'Goto Bookmark 3'
           end
-          object TBItem47: TTBXItem
+          object TBItem47: TSpTBXItem
             Action = acGotoBookmark4
             Images = ilBookmarks
+            CaptionW = 'Bookmark 4'
+            HintW = 'Goto Bookmark 4'
           end
-          object TBItem46: TTBXItem
+          object TBItem46: TSpTBXItem
             Action = acGotoBookmark5
             Images = ilBookmarks
+            CaptionW = 'Bookmark 5'
+            HintW = 'Goto Bookmark 5'
           end
-          object TBItem45: TTBXItem
+          object TBItem45: TSpTBXItem
             Action = acGotoBookmark6
             Images = ilBookmarks
+            CaptionW = 'Bookmark 6'
+            HintW = 'Goto Bookmark 6'
           end
-          object TBItem44: TTBXItem
+          object TBItem44: TSpTBXItem
             Action = acGotoBookmark7
             Images = ilBookmarks
+            CaptionW = 'Bookmark 7'
+            HintW = 'Goto Bookmark 7'
           end
-          object TBItem43: TTBXItem
+          object TBItem43: TSpTBXItem
             Action = acGotoBookmark8
             Images = ilBookmarks
+            CaptionW = 'Bookmark 8'
+            HintW = 'Goto Bookmark 8'
           end
-          object TBItem42: TTBXItem
+          object TBItem42: TSpTBXItem
             Action = acGotoBookmark9
             Images = ilBookmarks
+            CaptionW = 'Bookmark 9'
+            HintW = 'Goto Bookmark 9'
           end
         end
-        object TBXSeparatorItem2: TTBXSeparatorItem
-          Caption = ''
-          Hint = ''
+        object TBXSeparatorItem2: TSpTBXSeparatorItem
         end
-        object TBXItem2: TTBXItem
+        object TBXItem2: TSpTBXItem
           Action = acConfigureKeyboard
+          CaptionW = 'Configure Keyboard...'
+          HintW = 'Display the keyboard configuration window'
         end
       end
-      object TBSubmenuItem2: TTBXSubmenuItem
-        Caption = '&View'
-        Hint = ''
-        object TBItem36: TTBXItem
+      object TBSubmenuItem2: TSpTBXSubmenuItem
+        CaptionW = '&View'
+        object TBItem36: TSpTBXItem
           Action = acFindUnmatchedShortCut
+          CaptionW = 'Next unmatched shortcut'
+          HintW = 
+            'Find next translated item that is missing a shortcut key present' +
+            ' in the original'
         end
-        object TBItem55: TTBXItem
+        object TBItem55: TSpTBXItem
           Action = acNextSuspicious
+          CaptionW = 'Next suspicious translation'
+          HintW = 
+            'Move to next item that is suspected not being translated correct' +
+            'ly'
         end
-        object TBXItem15: TTBXItem
+        object TBXItem15: TSpTBXItem
           Action = acConfigSuspicious
+          CaptionW = 'Configure suspicious translations...'
+          HintW = 'Configure the behavior of Next Suspicious Translation'
         end
-        object N9: TTBXSeparatorItem
-          Caption = ''
-          Hint = ''
+        object N9: TSpTBXSeparatorItem
         end
-        object ShowQuotes1: TTBXItem
+        object ShowQuotes1: TSpTBXItem
           Action = acShowQuotes
+          CaptionW = 'Show Quotes'
+          HintW = 'Show quotes in texts'
         end
-        object ShowDetails1: TTBXItem
+        object ShowDetails1: TSpTBXItem
           Action = acViewDetails
+          CaptionW = 'Show Key Details'
+          HintW = 'Display the details pane'
         end
-        object N10: TTBXSeparatorItem
-          Caption = ''
-          Hint = ''
+        object N10: TSpTBXSeparatorItem
         end
-        object TBItem16: TTBXItem
+        object TBItem16: TSpTBXItem
           Action = acViewComments
+          CaptionW = 'View Comments'
+          HintW = 'Toggle the comments window'
         end
-        object TBItem56: TTBXItem
+        object TBItem56: TSpTBXItem
           Action = acViewOrphans
+          CaptionW = 'View Orphaned Items'
+          HintW = 
+            'Display orphans (items in translation that are not in the origin' +
+            'al)'
         end
-        object TBXSeparatorItem3: TTBXSeparatorItem
-          Caption = ''
-          Hint = ''
+        object TBXSeparatorItem3: TSpTBXSeparatorItem
         end
-        object TBXVisibilityToggleItem1: TTBXVisibilityToggleItem
+        object TBXVisibilityToggleItem1: TSpTBXItem
           Control = tbTools
-          Caption = 'Tools'
-          Hint = ''
+          CaptionW = 'Tools'
         end
-        object TBXItem8: TTBXItem
+        object TBXItem8: TSpTBXItem
           Action = acFullScreen
+          CaptionW = 'Full Screen'
+          HintW = 'Toggle full screen mode'
         end
       end
-      object Dictionary1: TTBXSubmenuItem
-        Caption = '&Dictionary'
-        Hint = ''
-        object CreateDictionary1: TTBXItem
+      object Dictionary1: TSpTBXSubmenuItem
+        CaptionW = '&Dictionary'
+        object CreateDictionary1: TSpTBXItem
           Action = acDictCreate
+          CaptionW = 'New Dictionary...'
+          HintW = 'Create new dictionary'
         end
-        object LoadDictionary1: TTBXItem
+        object LoadDictionary1: TSpTBXItem
           Action = acDictLoad
+          CaptionW = 'Load Dictionary...'
+          HintW = 'Load existing dictionary'
         end
-        object SaveDictionary1: TTBXItem
+        object SaveDictionary1: TSpTBXItem
           Action = acDictSave
+          CaptionW = 'Save Dictionary...'
+          HintW = 'Save current dictionary to file'
         end
-        object N5: TTBXSeparatorItem
-          Caption = ''
-          Hint = ''
+        object N5: TSpTBXSeparatorItem
         end
-        object Translatewithdictionary1: TTBXItem
+        object Translatewithdictionary1: TSpTBXItem
           Action = acDictTranslate
+          CaptionW = 'Translate using Dictionary'
+          HintW = 'Translate using the dictionary'
         end
-        object TBXItem6: TTBXItem
+        object TBXItem6: TSpTBXItem
           Action = acDictAdd
+          CaptionW = 'Add to Dictionary'
+          HintW = 'Add current item to the dictionary'
         end
-        object N6: TTBXSeparatorItem
-          Caption = ''
-          Hint = ''
+        object N6: TSpTBXSeparatorItem
         end
-        object TBXItem16: TTBXItem
+        object TBXItem16: TSpTBXItem
           Action = acDictEdit
+          CaptionW = 'Edit Dictionary...'
+          HintW = 'Edit the currently loaded dictionary'
         end
-        object TBXSeparatorItem8: TTBXSeparatorItem
-          Caption = ''
-          Hint = ''
+        object TBXSeparatorItem8: TSpTBXSeparatorItem
         end
-        object acDictInvert1: TTBXItem
+        object acDictInvert1: TSpTBXItem
           Action = acDictInvert
+          CaptionW = 'Invert Dictionary'
+          HintW = 'Invert the dictionary'
         end
       end
-      object mnuPlugins: TTBXSubmenuItem
+      object mnuPlugins: TSpTBXSubmenuItem
         Visible = False
         OnPopup = mnuPluginsPopup
-        Caption = '&Plugins'
-        Hint = ''
+        CaptionW = '&Plugins'
       end
-      object TBXSubmenuItem1: TTBXSubmenuItem
+      object TBXSubmenuItem1: TSpTBXSubmenuItem
         OnSelect = TBXSubmenuItem1Select
-        Caption = 'T&ools'
-        Hint = ''
-        object TBXItem10: TTBXItem
+        CaptionW = 'T&ools'
+        object TBXItem10: TSpTBXItem
           Action = acToolsCustomize
-          Caption = 'Customize...'
+          CaptionW = 'Customize...'
+          HintW = 'Display the tools window'
         end
       end
-      object Help1: TTBXSubmenuItem
-        Caption = '&Help'
-        Hint = ''
-        object Help2: TTBXItem
+      object Help1: TSpTBXSubmenuItem
+        CaptionW = '&Help'
+        object Help2: TSpTBXItem
           Action = acHelp
+          CaptionW = 'Help'
+          HintW = 'Show help file'
         end
-        object N7: TTBXSeparatorItem
-          Caption = ''
-          Hint = ''
+        object N7: TSpTBXSeparatorItem
         end
-        object About1: TTBXItem
+        object About1: TSpTBXItem
           Action = acAbout
+          CaptionW = 'About...'
+          HintW = 'Show about box'
         end
       end
     end
-    object tbTools: TTBXToolbar
+    object tbTools: TSpTBXToolbar
       Left = 0
       Top = 23
+      Caption = 'Tools'
+      ChevronHint = 'More Buttons|Click to see more buttons'
       DblClickUndock = True
       DefaultDock = TopDock
       DockPos = 0
@@ -482,79 +573,91 @@ object frmMain: TfrmMain
       Images = il16
       Options = [tboLongHintInMenuOnly, tboShowHint]
       TabOrder = 1
-      Caption = 'Tools'
-      ChevronHint = 'More Buttons|Click to see more buttons'
-      object TBItem1: TTBXItem
+      object TBItem1: TSpTBXItem
         Action = acOpenOrig
+        CaptionW = 'Open Original...'
+        HintW = 'Open original and translation file'
       end
-      object TBSeparatorItem2: TTBXSeparatorItem
-        Caption = ''
-        Hint = ''
+      object TBSeparatorItem2: TSpTBXSeparatorItem
       end
-      object TBItem2: TTBXItem
+      object TBItem2: TSpTBXItem
         Action = acNewTrans
+        CaptionW = 'New Translation'
+        HintW = 'Create new translation'
       end
-      object TBItem3: TTBXItem
+      object TBItem3: TSpTBXItem
         Action = acOpenTrans
+        CaptionW = 'Open Translation...'
+        HintW = 'Open existing translation file'
       end
-      object TBItem4: TTBXItem
+      object TBItem4: TSpTBXItem
         Action = acSaveTrans
+        CaptionW = 'Save Translation'
+        HintW = 'Save current translation file'
       end
-      object TBSeparatorItem1: TTBXSeparatorItem
-        Caption = ''
-        Hint = ''
+      object TBSeparatorItem1: TSpTBXSeparatorItem
       end
-      object TBItem12: TTBXItem
+      object TBItem12: TSpTBXItem
         Action = acCut
+        CaptionW = 'Cut'
+        HintW = 'Cut selected text'
       end
-      object TBItem10: TTBXItem
+      object TBItem10: TSpTBXItem
         Action = acCopy
+        CaptionW = 'Copy'
+        HintW = 'Copy selected text'
       end
-      object TBItem8: TTBXItem
+      object TBItem8: TSpTBXItem
         Action = acPaste
+        CaptionW = 'Paste'
+        HintW = 'Paste from clipboard'
       end
-      object TBSeparatorItem7: TTBXSeparatorItem
-        Caption = ''
-        Hint = ''
+      object TBSeparatorItem7: TSpTBXSeparatorItem
       end
-      object TBItem9: TTBXItem
+      object TBItem9: TSpTBXItem
         Action = acFind
+        CaptionW = 'Find...'
+        HintW = 'Search for text'
       end
-      object TBItem11: TTBXItem
+      object TBItem11: TSpTBXItem
         Action = acReplace
+        CaptionW = 'Replace...'
+        HintW = 'Replace text'
       end
-      object TBSeparatorItem12: TTBXSeparatorItem
-        Caption = ''
-        Hint = ''
+      object TBSeparatorItem12: TSpTBXSeparatorItem
       end
-      object TBItem18: TTBXItem
+      object TBItem18: TSpTBXItem
         Action = acPrevUntranslated
+        CaptionW = 'Prev untranslated'
+        HintW = 'Go to previous untranslated item'
       end
-      object TBItem19: TTBXItem
+      object TBItem19: TSpTBXItem
         Action = acNextUntranslated
+        CaptionW = 'Next untranslated'
+        HintW = 'Go to next untranslated item'
       end
-      object TBSeparatorItem4: TTBXSeparatorItem
-        Caption = ''
-        Hint = ''
+      object TBSeparatorItem4: TSpTBXSeparatorItem
       end
-      object TBItem27: TTBXItem
+      object TBItem27: TSpTBXItem
         Action = acDictTranslate
+        CaptionW = 'Translate using Dictionary'
+        HintW = 'Translate using the dictionary'
       end
-      object TBSeparatorItem5: TTBXSeparatorItem
-        Caption = ''
-        Hint = ''
+      object TBSeparatorItem5: TSpTBXSeparatorItem
       end
-      object TBItem29: TTBXItem
+      object TBItem29: TSpTBXItem
         Action = acHelp
+        CaptionW = 'Help'
+        HintW = 'Show help file'
       end
-      object TBXSeparatorItem1: TTBXSeparatorItem
-        Caption = ''
-        Hint = ''
+      object TBXSeparatorItem1: TSpTBXSeparatorItem
       end
-      object cbThemes: TTBXComboBoxItem
+      object cbThemes: TSpTBXComboBoxItem
         AutoCheck = True
+        Caption = 'Themes'
         DisplayMode = nbdmTextOnlyInMenus
         EditWidth = 135
+        Hint = 'Shows available themes'
         ShortCut = 24660
         ExtendedAccept = True
         FontSettings.Name = 'MS Shell Dlg 2'
@@ -563,26 +666,24 @@ object frmMain: TfrmMain
         DropDownList = True
         MaxVisibleItems = 25
         MinListWidth = 135
-        Caption = 'Themes'
-        Hint = 'Shows available themes'
       end
     end
   end
-  object TBDock1: TTBXDock
+  object TBDock1: TSpTBXDock
     Left = 0
     Top = 49
     Width = 9
     Height = 446
     Position = dpLeft
   end
-  object TBDock2: TTBXDock
+  object TBDock2: TSpTBXDock
     Left = 634
     Top = 49
     Width = 9
     Height = 446
     Position = dpRight
   end
-  object TBDock3: TTBXDock
+  object TBDock3: TSpTBXDock
     Left = 0
     Top = 495
     Width = 643
@@ -937,14 +1038,14 @@ object frmMain: TfrmMain
     object acFocusTranslation: TTntAction
       Category = 'View'
       Caption = 'Focus Translation'
-      Hint = 'Set foucs to the translation edit field'
+      Hint = 'Set focus to the translation edit field'
       ShortCut = 32852
       OnExecute = acFocusTranslationExecute
     end
     object acFocusListView: TTntAction
       Category = 'View'
       Caption = 'Focus ListView'
-      Hint = 'St focus to the listview'
+      Hint = 'Set focus to the listview'
       ShortCut = 32844
       OnExecute = acFocusListViewExecute
     end
@@ -1011,6 +1112,7 @@ object frmMain: TfrmMain
     object acDictEdit: TTntAction
       Category = 'Dictionary'
       Caption = 'Edit Dictionary...'
+      Hint = 'Edit the currently loaded dictionary'
       ShortCut = 49221
       OnExecute = acDictEditExecute
     end
@@ -1209,6 +1311,7 @@ object frmMain: TfrmMain
     object acConfigSuspicious: TTntAction
       Category = 'Actions'
       Caption = 'Configure suspicious translations...'
+      Hint = 'Configure the behavior of Next Suspicious Translation'
       ShortCut = 32887
       OnExecute = acConfigSuspiciousExecute
     end
@@ -1224,6 +1327,7 @@ object frmMain: TfrmMain
       Category = 'Actions'
       Caption = 'Configure Keyboard...'
       Hint = 'Display the keyboard configuration window'
+      ShortCut = 24651
       OnExecute = acConfigureKeyboardExecute
     end
     object acImport: TTntAction
@@ -1301,6 +1405,7 @@ object frmMain: TfrmMain
     object acTrim: TTntAction
       Category = 'Actions'
       Caption = 'Trim...'
+      Hint = 'Trim leading and trailing characters'
       ShortCut = 24660
       OnExecute = acTrimExecute
     end
@@ -3842,105 +3947,124 @@ object frmMain: TfrmMain
       80FFC07FC07FC07FC1FFE0FFE0FFE0FF00000000000000000000000000000000
       000000000000}
   end
-  object popEdit: TTBXPopupMenu
+  object popEdit: TSpTBXPopupMenu
     Images = il16
     OnPopup = popEditPopup
     Left = 38
     Top = 158
-    object Undo1: TTBXItem
+    object Undo1: TSpTBXItem
       Action = acUndo
+      CaptionW = 'Undo'
+      HintW = 'Undo last edit'
     end
-    object N13: TTBXSeparatorItem
-      Caption = ''
-      Hint = ''
+    object N13: TSpTBXSeparatorItem
     end
-    object Cut1: TTBXItem
+    object Cut1: TSpTBXItem
       Action = acCut
+      CaptionW = 'Cut'
+      HintW = 'Cut selected text'
     end
-    object Copy1: TTBXItem
+    object Copy1: TSpTBXItem
       Action = acCopy
+      CaptionW = 'Copy'
+      HintW = 'Copy selected text'
     end
-    object Paste1: TTBXItem
+    object Paste1: TSpTBXItem
       Action = acPaste
+      CaptionW = 'Paste'
+      HintW = 'Paste from clipboard'
     end
-    object N14: TTBXSeparatorItem
-      Caption = ''
-      Hint = ''
+    object N14: TSpTBXSeparatorItem
     end
-    object TBItem54: TTBXItem
+    object TBItem54: TSpTBXItem
       Action = acReplaceEverywhere
+      CaptionW = 'Use this translation everywhere'
+      HintW = 'Use this translation everywhere'
     end
-    object SelectAll1: TTBXItem
+    object SelectAll1: TSpTBXItem
       Action = acSelectAll
+      CaptionW = 'Select All'
+      HintW = 'Select all text'
     end
-    object TBSeparatorItem9: TTBXSeparatorItem
-      Caption = ''
-      Hint = ''
+    object TBSeparatorItem9: TSpTBXSeparatorItem
     end
-    object TBItem17: TTBXItem
+    object TBItem17: TSpTBXItem
       Action = acAsciiValues
+      CaptionW = 'ASCII Value(s)...'
+      HintW = 'Show the ASCII values for the selected text'
     end
-    object TBXSeparatorItem6: TTBXSeparatorItem
-      Caption = ''
-      Hint = ''
+    object TBXSeparatorItem6: TSpTBXSeparatorItem
     end
-    object smiDictionary: TTBXSubmenuItem
-      Caption = 'Dictionary'
-      Hint = ''
+    object smiDictionary: TSpTBXSubmenuItem
+      CaptionW = 'Dictionary'
     end
   end
-  object popList: TTBXPopupMenu
+  object popList: TSpTBXPopupMenu
     Images = il16
     Left = 78
     Top = 158
-    object TBItem20: TTBXItem
+    object TBItem20: TSpTBXItem
       Action = acCopyFromOriginal
+      CaptionW = 'Copy from Original'
+      HintW = 'Copy the value of Original to Translation'
     end
-    object TBItem21: TTBXItem
+    object TBItem21: TSpTBXItem
       Action = acCopyFromName
+      CaptionW = 'Copy from Name'
+      HintW = 'Copy the value of Name to Translation'
     end
-    object TBXItem7: TTBXItem
+    object TBXItem7: TSpTBXItem
       Action = acDictAdd
+      CaptionW = 'Add to Dictionary'
+      HintW = 'Add current item to the dictionary'
     end
-    object TBSeparatorItem14: TTBXSeparatorItem
-      Caption = ''
-      Hint = ''
+    object TBSeparatorItem14: TSpTBXSeparatorItem
     end
-    object TBItem24: TTBXItem
+    object TBItem24: TSpTBXItem
       Action = acNextUntranslated
+      CaptionW = 'Next untranslated'
+      HintW = 'Go to next untranslated item'
     end
-    object TBItem25: TTBXItem
+    object TBItem25: TSpTBXItem
       Action = acPrevUntranslated
+      CaptionW = 'Prev untranslated'
+      HintW = 'Go to previous untranslated item'
     end
-    object TBSeparatorItem11: TTBXSeparatorItem
-      Caption = ''
-      Hint = ''
+    object TBSeparatorItem11: TSpTBXSeparatorItem
     end
-    object TBItem53: TTBXItem
+    object TBItem53: TSpTBXItem
       Action = acClearAllTranslations
+      CaptionW = 'Clear All Translations'
+      HintW = 'Clear the translated text'
     end
-    object TBItem52: TTBXItem
+    object TBItem52: TSpTBXItem
       Action = acReplaceEverywhere
+      CaptionW = 'Use this translation everywhere'
+      HintW = 'Use this translation everywhere'
     end
-    object TBXSeparatorItem5: TTBXSeparatorItem
-      Caption = ''
-      Hint = ''
+    object TBXSeparatorItem5: TSpTBXSeparatorItem
     end
-    object TBXItem5: TTBXItem
+    object TBXItem5: TSpTBXItem
       Action = acToggleTranslated
+      CaptionW = 'Translated'
+      HintW = 'Toggle the Translated status of the item'
     end
-    object TBXSeparatorItem7: TTBXSeparatorItem
-      Caption = ''
-      Hint = ''
+    object TBXSeparatorItem7: TSpTBXSeparatorItem
     end
-    object TBXItem12: TTBXItem
+    object TBXItem12: TSpTBXItem
       Action = acAddItem
+      CaptionW = 'Add Item...'
+      HintW = 'Add new item to original and translation'
     end
-    object TBXItem11: TTBXItem
+    object TBXItem11: TSpTBXItem
       Action = acEditItem
+      CaptionW = 'Edit Item...'
+      HintW = 'Edit all parts of the current item'
     end
-    object TBXItem9: TTBXItem
+    object TBXItem9: TSpTBXItem
       Action = acDeleteItem
+      CaptionW = 'Delete Item...'
+      HintW = 'Delete the current item from both original and translation'
     end
   end
   object MRUFiles: TTBXMRUList
@@ -4349,6 +4473,7 @@ object frmMain: TfrmMain
       Tag = 1
       Category = 'Bookmarks'
       Caption = 'Bookmark 1'
+      Hint = 'Goto Bookmark 1'
       ImageIndex = 1
       ShortCut = 16433
       OnExecute = GotoBookmarkExecute
@@ -4357,6 +4482,7 @@ object frmMain: TfrmMain
       Tag = 2
       Category = 'Bookmarks'
       Caption = 'Bookmark 2'
+      Hint = 'Goto Bookmark 2'
       ImageIndex = 2
       ShortCut = 16434
       OnExecute = GotoBookmarkExecute
@@ -4365,6 +4491,7 @@ object frmMain: TfrmMain
       Tag = 3
       Category = 'Bookmarks'
       Caption = 'Bookmark 3'
+      Hint = 'Goto Bookmark 3'
       ImageIndex = 3
       ShortCut = 16435
       OnExecute = GotoBookmarkExecute
@@ -4373,6 +4500,7 @@ object frmMain: TfrmMain
       Tag = 4
       Category = 'Bookmarks'
       Caption = 'Bookmark 4'
+      Hint = 'Goto Bookmark 4'
       ImageIndex = 4
       ShortCut = 16436
       OnExecute = GotoBookmarkExecute
@@ -4381,6 +4509,7 @@ object frmMain: TfrmMain
       Tag = 5
       Category = 'Bookmarks'
       Caption = 'Bookmark 5'
+      Hint = 'Goto Bookmark 5'
       ImageIndex = 5
       ShortCut = 16437
       OnExecute = GotoBookmarkExecute
@@ -4389,6 +4518,7 @@ object frmMain: TfrmMain
       Tag = 6
       Category = 'Bookmarks'
       Caption = 'Bookmark 6'
+      Hint = 'Goto Bookmark 6'
       ImageIndex = 6
       ShortCut = 16438
       OnExecute = GotoBookmarkExecute
@@ -4397,6 +4527,7 @@ object frmMain: TfrmMain
       Tag = 7
       Category = 'Bookmarks'
       Caption = 'Bookmark 7'
+      Hint = 'Goto Bookmark 7'
       ImageIndex = 7
       ShortCut = 16439
       OnExecute = GotoBookmarkExecute
@@ -4405,6 +4536,7 @@ object frmMain: TfrmMain
       Tag = 8
       Category = 'Bookmarks'
       Caption = 'Bookmark 8'
+      Hint = 'Goto Bookmark 8'
       ImageIndex = 8
       ShortCut = 16440
       OnExecute = GotoBookmarkExecute
@@ -4413,6 +4545,7 @@ object frmMain: TfrmMain
       Tag = 9
       Category = 'Bookmarks'
       Caption = 'Bookmark 9'
+      Hint = 'Goto Bookmark 9'
       ImageIndex = 9
       ShortCut = 16441
       OnExecute = GotoBookmarkExecute
@@ -4420,6 +4553,7 @@ object frmMain: TfrmMain
     object acGotoBookmark0: TTntAction
       Category = 'Bookmarks'
       Caption = 'Bookmark 0'
+      Hint = 'Goto Bookmark 0'
       ImageIndex = 0
       ShortCut = 16432
       OnExecute = GotoBookmarkExecute
@@ -4428,6 +4562,7 @@ object frmMain: TfrmMain
       Tag = 1
       Category = 'Bookmarks'
       Caption = 'Bookmark 1'
+      Hint = 'Toggle Bookmark 1 on/off'
       ImageIndex = 1
       ShortCut = 24625
       OnExecute = ToggleBookmarkExecute
@@ -4436,6 +4571,7 @@ object frmMain: TfrmMain
       Tag = 2
       Category = 'Bookmarks'
       Caption = 'Bookmark 2'
+      Hint = 'Toggle Bookmark 2 on/off'
       ImageIndex = 2
       ShortCut = 24626
       OnExecute = ToggleBookmarkExecute
@@ -4444,6 +4580,7 @@ object frmMain: TfrmMain
       Tag = 3
       Category = 'Bookmarks'
       Caption = 'Bookmark 3'
+      Hint = 'Toggle Bookmark 3 on/off'
       ImageIndex = 3
       ShortCut = 24627
       OnExecute = ToggleBookmarkExecute
@@ -4452,6 +4589,7 @@ object frmMain: TfrmMain
       Tag = 4
       Category = 'Bookmarks'
       Caption = 'Bookmark 4'
+      Hint = 'Toggle Bookmark 4 on/off'
       ImageIndex = 4
       ShortCut = 24628
       OnExecute = ToggleBookmarkExecute
@@ -4460,6 +4598,7 @@ object frmMain: TfrmMain
       Tag = 5
       Category = 'Bookmarks'
       Caption = 'Bookmark 5'
+      Hint = 'Toggle Bookmark 5 on/off'
       ImageIndex = 5
       ShortCut = 24629
       OnExecute = ToggleBookmarkExecute
@@ -4468,6 +4607,7 @@ object frmMain: TfrmMain
       Tag = 6
       Category = 'Bookmarks'
       Caption = 'Bookmark 6'
+      Hint = 'Toggle Bookmark 6 on/off'
       ImageIndex = 6
       ShortCut = 24630
       OnExecute = ToggleBookmarkExecute
@@ -4476,6 +4616,7 @@ object frmMain: TfrmMain
       Tag = 7
       Category = 'Bookmarks'
       Caption = 'Bookmark 7'
+      Hint = 'Toggle Bookmark 7 on/off'
       ImageIndex = 7
       ShortCut = 24631
       OnExecute = ToggleBookmarkExecute
@@ -4484,6 +4625,7 @@ object frmMain: TfrmMain
       Tag = 8
       Category = 'Bookmarks'
       Caption = 'Bookmark 8'
+      Hint = 'Toggle Bookmark 8 on/off'
       ImageIndex = 8
       ShortCut = 24632
       OnExecute = ToggleBookmarkExecute
@@ -4492,6 +4634,7 @@ object frmMain: TfrmMain
       Tag = 9
       Category = 'Bookmarks'
       Caption = 'Bookmark 9'
+      Hint = 'Toggle Bookmark 9 on/off'
       ImageIndex = 9
       ShortCut = 24633
       OnExecute = ToggleBookmarkExecute
@@ -4499,6 +4642,7 @@ object frmMain: TfrmMain
     object acToggleBookmark0: TTntAction
       Category = 'Bookmarks'
       Caption = 'Bookmark 0'
+      Hint = 'Toggle Bookmark 0 on/off'
       ImageIndex = 0
       ShortCut = 24624
       OnExecute = ToggleBookmarkExecute

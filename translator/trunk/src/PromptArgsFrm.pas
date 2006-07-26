@@ -26,7 +26,7 @@ uses
   BaseForm,
   TntStdCtrls, TntButtons,
   TB2Item,
-  TBX, TntComCtrls;
+  TBX, TntComCtrls, SpTBXItem;
 
 type
   TMacroReplaceEvent = procedure(Sender: TObject; var Args: WideString) of object;
@@ -38,36 +38,36 @@ type
     reCommandLine: TTntRichEdit;
     btnCancel: TTntButton;
     btnOK: TTntButton;
-    popArguments: TTBXPopupMenu;
-    OriginalLine1: TTBXItem;
-    OriginalText1: TTBXItem;
-    OriginalPath1: TTBXItem;
-    OriginalDirectory1: TTBXItem;
-    OriginalName1: TTBXItem;
-    OriginalExtension1: TTBXItem;
+    popArguments: TSpTBXPopupMenu;
+    OriginalLine1: TSpTBXItem;
+    OriginalText1: TSpTBXItem;
+    OriginalPath1: TSpTBXItem;
+    OriginalDirectory1: TSpTBXItem;
+    OriginalName1: TSpTBXItem;
+    OriginalExtension1: TSpTBXItem;
     N1: TTBXSeparatorItem;
-    ranslationLine1: TTBXItem;
-    ranslationText1: TTBXItem;
-    ranslationPath1: TTBXItem;
-    ranslationDirectory1: TTBXItem;
-    ranslationName1: TTBXItem;
-    ranslationExtension1: TTBXItem;
+    ranslationLine1: TSpTBXItem;
+    ranslationText1: TSpTBXItem;
+    ranslationPath1: TSpTBXItem;
+    ranslationDirectory1: TSpTBXItem;
+    ranslationName1: TSpTBXItem;
+    ranslationExtension1: TSpTBXItem;
     N2: TTBXSeparatorItem;
-    DictionaryPath1: TTBXItem;
-    DictionaryDirectory1: TTBXItem;
-    DictionaryName1: TTBXItem;
-    DictionaryExtension1: TTBXItem;
+    DictionaryPath1: TSpTBXItem;
+    DictionaryDirectory1: TSpTBXItem;
+    DictionaryName1: TSpTBXItem;
+    DictionaryExtension1: TSpTBXItem;
     TBXSeparatorItem1: TTBXSeparatorItem;
     TBItem1: TTBItem;
-    TBXItem2: TTBXItem;
-    TBXItem1: TTBXItem;
+    TBXItem2: TSpTBXItem;
+    TBXItem1: TSpTBXItem;
     procedure btnArgumentsClick(Sender: TObject);
     procedure edArgumentsChange(Sender: TObject);
     procedure ArgumentsClick(Sender: TObject);
   private
     { Private declarations }
     FOnMacroReplace: TMacroReplaceEvent;
-    FCmdLine: string;
+    FCmdLine: WideString;
   public
     { Public declarations }
     class function Edit(const Title, CmdLine: WideString; var Args: WideString; OnMacroReplace: TMacroReplaceEvent): boolean;

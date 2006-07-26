@@ -31,6 +31,8 @@ procedure TBMRUSaveToReg(MRU: TTBXMRUList; RootKey: Cardinal; const Path: WideSt
 // "Fuzzy" in this context just means "remove all white space and control characters before comparing SubStr and Str"
 function DetectEncoding(const FileName: WideString): TEncoding;
 function GetAppVersion: WideString;
+function GetCurrentYear:Integer;
+
 // TODO: add JvCreateProcess from JVCL to add support for capturing output?
 
 function ActionShortCutInUse(AM: TActionList; ShortCut: Word): boolean;
@@ -290,6 +292,13 @@ begin
   finally
     ini.Free;
   end;
+end;
+
+function GetCurrentYear:Integer;
+var Y, M, D:Word;
+begin
+  DecodeDate(Date, Y, M, D);
+  Result := Y;
 end;
 
 function GetAppVersion: WideString;

@@ -84,7 +84,6 @@ type
     property OnReplaceAll: TNotifyEvent read FOnReplaceAll write FOnReplaceAll;
   end;
 
-  // NB! not unicode enabled!
   TFindIn = (fiiOriginal, fiiTranslation, fiiBoth);
   TFindReplace = class(TComponent)
   private

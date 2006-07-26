@@ -32,7 +32,7 @@ type
   TTestToolItemClickEvent = procedure(Sender: TObject; ToolItem: TToolItem) of object;
   TfrmTools = class(TfrmBase)
     Label1: TTntLabel;
-    lbContents: TListBox;
+    lbContents: TTntListBox;
     btnOK: TTntButton;
     btnCancel: TTntButton;
     btnAdd: TTntButton;
@@ -47,14 +47,14 @@ type
     OriginalDirectory1: TSpTBXItem;
     OriginalName1: TSpTBXItem;
     OriginalExtension1: TSpTBXItem;
-    N1: TTBXSeparatorItem;
+    N1: TSpTBXSeparatorItem;
     ranslationLine1: TSpTBXItem;
     ranslationText1: TSpTBXItem;
     ranslationPath1: TSpTBXItem;
     ranslationDirectory1: TSpTBXItem;
     ranslationName1: TSpTBXItem;
     ranslationExtension1: TSpTBXItem;
-    N2: TTBXSeparatorItem;
+    N2: TSpTBXSeparatorItem;
     DictionaryPath1: TSpTBXItem;
     DictionaryDirectory1: TSpTBXItem;
     DictionaryName1: TSpTBXItem;
@@ -64,10 +64,10 @@ type
     ranslationPath2: TSpTBXItem;
     DictionaryPath2: TSpTBXItem;
     ApplicationPath1: TSpTBXItem;
-    TBXSeparatorItem1: TTBXSeparatorItem;
+    TBXSeparatorItem1: TSpTBXSeparatorItem;
     TBXItem1: TSpTBXItem;
     TBXItem2: TSpTBXItem;
-    TBXSeparatorItem2: TTBXSeparatorItem;
+    TBXSeparatorItem2: TSpTBXSeparatorItem;
     TBXItem3: TSpTBXItem;
     TBXItem4: TSpTBXItem;
     pnlEditTool: TTntPanel;
@@ -106,7 +106,7 @@ type
     popContents: TSpTBXPopupMenu;
     TBXItem5: TSpTBXItem;
     TBXItem6: TSpTBXItem;
-    TBXSeparatorItem3: TTBXSeparatorItem;
+    TBXSeparatorItem3: TSpTBXSeparatorItem;
     TBXItem7: TSpTBXItem;
     TBXItem8: TSpTBXItem;
     Bevel1: TBevel;
@@ -115,9 +115,6 @@ type
     procedure lbContentsClick(Sender: TObject);
     procedure edTitleChange(Sender: TObject);
     procedure btnOKClick(Sender: TObject);
-    procedure chkShellClick(Sender: TObject);
-    function lbContentsDataFind(Control: TWinControl; FindString: String): Integer;
-    procedure lbContentsData(Control: TWinControl; Index: Integer; var Data: String);
     procedure acAddExecute(Sender: TObject);
     procedure acDeleteExecute(Sender: TObject);
     procedure acMoveUpExecute(Sender: TObject);
@@ -131,6 +128,10 @@ type
     procedure acArgsExecute(Sender: TObject);
     procedure acDirExecute(Sender: TObject);
     procedure alToolsUpdate(Action: TBasicAction; var Handled: Boolean);
+    function lbContentsDataFind(Control: TWinControl;
+      FindString: String): Integer;
+    procedure lbContentsData(Control: TWinControl; Index: Integer;
+      var Data: WideString);
   private
     { Private declarations }
     FLastItemIndex: integer;
@@ -239,9 +240,9 @@ begin
     edArguments.Text := ATool.Arguments;
     edInitialDir.Text := ATool.InitialDirectory;
 //    chkCapture.Checked := ATool.CaptureOutput;
-    chkPrompt.Checked := ATool.PromptForArguments;
-    chkShell.Checked := ATool.UseShellExecute;
-    chkWait.Checked := ATool.WaitForCompletion;
+    acPrompt.Checked := ATool.PromptForArguments;
+    acUseShellexecute.Checked := ATool.UseShellExecute;
+    acWait.Checked := ATool.WaitForCompletion;
     edShortCut.ShortCut := ATool.ShortCut;
   end
   else
@@ -251,9 +252,9 @@ begin
     edArguments.Text := '';
     edInitialDir.Text := '';
 //    chkCapture.Checked := false;
-    chkPrompt.Checked := false;
-    chkWait.Checked := false;
-    chkShell.Checked := false;
+    acPrompt.Checked := false;
+    acWait.Checked := false;
+    acUseShellexecute.Checked := false;
     edShortCut.ShortCut := 0;
   end;
   FLastItemIndex := I;
@@ -270,9 +271,9 @@ begin
     ATool.Arguments := edArguments.Text;
     ATool.InitialDirectory := edInitialDir.Text;
 //    ATool.CaptureOutput := chkCapture.Checked;
-    ATool.PromptForArguments := chkPrompt.Checked;
-    ATool.WaitForCompletion := chkWait.Checked;
-    ATool.UseShellExecute := chkShell.Checked;
+    ATool.PromptForArguments := acPrompt.Checked;
+    ATool.WaitForCompletion := acWait.Checked;
+    ATool.UseShellExecute := acUseShellexecute.Checked;
     ATool.ShortCut := edShortCut.ShortCut;
   end;
 end;
@@ -326,27 +327,6 @@ procedure TfrmTools.btnOKClick(Sender: TObject);
 begin
   FLastItemIndex := lbContents.ItemIndex;
   SaveCurrentTool;
-end;
-
-procedure TfrmTools.chkShellClick(Sender: TObject);
-begin
-  chkWait.Enabled := not chkShell.Checked;
-end;
-
-function TfrmTools.lbContentsDataFind(Control: TWinControl;
-  FindString: String): Integer;
-begin
-  Result := FTools.IndexOf(FindString);
-end;
-
-procedure TfrmTools.lbContentsData(Control: TWinControl; Index: Integer;
-  var Data: string);
-var Action: TCustomAction;
-begin
-  Data := FTools[Index].Title;
-  Action := FindActionShortCut(FMainActionList, FTools[Index].ShortCut);
-  if Action <> nil then
-    Data := '!>  ' + Data + '  <!'; // ' (' + Action.Caption + ')';
 end;
 
 procedure TfrmTools.acAddExecute(Sender: TObject);
@@ -487,8 +467,24 @@ begin
   acMoveDown.Enabled := lbContents.ItemIndex < FTools.Count - 1;
   acTest.Enabled := btnDelete.Enabled and Assigned(OnTestClick);
   acClear.Enabled := edShortCut.ShortCut <> 0;
-
   PropagateEnabled(pnlEditTool, acDelete.Enabled);
+  acWait.Enabled := not acUseShellexecute.Checked;
+end;
+
+function TfrmTools.lbContentsDataFind(Control: TWinControl;
+  FindString: String): Integer;
+begin
+  Result := FTools.IndexOf(FindString);
+end;
+
+procedure TfrmTools.lbContentsData(Control: TWinControl; Index: Integer;
+  var Data: WideString);
+var Action: TCustomAction;
+begin
+  Data := FTools[Index].Title;
+  Action := FindActionShortCut(FMainActionList, FTools[Index].ShortCut);
+  if Action <> nil then
+    Data := '!>  ' + Data + '  <!'; // ' (' + Action.Caption + ')';
 end;
 
 end.

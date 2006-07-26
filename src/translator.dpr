@@ -37,8 +37,10 @@ uses
   CommentsFrm in 'CommentsFrm.pas' {frmComments},
   EncodingDlgs in 'EncodingDlgs.pas' {frmEncoding},
   EditItemFrm in 'EditItemFrm.pas' {frmEditItem: TTntForm},
+{$IFDEF USEJCLDEBUGHANDLER}
   ExceptDlg in 'ExceptDlg.pas' {ExceptionDialog},
   ExceptDlgMail in 'ExceptDlgMail.pas' {ExceptionDialogMail},
+{$ENDIF USEJCLDEBUGHANDLER}
   ExtToolsFrm in 'ExtToolsFrm.pas' {frmTools},
   FindReplaceFrm in 'FindReplaceFrm.pas' {frmFindReplace},
   ImportExportFrm in 'ImportExportFrm.pas' {frmImportExport},

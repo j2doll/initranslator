@@ -33,10 +33,10 @@ type
     constructor Create(Images:TImageList; const ToolItem:IToolItem);
     function DisplayName:WideString;
     function About:WideString;
-    function Status(const Items, Orphans: ITranslationItems):Integer;
+    function Status(const Items, Orphans: ITranslationItems; const SelectedItem:ITranslationItem):Integer;
     function Icon:LongWord;
 
-    function Execute(const Items, Orphans: ITranslationItems): HResult;
+    function Execute(const Items, Orphans: ITranslationItems; var SelectedItem:ITranslationItem): HResult;
     procedure Init(AppHandle: Cardinal);
     property ImageIndex:integer read FImageIndex default -1;
   end;
@@ -87,9 +87,9 @@ begin
   Result := FToolItem.DisplayName;
 end;
 
-function TExternalToolItem.Execute(const Items, Orphans: ITranslationItems): HResult;
+function TExternalToolItem.Execute(const Items, Orphans: ITranslationItems; var SelectedItem:ITranslationItem): HResult;
 begin
-  Result := FToolItem.Execute(Items, Orphans);
+  Result := FToolItem.Execute(Items, Orphans, SelectedItem);
 end;
 
 function TExternalToolItem.Icon: LongWord;
@@ -110,9 +110,9 @@ begin
     FImageIndex := -1;
 end;
 
-function TExternalToolItem.Status(const Items, Orphans: ITranslationItems): Integer;
+function TExternalToolItem.Status(const Items, Orphans: ITranslationItems; const SelectedItem:ITranslationItem): Integer;
 begin
-  Result := FToolItem.Status(Items, Orphans);
+  Result := FToolItem.Status(Items, Orphans, SelectedItem);
 end;
 
 { TExternalToolItems }

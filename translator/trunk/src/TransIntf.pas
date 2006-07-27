@@ -123,7 +123,8 @@ type
     function CreateItem: ITranslationItem; // create an item that isn't added to the list
     procedure Delete(Index: integer);
     procedure Clear;
-    function IndexOf(const Section, Name: WideString; CaseSense: WordBool = false): integer;
+    function IndexOf(const Section, Name: WideString; CaseSense: WordBool = false): integer;overload;
+    function IndexOf(const AItem:ITranslationItem): integer;overload;
 
     property Count: integer read GetCount;
     property Items[Index: integer]: ITranslationItem read GetItem; default;
@@ -149,10 +150,10 @@ type
   ['{E14F5620-0EC9-43B5-816C-1A265C3FF237}']
     function DisplayName:WideString;safecall; // what to display on the menu
     function About:WideString;safecall;
-    function Status(const Items, Orphans: ITranslationItems):Integer; safecall; // TOOL_ENABLED or TOOL_CHECKED
+    function Status(const Items, Orphans: ITranslationItems; const SelectedItem:ITranslationItem):Integer; safecall; // TOOL_ENABLED or TOOL_CHECKED
     function Icon:LongWord; safecall; // HICON: return <= 0 for no icon
 
-    function Execute(const Items, Orphans: ITranslationItems): HResult; safecall;
+    function Execute(const Items, Orphans: ITranslationItems; var SelectedItem:ITranslationItem): HResult; safecall;
     procedure Init(AppHandle: Cardinal); safecall;
   end;
 

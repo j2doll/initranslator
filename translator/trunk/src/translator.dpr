@@ -54,7 +54,8 @@ uses
   SuspiciousConfigFrm in 'SuspiciousConfigFrm.pas' {frmConfigSuspicious: TTntForm},
   DictTranslationSelectDlg in 'DictTranslationSelectDlg.pas' {frmDictTranslationSelect: TTntForm},
   DictEditFrm in 'DictEditFrm.pas' {frmDictEdit: TTntForm},
-  ToolItems in 'ToolItems.pas';
+  ToolItems in 'ToolItems.pas',
+  ColorsFrm in 'ColorsFrm.pas' {frmColors: TTntForm};
 
 {$R *.res}
 

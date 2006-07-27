@@ -121,7 +121,8 @@ type
     constructor Create;
     destructor Destroy; override;
     function Find(const Section, Name: WideString; CaseSense: WordBool; var Index: integer): boolean;
-    function IndexOf(const Section, Name: WideString; CaseSense: WordBool = false): integer;
+    function IndexOf(const Section, Name: WideString; CaseSense: WordBool = false): integer;overload;
+    function IndexOf(const AItem:ITranslationItem): integer;overload;
     // NB! sorting is *not* maintained when new items are inserted!
     property Sort: TTranslateSortType read GetSort write SetSort;
     property Count: integer read GetCount;
@@ -428,6 +429,14 @@ end;
 function InvertOrigSort(Item1, Item2: ITranslationItem): Integer;
 begin
   Result := -OrigSort(Item1, Item2);
+end;
+
+function TTranslationItems.IndexOf(const AItem: ITranslationItem): integer;
+begin
+  if AItem <> nil then
+    Result := IndexOf(AItem.Section, AItem.Name)
+  else
+    Result := -1;
 end;
 
 procedure TTranslationItems.SetModified(Value: WordBool);

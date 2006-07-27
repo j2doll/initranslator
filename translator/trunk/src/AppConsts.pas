@@ -111,10 +111,6 @@ const
   SUTF8 = 'UTF-8';
   SUnicode = 'Unicode';
 
-  cColorUntranslated = $EFEFEF; // TODO: make this configurable
-  cColorAlternateList1 = $FFFFFF; // TODO: make this configurable
-  cColorAlternateList2 = $FFFFFF; // TODO: make this configurable
-
   cTranslatedCommentImage = 56;
   cUntranslatedCommentImage = 57;
   cDefaultItemImage = 58;

@@ -61,15 +61,20 @@ type
     chkUseTranslationEverywhere: TTntCheckBox;
     chkAutoFocusTranslation: TTntCheckBox;
     chkDictIgnoreNonEmpty: TTntCheckBox;
+    btnColors: TTntButton;
     procedure chkShowToolTipsClick(Sender: TObject);
     procedure chkReturnToSaveClick(Sender: TObject);
     procedure btnLanguageClick(Sender: TObject);
     procedure btnHelpClick(Sender: TObject);
     procedure btnFontClick(Sender: TObject);
     procedure chkSavePositionClick(Sender: TObject);
+    procedure btnColorsClick(Sender: TObject);
   private
     { Private declarations }
+    FOptions:TAppOptions;
     procedure UpdatePreview;
+    procedure LoadOptions(Options: TAppOptions);
+    procedure SaveOptions(Options: TAppOptions);
   public
     { Public declarations }
     class function Execute(Options: TAppOptions): boolean;
@@ -77,7 +82,7 @@ type
 
 implementation
 uses
-  AppConsts, AppUtils, CommonUtils, TntDialogs;
+  AppConsts, AppUtils, CommonUtils, TntDialogs, ColorsFrm;
 
 {$R *.dfm}
 
@@ -136,52 +141,16 @@ var
 begin
   frm := self.Create(Application);
   try
+
     // load options
-    frm.chkShowQuotes.Checked := Options.ShowQuotes;
-    frm.chkInvertDictionary.Checked := Options.InvertDictionary;
-    frm.chkShowDetails.Checked := Options.ShowDetails;
-    frm.chkShowToolTips.Checked := Options.ShowToolTips;
-    frm.chkShowShortCuts.Checked := Options.ShowToolTipShortCuts;
-    frm.chkDictIgnoreSpeedKey.Checked := Options.DictIgnoreSpeedKeys;
-    frm.chkReturnToSave.Checked := Options.SaveOnReturn;
-    frm.chkMoveToNext.Checked := Options.AutoMoveToNext;
-    frm.chkSavePosition.Checked := Options.SaveFormPos;
-    frm.chkSaveMinMax.Checked := Options.SaveMinMaxState;
-    frm.chkGlobalPath.Checked := Options.GlobalPath;
-    frm.chkMonitorFiles.Checked := Options.MonitorFiles;
-    frm.chkShowFullNames.Checked := Options.ShowFullNameInColumns;
-    frm.chkUseTranslationEverywhere.Checked := Options.UseTranslationEverywhere;
-    frm.chkAutoFocusTranslation.Checked := Options.AutoFocusTranslation;
-    frm.chkDictIgnoreNonEmpty.Checked := Options.DictIgnoreNonEmpty;
-    frm.edLanguage.Text := Options.LanguageFile;
-    frm.edHelp.Text := Options.HelpFile;
-    frm.FontDialog.Font := Options.AppFont;
-    frm.UpdatePreview;
+    frm.LoadOptions(Options);
     Result := frm.ShowModal = mrOk;
     if Result then
     begin
       // save options
-      Options.ShowQuotes := frm.chkShowQuotes.Checked;
-      Options.InvertDictionary := frm.chkInvertDictionary.Checked;
-      Options.ShowDetails := frm.chkShowDetails.Checked;
-      Options.ShowToolTips := frm.chkShowToolTips.Checked;
-      Options.ShowToolTipShortCuts := frm.chkShowShortCuts.Checked;
-      Options.DictIgnoreSpeedKeys := frm.chkDictIgnoreSpeedKey.Checked;
-      Options.SaveOnReturn := frm.chkReturnToSave.Checked;
-      Options.AutoMoveToNext := frm.chkMoveToNext.Checked;
-      Options.SaveFormPos := frm.chkSavePosition.Checked;
-      Options.SaveMinMaxState := frm.chkSaveMinMax.Checked;
-      Options.GlobalPath := frm.chkGlobalPath.Checked;
-      Options.MonitorFiles := frm.chkMonitorFiles.Checked;
-      Options.UseTranslationEverywhere := frm.chkUseTranslationEverywhere.Checked;
-      Options.AutoFocusTranslation := frm.chkAutoFocusTranslation.Checked;
-      Options.DictIgnoreNonEmpty := frm.chkDictIgnoreNonEmpty.Checked;
-      Options.ShowFullNameInColumns := frm.chkShowFullNames.Checked;
       if AnsiCompareFilename(frm.edLanguage.Text, Options.LanguageFile) <> 0 then
         InfoMsg(Translate(Application.MainForm.ClassName, SLanguageNotChangedUntilRestart), Translate(Application.MainForm.ClassName, SInfoCaption));
-      Options.LanguageFile := frm.edLanguage.Text;
-      Options.HelpFile := frm.edHelp.Text;
-      Options.AppFont.Assign(frm.FontDialog.Font);
+      frm.SaveOptions(Options);
     end;
   finally
     frm.Free;
@@ -193,6 +162,60 @@ begin
   pnlFontPreview.Font := FontDialog.Font;
   pnlFontPreview.Caption :=
     WideFormat('%s, %dpt', [FontDialog.Font.Name, FontDialog.Font.Size]);
+end;
+
+procedure TfrmOptions.btnColorsClick(Sender: TObject);
+begin
+  TfrmColors.Edit(FOptions);
+end;
+
+procedure TfrmOptions.LoadOptions(Options: TAppOptions);
+begin
+  FOptions := Options;
+  chkShowQuotes.Checked := Options.ShowQuotes;
+  chkInvertDictionary.Checked := Options.InvertDictionary;
+  chkShowDetails.Checked := Options.ShowDetails;
+  chkShowToolTips.Checked := Options.ShowToolTips;
+  chkShowShortCuts.Checked := Options.ShowToolTipShortCuts;
+  chkDictIgnoreSpeedKey.Checked := Options.DictIgnoreSpeedKeys;
+  chkReturnToSave.Checked := Options.SaveOnReturn;
+  chkMoveToNext.Checked := Options.AutoMoveToNext;
+  chkSavePosition.Checked := Options.SaveFormPos;
+  chkSaveMinMax.Checked := Options.SaveMinMaxState;
+  chkGlobalPath.Checked := Options.GlobalPath;
+  chkMonitorFiles.Checked := Options.MonitorFiles;
+  chkShowFullNames.Checked := Options.ShowFullNameInColumns;
+  chkUseTranslationEverywhere.Checked := Options.UseTranslationEverywhere;
+  chkAutoFocusTranslation.Checked := Options.AutoFocusTranslation;
+  chkDictIgnoreNonEmpty.Checked := Options.DictIgnoreNonEmpty;
+  edLanguage.Text := Options.LanguageFile;
+  edHelp.Text := Options.HelpFile;
+  FontDialog.Font := Options.AppFont;
+  UpdatePreview;
+end;
+
+procedure TfrmOptions.SaveOptions(Options: TAppOptions);
+begin
+  FOptions := Options;
+  Options.ShowQuotes := chkShowQuotes.Checked;
+  Options.InvertDictionary := chkInvertDictionary.Checked;
+  Options.ShowDetails := chkShowDetails.Checked;
+  Options.ShowToolTips := chkShowToolTips.Checked;
+  Options.ShowToolTipShortCuts := chkShowShortCuts.Checked;
+  Options.DictIgnoreSpeedKeys := chkDictIgnoreSpeedKey.Checked;
+  Options.SaveOnReturn := chkReturnToSave.Checked;
+  Options.AutoMoveToNext := chkMoveToNext.Checked;
+  Options.SaveFormPos := chkSavePosition.Checked;
+  Options.SaveMinMaxState := chkSaveMinMax.Checked;
+  Options.GlobalPath := chkGlobalPath.Checked;
+  Options.MonitorFiles := chkMonitorFiles.Checked;
+  Options.UseTranslationEverywhere := chkUseTranslationEverywhere.Checked;
+  Options.AutoFocusTranslation := chkAutoFocusTranslation.Checked;
+  Options.DictIgnoreNonEmpty := chkDictIgnoreNonEmpty.Checked;
+  Options.ShowFullNameInColumns := chkShowFullNames.Checked;
+  Options.LanguageFile := edLanguage.Text;
+  Options.HelpFile := edHelp.Text;
+  Options.AppFont.Assign(FontDialog.Font);
 end;
 
 end.

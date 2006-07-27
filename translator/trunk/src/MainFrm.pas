@@ -550,9 +550,15 @@ type
     procedure AddItem(AItem: ITranslationItem); overload;
     procedure DeleteItem(Index: integer);
     procedure DoExternalToolClick(Sender: TObject);
+    function GetSelectedItem: ITranslationItem;
+    procedure SetSelectedItem(const Value: ITranslationItem);
+    function GetSelectedListItem: TTntListItem;
+    procedure SetSelectedListItem(const Value: TTntListItem);
   public
     { Public declarations }
     property Modified: boolean read GetModified write SetModified;
+    property SelectedItem:ITranslationItem read GetSelectedItem write SetSelectedItem;
+    property SelectedListItem:TTntListItem read GetSelectedListItem write SetSelectedListItem;
   end;
 
 var
@@ -567,7 +573,7 @@ uses
   AppUtils, CommonUtils, OptionsFrm, CommentsFrm, OrphansFrm,
   KbdCfgFrame, KbdCfgFrm, ImportExportFrm, ExtToolsFrm, PromptArgsFrm,
   EditItemFrm, TrimFrm, SuspiciousConfigFrm, DictTranslationSelectDlg,
-  DictEditFrm;
+  DictEditFrm, ColorsFrm;
 
 {$R *.dfm}
 {$R manifest.res} // for XP theme support
@@ -594,7 +600,6 @@ begin
     Caption := GlobalAppOptions.AppTitle;
     Application.Title := Caption;
     pnlBottom.Height := GlobalAppOptions.SplitterPosition;
-    reOriginal.Color := cColorUntranslated;
     TBIniLoadPositions(Self, GetUserAppOptionsFile, cIniToolbarKey);
     // Find replace dialog
     FFindReplace.FindHistory.CommaText := trim(GlobalAppOptions.FindHistory);
@@ -627,7 +632,9 @@ begin
 
   lvTranslateStrings.Font := GlobalAppOptions.AppFont;
   reOriginal.Font := GlobalAppOptions.AppFont;
+  reOriginal.Color := GlobalAppOptions.ColorUntranslated;
   reOriginal.DefAttributes.Assign(reOriginal.Font);
+  reOriginal.DefAttributes.Color := GlobalAppOptions.ColorFontUntranslated;
   m := reTranslation.Modified;
   try
     reTranslation.Font := GlobalAppOptions.AppFont;
@@ -645,6 +652,7 @@ begin
     acDictInvert.Execute;
   if acViewDetails.Checked <> GlobalAppOptions.ShowDetails then
     acViewDetails.Execute;
+  lvTranslateStrings.Invalidate;
 {$IFNDEF USEADDICTSPELLCHECKER}
   acSpellCheck.Enabled := false;
   acSpellCheck.Visible := false;
@@ -1154,13 +1162,13 @@ end;
 function TfrmMain.SearchFromCurrent(const FindText: WideString;
   CaseSense, WholeWord, Down, Fuzzy: boolean; FindIn: TFindIn): TTntListItem;
 var
-  i: integer;
+  i, SelIndex: integer;
 begin
   Result := nil;
   if FTranslateFile.Items.Count < 1 then
     Exit;
   WaitCursor;
-  if lvTranslateStrings.Selected = nil then
+  if SelectedListItem = nil then
   begin
     if Down then
       i := 0
@@ -1169,10 +1177,11 @@ begin
   end
   else
   begin
+    SelIndex := SelectedListItem.Index;
     if Down then
-      i := lvTranslateStrings.Selected.Index + 1
+      i := SelIndex + 1
     else
-      i := lvTranslateStrings.Selected.Index - 1;
+      i := SelIndex - 1;
   end;
   Result := nil;
   while (i >= 0) and (i < FTranslateFile.Items.Count) do
@@ -1268,11 +1277,11 @@ begin
   else
     StatusBar1.Panels[0].Caption := '  ' + Translate(ClassName, SReady);
 
-  if lvTranslateStrings.Selected <> nil then
+  if SelectedItem <> nil then
   begin
-    StatusBar1.Panels[1].Caption := '  ' + FTranslateFile.Items[lvTranslateStrings.Selected.Index].Section;
-    StatusBar1.Panels[2].Caption := '  ' + FTranslateFile.Items[lvTranslateStrings.Selected.Index].Name;
-    with FTranslateFile.Items[lvTranslateStrings.Selected.Index] do
+    StatusBar1.Panels[1].Caption := '  ' + SelectedItem.Section;
+    StatusBar1.Panels[2].Caption := '  ' + SelectedItem.Name;
+    with SelectedItem do
       lblViewDetails.Caption := WideFormat(Translate(ClassName, SFmtKeyDetails), [Section, Name]);
   end
   else
@@ -1417,8 +1426,8 @@ begin
     Index := lvTranslateStrings.Items.Count - 1;
   if (Index >= 0) and (Index < lvTranslateStrings.Items.Count) then
   begin
-    lvTranslateStrings.Selected := lvTranslateStrings.Items[Index];
-    lvTranslateStrings.Selected.MakeVisible(false);
+    SelectedListItem := lvTranslateStrings.Items[Index];
+    SelectedListItem.MakeVisible(false);
   end;
   if reTranslation.CanFocus then
     reTranslation.SetFocus;
@@ -1565,15 +1574,15 @@ var
   li: TTntListItem;
 begin
   if (FLastFindText <> FFindReplace.FindText) then
-    lvTranslateStrings.Selected := nil;
+    SelectedListItem := nil;
   SaveEditChanges;
   FLastFindText := FFindReplace.FindText;
   li := SearchFromCurrent(FLastFindText, FFindReplace.MatchCase, FFindReplace.MatchLine,
     not FFindReplace.SearchUp, FFindReplace.FuzzySearch, TFindIn(FFindReplace.FindInIndex));
   if li <> nil then
   begin
-    lvTranslateStrings.Selected := li;
-    lvTranslateStrings.Selected.MakeVisible(false)
+    SelectedListItem := li;
+    SelectedListItem.MakeVisible(false)
   end
   else
     InfoMsg(WideFormat(Translate(ClassName, SFmtTextNotFound), [FFindReplace.FindText]),
@@ -1586,12 +1595,12 @@ var
   F: TReplaceFlags;
   b: boolean;
 begin
-  if lvTranslateStrings.Selected = nil then
+  if SelectedListItem = nil then
   begin
     acFindNext.Execute;
     Exit;
   end;
-  i := lvTranslateStrings.Selected.Index;
+  i := SelectedListItem.Index;
 
   b := false;
   if (FFindReplace.FindInIndex in [fiiOriginal, fiiBoth]) then
@@ -1626,7 +1635,7 @@ var
   F: TReplaceFlags;
   li: TTntListItem;
 begin
-  li := lvTranslateStrings.Selected;
+  li := SelectedListItem;
   if li = nil then
     li := SearchFromCurrent(FFindReplace.FindText, FFindReplace.MatchCase, FFindReplace.MatchLine, not
       FFindReplace.SearchUp, FFindReplace.FuzzySearch, FFindReplace.FindInIndex);
@@ -1637,7 +1646,7 @@ begin
     Exit;
   end;
   SaveEditChanges;
-  i := lvTranslateStrings.Selected.Index;
+  i := SelectedListItem.Index;
   F := [rfReplaceAll];
   if not FFindReplace.MatchCase then
     Include(F, rfIgnoreCase);
@@ -1663,7 +1672,7 @@ begin
           FFindReplace.FindText, FFindReplace.ReplaceText, F);
       end;
       FTranslateFile.Items[i].Translated := FTranslateFile.Items[i].Translation <> '';
-      if i = lvTranslateStrings.Selected.Index then
+      if i = SelectedListItem.Index then
         reTranslation.Text := FTranslateFile.Items[i].Translation;
       Modified := true;
     end;
@@ -1671,8 +1680,8 @@ begin
   end;
   if li <> nil then
   begin
-    lvTranslateStrings.Selected := li;
-    lvTranslateStrings.Selected.MakeVisible(false);
+    SelectedListItem := li;
+    SelectedListItem.MakeVisible(false);
   end;
   lvTranslateStrings.Invalidate;
 end;
@@ -1969,8 +1978,8 @@ begin
   end
   else
     alMain.State := asNormal;
-  if lvTranslateStrings.Selected <> nil then
-    Index := lvTranslateStrings.Selected.Index
+  if SelectedListItem <> nil then
+    Index := SelectedListItem.Index
   else
     Index := -1;
   ACount := FTranslateFile.Items.Count;
@@ -2039,7 +2048,6 @@ begin
     lvTranslateStrings.Columns[0].ImageIndex := -1;
     lvTranslateStrings.Columns[1].ImageIndex := -1;
     case Column.Index of
-
       0:
         begin
           if FTranslateFile.Items.Sort <> stOriginal then
@@ -2082,6 +2090,7 @@ begin
     end; // case
   finally
     //    lvTranslateStrings.Items.Count := FTranslateFile.Count;
+    lvTranslateStringsChange(Sender, SelectedListItem, ctText);
     lvTranslateStrings.Invalidate;
   end;
 end;
@@ -2093,8 +2102,8 @@ begin
   if not lvTranslateStrings.HandleAllocated then
     Exit;
   WaitCursor;
-  if lvTranslateStrings.Selected <> nil then
-    i := lvTranslateStrings.Selected.Index
+  if SelectedListItem <> nil then
+    i := SelectedListItem.Index
   else
     i := 0;
   ScrollToTop;
@@ -2107,7 +2116,7 @@ begin
     lvTranslateStrings.Items.Count := FTranslateFile.Items.Count;
     if FTranslateFile.Items.Count > 0 then
     begin
-      lvTranslateStrings.Selected := lvTranslateStrings.Items[i];
+      SelectedListItem := lvTranslateStrings.Items[i];
       lvTranslateStrings.Invalidate;
     end;
   end;
@@ -2179,10 +2188,8 @@ begin
   ScreenCursor(crAppStart);
   ClearBookmarks;
   FixXPPanelBug;
-  BuildExternalToolMenu(mnuPlugins);
 
   GlobalLanguageFile.OnRead := DoReadObject;
-
   GlobalLanguageFile.SkipProperty('Name');
   GlobalLanguageFile.SkipProperty('Category');
   GlobalLanguageFile.SkipProperty('HelpKeyWord');
@@ -2213,6 +2220,7 @@ begin
   GlobalLanguageFile.SkipClass(TTBXSeparatorItem);
   GlobalLanguageFile.SkipClass(TTBXComboBoxItem);
 
+  BuildExternalToolMenu(mnuPlugins);
   DragAcceptFiles(Handle, true);
   ToolbarFont.CharSet := DEFAULT_CHARSET;
   FTranslateFile := TTranslateFiles.Create;
@@ -2274,9 +2282,9 @@ procedure TfrmMain.reTranslationExit(Sender: TObject);
 var
   i: integer;
 begin
-  if reTranslation.Modified and (lvTranslateStrings.Selected <> nil) then
+  if reTranslation.Modified and (SelectedListItem <> nil) then
   begin
-    i := lvTranslateStrings.Selected.Index;
+    i := SelectedListItem.Index;
     with FTranslateFile.Items[i] do
     begin
       Translation := RemoveQuotes(trimCRLFRight(reTranslation.Text));
@@ -2377,18 +2385,18 @@ end;
 
 procedure TfrmMain.acPrevExecute(Sender: TObject);
 begin
-  if (lvTranslateStrings.Selected = nil) then
+  if (SelectedListItem = nil) then
     MoveListViewSelection(0)
   else
-    MoveListViewSelection(lvTranslateStrings.Selected.Index - 1);
+    MoveListViewSelection(SelectedListItem.Index - 1);
 end;
 
 procedure TfrmMain.acNextExecute(Sender: TObject);
 begin
-  if (lvTranslateStrings.Selected = nil) then
+  if (SelectedListItem = nil) then
     MoveListViewSelection(0)
   else
-    MoveListViewSelection(lvTranslateStrings.Selected.Index + 1)
+    MoveListViewSelection(SelectedListItem.Index + 1)
 end;
 
 procedure TfrmMain.acCopyFromOriginalExecute(Sender: TObject);
@@ -2455,10 +2463,10 @@ end;
 
 procedure TfrmMain.lvTranslateStringsEnter(Sender: TObject);
 begin
-  if (lvTranslateStrings.Selected = nil) and (lvTranslateStrings.Items.Count > 0) then
-    lvTranslateStrings.Selected := lvTranslateStrings.Items[0];
-  if (lvTranslateStrings.Selected <> nil) then
-    lvTranslateStrings.Selected.Focused := true;
+  if (SelectedListItem = nil) and (lvTranslateStrings.Items.Count > 0) then
+    SelectedListItem := lvTranslateStrings.Items[0];
+  if (SelectedListItem <> nil) then
+    SelectedListItem.Focused := true;
 end;
 
 procedure TfrmMain.acToggleFocusExecute(Sender: TObject);
@@ -2514,11 +2522,20 @@ begin
   if (Item <> nil) and (Stage = cdPrePaint) then
   begin
     if not FTranslateFile.Items[Item.Index].Translated then
-      Sender.Canvas.Brush.Color := cColorUntranslated
+    begin
+      Sender.Canvas.Brush.Color := GlobalAppOptions.ColorUntranslated;
+      Sender.Canvas.Font.COlor := GlobalAppOptions.ColorFontUntranslated;
+    end
     else if Odd(Item.Index) then
-      Sender.Canvas.Brush.Color := cColorAlternateList1
+    begin
+      Sender.Canvas.Brush.Color := GlobalAppOptions.ColorEvenRow;
+      Sender.Canvas.Font.COlor := GlobalAppOptions.ColorFontEvenRow;
+    end
     else
-      Sender.Canvas.Brush.Color := cColorAlternateList2;
+    begin
+      Sender.Canvas.Brush.Color := GlobalAppOptions.ColorOddRow;
+      Sender.Canvas.Font.Color := GlobalAppOptions.ColorFontOddRow;
+    end;
   end;
 end;
 
@@ -2527,18 +2544,18 @@ var
   i: integer;
 begin
   SaveEditChanges;
-  if lvTranslateStrings.Selected = nil then
+  if SelectedListItem = nil then
     i := 0
   else
-    i := lvTranslateStrings.Selected.Index + 1;
+    i := SelectedListItem.Index + 1;
   if i >= FTranslateFile.Items.Count then
     i := 0; // wrap
   while i < FTranslateFile.Items.Count do
   begin
     if not FTranslateFile.Items[i].Translated then
     begin
-      lvTranslateStrings.Selected := lvTranslateStrings.Items[i];
-      lvTranslateStrings.Selected.MakeVisible(false);
+      SelectedListItem := lvTranslateStrings.Items[i];
+      SelectedListItem.MakeVisible(false);
       Exit;
     end;
     Inc(i);
@@ -2550,18 +2567,18 @@ var
   i: integer;
 begin
   SaveEditChanges;
-  if lvTranslateStrings.Selected = nil then
+  if SelectedListItem = nil then
     i := FTranslateFile.Items.Count - 1
   else
-    i := lvTranslateStrings.Selected.Index - 1;
+    i := SelectedListItem.Index - 1;
   if i < 0 then
     i := FTranslateFile.Items.Count - 1; // wrap
   while i > -1 do
   begin
     if not FTranslateFile.Items[i].Translated then
     begin
-      lvTranslateStrings.Selected := lvTranslateStrings.Items[i];
-      lvTranslateStrings.Selected.MakeVisible(false);
+      SelectedListItem := lvTranslateStrings.Items[i];
+      SelectedListItem.MakeVisible(false);
       Exit;
     end;
     Dec(i);
@@ -2582,7 +2599,7 @@ end;
 procedure TfrmMain.acShowQuotesExecute(Sender: TObject);
 begin
   acShowQuotes.Checked := not acShowQuotes.Checked;
-  lvTranslateStringsChange(Sender, lvTranslateStrings.Selected, ctText);
+  lvTranslateStringsChange(Sender, SelectedListItem, ctText);
 end;
 
 procedure TfrmMain.acDictInvertExecute(Sender: TObject);
@@ -2597,7 +2614,7 @@ procedure TfrmMain.acDictAddExecute(Sender: TObject);
 var
   Index: integer;
 begin
-  Index := lvTranslateStrings.Selected.Index;
+  Index := SelectedListItem.Index;
   with FTranslateFile.Items[Index] do
     if acDictInvert.Checked then
       FDict.Add(Translation).Translations.Add(Original)
@@ -2650,8 +2667,8 @@ procedure TfrmMain.acNewTransExecute(Sender: TObject);
 var
   i, j: integer;
 begin
-  if lvTranslateStrings.Selected <> nil then
-    j := lvTranslateStrings.Selected.Index
+  if SelectedListItem <> nil then
+    j := SelectedListItem.Index
   else
     j := 0;
   ScrollToTop;
@@ -2666,7 +2683,7 @@ begin
     lvTranslateStrings.Items.Count := FTranslateFile.Items.Count;
     lvTranslateStrings.Invalidate;
     if j < FTranslateFile.Items.Count then
-      lvTranslateStrings.Selected :=
+      SelectedListItem :=
         lvTranslateStrings.Items[j];
   end;
   GlobalAppOptions.TranslationFile := '';
@@ -2674,18 +2691,15 @@ begin
 end;
 
 procedure TfrmMain.acCreateTranslationFileExecute(Sender: TObject);
-// We don't create TfrmFindReplace because we get it's strings through
-// the TFindReplace class (as it is the owner of TfrmFindReplace) automatically
-// We don't need to create TfrmMain (obviously) or TfrmComments since it is auto-created
 const
-  cTranslatableForms:array [0..10] of TFormClass =
+  cTranslatableForms:array [0..11] of TFormClass =
     (TfrmOptions, TfrmOrphans,TfrmConfigKbd,TfrmImportExport, TfrmTools, TfrmPromptArgs,
      TfrmEditItem, TfrmTrim, TfrmConfigSuspicious, TfrmDictTranslationSelect,
-     TfrmDictEdit);
+     TfrmDictEdit, TfrmColors);
 
 var
   i:integer;
-  AForms:array[0..10] of TForm;
+  AForms:array[0..11] of TForm;
 begin
   with TTntSaveDialog.Create(nil) do
   try
@@ -2705,8 +2719,8 @@ begin
         // this call iterates all the forms of the app and gets the translatable strings
         GlobalLanguageFile.CreateTemplate(FileName, Application);
       finally
-      for i := Low(cTranslatableForms) to High(cTRanslatableForms) do
-        AForms[i].Free;
+        for i := Low(cTranslatableForms) to High(cTranslatableForms) do
+          AForms[i].Free;
       end;
     end;
   finally
@@ -2773,9 +2787,9 @@ end;
 
 procedure TfrmMain.acCopyFromNameExecute(Sender: TObject);
 begin
-  if lvTranslateStrings.Selected <> nil then
+  if SelectedItem <> nil then
   begin
-    reTranslation.Text := FTranslateFile.Items[lvTranslateStrings.Selected.Index].Name;
+    reTranslation.Text := SelectedItem.Name;
     Modified := true;
   end;
 end;
@@ -2896,10 +2910,10 @@ var
 
 begin
   SaveEditChanges;
-  if lvTranslateStrings.Selected = nil then
+  if SelectedListItem = nil then
     i := 0
   else
-    i := lvTranslateStrings.Selected.Index + 1;
+    i := SelectedListItem.Index + 1;
   if i < 0 then
     i := lvTranslateStrings.Items.Count - 1;
   if i > lvTranslateStrings.Items.Count - 1 then
@@ -2908,9 +2922,9 @@ begin
   begin
     if (FTranslateFile.Items[i].Translation <> '') and (SubStrCount('&', FTranslateFile.Items[i].Original) <> SubStrCount('&', FTranslateFile.Items[i].Translation)) then
     begin
-      lvTranslateStrings.Selected := lvTranslateStrings.Items[i];
-      if lvTranslateStrings.Selected <> nil then
-        lvTranslateStrings.Selected.MakeVisible(false);
+      SelectedListItem := lvTranslateStrings.Items[i];
+      if SelectedListItem <> nil then
+        SelectedListItem.MakeVisible(false);
       Exit;
     end;
     Inc(i);
@@ -2929,18 +2943,18 @@ end;
 
 procedure TfrmMain.acPageUpExecute(Sender: TObject);
 begin
-  if lvTranslateStrings.Selected = nil then
+  if SelectedListItem = nil then
     MoveListViewSelection(0)
   else
-    MoveListViewSelection(lvTranslateStrings.Selected.Index - lvTranslateStrings.VisibleRowCount + 1);
+    MoveListViewSelection(SelectedListItem.Index - lvTranslateStrings.VisibleRowCount + 1);
 end;
 
 procedure TfrmMain.acPageDownExecute(Sender: TObject);
 begin
-  if lvTranslateStrings.Selected = nil then
+  if SelectedListItem = nil then
     MoveListViewSelection(lvTranslateStrings.Items.Count - 1)
   else
-    MoveListViewSelection(lvTranslateStrings.Selected.Index + lvTranslateStrings.VisibleRowCount - 1);
+    MoveListViewSelection(SelectedListItem.Index + lvTranslateStrings.VisibleRowCount - 1);
 end;
 
 procedure TfrmMain.GotoBookmarkExecute(Sender: TObject);
@@ -2951,8 +2965,8 @@ end;
 
 procedure TfrmMain.ToggleBookmarkExecute(Sender: TObject);
 begin
-  if lvTranslateStrings.Selected <> nil then
-    ToggleBookmark((Sender as TAction).Tag, lvTranslateStrings.Selected.Index);
+  if SelectedListItem <> nil then
+    ToggleBookmark((Sender as TAction).Tag, SelectedListItem.Index);
 end;
 
 procedure TfrmMain.acClearAllTranslationsExecute(Sender: TObject);
@@ -2974,7 +2988,7 @@ var
   i: integer;
 begin
   SaveEditChanges;
-  with lvTranslateStrings.Selected do
+  with SelectedListItem do
   begin
     FOrig := FTranslateFile.Items[Index].Original;
     FTrans := FTranslateFile.Items[Index].Translation;
@@ -3080,8 +3094,8 @@ begin
   try
     MisMatchList.CommaText := GLobalAppOptions.MisMatchItems;
     SaveEditChanges;
-    if lvTranslateStrings.Selected <> nil then
-      i := lvTranslateStrings.Selected.Index
+    if SelectedListItem <> nil then
+      i := SelectedListItem.Index
     else
       i := -1;
     if i = lvTranslateStrings.Items.Count - 1 then
@@ -3118,9 +3132,9 @@ begin
       end;
     end;
     if (i >= 0) and (i < FTranslateFile.Items.Count) then
-      lvTranslateStrings.Selected := lvTranslateStrings.Items[i];
-    if lvTranslateStrings.Selected <> nil then
-      lvTranslateStrings.Selected.MakeVisible(true);
+      SelectedListItem := lvTranslateStrings.Items[i];
+    if SelectedListItem <> nil then
+      SelectedListItem.MakeVisible(true);
   finally
     MisMatchList.Free;
   end;
@@ -3143,7 +3157,7 @@ begin
   //  (FTranslateFile.Items as ITranslationItems)._AddRef;
   if not CheckModified then
     Exit;
-  lvTranslateStrings.Selected := nil;
+  SelectedListItem := nil;
   ScrollToTop;
   lvTranslateStrings.Items.Count := 0;
   reOriginal.Clear;
@@ -3179,7 +3193,7 @@ end;
 
 procedure TfrmMain.acToggleTranslatedExecute(Sender: TObject);
 begin
-  with lvTranslateStrings.Selected do
+  with SelectedListItem do
     FTranslateFile.Items[Index].Translated := not FTranslateFile.Items[Index].Translated
 end;
 
@@ -3196,8 +3210,8 @@ procedure TfrmMain.DoCommentModified(Sender: TObject;
       SetLength(Result, Length(Result) - 1);
   end;
 begin
-  if lvTranslateStrings.Selected <> nil then
-    with lvTranslateStrings.Selected do
+  if SelectedListItem <> nil then
+    with SelectedListItem do
       FTranslateFile.Items[Index].TransComments := MakeComment(AText);
 end;
 
@@ -3335,15 +3349,15 @@ begin
   CreateSpellChecker;
   adSpellChecker.StartSequenceCheck;
   try
-    if lvTranslateStrings.Selected <> nil then
-      j := lvTranslateStrings.Selected.Index
+    if SelectedListItem <> nil then
+      j := SelectedListItem.Index
     else
       j := 0;
     for i := j to lvTranslateStrings.Items.Count - 1 do
     begin
       // this copies the content of the listview item to the richedit control (reTranslation)
-      lvTranslateStrings.Selected := lvTranslateStrings.Items[i];
-      lvTranslateStrings.Selected.MakeVisible(false);
+      SelectedListItem := lvTranslateStrings.Items[i];
+      SelectedListItem.MakeVisible(false);
       // the OnCompleteCheck event is hooked up to save any changes to the richedit back to the listview
       adSpellChecker.CheckWinControl(reTranslation, ctAll);
       if adSpellChecker.CheckCanceled then
@@ -3354,8 +3368,8 @@ begin
       for i := 0 to j do
       begin
         // this copies the content of the listview item to the richedit control (reTranslation)
-        lvTranslateStrings.Selected := lvTranslateStrings.Items[i];
-        lvTranslateStrings.Selected.MakeVisible(false);
+        SelectedListItem := lvTranslateStrings.Items[i];
+        SelectedListItem.MakeVisible(false);
         // the OnCompleteCheck event is hooked up to save any changes to the richedit back to the listview
         adSpellChecker.CheckWinControl(reTranslation, ctAll);
         // here I would like to check if the dialog was closed (Cancel clicked) so I can break out of the loop
@@ -3505,23 +3519,30 @@ procedure TfrmMain.DoExternalToolClick(Sender: TObject);
 var
   T: TExternalToolItem;
   i: integer;
+  AItem:ITranslationItem;
 begin
+
   i := lvTranslateStrings.ItemIndex;
   lvTranslateStrings.Items.BeginUpdate;
   try
     T := TExternalToolItem((Sender as TTBCustomItem).Tag);
-    T.Execute(FTranslateFile.Items, FTranslateFile.Orphans);
+    AItem := SelectedItem;
+    T.Execute(FTranslateFile.Items, FTranslateFile.Orphans, AItem);
     lvTranslateStrings.Items.Count := FTranslateFile.Items.Count;
     lvTranslateStrings.Invalidate;
   finally
+
     lvTranslateStrings.Items.EndUpdate;
-    lvTranslateStrings.ItemIndex := i;
+    if AItem <> nil then
+      SelectedItem := AItem
+    else
+      lvTranslateStrings.ItemIndex := i;
   end;
 
-  if lvTranslateStrings.Selected <> nil then
+  if SelectedListItem <> nil then
   begin
-    lvTranslateStrings.Selected.Focused := true;
-    lvTranslateStrings.Selected.MakeVisible(false);
+    SelectedListItem.Focused := true;
+    SelectedListItem.MakeVisible(false);
   end;
 end;
 
@@ -3557,7 +3578,7 @@ begin
   for i := 0 to mnuPlugins.Count - 1 do
   begin
     with TExternalToolItem(mnuPlugins[i].Tag) do
-      AStatus := Status(FTranslateFile.Items, FTranslateFile.Orphans);
+      AStatus := Status(FTranslateFile.Items, FTranslateFile.Orphans, SelectedItem);
     mnuPlugins[i].Enabled := AStatus and TOOL_ENABLED = TOOL_ENABLED;
     mnuPlugins[i].Checked := AStatus and TOOL_CHECKED = TOOL_CHECKED;
     mnuPlugins[i].Visible := AStatus and TOOL_VISIBLE = TOOL_VISIBLE;
@@ -3780,8 +3801,8 @@ begin
         end;
         // scroll it into view
         lvTranslateStrings.ItemIndex := FTranslateFile.Items.IndexOf(AItem.Section, AItem.Name);
-        if lvTranslateStrings.Selected <> nil then
-          lvTranslateStrings.Selected.MakeVisible(true);
+        if SelectedListItem <> nil then
+          SelectedListItem.MakeVisible(true);
       end;
     end;
   finally
@@ -3821,7 +3842,7 @@ var
   end;
 begin
   ANewItem := FTranslateFile.Items.CreateItem;
-  Index := lvTranslateStrings.Selected.Index;
+  Index := SelectedListItem.Index;
   AItem := FTranslateFile.Items[Index];
   ASections := TTntStringlist.Create;
   try
@@ -3845,8 +3866,8 @@ begin
           CopyItem(ANewItem, AItem);
           Modified := true;
           lvTranslateStrings.ItemIndex := Index;
-          if lvTranslateStrings.Selected <> nil then
-            lvTranslateStrings.Selected.MakeVisible(true);
+          if SelectedListItem <> nil then
+            SelectedListItem.MakeVisible(true);
           UpdateStatus;
         end;
       finally
@@ -3861,10 +3882,10 @@ end;
 procedure TfrmMain.acDeleteItemExecute(Sender: TObject);
 var i: integer;
 begin
-  if (lvTranslateStrings.Selected <> nil) and YesNo(Translate(ClassName, SPromptDeleteItem), Translate(ClassName, SConfirmDelete)) then
+  if (SelectedListItem <> nil) and YesNo(Translate(ClassName, SPromptDeleteItem), Translate(ClassName, SConfirmDelete)) then
   begin
-    i := lvTranslateStrings.Selected.Index;
-    DeleteItem(lvTranslateStrings.Selected.Index);
+    i := SelectedListItem.Index;
+    DeleteItem(SelectedListItem.Index);
     lvTranslateStrings.Items.Count := FTranslateFile.Items.Count;
     if i >= FTranslateFile.Items.Count then
       i := FTranslateFile.Items.Count - 1
@@ -3873,10 +3894,10 @@ begin
     lvTranslateStrings.ItemIndex := i;
     if lvTranslateStrings.ItemIndex = -1 then
       lvTranslateStrings.ItemIndex := 0;
-    if lvTranslateStrings.Selected <> nil then
-      lvTranslateStrings.Selected.MakeVisible(false);
+    if SelectedListItem <> nil then
+      SelectedListItem.MakeVisible(false);
     lvTranslateStrings.Invalidate;
-    lvTranslateStringsChange(Sender, lvTranslateStrings.Selected, ctText);
+    lvTranslateStringsChange(Sender, SelectedListItem, ctText);
     UpdateStatus;
   end;
 end;
@@ -3964,6 +3985,32 @@ end;
 procedure TfrmMain.acDictEditExecute(Sender: TObject);
 begin
   TfrmDictEdit.Edit(FDict);
+end;
+
+function TfrmMain.GetSelectedItem: ITranslationItem;
+begin
+  if SelectedListItem <> nil then
+    Result := FTranslateFile.Items[lvTranslateStrings.Selected.Index]
+  else
+    Result := nil;
+end;
+
+procedure TfrmMain.SetSelectedItem(const Value: ITranslationItem);
+begin
+  if Value <> nil then
+    lvTranslateStrings.ItemIndex := FTranslateFile.Items.IndexOf(Value)
+  else
+    lvTranslateStrings.ItemIndex := -1;
+end;
+
+function TfrmMain.GetSelectedListItem: TTntListItem;
+begin
+  Result := lvTranslateStrings.Selected;
+end;
+
+procedure TfrmMain.SetSelectedListItem(const Value: TTntListItem);
+begin
+  lvTranslateStrings.Selected := Value;
 end;
 
 end.

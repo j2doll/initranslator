@@ -35,10 +35,10 @@ type
   public
     function About: WideString; safecall;
     function DisplayName: WideString; safecall;
-    function Execute(const Items, Orphans: ITranslationItems): HRESULT; safecall;
+    function Execute(const Items, Orphans: ITranslationItems; var SelectedItem:ITranslationItem): HRESULT; safecall;
     function Icon: Cardinal; safecall;
     procedure Init(AppHandle: Cardinal); safecall;
-    function Status(const Items, Orphans: ITranslationItems): Integer; safecall;
+    function Status(const Items, Orphans: ITranslationItems; const SelectedItem:ITranslationItem): Integer; safecall;
     destructor Destroy; override;
   end;
 
@@ -64,9 +64,9 @@ begin
   Result := '&Tree view';
 end;
 
-function TToolTreeViewPlugin.Execute(const Items, Orphans: ITranslationItems): HRESULT;
+function TToolTreeViewPlugin.Execute(const Items, Orphans: ITranslationItems; var SelectedItem:ITranslationItem): HRESULT;
 begin
-  if TfrmToolTreeView.Edit(Items) then
+  if TfrmToolTreeView.Edit(Items, SelectedItem) then
     Result := S_OK
   else
     Result := S_FALSE;
@@ -83,8 +83,7 @@ begin
   Application.Handle := AppHandle;
 end;
 
-function TToolTreeViewPlugin.Status(const Items,
-  Orphans: ITranslationItems): Integer;
+function TToolTreeViewPlugin.Status(const Items, Orphans: ITranslationItems; const SelectedItem:ITranslationItem): Integer;
 begin
   Result := TOOL_VISIBLE;
   if Items.Count > 0 then

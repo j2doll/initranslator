@@ -1,6 +1,6 @@
 object frmToolTreeView: TfrmToolTreeView
-  Left = 447
-  Top = 213
+  Left = 559
+  Top = 284
   Width = 644
   Height = 483
   ActiveControl = tvSections
@@ -49,6 +49,8 @@ object frmToolTreeView: TfrmToolTreeView
   OldCreateOrder = False
   PopupMenu = popTreeview
   Position = poMainFormCenter
+  Scaled = False
+  ShowHint = True
   PixelsPerInch = 96
   TextHeight = 13
   object TntSplitter1: TTntSplitter
@@ -106,16 +108,17 @@ object frmToolTreeView: TfrmToolTreeView
       Images = ilTreeView
       Indent = 19
       ReadOnly = True
-      RightClickSelect = True
       RowSelect = True
       StateImages = ilTreeView
       TabOrder = 0
+      ToolTips = False
       OnChanging = tvSectionsChanging
       OnCustomDrawItem = tvSectionsCustomDrawItem
       OnDblClick = tvSectionsDblClick
       OnGetImageIndex = tvSectionsGetImageIndex
       OnKeyDown = tvSectionsKeyDown
       OnKeyPress = tvSectionsKeyPress
+      OnMouseUp = tvSectionsMouseUp
     end
   end
   object nbViews: TNotebook
@@ -124,7 +127,6 @@ object frmToolTreeView: TfrmToolTreeView
     Width = 359
     Height = 437
     Align = alClient
-    PageIndex = 1
     TabOrder = 2
     object TPage
       Left = 0
@@ -173,10 +175,13 @@ object frmToolTreeView: TfrmToolTreeView
             Align = alClient
             BevelKind = bkFlat
             BorderStyle = bsNone
+            Color = 15724527
             PlainText = True
+            ReadOnly = True
             ScrollBars = ssBoth
             TabOrder = 0
             WantReturns = False
+            WordWrap = False
             OnKeyDown = reOriginalKeyDown
           end
         end
@@ -219,6 +224,7 @@ object frmToolTreeView: TfrmToolTreeView
               ScrollBars = ssBoth
               TabOrder = 0
               WantReturns = False
+              WordWrap = False
               OnKeyDown = reOriginalKeyDown
             end
           end
@@ -304,7 +310,7 @@ object frmToolTreeView: TfrmToolTreeView
     Left = 136
     Top = 56
     Bitmap = {
-      494C010105000900040010001000FFFFFFFFFF00FFFFFFFFFFFFFFFF424D3600
+      494C010105000900040010001000FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
       0000000000003600000028000000400000003000000001002000000000000030
       0000000000000000000000000000000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000
@@ -704,6 +710,7 @@ object frmToolTreeView: TfrmToolTreeView
       F000F000FFFFFFFFE000E000FFFF8001E000E000FC3F0001C000C000F80F0001
       C000C000F00F0001C000C000E0070001C000C000E0070001C000C000E0070001
       C000C000E0070001E0010001E00F0001E001C001F01F0001F0038003F83F0003
-      FC0F200FFFFF80FFFFFFE9FFFFFFC1FF}
+      FC0F200FFFFF80FFFFFFE9FFFFFFC1FF00000000000000000000000000000000
+      000000000000}
   end
 end

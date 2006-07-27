@@ -59,17 +59,19 @@ type
     procedure tvSectionsKeyPress(Sender: TObject; var Key: Char);
     procedure lvViewKeyPress(Sender: TObject; var Key: Char);
     procedure lvViewEnter(Sender: TObject);
+    procedure tvSectionsMouseUp(Sender: TObject; Button: TMouseButton;
+      Shift: TShiftState; X, Y: Integer);
   private
     { Private declarations }
-    procedure BuildTree(const Items: ITranslationItems);
+    procedure BuildTree(const Items: ITranslationItems; const SelectedItem: ITranslationItem);
     procedure FillListView(Node: TTntTreeNode);
     procedure FindInTree(Data: Pointer);
     procedure ShowAtEndMsg;
     procedure ShowAtStartMsg;
-    procedure SetPath(ANode:TTntTreeNode);
+    procedure SetPath(ANode: TTntTreeNode);
   public
     { Public declarations }
-    class function Edit(const Items: ITranslationItems): WordBool;
+    class function Edit(const Items: ITranslationItems; var SelectedItem: ITranslationItem): WordBool;
   end;
 
 implementation
@@ -99,7 +101,7 @@ begin
     SetLength(Result, i);
 end;
 
-procedure TfrmToolTreeView.BuildTree(const Items: ITranslationItems);
+procedure TfrmToolTreeView.BuildTree(const Items: ITranslationItems; const SelectedItem: ITranslationItem);
 var
   N: TTntTreeNode;
   i: integer;
@@ -130,22 +132,32 @@ begin
   end;
   if tvSections.Items.Count > 0 then
   begin
-    tvSections.Selected := tvSections.Items[0];
-    tvSections.Selected.MakeVisible;
-    tvSections.Selected.Expand(false);
+    if SelectedItem <> nil then
+      FindInTree(Pointer(SelectedItem))
+    else
+      tvSections.Selected := tvSections.Items[0];
+    if tvSections.Selected <> nil then
+    begin
+      tvSections.Selected.MakeVisible;
+      tvSections.Selected.Expand(false);
+    end;
   end;
 end;
 
-class function TfrmToolTreeView.Edit(const Items: ITranslationItems): WordBool;
+class function TfrmToolTreeView.Edit(const Items: ITranslationItems; var SelectedItem: ITranslationItem): WordBool;
 var
   frm: TfrmToolTreeView;
   Dummy: boolean;
 begin
   frm := self.Create(Application);
   try
-    frm.BuildTree(Items);
+    frm.BuildTree(Items, SelectedItem);
     frm.ShowModal;
     frm.tvSectionsChanging(frm.tvSections, frm.tvSections.Selected, Dummy); // save last edit
+    if frm.tvSections.Selected <> nil then
+      SelectedItem := ITranslationItem(frm.tvSections.Selected.Data)
+    else
+      SelectedItem := nil;
     Result := true;
   finally
     frm.Free;
@@ -157,7 +169,8 @@ procedure TfrmToolTreeView.reOriginalKeyDown(Sender: TObject;
 begin
   if Key = VK_RETURN then
   begin
-    if tvSections.CanFocus then tvSections.SetFocus;
+    if tvSections.CanFocus then
+      tvSections.SetFocus;
     Key := 0;
   end;
 end;
@@ -177,7 +190,7 @@ begin
       begin
         I.Translation := trimCRLFRight(reTranslation.Lines.Text);
         I.Translated := I.Translation <> '';
-        tvSectionsGetImageIndex(tvSections,tvSections.Selected);
+        tvSectionsGetImageIndex(tvSections, tvSections.Selected);
         tvSections.Invalidate;
       end;
     end;
@@ -202,7 +215,7 @@ begin
       FillListView(TTntTreeNode(Node));
       nbViews.PageIndex := 1;
     end;
-    tvSectionsGetImageIndex(tvSections,Node);
+    tvSectionsGetImageIndex(tvSections, Node);
     SetPath(TTntTreeNode(Node));
   end;
   reOriginal.Modified := false;
@@ -227,7 +240,8 @@ begin
         Data := N.Data;
         ImageIndex := N.ImageIndex;
         StateIndex := N.StateIndex;
-        if StateIndex = 0 then StateIndex := -1;
+        if StateIndex = 0 then
+          StateIndex := -1;
       end;
       N := N.getNextSibling;
     end;
@@ -435,10 +449,10 @@ begin
   Node.SelectedIndex := Node.ImageIndex;
 end;
 
-procedure TfrmToolTreeView.SetPath(ANode:TTntTreeNode);
+procedure TfrmToolTreeView.SetPath(ANode: TTntTreeNode);
 var
-  N:TTntTreeNode;
-  S:WideString;
+  N: TTntTreeNode;
+  S: WideString;
 begin
   S := '';
   N := ANode;
@@ -454,8 +468,10 @@ end;
 
 procedure TfrmToolTreeView.tvSectionsDblClick(Sender: TObject);
 begin
-  if (tvSections.Selected = nil) or (tvSections.Selected.Data = nil) then Exit;
-  if reTranslation.CanFocus then reTranslation.SetFocus;
+  if (tvSections.Selected = nil) or (tvSections.Selected.Data = nil) then
+    Exit;
+  if reTranslation.CanFocus then
+    reTranslation.SetFocus;
   reTranslation.SelectAll;
 end;
 
@@ -482,12 +498,14 @@ end;
 procedure TfrmToolTreeView.tvSectionsKeyPress(Sender: TObject;
   var Key: Char);
 begin
-  if Key = #13 then Key := #0; // remove "bell"
+  if Key = #13 then
+    Key := #0; // remove "bell"
 end;
 
 procedure TfrmToolTreeView.lvViewKeyPress(Sender: TObject; var Key: Char);
 begin
-  if Key = #13 then Key := #0; // remove "bell"
+  if Key = #13 then
+    Key := #0; // remove "bell"
 end;
 
 procedure TfrmToolTreeView.lvViewEnter(Sender: TObject);
@@ -496,6 +514,12 @@ begin
     lvView.Selected := lvView.Items[0];
   if lvView.Selected <> nil then
     lvView.Selected.Focused := true;
+end;
+
+procedure TfrmToolTreeView.tvSectionsMouseUp(Sender: TObject;
+  Button: TMouseButton; Shift: TShiftState; X, Y: Integer);
+begin
+  if Button = mbRight then
 end;
 
 end.

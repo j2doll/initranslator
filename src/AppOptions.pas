@@ -128,6 +128,12 @@ type
     FMisMatchEndControl: boolean;
     FDictIgnoreNonEmpty: boolean;
     FDictEditFilter: Integer;
+    FColorEvenRow: TColor;
+    FColorUntranslated: TColor;
+    FColorOddRow: TColor;
+    FColorFontUntranslated: TColor;
+    FColorFontOddRow: TColor;
+    FColorFontEvenRow: TColor;
     procedure ReadWindowInfos(ini: TWideCustomIniFile);
     procedure WriteWindowInfos(ini: TWideCustomIniFile);
     function GetWindowInfo(AForm: TForm): TAppWindowInfo;
@@ -197,6 +203,14 @@ type
 
     property DictIgnoreNonEmpty: boolean read FDictIgnoreNonEmpty write FDictIgnoreNonEmpty;
     property DictEditFilter: Integer read FDictEditFilter write FDictEditFilter;
+
+    property ColorUntranslated:TColor read FColorUntranslated write FColorUntranslated;
+    property ColorFontUntranslated:TColor read FColorFontUntranslated write FColorFontUntranslated;
+
+    property ColorEvenRow:TColor read FColorEvenRow write FColorEvenRow;
+    property ColorFontEvenRow:TColor read FColorFontEvenRow write FColorFontEvenRow;
+    property ColorOddRow:TColor read FColorOddRow write FColorOddRow;
+    property ColorFontOddRow:TColor read FColorFontOddRow write FColorFontOddRow;
   end;
 
 implementation
@@ -512,6 +526,7 @@ begin
     DictIgnoreNonEmpty := ini.ReadBool('General', 'DictIgnoreNonEmpty', false);
     DictEditFilter := ini.ReadInteger('General', 'DictEditFilter', 0);
 
+
     PinCommentWindow := ini.ReadBool('Comments', 'PinCommentWindow', PinCommentWindow);
     ShowFullNameInColumns := ini.ReadBool('General', 'ShowFullNameInColumns', ShowFullNameInColumns);
 
@@ -539,6 +554,13 @@ begin
     MisMatchEndControl := ini.ReadBool('MisMatch', 'MisMatchEndControl', true);
     MisMatchIdentical := ini.ReadBool('MisMatch', 'MisMatchIdentical', true);
     MisMatchEmptyTranslation := ini.ReadBool('MisMatch', 'MisMatchEmptyTranslation', true);
+
+    ColorUntranslated := ini.ReadInteger('Colors','ColorUntranslated', $EFEFEF);
+    ColorFontUntranslated := ini.ReadInteger('Colors','ColorFontUntranslated', $000000);
+    ColorEvenRow := ini.ReadInteger('Colors','ColorEvenRow',$FFFFFF);
+    ColorFontEvenRow := ini.ReadInteger('Colors','ColorFontEvenRow',$000000);
+    ColorOddRow := ini.ReadInteger('Colors','ColorOddRow',$FFFFFF);
+    ColorFontOddRow := ini.ReadInteger('Colors','ColorFontOddRow',$000000);
 
     ReadWindowInfos(ini);
     FTools.LoadFromIni(ini);
@@ -630,6 +652,14 @@ begin
     ini.WriteBool('MisMatch', 'MisMatchEndControl', MisMatchEndControl);
     ini.WriteBool('MisMatch', 'MisMatchIdentical', MisMatchIdentical);
     ini.WriteBool('MisMatch', 'MisMatchEmptyTranslation', MisMatchEmptyTranslation);
+
+    ini.WriteInteger('Colors','ColorUntranslated', ColorUntranslated);
+    ini.WriteInteger('Colors','ColorFontUntranslated', ColorFontUntranslated);
+    ini.WriteInteger('Colors','ColorEvenRow',ColorEvenRow);
+    ini.WriteInteger('Colors','ColorFontEvenRow',ColorFontEvenRow);
+    ini.WriteInteger('Colors','ColorOddRow',ColorOddRow);
+    ini.WriteInteger('Colors','ColorFontOddRow',ColorFontOddRow);
+
 
     WriteWindowInfos(ini);
     FTools.SaveToIni(ini);

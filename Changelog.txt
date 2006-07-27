@@ -1,12 +1,16 @@
 Ini Translator Changelog
 ========================
+2006-07-27:
+- The colors of untranslated items and even and odd rows can now be configured by the user
+- ToolListEdit: new tool plugin that displays an alternate type of list editor (similar to the one in Azuerus)
+
 2006-07-26:
 - Reverted to TB2k 2.1.8, TBX 2.1 beta 1 and now use SpTBXLib 1.7 for Unicode enabling. There were too many bugs with TBX 2.2 alpha
 - Converted from TBX -> SpTBX
 - Some additional features added to ToolTreeView plugin
 
 2006-07-25:
-- Remaining "string" that shoudln't/can't be changed, has been renamed "AnsiString", remaining "PChar" that shoudln't/can't be changed, renamed to "PAnsiChar"
+- Remaining "string" that shouldn't/can't be changed, has been renamed "AnsiString", remaining "PChar" that shouldn't/can't be changed, renamed to "PAnsiChar"
 - Changed remaining string->WideString, PChar->PWideChar, TStrings->TTntStrings, TStringlist->TTntStringlist
 - Implemented TWideIniFile
 - From now on, the configuration file is always read and written as unicode

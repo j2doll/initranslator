@@ -78,7 +78,7 @@ inherited frmColors: TfrmColors
   object cbUntranslated: TColorBox
     Left = 8
     Top = 32
-    Width = 170
+    Width = 175
     Height = 22
     Style = [cbStandardColors, cbExtendedColors, cbSystemColors, cbCustomColor, cbPrettyNames]
     Anchors = [akLeft, akTop, akRight]
@@ -88,7 +88,7 @@ inherited frmColors: TfrmColors
   object cbEvenRows: TColorBox
     Left = 8
     Top = 88
-    Width = 170
+    Width = 175
     Height = 22
     Style = [cbStandardColors, cbExtendedColors, cbSystemColors, cbCustomColor, cbPrettyNames]
     Anchors = [akLeft, akTop, akRight]
@@ -98,7 +98,7 @@ inherited frmColors: TfrmColors
   object cbOddRows: TColorBox
     Left = 8
     Top = 144
-    Width = 170
+    Width = 175
     Height = 22
     Style = [cbStandardColors, cbExtendedColors, cbSystemColors, cbCustomColor, cbPrettyNames]
     Anchors = [akLeft, akTop, akRight]
@@ -108,7 +108,7 @@ inherited frmColors: TfrmColors
   object cbUntranslatedFont: TColorBox
     Left = 192
     Top = 32
-    Width = 177
+    Width = 175
     Height = 22
     Style = [cbStandardColors, cbExtendedColors, cbSystemColors, cbCustomColor, cbPrettyNames]
     Anchors = [akLeft, akTop, akRight]
@@ -118,7 +118,7 @@ inherited frmColors: TfrmColors
   object cbEvenRowFont: TColorBox
     Left = 192
     Top = 88
-    Width = 170
+    Width = 175
     Height = 22
     Style = [cbStandardColors, cbExtendedColors, cbSystemColors, cbCustomColor, cbPrettyNames]
     Anchors = [akLeft, akTop, akRight]
@@ -128,7 +128,7 @@ inherited frmColors: TfrmColors
   object cbOddRowFont: TColorBox
     Left = 192
     Top = 144
-    Width = 170
+    Width = 175
     Height = 22
     Style = [cbStandardColors, cbExtendedColors, cbSystemColors, cbCustomColor, cbPrettyNames]
     Anchors = [akLeft, akTop, akRight]

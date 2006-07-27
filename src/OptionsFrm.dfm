@@ -73,7 +73,7 @@ object frmOptions: TfrmOptions
     Cancel = True
     Caption = 'Cancel'
     ModalResult = 2
-    TabOrder = 22
+    TabOrder = 23
   end
   object chkShowQuotes: TTntCheckBox
     Left = 8
@@ -238,7 +238,7 @@ object frmOptions: TfrmOptions
     Height = 25
     Anchors = [akLeft, akRight, akBottom]
     BevelOuter = bvLowered
-    TabOrder = 23
+    TabOrder = 24
   end
   object chkMonitorFiles: TTntCheckBox
     Left = 214
@@ -303,12 +303,21 @@ object frmOptions: TfrmOptions
     Top = 164
     Width = 433
     Height = 17
-    Hint = 
-      'When activated, typing in the listview will automatically move f' +
-      'ocus to the translation edit field.'
+    Hint = 'Skip already trasnlated items when using dictionary'
     Anchors = [akLeft, akTop, akRight]
     Caption = '&Ignore translated items when using dictionary'
     TabOrder = 8
+  end
+  object btnColors: TTntButton
+    Left = 20
+    Top = 359
+    Width = 80
+    Height = 23
+    Hint = 'Select a new font for the list and edit fields'
+    Anchors = [akLeft, akBottom]
+    Caption = 'Color&s...'
+    TabOrder = 22
+    OnClick = btnColorsClick
   end
   object FontDialog: TFontDialog
     Font.Charset = DEFAULT_CHARSET

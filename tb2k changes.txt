@@ -6,7 +6,7 @@ To get the program to display menu shortcuts the way other programs do (i.e in t
 
 
 TB2Item.pas:
-===========
+============
 
 * Add the following just above the implementation keyword:
 

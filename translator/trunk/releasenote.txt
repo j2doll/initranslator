@@ -5,6 +5,15 @@ Ini Translator is a small Windows tool to simplify the translation of ini style 
 
 The program and the sources are hosted at sourceforge and are released subject to the MPL 1.1 license.
 
+New in version 1.9.0.13:
+- New icon from Michael Kogan (photonx)
+- Detecting, saving and restoring encoding settings should now work correctly
+- The entire application has been Unicode enabled (previously only the edit components where Unicode)
+- Two new Tool Plugins: 1) Edit in Treeview and 2) Edit in ListView (alternate)
+- Reverted to older version of toolbar and menu components, so the themes are back
+- New color settings dialog
+
+
 New in version 1.9.0.7:
 - Additional fixes for Unicode support in the UI
 

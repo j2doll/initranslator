@@ -1,5 +1,8 @@
 Ini Translator Changelog
 ========================
+2006-07-28:
+- Released version 1.9.0.13 on SourceForge
+
 2006-07-27:
 - The colors of untranslated items and even and odd rows can now be configured by the user
 - ToolListEdit: new tool plugin that displays an alternate type of list editor (similar to the one in Azuerus)

@@ -1,3 +1,26 @@
+{@abstract(Color Selection Form) }
+{
+  Copyright © 2003-2006 by Peter Thornqvist; all rights reserved.
+  Parts Copyright (c) 2003 by Eyal Post; all rights reserved
+
+  NOTE:
+    The originally concept and code for these dialogs came from Eyal Post
+    (author of VssConnexion and SourceConnexion, see more at http://www.epocalipse.com)
+    and are used with permission.
+
+  Developer(s):
+    p3 - peter3 att users dott sourceforge dott net: rewrote as self-contained dialog components
+
+  Status:
+   The contents of this file is subject to the Mozilla Public License Version
+   1.1 (the "License"); you may not use this file except in compliance with the
+   License. You may obtain a copy of the License at http://www.mozilla.org/MPL/MPL-1.1.html
+
+   Software distributed under the License is distributed on an "AS IS" basis,
+   WITHOUT WARRANTY OF ANY KIND, either express or implied. See the License for
+   the specific language governing rights and limitations under the License.
+}
+// $Id$
 unit ColorsFrm;
 
 interface

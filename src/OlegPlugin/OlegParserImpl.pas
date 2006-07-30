@@ -1,6 +1,6 @@
 {@abstract(Parser for Oleg) }
 {
-  Copyright © 2003-2004 by Peter Thornqvist; all rights reserved
+  Copyright © 2003-2006 by Peter Thornqvist; all rights reserved
 
   Developer(s):
 

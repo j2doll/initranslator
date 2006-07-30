@@ -1,6 +1,6 @@
 {@abstract(Open and Save Dialogs that has extra "encoding" combobox) }
 {
-  Copyright © 2003-2004 by Peter Thornqvist; all rights reserved.
+  Copyright © 2003-2006 by Peter Thornqvist; all rights reserved.
   Parts Copyright (c) 2003 by Eyal Post; all rights reserved
 
   NOTE:

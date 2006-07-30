@@ -1,6 +1,6 @@
 {@abstract(Mozilla Messenger messenger.dtd parser project file) }
 {
-  Copyright © 2003-2004 by Peter Thornqvist; all rights reserved
+  Copyright © 2003-2006 by Peter Thornqvist; all rights reserved
 
   Developer(s):
     p3 - peter3 att users dott sourceforge dott net

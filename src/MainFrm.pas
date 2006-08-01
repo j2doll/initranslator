@@ -53,7 +53,7 @@ uses
   TBXDefaultXPTheme, TBXWhidbeyTheme, TBXZezioTheme,
   //
   // TBXOfficeXPGradientTheme,
-  TBXOffice2003Theme,
+  // TBXOffice2003Theme,
   //  TBXDock2003,
   // TBXBlueGradientXPTheme,
   //

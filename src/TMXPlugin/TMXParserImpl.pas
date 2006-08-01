@@ -53,6 +53,8 @@ const
   cTMXFilter = 'TMX Files (*.tmx)|*.tmx|All files (*.*)|*.*';
   cTMXImportTitle = 'Import from TMX file';
   cTMXExportTitle = 'Export to TMX file';
+  cOriginalItem:WideString = '!!!!Original%d!!!!';
+  cTranslationItem:WideString = '!!!!Translation%d!!!!';
 
 var
   XML: WideString = '';
@@ -63,19 +65,23 @@ procedure TTMXParser.BuildPreview(Items: ITranslationItems; Strings: TTntStrings
 var
   i: integer;
   TI: ItranslationItem;
+  S:WideString;
 begin
+  if XML = '' then
+    raise Exception.Create('Building TMX file from scratch not supported. Please import from a TMX file before trying to export.');
+  S := XML; // keep original import untouched so we can reuse it!
   for i := 0 to Items.Count - 1 do
   begin
     TI := Items[i];
-//    XML := Tnt_WideStringReplace(XML, Items[i].OrigComments, Items[i].Original, [rfReplaceall]);
-    XML := Tnt_WideStringReplace(XML, TI.TransComments, TI.Translation, [rfReplaceAll]);
+    S := Tnt_WideStringReplace(S, WideFormat(cOriginalItem, [TI.Index]), '<seg>' + TI.Original + '</seg>', [rfReplaceall]);
+    S := Tnt_WideStringReplace(S, WideFormat(cTranslationItem, [TI.Index]), '<seg>' + TI.Translation + '</seg>', [rfReplaceall]);
   end;
-  Strings.Text := XML;
+  Strings.Text := S;
 end;
 
 function TTMXParser.Capabilities: Integer;
 begin
-  Result := CAP_IMPORT or CAP_EXPORT or CAP_ITEM_EDIT;
+  Result := CAP_IMPORT or CAP_EXPORT;
 end;
 
 function TTMXParser.Configure(Capability: Integer): HRESULT;
@@ -142,7 +148,7 @@ type
 
 var
   NodeList: IDOMNodeList;
-  Node, ChildNode: IDOMNodeEx;
+  Node, ChildNode: IDOMNode;
   i: integer;
   TI: ITranslationItem;
   FFoundItems: TFoundItems;
@@ -159,6 +165,12 @@ var
     Result := (Attributes <> nil) and (Attributes.getNamedItem('xml:lang') <> nil)
       and WideSameText(Attributes.getNamedItem('xml:lang').nodeValue, FTransLang);
   end;
+
+  function RemoveTags(const S:WideString):WideString;
+  begin
+    Result := Tnt_WideStringReplace(S, '<seg>', '', [rfReplaceAll]);
+    Result := Tnt_WideStringReplace(Result, '</seg>', '', [rfReplaceAll]);
+  end;
 begin
   Result := S_FALSE;
   FFoundItems := [];
@@ -168,12 +180,9 @@ begin
     LoadSettings;
     if TfrmImport.Execute(FOrigFile, FOrigLang, FTransLang, cTMXImportTitle, cTMXFilter, '.', 'tmx') then
     begin
-      // TODO
       FXMLImport := TXMLDocument.Create(nil);
       try
         FXMLImport.LoadFromFile(FOrigFile);
-//        FXMLImport.SaveToXML(XML);
-//        FXMLImport := LoadXMLData(XML);
 
         if FXMLImport.DOMDocument <> nil then
         begin
@@ -181,28 +190,34 @@ begin
           if NodeList <> nil then
             for i := 0 to NodeList.length - 1 do
             begin
-              Node := NodeList.item[i] as IDOMNodeEx;
+              Node := NodeList.item[i];
               if IsOriginal(Node.attributes) then
               begin
-                ChildNode := Node.firstChild as IDOMNodeEx;
+                ChildNode := Node.firstChild;
                 if (ChildNode <> nil) and (ChildNode.nodeName = 'seg') then
                 begin
                   if TI = nil then
                     TI := Items.Add;
-                  TI.Original := ChildNode.xml;
-//                TI.OrigComments := ChildNode.xml;
+                  TI.Original := RemoveTags((ChildNode as IDOMNodeEx).xml);
+                  Node.removeChild(ChildNode);
+                  ChildNode := FXMLImport.DOMDocument.createTextNode('');
+                  ChildNode.nodeValue := WideFormat(cOriginalItem,[TI.Index]);
+                  Node.appendChild(ChildNode);
                   Include(FFoundItems, fiOriginal);
                 end;
               end
               else if IsTranslation(Node.attributes) then
               begin
-                ChildNode := Node.firstChild as IDOMNodeEx;
+                ChildNode := Node.firstChild;
                 if (ChildNode <> nil) and (ChildNode.nodeName = 'seg') then
                 begin
                   if TI = nil then
                     TI := Items.Add;
-                  TI.Translation := ChildNode.xml;
-                  TI.TransComments := ChildNode.xml;
+                  TI.Translation := RemoveTags((ChildNode as IDOMNodeEx).xml);
+                  Node.removeChild(ChildNode);
+                  ChildNode := FXMLImport.DOMDocument.createTextNode('');
+                  ChildNode.nodeValue := WideFormat(cTranslationItem,[TI.Index]);
+                  Node.appendChild(ChildNode);
                   Include(FFoundItems, fiTranslation);
                 end;
               end;
@@ -216,7 +231,8 @@ begin
             end;
         end;
         SaveSettings;
-//        FXMLImport.SaveToXML(XML);
+        Items.Modified := false;
+        FXMLImport.SaveToXML(XML); // save the imported data in a string
         Result := S_OK;
       finally
         FXMLImport := nil;

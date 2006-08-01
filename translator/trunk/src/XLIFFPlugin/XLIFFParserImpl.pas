@@ -1,3 +1,4 @@
+{@abstract(Implementaiton of XLIFF parser) }
 {
   Copyright © 2006 by Peter Thornqvist; all rights reserved
 
@@ -85,18 +86,19 @@ end;
 function TXLIFFParser.ExportItems(const Items,
   Orphans: ITranslationItems): HRESULT;
 begin
+  Result := S_FALSE;
   // TODO!
 end;
 
 function TXLIFFParser.ImportItems(const Items,
   Orphans: ITranslationItems): HRESULT;
 begin
+  Result := S_FALSE;
   // TODO!
 end;
 
 procedure TXLIFFParser.Init(AppHandle: Cardinal);
 begin
-  FOldAppHandle := Application.Handle;
   Application.Handle := AppHandle;
 end;
 

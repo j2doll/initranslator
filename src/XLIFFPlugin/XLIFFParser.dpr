@@ -1,3 +1,4 @@
+{@abstract(Project file for XLIFF parser) }
 {
   Copyright © 2006 by Peter Thornqvist; all rights reserved
 

@@ -42,6 +42,12 @@ type
     constructor Create;
     destructor Destroy; override;
   end;
+{
+ limitations:
+ * does not handle "alt-trans" tags
+ * source _must_ have a valid target (otherwise, there will be errors)
+ * although not obvious, setting src and trg lang to "" could be better...
+}
 
 implementation
 uses
@@ -260,8 +266,8 @@ begin
                   CreateTI(TI);
 //                  if (Node.attributes <> nil) and (Node.attributes.getNamedItem('id') <> nil) then
 //                    TI.Name := Node.attributes.getNamedItem('id').nodeValue;
-//                  TI.Original := StripTags((ChildNode as IDOMNodeEx).xml);
-                  TI.Original := (ChildNode as IDOMNodeEx).xml;
+                  TI.Original := StripTags((ChildNode as IDOMNodeEx).xml);
+//                  TI.Original := (ChildNode as IDOMNodeEx).xml;
                   TI.OrigComments := Attr2Str(ChildNode);
 
                   Node.removeChild(ChildNode);
@@ -275,9 +281,10 @@ begin
                   CreateTI(TI);
 //                  if (Node.attributes <> nil) and (Node.attributes.getNamedItem('id') <> nil) then
 //                    TI.Name := Node.attributes.getNamedItem('id').nodeValue;
-//                  TI.Translation := StripTags((ChildNode as IDOMNodeEx).xml);
-                  TI.Translation := (ChildNode as IDOMNodeEx).xml;
+                  TI.Translation := StripTags((ChildNode as IDOMNodeEx).xml);
+//                  TI.Translation := (ChildNode as IDOMNodeEx).xml;
                   TI.TransComments := Attr2Str(ChildNode);
+
                   Node.removeChild(ChildNode);
                   ChildNode := FXMLImport.DOMDocument.createTextNode('');
                   ChildNode.nodeValue := WideFormat(cTranslationItem, [TI.Index]);

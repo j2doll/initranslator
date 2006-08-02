@@ -23,7 +23,8 @@ uses
   Classes,
   XLIFFParserImpl in 'XLIFFParserImpl.pas',
   TransIntf in '..\TransIntf.pas',
-  PreviewExportFrm in '..\PluginCommon\PreviewExportFrm.pas' {frmExport};
+  PreviewExportFrm in '..\PluginCommon\PreviewExportFrm.pas' {frmExport},
+  XLIFFImportFrm in 'XLIFFImportFrm.pas' {frmImport};
 
 {$R *.res}
 

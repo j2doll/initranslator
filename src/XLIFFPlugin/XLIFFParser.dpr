@@ -24,7 +24,7 @@ uses
   XLIFFParserImpl in 'XLIFFParserImpl.pas',
   TransIntf in '..\TransIntf.pas',
   PreviewExportFrm in '..\PluginCommon\PreviewExportFrm.pas' {frmExport},
-  XLIFFImportFrm in 'XLIFFImportFrm.pas' {frmImport};
+  SingleImportFrm in '..\PluginCommon\SingleImportFrm.pas' {frmImport};
 
 {$R *.res}
 

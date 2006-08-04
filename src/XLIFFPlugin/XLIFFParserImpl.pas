@@ -26,7 +26,8 @@ type
   TXLIFFParser = class(TInterfacedObject, IInterface, IFileParser)
   private
     FOldAppHandle: Cardinal;
-    FFilename, FOrigLang, FTransLang: string;
+    FFilename:string;
+    // FOrigLang, FTransLang: string;
     procedure LoadSettings;
     procedure SaveSettings;
   protected
@@ -44,16 +45,16 @@ type
   end;
 {
  limitations:
- * does not handle "alt-trans" tags
- * source _must_ have a valid target (otherwise, there will be errors)
- * although not obvious, setting src and trg lang to "" could be better...
+ * does not handle "alt-trans" tags (and it shouldn't)
+ * always chooses the first source and the first target in each trans-unit (there should rellay only be one of each) even if there are more
+ * does not work with MSXML 4.0 (getelementsbyTagName always returns empty lists for default NS)
 }
 
 implementation
 uses
   Forms, Dialogs, xmldoc, xmldom, xmlintf,
   TntClasses, TntSysUtils, IniFiles,
-  PreviewExportFrm, XLIFFImportFrm, Math;
+  PreviewExportFrm, SingleImportFrm, Math;
 
 resourcestring
   cXLIFFImportTitle = 'Import from XLIFF file';
@@ -63,8 +64,8 @@ resourcestring
 var
   XML: WideString = '';
 const
-  cTranslationItem: WideString = '!!!Translation%d!!!!';
-  cOriginalItem: WideString = '!!!Original%d!!!!';
+  cTranslationItem: WideString = '%%%%%%%%T%d%%%%%%%%';
+  cOriginalItem: WideString    = '%%%%%%%%O%d%%%%%%%%';
 
 { TXLIFFParser }
 
@@ -108,19 +109,9 @@ var Strings: TTntStringlist;
   function WrapTags(const T:ITranslationItem; IsOriginal:boolean):WideString;
   begin
     if IsOriginal then
-    begin
-      if T.OrigComments <> '' then
-        Result := WideFormat('<source %s>%s</source>',[T.OrigComments, T.Original])
-      else
-        Result := WideFormat('<source>%s</source>',[T.Original]);
-    end
+      Result := WideFormat('%s%s</source>',[T.PreData, T.Original])
     else
-    begin
-      if T.TransComments <> '' then
-        Result := WideFormat('<target %s>%s</target>',[T.TransComments, T.Translation])
-      else
-        Result := WideFormat('<target>%s</target>',[T.Translation]);
-    end;
+      Result := WideFormat('%s%s</target>',[T.PostData, T.Translation])
   end;
   procedure BuildPreview(const Items, Orphans: ITranslationItems; Strings: TTntStrings);
   var
@@ -164,51 +155,28 @@ type
   TFoundItems = set of TFoundItem;
 
 var
-  NodeList: IDOMNodeList;
-  Node, ChildNode: IDOMNode;
-  i, j: integer;
+  NodeList, SourceNodes, TargetNodes: IDOMNodeList;
+  ParentNode, SourceNode, TargetNode: IDOMNode;
+  i: integer;
   TI: ITranslationItem;
   FFoundItems: TFoundItems;
   FXMLImport: IXMLDocument;
 
-  function IsOriginal(const ANode: IDOMNode): boolean;
-  var ALang: WideString;
-  begin
-    if (ANode.Attributes <> nil) and (ANode.Attributes.getNamedItem('xml:lang') <> nil) then
-      ALang := ANode.Attributes.getNamedItem('xml:lang').nodeValue
-    else
-      ALang := '';
-    Result := WideSameText(ANode.nodeName, 'source') and ((FOrigLang = '') or (ALang = '') or WideSameText(ALang, FOrigLang));
-  end;
-
-  function IsTranslation(const ANode: IDOMNode): boolean;
-  var ALang: WideString;
-  begin
-    if (ANode.Attributes <> nil) and (ANode.Attributes.getNamedItem('xml:lang') <> nil) then
-      ALang := ANode.Attributes.getNamedItem('xml:lang').nodeValue
-    else
-      ALang := '';
-    Result := WideSameText(ANode.nodeName, 'target') and ((FTransLang = '') or (ALang = '') or WideSameText(ALang, FTransLang));
-  end;
-
-  procedure CreateTI(var TI: ITranslationItem);
-  begin
-    if TI = nil then
-    begin
-      TI := Items.Add;
-      TI.Section := 'XLIFF';
-    end;
-  end;
-
-  function Attr2Str(const ANode: IDOMNode): WideString;
+  function SaveTag(const S:WideString): WideString;
   var i:integer;
   begin
+    Result := S;
+    i := 1;
+    while i <= Length(Result) do
+    begin
+      if Result[i] = '>' then
+      begin
+        Result := Copy(Result, 1, i);
+        Exit;
+      end;
+      Inc(i);
+    end;
     Result := '';
-    if (ANode <> nil) and (ANode.attributes <> nil) then
-      with ANode.attributes do
-        for i := 0 to length - 1 do
-          Result := Result + WideFormat(' %s="%s"',[item[i].nodeName, item[i].nodeValue]);
-    Result := trim(Result);
   end;
   function StripTags(const S: WideString): WideString;
   var i:integer;
@@ -244,61 +212,54 @@ begin
     Items.Clear;
     Orphans.Clear;
     LoadSettings;
-    if TfrmImport.Execute(FFilename, FOrigLang, FTransLang, cXLIFFImportTitle, cXLIFFFilter, '.', '.xlf') then
+    if TfrmImport.Execute(FFilename, {FOrigLang, FTransLang, }cXLIFFImportTitle, cXLIFFFilter, '.', '.xlf') then
     begin
       SaveSettings;
       FXMLImport := LoadXMLDocument(FFilename);
-      if FXMLImport.DOMDocument <> nil then
+      if Assigned(FXMLImport) and Assigned(FXMLImport.DOMDocument) then
       begin
         NodeList := FXMLImport.DOMDocument.getElementsByTagName('trans-unit');
-        if NodeList <> nil then
+        if Assigned(NodeList) then
         begin
-          ShowMessageFmt('%d nodes',[NodeList.length]);
           for i := 0 to NodeList.length - 1 do
           begin
-            Node := NodeList.item[i];
-            if Node.hasChildNodes then
-              for j := Node.childNodes.length - 1 downto 0 do
-              begin
-                ChildNode := Node.childNodes[j];
-                if IsOriginal(ChildNode) then
-                begin
-                  CreateTI(TI);
-//                  if (Node.attributes <> nil) and (Node.attributes.getNamedItem('id') <> nil) then
-//                    TI.Name := Node.attributes.getNamedItem('id').nodeValue;
-                  TI.Original := StripTags((ChildNode as IDOMNodeEx).xml);
-//                  TI.Original := (ChildNode as IDOMNodeEx).xml;
-                  TI.OrigComments := Attr2Str(ChildNode);
+            ParentNode := NodeList.item[i];
+            SourceNodes := (ParentNode as IDOMElement).getElementsByTagName('source');
+            TargetNodes := (ParentNode as IDOMElement).getElementsByTagName('target');
+            if (SourceNodes.length > 0) then
+              SourceNode := SourceNodes[0]
+            else
+              SourceNode := nil;
+            if TargetNodes.length > 0 then
+              TargetNode := TargetNodes[0]
+            else
+              TargetNode := nil;
 
-                  Node.removeChild(ChildNode);
-                  ChildNode := FXMLImport.DOMDocument.createTextNode('');
-                  ChildNode.nodeValue := WideFormat(cOriginalItem, [TI.Index]);
-                  Node.appendChild(ChildNode);
-                  Include(FFoundItems, fiOriginal);
-                end
-                else if IsTranslation(ChildNode) then
-                begin
-                  CreateTI(TI);
-//                  if (Node.attributes <> nil) and (Node.attributes.getNamedItem('id') <> nil) then
-//                    TI.Name := Node.attributes.getNamedItem('id').nodeValue;
-                  TI.Translation := StripTags((ChildNode as IDOMNodeEx).xml);
-//                  TI.Translation := (ChildNode as IDOMNodeEx).xml;
-                  TI.TransComments := Attr2Str(ChildNode);
+            TI := Items.Add;
+            TI.Section := 'XLIFF';
 
-                  Node.removeChild(ChildNode);
-                  ChildNode := FXMLImport.DOMDocument.createTextNode('');
-                  ChildNode.nodeValue := WideFormat(cTranslationItem, [TI.Index]);
-                  Node.appendChild(ChildNode);
-                  Include(FFoundItems, fiTranslation);
-                end;
-                if FFoundItems = [fiTranslation, fiOriginal] then
-                begin
-                  if TI <> nil then
-                    TI.Translated := TI.Translation <> '';
-                  TI := nil;
-                  FFoundItems := [];
-                end;
-              end;
+            if Assigned(SourceNode) then
+            begin
+              TI.Original := StripTags((SourceNode as IDOMNodeEx).xml);
+              TI.PreData := SaveTag((SourceNode as IDOMNodeEx).xml);
+              ParentNode := SourceNode.parentNode;
+              ParentNode.removeChild(SourceNode);
+            end;
+            SourceNode := FXMLImport.DOMDocument.createTextNode('');
+            SourceNode.nodeValue := WideFormat(cOriginalItem, [TI.Index]);
+            ParentNode.appendChild(SourceNode);
+
+            if Assigned(TargetNode) then
+            begin
+              TI.Translation := StripTags((TargetNode as IDOMNodeEx).xml);
+              TI.PostData := SaveTag((TargetNode as IDOMNodeEx).xml);
+              ParentNode := TargetNode.ParentNode;
+              ParentNode.removeChild(TargetNode);
+            end;
+            TargetNode := FXMLImport.DOMDocument.createTextNode('');
+            TargetNode.nodeValue := WideFormat(cTranslationItem, [TI.Index]);
+            ParentNode.appendChild(TargetNode);
+            TI.Translated := TI.Translation <> '';
           end;
         end;
       end;
@@ -307,6 +268,7 @@ begin
       FXMLImport.SaveToXML(XML); // save the imported data in a string
       Result := S_OK;
     end;
+    FXMLImport := nil;
   except
     Application.HandleException(self);
   end;
@@ -324,8 +286,8 @@ begin
   with TIniFile.Create(ChangeFileExt(GetModuleName(hInstance), '.ini')) do
   try
     FFilename := ReadString('Settings', 'Filename', FFilename);
-    FOrigLang := ReadString('Settings', 'OrigLang', FOrigLang);
-    FTransLang := ReadString('Settings', 'TransLang', FTransLang);
+//    FOrigLang := ReadString('Settings', 'OrigLang', FOrigLang);
+//    FTransLang := ReadString('Settings', 'TransLang', FTransLang);
   finally
     Free;
   end;
@@ -336,8 +298,8 @@ begin
   with TIniFile.Create(ChangeFileExt(GetModuleName(hInstance), '.ini')) do
   try
     WriteString('Settings', 'Filename', FFilename);
-    WriteString('Settings', 'OrigLang', FOrigLang);
-    WriteString('Settings', 'TransLang', FTransLang);
+//    WriteString('Settings', 'OrigLang', FOrigLang);
+//    WriteString('Settings', 'TransLang', FTransLang);
   finally
     Free;
   end;

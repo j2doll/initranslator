@@ -109,7 +109,7 @@ Filename: {userappdata}\IniTranslator\translator.ini; Section: External Tools; K
 Filename: {userappdata}\IniTranslator\translator.ini; Section: External Tools; Key: 9; String: """View in Explorer (Translation)"",$(WinDir)\explorer.exe,""/e, /root,, /select, $(TransPath)"",,False,False,False,False"; Flags: createkeyifdoesntexist; Components: DEFAULT_TOOLS
 
 [UninstallDelete]
-Name: {app}\*.*; Type: filesandordirs
+Name: {app}; Type: filesandordirs
 Name: {userappdata}\IniTranslator; Type: filesandordirs
 
 

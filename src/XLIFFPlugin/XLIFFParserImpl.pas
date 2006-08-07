@@ -26,8 +26,7 @@ type
   TXLIFFParser = class(TInterfacedObject, IInterface, IFileParser)
   private
     FOldAppHandle: Cardinal;
-    FFilename:string;
-    // FOrigLang, FTransLang: string;
+    FFilename: string;
     procedure LoadSettings;
     procedure SaveSettings;
   protected
@@ -46,7 +45,7 @@ type
 {
  limitations:
  * does not handle "alt-trans" tags (and it shouldn't)
- * always chooses the first source and the first target in each trans-unit (there should rellay only be one of each) even if there are more
+ * always chooses the first source and the first target in each trans-unit (there should really only be one of each) even if there are more
  * does not work with MSXML 4.0 (getelementsbyTagName always returns empty lists for default NS)
 }
 
@@ -65,7 +64,7 @@ var
   XML: WideString = '';
 const
   cTranslationItem: WideString = '%%%%%%%%T%d%%%%%%%%';
-  cOriginalItem: WideString    = '%%%%%%%%O%d%%%%%%%%';
+  cOriginalItem: WideString = '%%%%%%%%O%d%%%%%%%%';
 
 { TXLIFFParser }
 
@@ -106,7 +105,7 @@ end;
 function TXLIFFParser.ExportItems(const Items, Orphans: ITranslationItems): HRESULT;
 var Strings: TTntStringlist;
 
-  function WrapTags(const T:ITranslationItem; IsOriginal:boolean):WideString;
+  function WrapTags(const T: ITranslationItem; IsOriginal: boolean): WideString;
   begin
     if IsOriginal then
       Result := WideFormat('%s%s</source>',[T.PreData, T.Original])
@@ -212,7 +211,7 @@ begin
     Items.Clear;
     Orphans.Clear;
     LoadSettings;
-    if TfrmImport.Execute(FFilename, {FOrigLang, FTransLang, }cXLIFFImportTitle, cXLIFFFilter, '.', '.xlf') then
+    if TfrmImport.Execute(FFilename, cXLIFFImportTitle, cXLIFFFilter, '.', '.xlf') then
     begin
       SaveSettings;
       FXMLImport := LoadXMLDocument(FFilename);
@@ -290,8 +289,6 @@ begin
   with TIniFile.Create(ChangeFileExt(GetModuleName(hInstance), '.ini')) do
   try
     FFilename := ReadString('Settings', 'Filename', FFilename);
-//    FOrigLang := ReadString('Settings', 'OrigLang', FOrigLang);
-//    FTransLang := ReadString('Settings', 'TransLang', FTransLang);
   finally
     Free;
   end;
@@ -302,8 +299,6 @@ begin
   with TIniFile.Create(ChangeFileExt(GetModuleName(hInstance), '.ini')) do
   try
     WriteString('Settings', 'Filename', FFilename);
-//    WriteString('Settings', 'OrigLang', FOrigLang);
-//    WriteString('Settings', 'TransLang', FTransLang);
   finally
     Free;
   end;

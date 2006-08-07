@@ -12,7 +12,8 @@ BRCC = $(ROOT)\bin\brcc32.exe $**
 PROJECTS = IBForumsParser.dll MozillaDTDParser.dll MozillaPropsParser.dll \
   MSDictBuild.exe MSDictParser.dll OlegParser.dll OOGSIParser.dll \
   PHPNukeParser.dll PHPParser.dll PolyGlotParser.dll POParser.dll SciTEParser.dll \
-  TMXParser.dll XLIFFParser.dll ToolTreeView.dll ToolListEdit.dll translator.exe
+  TMXParser.dll XLIFFParser.dll ToolTreeView.dll ToolListEdit.dll \
+  ToolPropertiesView.dll translator.exe
 #------------------------------------------------------------------------------
 default: $(PROJECTS)
 #------------------------------------------------------------------------------
@@ -66,6 +67,9 @@ ToolListEdit.dll: src\ToolListEdit\ToolListEdit.dpr
   $(DCC)
 
 XLIFFParser.dll: src\XLIFFPlugin\XLIFFParser.dpr
+  $(DCC)
+
+ToolPropertiesView.dll: src\ToolPropertiesView\ToolPropertiesView.dpr
   $(DCC)
 
 

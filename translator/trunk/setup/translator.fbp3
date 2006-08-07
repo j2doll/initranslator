@@ -202,7 +202,7 @@ NEWS_NOTIFY
               <Property name="Enabled" type="WordBool">True</Property>
               <Property MultiValue="0" name="ExtraCommandline" type="WideString"></Property>
               <Property name="HintsAsError" type="Boolean">False</Property>
-              <Property MultiValue="0" name="IconFile" type="WideString">%SRCPATH%mainicon.ico</Property>
+              <Property MultiValue="0" name="IconFile" type="WideString">%ROOTPATH%data\MichaelKoganIcon2.ico</Property>
               <Property name="IgnoreFailure" type="WordBool">False</Property>
               <Property name="IncludeCompileDate" type="WordBool">True</Property>
               <Property name="IncludeVerInfo" type="WordBool">True</Property>

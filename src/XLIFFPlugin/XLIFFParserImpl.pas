@@ -242,6 +242,8 @@ begin
             begin
               TI.Original := StripTags((SourceNode as IDOMNodeEx).xml);
               TI.PreData := SaveTag((SourceNode as IDOMNodeEx).xml);
+              if TI.PreData = '' then
+                TI.PreData := '<source>';
               ParentNode := SourceNode.parentNode;
               ParentNode.removeChild(SourceNode);
             end;
@@ -253,6 +255,8 @@ begin
             begin
               TI.Translation := StripTags((TargetNode as IDOMNodeEx).xml);
               TI.PostData := SaveTag((TargetNode as IDOMNodeEx).xml);
+              if TI.PostData = '' then
+                TI.PostData := '<target>';
               ParentNode := TargetNode.ParentNode;
               ParentNode.removeChild(TargetNode);
             end;

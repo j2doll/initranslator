@@ -237,7 +237,8 @@ object frmOptions: TfrmOptions
     Width = 330
     Height = 25
     Anchors = [akLeft, akRight, akBottom]
-    BevelOuter = bvLowered
+    BevelKind = bkFlat
+    BevelOuter = bvNone
     TabOrder = 24
   end
   object chkMonitorFiles: TTntCheckBox

@@ -24,7 +24,8 @@ type
 
 
 implementation
-
+uses
+  Math;
 {$R *.DFM}
 
 procedure TfrmEditItem.reTranslationKeyDown(Sender: TObject; var Key: Word;
@@ -37,20 +38,24 @@ end;
 class function TfrmEditItem.Edit(const AItem: ITranslationItem; APos:TPoint): boolean;
 var
   frm: TfrmEditItem;
+  R:TRect;
 begin
   frm := Self.Create(Application);
   try
     frm.reOriginal.Text := AItem.Original;
     frm.reTranslation.Text := AItem.Translation;
     frm.reTranslation.SelectAll;
+    SystemParametersInfo(SPI_GETWORKAREA, 0, @R, 0);
     if APos.X < 0 then
-      frm.Left := (Screen.Width - frm.Width) div 2
+      frm.Left := ((R.Right - R.Left) - frm.Width) div 2
     else
       frm.Left := APos.X;
     if APos.Y < 0 then
-      frm.Top := (Screen.Height - frm.Height) div 2
+      frm.Top := ((R.Bottom - R.Top) - frm.Height) div 2
     else
       frm.Top := APos.Y;
+    frm.Top := Min(Max(frm.Top, R.Top), R.Bottom - frm.Height);
+    frm.Left := Min(Max(frm.Left, R.Left), R.Right - frm.Width);
     Result := frm.ShowModal = mrOK;
     if Result then
     begin

@@ -1,6 +1,6 @@
 object frmToolListEdit: TfrmToolListEdit
-  Left = 480
-  Top = 356
+  Left = 434
+  Top = 211
   Width = 593
   Height = 439
   Caption = 'List Editor'

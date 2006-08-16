@@ -134,6 +134,8 @@ type
     FColorFontUntranslated: TColor;
     FColorFontOddRow: TColor;
     FColorFontEvenRow: TColor;
+    FDefaultOrigEncoding: integer;
+    FDefaultTransEncoding: integer;
     procedure ReadWindowInfos(ini: TWideCustomIniFile);
     procedure WriteWindowInfos(ini: TWideCustomIniFile);
     function GetWindowInfo(AForm: TForm): TAppWindowInfo;
@@ -164,7 +166,10 @@ type
     property AutoFocusTranslation: boolean read FAutoFocusTranslation write FAutoFocusTranslation;
     property HelpFile: WideString read FHelpFile write FHelpFile;
     property DictionaryFile: WideString read FDictionaryFile write FDictionaryFile;
+
     property TranslationFile: WideString read FTranslationFile write FTranslationFile;
+    property DefaultTransEncoding:integer read FDefaultTransEncoding write FDefaultTransEncoding;
+    property DefaultOrigEncoding:integer read FDefaultOrigEncoding write FDefaultOrigEncoding;
     property TransEncoding: integer read FTransEncoding write FTransEncoding;
     property OriginalFile: WideString read FOriginalFile write FOriginalFile;
     property OrigEncoding: integer read FOrigEncoding write FOrigEncoding;
@@ -521,6 +526,9 @@ begin
     OriginalFile := ini.ReadString('Files', 'OriginalFile', OriginalFile);
     TransEncoding := ini.ReadInteger('Files', 'TransEncoding', TransEncoding);
     OrigEncoding := ini.ReadInteger('Files', 'OrigEncoding', OrigEncoding);
+    DefaultTransEncoding := ini.ReadInteger('Files', 'DefaultTransEncoding', TransEncoding);
+    DefaultOrigEncoding  := ini.ReadInteger('Files', 'DefaultOrigEncoding', OrigEncoding);
+
     MonitorFiles := ini.ReadBool('Files', 'MonitorFiles', MonitorFiles);
     Theme := ini.ReadString('General', 'Theme', Theme);
     DictIgnoreNonEmpty := ini.ReadBool('General', 'DictIgnoreNonEmpty', false);
@@ -625,6 +633,9 @@ begin
     ini.WriteString('Files', 'OriginalFile', OriginalFile);
     ini.WriteInteger('Files', 'OrigEncoding', OrigEncoding);
     ini.WriteInteger('Files', 'TransEncoding', TransEncoding);
+    ini.WriteInteger('Files', 'DefaultTransEncoding', DefaultTransEncoding);
+    ini.WriteInteger('Files', 'DefaultOrigEncoding', DefaultOrigEncoding);
+
     ini.WriteBool('Files', 'MonitorFiles', MonitorFiles);
     ini.WriteString('General', 'Theme', Theme);
     ini.WriteBool('General', 'DictIgnoreNonEmpty', DictIgnoreNonEmpty);

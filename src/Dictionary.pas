@@ -27,14 +27,17 @@ type
     FTranslations: TTntStrings;
     FOriginal: WideString;
     FOnChange: TNotifyEvent;
+    FDefaultIndex: integer;
     procedure SetTranslations(const Value: TTntStrings);
     procedure Change;
     procedure SetOriginal(const Value: WideString);
   public
     constructor Create;
     destructor Destroy; override;
+    function DefaultTranslation:string;
     property Original: WideString read FOriginal write SetOriginal;
     property Translations: TTntStrings read FTranslations write SetTranslations;
+    property DefaultIndex:integer read FDefaultIndex write FDefaultIndex;
     property OnChange: TNotifyEvent read FOnChange write FOnChange;
   end;
 
@@ -116,6 +119,16 @@ destructor TDictionaryItem.Destroy;
 begin
   FTranslations.Free;
   inherited Destroy;
+end;
+
+function TDictionaryItem.DefaultTranslation: string;
+begin
+  if (DefaultIndex >= 0) and (DefaultIndex < Translations.Count) then
+    Result := Translations[DefaultIndex]
+  else if Translations.Count > 0 then
+    Result := Translations[0]
+  else
+    Result := '';
 end;
 
 procedure TDictionaryItem.SetOriginal(const Value: WideString);

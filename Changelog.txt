@@ -1,5 +1,18 @@
 Ini Translator Changelog
 ========================
+2006-08-16:
+- New DefaultTranslation and DefaultIndex for TDictionaryItem so users can specify which translation they prefer if the item has more than one
+
+DictTranslationSelectDlg:
+- New option to skip the dialog for the rest of the session
+
+DictEditFrm:
+- New options for "Show"
+
+Misc:
+- New options: DefaultTransEncoding and DefaultOrigEncoding for use with new files (translations only at the moment). No UI yet, but they are there functionally
+- New Czech.lng from Svatopluk Vit
+ 
 2006-07-28:
 - Released version 1.9.0.13 on SourceForge
 

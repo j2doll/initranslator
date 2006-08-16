@@ -36,6 +36,7 @@ type
     btnIgnore: TTntButton;
     btnAdd: TTntButton;
     chkIgnoreNonEmpty: TTntCheckBox;
+    chkDontAskAgain: TCheckBox;
     procedure btnIgnoreClick(Sender: TObject);
     procedure btnUseClick(Sender: TObject);
     procedure btnAddClick(Sender: TObject);
@@ -50,7 +51,7 @@ type
     FDictionaryItem:TDictionaryItem;
   public
     { Public declarations }
-    class function Edit(DictionaryItem:TDictionaryItem; var Translation:WideString; out Modified:boolean):Integer;
+    class function Edit(DictionaryItem:TDictionaryItem; var Translation:WideString; out Modified:boolean; var Prompt:boolean):Integer;
   end;
 
 
@@ -63,7 +64,7 @@ uses
 { TfrmDictTranslationSelect }
 
 class function TfrmDictTranslationSelect.Edit(
-  DictionaryItem: TDictionaryItem; var Translation: WideString; out Modified:boolean): Integer;
+  DictionaryItem: TDictionaryItem; var Translation: WideString; out Modified:boolean; var Prompt:boolean): Integer;
 var
   frm: TfrmDictTranslationSelect;
 begin
@@ -81,11 +82,15 @@ begin
     frm.lbTranslations.Items := DictionaryItem.Translations;
     frm.lbTranslations.ItemIndex := frm.lbTranslations.Items.IndexOf(Translation);
     frm.chkIgnoreNonEmpty.Checked := GlobalAppOptions.DictIgnoreNonEmpty;
+    frm.chkDontAskAgain.Checked := not Prompt;
     frm.edTranslationChange(nil);
     if frm.ShowModal <> mrOK then
       frm.FResult := cDictCancel
     else
+    begin
       GlobalAppOptions.DictIgnoreNonEmpty := frm.chkIgnoreNonEmpty.Checked;
+      Prompt := not frm.chkDontAskAgain.Checked;
+    end;
     Modified := frm.FModified;
     Result := frm.FResult;
     if Result in [cDictUse, cDictAdd] then

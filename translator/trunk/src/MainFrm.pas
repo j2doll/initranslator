@@ -1102,8 +1102,10 @@ procedure TfrmMain.UseDictionary;
 var
   i, j, FResult: integer;
   S: WideString;
-  FModified: boolean;
+  FModified, FPrompt: boolean;
 begin
+  FPrompt := true;
+  FResult := cDictIgnore;
   for i := 0 to FTranslateFile.Items.Count - 1 do
 //    if FTranslateFile.Items[i].Translation = '' then
   begin
@@ -1112,18 +1114,33 @@ begin
     j := FDict.IndexOf(FTranslateFile.Items[i].Original);
     if (j >= 0) then // dictionary item found
     begin
-      lvTranslateStrings.Items[i].MakeVisible(false);
-      lvTranslateStrings.Items[i].Selected := true;
-      lvTranslateStrings.Items[i].Focused := true;
-      S := FTranslateFile.Items[i].Translation;
-      FResult := TfrmDictTranslationSelect.Edit(FDict[j], S, FModified);
+      if FPrompt then
+      begin
+        lvTranslateStrings.Items[i].MakeVisible(false);
+        lvTranslateStrings.Items[i].Selected := true;
+        lvTranslateStrings.Items[i].Focused := true;
+      end;
+      S := FDict[j].DefaultTranslation;
+      if S = '' then
+        S := FTranslateFile.Items[i].Translation;
+      FModified := false;
+      if FPrompt then
+        FResult := TfrmDictTranslationSelect.Edit(FDict[j], S, FModified, FPrompt)
+      else if FDict[j].Translations.Count > 0 then
+        S := FDict[j].DefaultTranslation
+      else
+        Continue;
       FDict.Modified := FDict.Modified or FModified;
       case FResult of
         cDictIgnore:
-          Continue;
+          if not FPrompt then
+            Exit // same as Cancel
+          else
+            Continue;
         cDictAdd:
           begin
-            FDict[j].Translations.Add(S);
+            if (S <> '') and FPrompt then
+              FDict[j].Translations.Add(S);
             FTranslateFile.Items[i].Translation := S;
           end;
         cDictUse:
@@ -2687,6 +2704,7 @@ begin
         lvTranslateStrings.Items[j];
   end;
   GlobalAppOptions.TranslationFile := '';
+  GlobalAppOptions.TransEncoding := GlobalAppOptions.DefaultTransEncoding; 
   UpdateStatus;
 end;
 

@@ -59,7 +59,7 @@ inherited frmDictTranslationSelect: TfrmDictTranslationSelect
     Left = 8
     Top = 128
     Width = 379
-    Height = 161
+    Height = 139
     Anchors = [akLeft, akTop, akRight, akBottom]
     BevelKind = bkFlat
     BorderStyle = bsNone
@@ -77,7 +77,7 @@ inherited frmDictTranslationSelect: TfrmDictTranslationSelect
     Caption = '&Change'
     Default = True
     ModalResult = 1
-    TabOrder = 6
+    TabOrder = 7
     OnClick = btnUseClick
   end
   object btnCancel: TTntButton
@@ -89,7 +89,7 @@ inherited frmDictTranslationSelect: TfrmDictTranslationSelect
     Cancel = True
     Caption = 'Close'
     ModalResult = 2
-    TabOrder = 7
+    TabOrder = 8
     OnClick = btnCancelClick
   end
   object btnIgnore: TTntButton
@@ -100,7 +100,7 @@ inherited frmDictTranslationSelect: TfrmDictTranslationSelect
     Anchors = [akRight, akBottom]
     Caption = '&Ignore'
     ModalResult = 1
-    TabOrder = 4
+    TabOrder = 5
     OnClick = btnIgnoreClick
   end
   object btnAdd: TTntButton
@@ -110,16 +110,25 @@ inherited frmDictTranslationSelect: TfrmDictTranslationSelect
     Height = 23
     Anchors = [akRight, akBottom]
     Caption = '&Add'
-    TabOrder = 5
+    TabOrder = 6
     OnClick = btnAddClick
   end
   object chkIgnoreNonEmpty: TTntCheckBox
     Left = 24
-    Top = 296
+    Top = 275
     Width = 361
     Height = 17
     Anchors = [akLeft, akRight, akBottom]
     Caption = '&Don'#39't check translated items'
     TabOrder = 3
+  end
+  object chkDontAskAgain: TCheckBox
+    Left = 24
+    Top = 294
+    Width = 361
+    Height = 17
+    Anchors = [akLeft, akRight, akBottom]
+    Caption = 'Don'#39't &ask again (in this session)'
+    TabOrder = 4
   end
 end

@@ -26,6 +26,7 @@ type
   private
     FTranslations: TTntStrings;
     FOriginal: WideString;
+    FDefaultIndex: integer;
     FOnChange: TNotifyEvent;
     procedure SetTranslations(const Value: TTntStrings);
     procedure Change;
@@ -42,8 +43,10 @@ type
   public
     constructor Create;
     destructor Destroy; override;
-    property Original: WideString read FOriginal write SetOriginal;
+    function DefaultTranslation:string;
+    property Original: WideString read GetOriginal write SetOriginal;
     property Translations: TTntStrings read FTranslations write SetTranslations;
+    property DefaultIndex:integer read FDefaultIndex write FDefaultIndex;
     property OnChange: TNotifyEvent read FOnChange write FOnChange;
   end;
 
@@ -137,6 +140,17 @@ begin
   inherited Create;
   FTranslations := TTntStringlist.Create;
   TTntStringlist(FTranslations).Sorted := true;
+end;
+
+
+function TDictionaryItem.DefaultTranslation: string;
+begin
+  if (DefaultIndex >= 0) and (DefaultIndex < Translations.Count) then
+    Result := Translations[DefaultIndex]
+  else if Translations.Count > 0 then
+    Result := Translations[0]
+  else
+    Result := '';
 end;
 
 procedure TDictionaryItem.Delete(Index: integer);

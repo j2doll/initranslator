@@ -81,6 +81,7 @@ object frmTools: TfrmTools
     Top = 32
     Width = 80
     Height = 23
+    Hint = 'Add a new tool item'
     Action = acAdd
     Anchors = [akTop, akRight]
     TabOrder = 1
@@ -90,6 +91,7 @@ object frmTools: TfrmTools
     Top = 62
     Width = 80
     Height = 23
+    Hint = 'Remove selected tool item'
     Action = acDelete
     Anchors = [akTop, akRight]
     TabOrder = 2
@@ -99,6 +101,7 @@ object frmTools: TfrmTools
     Top = 112
     Width = 80
     Height = 23
+    Hint = 'Move item higher in list'
     Action = acMoveUp
     Anchors = [akTop, akRight]
     TabOrder = 3
@@ -108,6 +111,7 @@ object frmTools: TfrmTools
     Top = 140
     Width = 80
     Height = 23
+    Hint = 'Move item lower in list'
     Action = acMoveDown
     Anchors = [akTop, akRight]
     TabOrder = 4
@@ -167,6 +171,7 @@ object frmTools: TfrmTools
       Top = 9
       Width = 303
       Height = 21
+      Hint = 'The title for the item (displayed in the menu)'
       Anchors = [akLeft, akTop, akRight]
       BevelInner = bvNone
       BevelKind = bkFlat
@@ -180,6 +185,7 @@ object frmTools: TfrmTools
       Top = 36
       Width = 275
       Height = 21
+      Hint = 'The command to execute'
       Anchors = [akLeft, akTop, akRight]
       BevelInner = bvNone
       BevelKind = bkFlat
@@ -192,6 +198,7 @@ object frmTools: TfrmTools
       Top = 63
       Width = 275
       Height = 21
+      Hint = 'Arguments to pass along to the command'
       Anchors = [akLeft, akTop, akRight]
       BevelInner = bvNone
       BevelKind = bkFlat
@@ -205,6 +212,7 @@ object frmTools: TfrmTools
       Top = 91
       Width = 275
       Height = 21
+      Hint = 'The folder to start in'
       Anchors = [akLeft, akTop, akRight]
       BevelInner = bvNone
       BevelKind = bkFlat
@@ -321,6 +329,9 @@ object frmTools: TfrmTools
       Top = 152
       Width = 133
       Height = 17
+      Hint = 
+        'When executed, a dialog is displayed where you can type in any a' +
+        'dditional arguments of your choice'
       Action = acPrompt
       TabOrder = 9
     end
@@ -330,6 +341,9 @@ object frmTools: TfrmTools
       Top = 152
       Width = 126
       Height = 17
+      Hint = 
+        'Wait for the command to complete before returning to the program' +
+        ' (doesn'#39't work with all programs)'
       Action = acWait
       TabOrder = 10
     end
@@ -338,6 +352,9 @@ object frmTools: TfrmTools
       Top = 152
       Width = 131
       Height = 17
+      Hint = 
+        'Use an alternate method to execute command. If your command does' +
+        'n'#39't work, try checking this option'
       Action = acUseShellexecute
       TabOrder = 8
     end
@@ -356,6 +373,7 @@ object frmTools: TfrmTools
     Top = 366
     Width = 80
     Height = 23
+    Hint = 'Execute the command without closing this dialog'
     Action = acTest
     Anchors = [akLeft, akBottom]
     TabOrder = 6

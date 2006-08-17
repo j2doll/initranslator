@@ -28,40 +28,50 @@ uses
   Windows, Messages, SysUtils, Classes, Graphics, Controls, Forms,
   Dialogs, StdCtrls, ExtCtrls, AppOptions, BaseForm,
   TntStdCtrls,
-  TntExtCtrls;
+  TntExtCtrls, ComCtrls, TntComCtrls, CheckLst, TntCheckLst;
 
 type
   TfrmOptions = class(TfrmBase)
     btnOK: TTntButton;
     btnCancel: TTntButton;
+    Bevel2: TBevel;
+    btnColors: TTntButton;
+    pcSettings: TTntPageControl;
+    tsGeneral: TTntTabSheet;
+    tsAdvanced: TTntTabSheet;
+    Label1: TTntLabel;
+    Label2: TTntLabel;
+    Bevel1: TBevel;
     chkShowQuotes: TTntCheckBox;
-    chkInvertDictionary: TTntCheckBox;
     btnFont: TTntButton;
     chkShowDetails: TTntCheckBox;
     chkShowToolTips: TTntCheckBox;
     chkShowShortCuts: TTntCheckBox;
     chkReturnToSave: TTntCheckBox;
     chkMoveToNext: TTntCheckBox;
-    Label1: TTntLabel;
     edLanguage: TTntEdit;
     btnLanguage: TTntButton;
-    Label2: TTntLabel;
     edHelp: TTntEdit;
     btnHelp: TTntButton;
-    chkSavePosition: TTntCheckBox;
-    chkSaveMinMax: TTntCheckBox;
-    Bevel1: TBevel;
-    chkGlobalPath: TTntCheckBox;
-    FontDialog: TFontDialog;
     pnlFontPreview: TTntPanel;
-    Bevel2: TBevel;
-    chkMonitorFiles: TTntCheckBox;
-    chkDictIgnoreSpeedKey: TTntCheckBox;
-    chkShowFullNames: TTntCheckBox;
     chkUseTranslationEverywhere: TTntCheckBox;
     chkAutoFocusTranslation: TTntCheckBox;
+    FontDialog: TFontDialog;
+    TntLabel1: TTntLabel;
+    cbDefaultTransEncoding: TTntComboBox;
+    chkGlobalPath: TTntCheckBox;
+    chkShowFullNames: TTntCheckBox;
+    chkMonitorFiles: TTntCheckBox;
+    chkInvertDictionary: TTntCheckBox;
+    chkDictIgnoreSpeedKey: TTntCheckBox;
     chkDictIgnoreNonEmpty: TTntCheckBox;
-    btnColors: TTntButton;
+    chkSavePosition: TTntCheckBox;
+    chkSaveMinMax: TTntCheckBox;
+    TntLabel2: TTntLabel;
+    TntLabel3: TTntLabel;
+    reHeader: TTntRichEdit;
+    reFooter: TTntRichEdit;
+    Bevel3: TBevel;
     procedure chkShowToolTipsClick(Sender: TObject);
     procedure chkReturnToSaveClick(Sender: TObject);
     procedure btnLanguageClick(Sender: TObject);
@@ -144,6 +154,7 @@ begin
 
     // load options
     frm.LoadOptions(Options);
+    frm.pcSettings.ActivePageIndex := 0;
     Result := frm.ShowModal = mrOk;
     if Result then
     begin
@@ -188,9 +199,12 @@ begin
   chkUseTranslationEverywhere.Checked := Options.UseTranslationEverywhere;
   chkAutoFocusTranslation.Checked := Options.AutoFocusTranslation;
   chkDictIgnoreNonEmpty.Checked := Options.DictIgnoreNonEmpty;
+  cbDefaultTransEncoding.ItemIndex := Options.DefaultTransEncoding;
   edLanguage.Text := Options.LanguageFile;
   edHelp.Text := Options.HelpFile;
   FontDialog.Font := Options.AppFont;
+  reHeader.Lines := Options.Header;
+  reFooter.Lines := Options.Footer;
   UpdatePreview;
 end;
 
@@ -212,10 +226,13 @@ begin
   Options.UseTranslationEverywhere := chkUseTranslationEverywhere.Checked;
   Options.AutoFocusTranslation := chkAutoFocusTranslation.Checked;
   Options.DictIgnoreNonEmpty := chkDictIgnoreNonEmpty.Checked;
+  Options.DefaultTransEncoding := cbDefaultTransEncoding.ItemIndex;
   Options.ShowFullNameInColumns := chkShowFullNames.Checked;
   Options.LanguageFile := edLanguage.Text;
   Options.HelpFile := edHelp.Text;
   Options.AppFont.Assign(FontDialog.Font);
+  Options.Header := reHeader.Lines;
+  Options.Footer := reFooter.Lines;
 end;
 
 end.

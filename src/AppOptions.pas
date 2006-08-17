@@ -136,11 +136,15 @@ type
     FColorFontEvenRow: TColor;
     FDefaultOrigEncoding: integer;
     FDefaultTransEncoding: integer;
+    FFooter: TTntStrings;
+    FHeader: TTntStrings;
     procedure ReadWindowInfos(ini: TWideCustomIniFile);
     procedure WriteWindowInfos(ini: TWideCustomIniFile);
     function GetWindowInfo(AForm: TForm): TAppWindowInfo;
     procedure SetWindowInfo(AForm: TForm; const Value: TAppWindowInfo);
     procedure SetTools(const Value: TToolItems);
+    procedure SetFooter(const Value: TTntStrings);
+    procedure SetHeader(const Value: TTntStrings);
   public
     constructor Create(const AFilename: WideString);
     destructor Destroy; override;
@@ -179,6 +183,9 @@ type
     property AppFont: TFont read FAppFont;
     property MonitorFiles: boolean read FMonitorFiles write FMonitorFiles default true;
     property Theme: WideString read FTheme write FTheme;
+    property Header:TTntStrings read FHeader write SetHeader;
+    property Footer:TTntStrings read FFooter write SetFooter;
+
     // find replace
     property FindText: WideString read FFindText write FFindText;
     property ReplaceText: WideString read FReplaceText write FReplaceText;
@@ -404,6 +411,8 @@ begin
   FAppFont.Name := 'MS Shell Dlg 2';
   FWindowInfos := TTntStringlist.Create;
   TTntStringlist(FWindowInfos).Sorted := true;
+  FHeader := TTntStringlist.Create;
+  FFooter := TTntStringlist.Create;
 
   SplitterPosition := 160;
   SaveFormPos := true;
@@ -423,6 +432,8 @@ begin
   FAppFont.Free;
   FWindowInfos.Free;
   FTools.Free;
+  FHeader.Free;
+  FFooter.Free;
   inherited;
 end;
 
@@ -530,6 +541,10 @@ begin
     DefaultOrigEncoding  := ini.ReadInteger('Files', 'DefaultOrigEncoding', OrigEncoding);
 
     MonitorFiles := ini.ReadBool('Files', 'MonitorFiles', MonitorFiles);
+
+    Header.Text := Tnt_WideStringReplace(ini.ReadString('UserData','Header',''), #2, #13#10, [rfReplaceAll]);
+    Footer.Text := Tnt_WideStringReplace(ini.ReadString('UserData','Footer',''), #2, #13#10, [rfReplaceAll]);
+
     Theme := ini.ReadString('General', 'Theme', Theme);
     DictIgnoreNonEmpty := ini.ReadBool('General', 'DictIgnoreNonEmpty', false);
     DictEditFilter := ini.ReadInteger('General', 'DictEditFilter', 0);
@@ -635,14 +650,18 @@ begin
     ini.WriteInteger('Files', 'TransEncoding', TransEncoding);
     ini.WriteInteger('Files', 'DefaultTransEncoding', DefaultTransEncoding);
     ini.WriteInteger('Files', 'DefaultOrigEncoding', DefaultOrigEncoding);
-
     ini.WriteBool('Files', 'MonitorFiles', MonitorFiles);
+
+    ini.WriteString('UserData', 'Header', Tnt_WideStringReplace(Header.Text, #13#10,#2,[rfReplaceAll]));
+    ini.WriteString('UserData', 'Footer', Tnt_WideStringReplace(Footer.Text, #13#10,#2,[rfReplaceAll]));
+
     ini.WriteString('General', 'Theme', Theme);
     ini.WriteBool('General', 'DictIgnoreNonEmpty', DictIgnoreNonEmpty);
     ini.WriteInteger('General', 'DictEditFilter', DictEditFilter);
 
-    ini.WriteBool('Comments', 'PinCommentWindow', PinCommentWindow);
     ini.WriteBool('General', 'ShowFullNameInColumns', ShowFullNameInColumns);
+
+    ini.WriteBool('Comments', 'PinCommentWindow', PinCommentWindow);
     // find replace dialog
     ini.WriteString('FindReplace', 'FindText', FindText);
     ini.WriteString('FindReplace', 'ReplaceText', ReplaceText);
@@ -740,6 +759,16 @@ end;
 procedure TAppOptions.SetTools(const Value: TToolItems);
 begin
   FTools.Assign(Value);
+end;
+
+procedure TAppOptions.SetFooter(const Value: TTntStrings);
+begin
+  FFooter.Assign(Value);
+end;
+
+procedure TAppOptions.SetHeader(const Value: TTntStrings);
+begin
+  FHeader.Assign(Value);
 end;
 
 end.

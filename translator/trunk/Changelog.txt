@@ -1,18 +1,55 @@
 Ini Translator Changelog
 ========================
+2006-08-17:
+- Added support for Headers and Footers
+- UI for setting default encoding for new files (OPtionsFrm)
+- New interfaces for accessing Dictionary (TransIntf)
+- Renamed DLL entry point (TRansIntf)
+- Updated docs
+- Header and Footer added
+- Rearranged items in OptionsFrm
+- Popup menu to set a translation as default (DictEditFrm)
+- Some hints added
+- Fixed code deleted by mistake (Dictionary)
+- Now uses listview instead of stringgrid (ToolListEdit)
+- Now uses virtual data so it is a bit speedier (ToolListEdit)
+
 2006-08-16:
 - New DefaultTranslation and DefaultIndex for TDictionaryItem so users can specify which translation they prefer if the item has more than one
-
-DictTranslationSelectDlg:
-- New option to skip the dialog for the rest of the session
-
-DictEditFrm:
-- New options for "Show"
-
-Misc:
-- New options: DefaultTransEncoding and DefaultOrigEncoding for use with new files (translations only at the moment). No UI yet, but they are there functionally
+- FB project now checks out everything to an empty folder, builds it and cleans up
+- New option to skip the dialog for the rest of the session (DictTranslationSelectDlg)
+- New options for "Show" combobox (DictEditFrm)
+- New options: Specify default encoding for new files. No UI yet, but they are there functionally
 - New Czech.lng from Svatopluk Vit
- 
+
+2006-08-10:
+- keep edit window on-screen (ToolListEdit)
+
+2006-08-09:
+- Released 1.9.0.25 on CodePlex (www.codeplex.com). Really no difference from 1.9.0.13 on SF
+
+2006-08-07:
+- From now on, only one setup file is built (the full one).
+- Added Michael Kogans icon (again!)
+- TMX and XLIFF parsers added to install script
+- Tool Properties View added to install script
+- set correct tag in XLIFF parser if there was none
+
+2006-08-04:
+- New tool plugin to view all properties of the translation items
+- After reading up on XLIFF, I've made some changes:
+-- Don't need to specify language in (XLIFFImportFrm not needed anymore, use default SingleImportFrm)
+-- Even if either source or target (or both!) are missing, an item is created for each "trans-unit" node
+-- MSXML 4,.0 has a bug that prevents it from working correctly with this implementation (getElementsByTagName is faulty)
+
+2006-08-01:
+- Started implementation of XLIFF parser
+- Better TMX parsing
+- Removed unsupported TBX theme
+
+2006-07-31:
+- Changed Copyright years in header
+
 2006-07-28:
 - Released version 1.9.0.13 on SourceForge
 

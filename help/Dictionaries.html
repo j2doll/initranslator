@@ -15,15 +15,24 @@
       language combination. For example, one file might contain english and polish string
       pairs, another file might contain german and french string pairs etc.</p>
 	<p>&nbsp;</p>
-	<p>The following functions are available for dictionaries:</p>
+    <p>The following functionality is available for dictionaries:</p>
+	<p>&nbsp;</p>
     <ul>
 		<li>To add an item in the list to the currently loaded dictionary, select the
 		<b>Add to 
-    Dictionary</b> (Ctrl+Alt+A) command. </li>
+    Dictionary</b> (Ctrl+Alt+A) command. This will add both the original text
+          and the translation text, unless the original is empty. If the
+          original text is already in the dictionary but the translation is not,
+          the translation is added as an alternate translation. If the
+          translation is empty, only the original is added. </li>
 		<li>To edit the items in the currently loaded dictionary manually, select
 		<b>Edit Dictionary </b>(Ctrl+Alt+E). 
 	A dialog is displayed that allows you to add, edit and remove both original 
-	strings and translations.</li>
+	strings and translations. You can also filter items in this dialog according
+          to the number of translations they have: none, exactly one, more than
+          one, any. With items that have more than one translation, you can set
+          one of them as the default (press Ctrl+Space or double-click the
+          translation).</li>
 		<li>To use a specific dictionary, select <strong>Load Dictionary</strong> 
 		(Ctrl+Alt+O) from the
       menu and select a dictionary file in the dialog. The name of the currently
@@ -34,13 +43,16 @@
     	</li>
 		<li>To create a new or update an existing dictionary, select the <strong>New
         Dictionary</strong> (Ctrl+Alt+N) command from the menu. You will be asked whether you want to
-      create a new dictionary or add new items to the currently loaded dictionary. 
+      create a new,empty dictionary or add the new items to the currently loaded dictionary.&nbsp; 
 		</li>
 		<li>To invert a dictionary, select the <strong>Invert Dictionary</strong> 
 		(Ctrl+Alt+I) 
 		command
       from the menu. This swaps the currently loaded items in the dictionary so you
-      can use the dictionary to translate "the other way" as well. <b><br>
+      can use the dictionary to translate "the other way" as well. If the
+          dictionary contains items with multiple translations, each translation
+          becomes a new original with the old original as their only&nbsp;
+          translation. <b><br>
 		<br>
 		Note</b> that the
       inversion stays in effect if you save the dictionary and also when you load
@@ -52,13 +64,14 @@
     it when you close the program or select another dictionary.</p>
 	<p>&nbsp;</p>
 	<div class="InfoField">
-	<p><strong>Note:</strong></p>
+	<p><strong><br>
+    Note:</strong></p>
 	<p>Even if you change the in-memory dictionary, the dictionary on disk will not be altered until you select <strong>Save
         Dictionary</strong> from the menu. To view the disk file content of the
       currently selected dictionary, select <strong>View Dictionary</strong> <b>&nbsp;in 
 	Notepad </b>from the
       <b>Tools </b>menu (this tool item is only available if you installed the 
-	default tool items when you ran the setup program).
+	default tool items when you ran the setup program).<br>
     </p>
     </div>
   </body>

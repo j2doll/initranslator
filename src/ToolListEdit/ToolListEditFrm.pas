@@ -10,14 +10,17 @@ const
 
 type
   TfrmToolListEdit = class(TTntForm)
-    sgItems: TTntDrawGrid;
     TntStatusBar1: TTntStatusBar;
-    procedure TntFormResize(Sender: TObject);
-    procedure sgItemsDblClick(Sender: TObject);
-    procedure sgItemsKeyUp(Sender: TObject; var Key: Word;
+    lvItems: TTntListView;
+    procedure lvItemsResize(Sender: TObject);
+    procedure lvItemsDblClick(Sender: TObject);
+    procedure lvItemsKeyUp(Sender: TObject; var Key: Word;
       Shift: TShiftState);
-    procedure sgItemsDrawCell(Sender: TObject; ACol, ARow: Integer;
-      Rect: TRect; State: TGridDrawState);
+    procedure lvItemsData(Sender: TObject; Item: TListItem);
+    procedure lvItemsAdvancedCustomDrawItem(Sender: TCustomListView;
+      Item: TListItem; State: TCustomDrawState; Stage: TCustomDrawStage;
+      var DefaultDraw: Boolean);
+    procedure lvItemsEnter(Sender: TObject);
   private
     { Private declarations }
     FItems: ITranslationItems;
@@ -38,8 +41,7 @@ uses
 
 { TfrmToolListEdit }
 
-class function TfrmToolListEdit.Edit(
-  const Items: ITranslationItems): boolean;
+class function TfrmToolListEdit.Edit(const Items: ITranslationItems): boolean;
 var
   frm: TfrmToolListEdit;
 begin
@@ -56,25 +58,8 @@ end;
 procedure TfrmToolListEdit.LoadItems(const Items: ITranslationItems);
 begin
   FItems := Items;
-  if Items.Count = 0 then
-    sgItems.RowCount := 2
-  else
-    sgItems.RowCount := Items.Count + 1;
-  sgItems.FixedRows := 1;
-end;
-
-procedure TfrmToolListEdit.TntFormResize(Sender: TObject);
-var W: integer;
-begin
-  W := sgItems.ClientWidth div 3;
-  sgItems.ColWidths[0] := W;
-  sgItems.ColWidths[1] := W;
-  sgItems.ColWidths[2] := W; // sgItems.ClientWidth - W * 2;
-end;
-
-procedure TfrmToolListEdit.sgItemsDblClick(Sender: TObject);
-begin
-  EditItem;
+  lvItems.Items.Count := FItems.Count;
+  lvItems.Invalidate;
 end;
 
 procedure TfrmToolListEdit.EditItem;
@@ -82,7 +67,34 @@ begin
   PostMessage(Handle, WM_EDITITEM, 0, 0);
 end;
 
-procedure TfrmToolListEdit.sgItemsKeyUp(Sender: TObject; var Key: Word;
+procedure TfrmToolListEdit.WmEditItem(var Msg: TMessage);
+var P: TPoint;
+begin
+  if (lvItems.Selected <> nil) then
+  begin
+    P := lvItems.Selected.GetPosition;
+    // add a bit of offset
+    Inc(P.Y, 19);
+    if TfrmEditItem.Edit(FItems[lvItems.Selected.Index], lvItems.ClientToScreen(P)) then
+      lvItems.Invalidate;
+  end;
+end;
+
+procedure TfrmToolListEdit.lvItemsResize(Sender: TObject);
+var W: integer;
+begin
+  W := lvItems.ClientWidth div 3;
+  lvItems.Columns[0].Width := W;
+  lvItems.Columns[1].Width := W;
+  lvItems.Columns[2].Width := W;
+end;
+
+procedure TfrmToolListEdit.lvItemsDblClick(Sender: TObject);
+begin
+  EditItem;
+end;
+
+procedure TfrmToolListEdit.lvItemsKeyUp(Sender: TObject; var Key: Word;
   Shift: TShiftState);
 begin
   if Key = VK_RETURN then
@@ -92,75 +104,41 @@ begin
   end;
 end;
 
-procedure TfrmToolListEdit.WmEditItem(var Msg: TMessage);
-var R: TRect;
+procedure TfrmToolListEdit.lvItemsData(Sender: TObject; Item: TListItem);
 begin
-  if (sgItems.Row >= sgItems.FixedRows) and (sgItems.Row < sgItems.RowCount - sgItems.FixedRows) then
+  if (Item <> nil) and (Item.Index >= 0) then
   begin
-    R := sgItems.CellRect(1, sgItems.Row + 1);
-    if TfrmEditItem.Edit(FItems[sgItems.Row - 1], ClientToScreen(R.TopLeft)) then
-      sgItems.Invalidate;
+    with FItems[Item.Index] do
+    begin
+      TTntListItem(Item).Caption := WideFormat('%s.%s', [Section, Name]);
+      TTntListItem(Item).SubItems.Add(Original);
+      TTntListItem(Item).SubItems.Add(Translation);
+    end;
   end;
 end;
 
-procedure TfrmToolListEdit.sgItemsDrawCell(Sender: TObject; ACol,
-  ARow: Integer; Rect: TRect; State: TGridDrawState);
-var
-  S: WideString;
-  AItem:ITranslationItem;
+procedure TfrmToolListEdit.lvItemsAdvancedCustomDrawItem(
+  Sender: TCustomListView; Item: TListItem; State: TCustomDrawState;
+  Stage: TCustomDrawStage; var DefaultDraw: Boolean);
 begin
-  AItem := nil;
-  if ARow = 0 then // fixed col
-  begin
-    case ACol of
-      0:
-        S := 'Key';
-      1:
-        S := 'Original';
-      2:
-        S := 'Translation';
+  if (Item <> nil) and (Item.Index >= 0) then
+    with FItems[Item.Index] do
+    begin
+      if not Translated then
+        Sender.Canvas.Font.Style := Sender.Canvas.Font.Style + [fsBold];
+      if Modified then
+        Sender.Canvas.Font.Style := Sender.Canvas.Font.Style + [fsItalic];
     end;
-  end
-  else if sgItems.Row < sgItems.RowCount - sgItems.FixedRows then
-  begin
-    AItem := FItems[ARow - 1];
-    case ACol of
-      0:
-        S := AItem.Section + WideChar('.') + AItem.Name;
-      1:
-        S := AItem.Original;
-      2:
-        S := AItem.Translation;
-    end;
+end;
 
+procedure TfrmToolListEdit.lvItemsEnter(Sender: TObject);
+begin
+  if (lvItems.Items.Count > 0) and (lvItems.Selected = nil) then
+  begin
+    lvItems.Selected := lvItems.Items[0];
+    lvItems.Selected.Focused := true;
   end;
-  sgItems.Canvas.Font := sgItems.Font;
-  if AItem <> nil then
-  begin
-    if AItem.Modified then
-      sgItems.Canvas.Font.Style := [fsItalic];
-    if not AItem.Translated then
-      sgItems.Canvas.Font.Style := sgItems.Canvas.Font.Style + [fsBold];
-  end;
-  if gdSelected in State then
-  begin
-    sgItems.Canvas.Brush.Color := clHighlight;
-    sgItems.Canvas.Font.Color := clHighlightText;
-  end
-  else if gdFixed in State then
-  begin
-    sgItems.Canvas.Brush.Color := clBtnFace;
-    sgItems.Canvas.Font.COlor := clWindowText;
-  end
-  else
-  begin
-    sgItems.Canvas.Brush.Color := clWindow;
-    sgItems.Canvas.Font.Color := clWindowText;
-  end;
-  InflateRect(Rect, -1, -1);
-  sgItems.Canvas.FillRect(Rect);
-  InflateRect(Rect, -2, 0);
-  Tnt_DrawTextW(sgItems.Canvas.Handle, PWideCHar(S), Length(S), Rect, DT_SINGLELINE or DT_LEFT or DT_VCENTER);
+
 end;
 
 end.

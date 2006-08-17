@@ -46,27 +46,8 @@ object frmToolListEdit: TfrmToolListEdit
     0007C0000007C0000007C0000007C0000007C0000007C0000007C0000007C000
     0007C0000007C0000007C0000007E000000FF24924BF}
   OldCreateOrder = False
-  OnResize = TntFormResize
   PixelsPerInch = 96
   TextHeight = 13
-  object sgItems: TTntDrawGrid
-    Left = 0
-    Top = 0
-    Width = 585
-    Height = 393
-    Align = alClient
-    ColCount = 3
-    DefaultRowHeight = 19
-    FixedCols = 0
-    RowCount = 2
-    FixedRows = 0
-    Options = [goFixedVertLine, goFixedHorzLine, goVertLine, goHorzLine, goTabs, goRowSelect, goThumbTracking]
-    ScrollBars = ssVertical
-    TabOrder = 0
-    OnDblClick = sgItemsDblClick
-    OnDrawCell = sgItemsDrawCell
-    OnKeyUp = sgItemsKeyUp
-  end
   object TntStatusBar1: TTntStatusBar
     Left = 0
     Top = 393
@@ -76,5 +57,41 @@ object frmToolListEdit: TfrmToolListEdit
       item
         Width = 50
       end>
+  end
+  object lvItems: TTntListView
+    Left = 0
+    Top = 0
+    Width = 585
+    Height = 393
+    Align = alClient
+    BevelKind = bkFlat
+    BorderStyle = bsNone
+    Columns = <
+      item
+        Caption = 'Key'
+        Width = 200
+      end
+      item
+        Caption = 'Original'
+        Width = 200
+      end
+      item
+        Caption = 'Translation'
+        Width = 200
+      end>
+    ColumnClick = False
+    GridLines = True
+    HideSelection = False
+    OwnerData = True
+    ReadOnly = True
+    RowSelect = True
+    TabOrder = 1
+    ViewStyle = vsReport
+    OnAdvancedCustomDrawItem = lvItemsAdvancedCustomDrawItem
+    OnData = lvItemsData
+    OnDblClick = lvItemsDblClick
+    OnEnter = lvItemsEnter
+    OnKeyUp = lvItemsKeyUp
+    OnResize = lvItemsResize
   end
 end

@@ -49,6 +49,7 @@ inherited frmDictTranslationSelect: TfrmDictTranslationSelect
     Top = 80
     Width = 379
     Height = 21
+    Hint = 'Suggested translation'
     Anchors = [akLeft, akTop, akRight]
     BevelKind = bkFlat
     BorderStyle = bsNone
@@ -73,6 +74,7 @@ inherited frmDictTranslationSelect: TfrmDictTranslationSelect
     Top = 324
     Width = 80
     Height = 23
+    Hint = 'Use the suggested translation'
     Anchors = [akRight, akBottom]
     Caption = '&Change'
     Default = True
@@ -85,6 +87,7 @@ inherited frmDictTranslationSelect: TfrmDictTranslationSelect
     Top = 324
     Width = 80
     Height = 23
+    Hint = 'Stop translating'
     Anchors = [akRight, akBottom]
     Cancel = True
     Caption = 'Close'
@@ -97,6 +100,7 @@ inherited frmDictTranslationSelect: TfrmDictTranslationSelect
     Top = 324
     Width = 80
     Height = 23
+    Hint = 'Ignore this item (don'#39't translate)'
     Anchors = [akRight, akBottom]
     Caption = '&Ignore'
     ModalResult = 1
@@ -108,6 +112,7 @@ inherited frmDictTranslationSelect: TfrmDictTranslationSelect
     Top = 324
     Width = 80
     Height = 23
+    Hint = 'Add suggested translation to dictionary'
     Anchors = [akRight, akBottom]
     Caption = '&Add'
     TabOrder = 6
@@ -118,6 +123,7 @@ inherited frmDictTranslationSelect: TfrmDictTranslationSelect
     Top = 275
     Width = 361
     Height = 17
+    Hint = 'Skip items that are already translated'
     Anchors = [akLeft, akRight, akBottom]
     Caption = '&Don'#39't check translated items'
     TabOrder = 3
@@ -127,6 +133,7 @@ inherited frmDictTranslationSelect: TfrmDictTranslationSelect
     Top = 294
     Width = 361
     Height = 17
+    Hint = 'Don'#39't show this dialog again and use the latest response'
     Anchors = [akLeft, akRight, akBottom]
     Caption = 'Don'#39't &ask again (in this session)'
     TabOrder = 4

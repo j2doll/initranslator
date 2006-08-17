@@ -47,6 +47,7 @@ inherited frmDictEdit: TfrmDictEdit
     Top = 32
     Width = 408
     Height = 21
+    Hint = 'The current original string'
     BevelKind = bkFlat
     Anchors = [akLeft, akTop, akRight]
     ItemHeight = 13
@@ -59,6 +60,7 @@ inherited frmDictEdit: TfrmDictEdit
     Top = 64
     Width = 80
     Height = 23
+    Hint = 'Add a new original'
     Action = acAddOriginal
     Anchors = [akTop, akRight]
     TabOrder = 1
@@ -68,6 +70,7 @@ inherited frmDictEdit: TfrmDictEdit
     Top = 64
     Width = 80
     Height = 23
+    Hint = 'Remove selected original'
     Action = acRemoveOriginal
     Anchors = [akTop, akRight]
     TabOrder = 2
@@ -77,6 +80,9 @@ inherited frmDictEdit: TfrmDictEdit
     Top = 96
     Width = 408
     Height = 161
+    Hint = 
+      'Displays available translations. Bold items are the default tran' +
+      'slations.'
     Style = lbVirtualOwnerDraw
     Anchors = [akLeft, akTop, akRight, akBottom]
     BevelKind = bkFlat
@@ -93,6 +99,7 @@ inherited frmDictEdit: TfrmDictEdit
     Top = 273
     Width = 226
     Height = 21
+    Hint = 'Type in a new translation here'
     Anchors = [akLeft, akRight, akBottom]
     BevelKind = bkFlat
     BorderStyle = bsNone
@@ -103,6 +110,7 @@ inherited frmDictEdit: TfrmDictEdit
     Top = 272
     Width = 80
     Height = 23
+    Hint = 'Add a new translation'
     Action = acAddTranslation
     Anchors = [akRight, akBottom]
     TabOrder = 5
@@ -112,6 +120,7 @@ inherited frmDictEdit: TfrmDictEdit
     Top = 272
     Width = 80
     Height = 23
+    Hint = 'Remove the selected translation'
     Action = acRemoveTranslation
     Anchors = [akRight, akBottom]
     TabOrder = 6
@@ -143,6 +152,7 @@ inherited frmDictEdit: TfrmDictEdit
     Top = 316
     Width = 184
     Height = 21
+    Hint = 'CHange the selection to see different subsets of the dictionary'
     BevelKind = bkTile
     Style = csDropDownList
     Anchors = [akLeft, akRight, akBottom]

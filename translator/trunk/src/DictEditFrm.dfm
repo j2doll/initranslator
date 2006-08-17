@@ -82,6 +82,7 @@ inherited frmDictEdit: TfrmDictEdit
     BevelKind = bkFlat
     BorderStyle = bsNone
     ItemHeight = 13
+    PopupMenu = popTranslations
     TabOrder = 3
     OnClick = lbTranslationsClick
     OnDblClick = lbTranslationsDblClick
@@ -181,6 +182,14 @@ inherited frmDictEdit: TfrmDictEdit
       Caption = 'Make Default'
       ShortCut = 16416
       OnExecute = acMakeDefaultExecute
+    end
+  end
+  object popTranslations: TTntPopupMenu
+    Left = 266
+    Top = 119
+    object MakeDefault1: TTntMenuItem
+      Action = acMakeDefault
+      Default = True
     end
   end
 end

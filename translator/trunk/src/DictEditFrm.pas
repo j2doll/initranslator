@@ -22,7 +22,7 @@ interface
 uses
   Windows, Messages, SysUtils, Classes, Graphics, Controls, Forms,
   Dialogs, BaseForm, StdCtrls, TntWindows, TntStdCtrls, ExtCtrls, TntExtCtrls, Dictionary,
-  ActnList, TntActnList;
+  ActnList, TntActnList, Menus, TntMenus;
 
 type
   TfrmDictEdit = class(TfrmBase)
@@ -46,6 +46,8 @@ type
     TntLabel3: TTntLabel;
     cbFilter: TTntComboBox;
     acMakeDefault: TTntAction;
+    popTranslations: TTntPopupMenu;
+    MakeDefault1: TTntMenuItem;
     procedure cbOriginalChange(Sender: TObject);
     procedure alDictEditUpdate(Action: TBasicAction; var Handled: Boolean);
     procedure acAddOriginalExecute(Sender: TObject);
@@ -155,11 +157,13 @@ begin
     i := D.Translations.IndexOf(edTranslation.Text);
     acAddTranslation.Enabled := (edTranslation.Text <> '') and (i < 0);
     acRemoveTranslation.Enabled := i > -1;
+    acMakeDefault.Enabled := (D.Translations.Count > 1) and  (D.DefaultIndex <> lbTranslations.ItemIndex);
   end
   else
   begin
     acAddTranslation.Enabled := false;
     acRemoveTranslation.Enabled := false;
+    acMakeDefault.Enabled := false;
   end;
 end;
 
@@ -322,7 +326,6 @@ begin
     D.DefaultIndex := lbTranslations.ItemIndex;
     lbTranslations.Invalidate;
   end;
-
 end;
 
 end.

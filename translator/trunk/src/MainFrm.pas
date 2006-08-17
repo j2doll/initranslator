@@ -475,9 +475,9 @@ type
     procedure LoadTranslate;
     function LoadOriginal(const FileName: WideString; Encoding: TEncoding):TEncoding;
     function LoadTranslation(const FileName: WideString; Encoding: TEncoding):TEncoding;
-    function SaveTranslation(const FileName: WideString; Encoding: TEncoding): boolean;
+    function SaveTranslation(const FileName: WideString; Encoding: TEncoding; const InsertHeader:boolean=false; const InsertFooter:boolean = false): boolean;
     function SaveTranslationAs(const FileName: WideString; Encoding: TEncoding): boolean;
-    function SaveOriginal(const FileName: WideString; Encoding: TEncoding): boolean;
+    function SaveOriginal(const FileName: WideString; Encoding: TEncoding; const InsertHeader:boolean=false; const InsertFooter:boolean = false): boolean;
     function SaveOrigAs(const FileName: WideString; Encoding: TEncoding): boolean;
     procedure SetModified(const Value: boolean);
     function GetModified: boolean;
@@ -937,7 +937,8 @@ begin
   acRestoreSortExecute(nil);
 end;
 
-function TfrmMain.SaveTranslation(const FileName: WideString; Encoding: TEncoding): boolean;
+function TfrmMain.SaveTranslation(const FileName: WideString; Encoding: TEncoding;
+   const InsertHeader:boolean=false; const InsertFooter:boolean = false): boolean;
 var
   i: integer;
 begin
@@ -956,6 +957,14 @@ begin
   SaveEditChanges;
   //  DeleteFile(Filename); // clear old content
   try
+    if InsertHeader then
+      FTranslateFile.Header := GlobalAppOptions.Header.Text
+    else
+      FTranslateFile.Header := '';
+    if InsertFooter then
+      FTranslateFile.Footer := GlobalAppOptions.Footer.Text
+    else
+      FTranslateFile.Footer := '';
     FTranslateFile.SaveTranslation(FileName, Encoding);
   except
     on E: Exception do
@@ -981,16 +990,21 @@ begin
   SaveTransDlg.FileName := GetFilename(Filename);
   SaveTransDlg.FilterIndex := GlobalAppOptions.FilterIndex;
   SaveTransDlg.EncodingIndex := Ord(Encoding);
-  
   if SaveTransDlg.Execute then
   begin
     GlobalAppOptions.FilterIndex := SaveTransDlg.FilterIndex;
-    SaveTranslation(SaveTransDlg.FileName, TEncoding(SaveTransDlg.EncodingIndex));
+    SaveTranslation(SaveTransDlg.FileName,
+      TEncoding(SaveTransDlg.EncodingIndex),
+        SaveTransDlg.InsertHeader, SaveTransDlg.InsertFooter);
     Result := true;
-  end;
+  end;         
+  // clear for next time
+  SaveTransDlg.InsertHeader := false;
+  SaveTransDlg.InsertFooter := false;
 end;
 
-function TfrmMain.SaveOriginal(const FileName: WideString; Encoding: TEncoding): boolean;
+function TfrmMain.SaveOriginal(const FileName: WideString; Encoding: TEncoding;
+   const InsertHeader:boolean=false; const InsertFooter:boolean = false): boolean;
 var
   i: integer;
 begin
@@ -1009,6 +1023,14 @@ begin
   SaveEditChanges;
   //  DeleteFile(Filename); // clear old content
   try
+    if InsertHeader then
+      FTranslateFile.Header := GlobalAppOptions.Header.Text
+    else
+      FTranslateFile.Header := '';
+    if InsertFooter then
+      FTranslateFile.Footer := GlobalAppOptions.Footer.Text
+    else
+      FTranslateFile.Footer := '';
     FTranslateFile.SaveOriginal(FileName, Encoding);
   except
     on E: Exception do
@@ -1038,9 +1060,12 @@ begin
   if SaveOrigDlg.Execute then
   begin
     GlobalAppOptions.FilterIndex := SaveOrigDlg.FilterIndex;
-    SaveOriginal(SaveOrigDlg.Filename, TEncoding(SaveOrigDlg.EncodingIndex));
+    SaveOriginal(SaveOrigDlg.Filename, TEncoding(SaveOrigDlg.EncodingIndex),
+      SaveOrigDlg.InsertHeader, SaveOrigDlg.InsertFooter);
     Result := true;
   end;
+  SaveOrigDlg.InsertHeader := false;
+  SaveOrigDlg.InsertFooter := false;
 end;
 
 procedure TfrmMain.CreateDict(ClearList: boolean);

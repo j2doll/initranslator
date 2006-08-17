@@ -139,9 +139,13 @@ type
     FEndSection: WideChar;
     FStartSection: WideChar;
     FSeparatorChar: WideChar;
+    FHeader: WideString;
+    FFooter: WideString;
   public
     constructor Create;
     destructor Destroy; override;
+    property Header:WideString read FHeader write FHeader;
+    property Footer:WideString read FFooter write FFooter;
     property Items: ITranslationItems read FItems;
     // Orphans are the items in the translation file that didn't match up with
     // any items in the original file
@@ -665,6 +669,7 @@ begin
   ASection := '';
   FOldSort := Items.Sort;
   try
+    S.Text := Header;
 //    Items.Sort := stSection;
     Items.Sort := stIndex;
     for i := 0 to Items.Count - 1 do
@@ -677,6 +682,8 @@ begin
       FixAndAddComments(S, Items[i].OrigComments);
       S.Add(Items[i].Name + SeparatorChar + Items[i].Original);
     end;
+    if Footer <> '' then
+      S.Add(trim(Footer));
     case Encoding of
       feUnicode:
         S.SaveToFile(Filename);
@@ -704,6 +711,7 @@ begin
   S := TTNTStringlist.Create;
   FOldSort := Items.Sort;
   try
+    S.Text := Header;
     Items.Sort := stSection;
 //    Items.Sort := stIndex;
     for i := 0 to Items.Count - 1 do
@@ -719,6 +727,8 @@ begin
       FixAndAddComments(S, Items[i].TransComments);
       S.Add(Items[i].Name + SeparatorChar + Items[i].Translation);
     end;
+    if Footer <> '' then
+      S.Add(trim(Footer));
     case Encoding of
       feUnicode:
         S.SaveToFile(Filename);

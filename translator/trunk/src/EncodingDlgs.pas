@@ -36,10 +36,13 @@ type
     cbEncodings: TTntComboBox;
     lblEncoding: TTntLabel;
     bvlTopLine: TBevel;
+    chkHeader: TTntCheckBox;
+    chkFooter: TTntCheckBox;
   private
     FParentWnd: HWND;
-    procedure Initialize;
     procedure WMNCDestroy(var Message: TWMNCDestroy); message WM_NCDESTROY;
+  protected
+    procedure Initialize;virtual;
   public
     constructor Create(OpenDialog: TTntOpenDialog); reintroduce;
     destructor Destroy; override;
@@ -51,6 +54,8 @@ type
     FEncodings: TTntStrings;
     FForm: TfrmEncoding;
     FEncodingLabel: WideString;
+    FInsertFooter: boolean;
+    FInsertHeader: boolean;
     procedure SetEncodingIndex(const Value: integer);
     procedure SetEncodings(const Value: TTntStrings);
   protected
@@ -64,6 +69,8 @@ type
     property Encodings: TTntStrings read FEncodings write SetEncodings;
     property EncodingLabel: WideString read FEncodingLabel write FEncodingLabel;
     property EncodingIndex: integer read FEncodingIndex write SetEncodingIndex default 0;
+    property InsertHeader:boolean read FInsertHeader write FInsertHeader;
+    property InsertFooter:boolean read FInsertFooter write FInsertFooter;
   end;
 
   TEncodingSaveDialog = class(TEncodingOpenDialog)
@@ -86,6 +93,8 @@ constructor TfrmEncoding.Create(OpenDialog: TTntOpenDialog);
 begin
   FParentWnd := GetParent(OpenDialog.Handle);
   Initialize;
+  chkHeader.Visible := OpenDialog is TEncodingSaveDialog;
+  chkFooter.Visible := chkHeader.Visible;
 end;
 
 destructor TfrmEncoding.Destroy;
@@ -108,6 +117,7 @@ begin
 
   hItem := GetDlgItem(FParentWnd, cmb1);
   GetWindowRect(hItem, OpenRect);
+
   // adjust for border (4 px)
   cbEncodings.Left := OpenRect.Left - DlgRect.Left - 4;
   cbEncodings.Width := OpenRect.Right - OpenRect.Left;
@@ -150,7 +160,11 @@ end;
 procedure TEncodingOpenDialog.DoClose;
 begin
   if FForm <> nil then
+  begin
     FSelectedIndex := FForm.cbEncodings.ItemIndex;
+    InsertHeader := FForm.chkHeader.Checked;
+    InsertFooter := FForm.chkFooter.Checked;
+  end;
   FForm := nil;
   inherited;
 end;
@@ -161,6 +175,9 @@ begin
   FForm.cbEncodings.Items.Assign(Encodings);
   FForm.cbEncodings.ItemIndex := EncodingIndex;
   FForm.lblEncoding.Caption := FEncodingLabel;
+  FForm.chkHeader.Checked := InsertHeader;
+  FForm.chkFooter.Checked := InsertFooter;
+
   if OptionsEx <> [] then
   begin
     // empirical...

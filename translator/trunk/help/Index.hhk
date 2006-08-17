@@ -1555,11 +1555,6 @@
 		<param name="Local" value="..\MPL-1.1.html">
 		</OBJECT>
 	<LI> <OBJECT type="text/sitemap">
-		<param name="Name" value="PO Files">
-		<param name="Name" value="Working with PO Files">
-		<param name="Local" value="Working with PO Files.html">
-		</OBJECT>
-	<LI> <OBJECT type="text/sitemap">
 		<param name="Name" value="Portions">
 		<param name="Name" value="Mozilla Public License version 1.1">
 		<param name="Local" value="..\MPL-1.1.html">

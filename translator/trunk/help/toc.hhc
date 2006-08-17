@@ -19,10 +19,6 @@
 			<param name="Local" value="Opening and Saving Files.html">
 			</OBJECT>
 		<LI> <OBJECT type="text/sitemap">
-			<param name="Name" value="Working with PO Files">
-			<param name="Local" value="Working with PO Files.html">
-			</OBJECT>
-		<LI> <OBJECT type="text/sitemap">
 			<param name="Name" value="Importing and Exporting Data">
 			<param name="Local" value="Import and Export.html">
 			</OBJECT>

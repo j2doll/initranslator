@@ -437,33 +437,6 @@ begin
   inherited;
 end;
 
-{$J+ }
-
-function strtok(Search, Delim: WideString): WideString;
-const
-
-  I: integer = 1;
-  Len: integer = 0;
-  PrvStr: WideString = '';
-begin
-  Result := '';
-  if Search <> '' then
-  begin
-    I := 1;
-    PrvStr := Search;
-    Len := Length(PrvStr);
-  end;
-  if PrvStr = '' then
-    Exit;
-  while (i <= Len) and (Pos(PrvStr[i], Delim) > 0) do
-    Inc(I);
-  while (i <= Len) and (Pos(PrvStr[i], Delim) = 0) do
-  begin
-    Result := Result + PrvStr[i];
-    Inc(i);
-  end;
-end;
-{$J- }
 
 procedure TAppOptions.ReadWindowInfos(ini: TWideCustomIniFile);
 var

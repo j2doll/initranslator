@@ -48,6 +48,9 @@ const
 
 type
   ITranslationItems = interface;
+  IDictionaryItem = interface;
+  IDictionaryItems = interface;
+  
   ITranslationItem = interface(IInterface)
     ['{5B400D54-5B0E-48B4-BEE3-9DBDA02AE3D6}']
     function GetIndex: integer;
@@ -144,6 +147,12 @@ type
     procedure Init(AppHandle: Cardinal); safecall;
   end;
 
+  IFileParsers = interface(IInterface)
+  ['{492B53C5-4FE1-4B3C-9A0B-4E9B3541E5C5}']
+    function Count:Integer;safecall;
+    function FileParser(Index:Integer; out FileParser:IFileParsers):HResult; safecall;
+  end;
+
   // An item that can reside on the "Plugins" menu
   // When clicked, the Execute function is called
   IToolItem = interface(IInterface)
@@ -171,9 +180,11 @@ type
     function GetItems:ITranslationItems;
     function GetOrphans:ITranslationItems;
     function GetAppHandle:Cardinal;
+    function GetDictionaryItems:IDictionaryItems;
 
     property Items:ITranslationItems read GetItems;
     property Orphans:ITranslationItems read GetOrphans;
+    property Dicitonary:IDictionaryItems read GetDictionaryItems;
     property AppHandle:Cardinal read GetAppHandle;
 
     function Changing:WordBool;safecall;
@@ -183,11 +194,48 @@ type
   end;
 
   // return S_OK if all is fine
-  TExportFunc = function(out Parser: IFileParser): HResult; stdcall;
+  TExportFileParserFunc = function(out Parser: IFileParser): HResult; stdcall;
+  TExportFileParsersFunc = function(out Parsers: IFileParsers): HResult; stdcall;
   TExportToolItemsFunc = function(out ToolItems: IToolItems): HResult; stdcall;
+
+  IDictionaryItem = interface(IInterface)
+  ['{C3AC69B2-1062-4929-A127-DA878CFDFB9F}']
+    procedure SetOriginal(const Value: WideString);
+    function GetOriginal:WideString;
+    function Add(const Translation:WideString):Integer;
+    function IndexOf(const Translation:WideString):integer;
+    procedure Delete(Index:integer);
+    procedure Clear;
+    function GetTranslation(Index:Integer):WideString;
+    procedure SetTranslation(Index:Integer; const Value:WideString);
+    function TranslationCount:integer;
+    property Original:WideString read GetOriginal write SetOriginal;
+    property Translation[Index:integer]:WideString read GetTranslation write SetTranslation; default;
+  end;
+
+  IDictionaryItems = interface(IInterface)
+  ['{252A86F1-D50A-4433-A556-030C145A7E33}']
+    function GetModified:WordBool;
+    procedure SetModified(Value:WordBool);
+    function GetItem(Index:integer):IDictionaryItem;
+    function GetCount:integer;
+    function GetIgnorePunctuation:WordBool;
+    procedure SetIgnorePunctuation(Value:WordBool);
+    procedure Invert;
+    function Add(const AOriginal: WideString): IDictionaryItem;
+    procedure Delete(Index: integer);
+    function IndexOf(const S: WideString): integer;
+    procedure Clear;
+    procedure Sort;
+    property Items[Index: integer]: IDictionaryItem read GetItem; default;
+    property Count: integer read GetCount;
+    property Modified:WordBool read GetModified write SetModified;
+    property IgnorePunctuation: WordBool read GetIgnorePunctuation write SetIgnorePunctuation;
+  end;
 
 const
   cRegisterTransFileParserFuncName = 'RegisterTransFileParser001';
+  cRegisterTransFileParsersFuncName = 'RegisterTransFileParsers001';
   cRegisterTransToolItemsFuncName = 'RegisterTransToolItems001';
 
 implementation

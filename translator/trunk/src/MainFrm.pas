@@ -1071,19 +1071,24 @@ end;
 procedure TfrmMain.CreateDict(ClearList: boolean);
 var
   i: integer;
+  procedure DictAdd(const AOriginal, ATranslation:WideString);
+  var
+    D:TDictionaryItem;
+  begin
+    if (trim(AOriginal) <> '') then
+    begin
+      D := FDict.Add(trim(AOriginal));
+      if (trim(ATranslation) <> '') then
+        D.Translations.Add(trim(ATranslation));
+    end;
+  end;
 begin
   WaitCursor;
   if ClearList then
     FDict.Clear;
   for i := 0 to FTranslateFile.Items.Count - 1 do
     with FTranslateFile.Items[i] do
-      if (trim(Original) <> '') then
-      begin
-        if (trim(Translation) <> '') then
-          FDict.Add(trim(Original)).Translations.Add(trim(Translation))
-        else
-          FDict.Add(trim(Original));
-      end;
+      DictAdd(trim(Original), trim(Translation));
   OpenDictDlg.Filename := '';
   SaveDictDlg.FileName := '';
   UpdateStatus;

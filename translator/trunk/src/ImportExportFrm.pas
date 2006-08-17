@@ -77,7 +77,7 @@ type
 function InternalLoadLibrary(const LibName: WideString): TLibItem;
 var
   LibHandle: HMODULE;
-  ExportFunc: TExportFunc;
+  ExportFunc: TExportFileParserFunc;
   i: integer;
 begin
   Result := nil;
@@ -100,7 +100,7 @@ begin
     if (@ExportFunc <> nil) then
     begin
       Result := TLibItem.Create;
-    // check that we can get an implementation
+      // check that we can get an implementation
       if (ExportFunc(Result.Parser) <> S_OK) then
         FreeAndNil(Result)
       else

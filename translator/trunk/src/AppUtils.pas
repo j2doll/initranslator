@@ -58,6 +58,8 @@ function FileCharSetToEncoding(CharSet: TTntStreamCharSet): TEncoding;
 // for Delphi 6
 function ValueFromIndex(S: TTntStrings; i: integer): WideString; overload;
 function ValueFromIndex(S: TStrings; i: integer): AnsiString; overload;
+function strtok(Search, Delim: WideString): WideString;
+
 
 implementation
 uses
@@ -497,6 +499,40 @@ begin
     tmp.Free;
   end;
 end;
+
+{$IFOPT J+}
+{$DEFINE JOPTSET}
+{$ENDIF}
+{$J+ }
+
+function strtok(Search, Delim: WideString): WideString;
+const
+
+  I: integer = 1;
+  Len: integer = 0;
+  PrvStr: WideString = '';
+begin
+  Result := '';
+  if Search <> '' then
+  begin
+    I := 1;
+    PrvStr := Search;
+    Len := Length(PrvStr);
+  end;
+  if PrvStr = '' then
+    Exit;
+  while (i <= Len) and (Pos(PrvStr[i], Delim) > 0) do
+    Inc(I);
+  while (i <= Len) and (Pos(PrvStr[i], Delim) = 0) do
+  begin
+    Result := Result + PrvStr[i];
+    Inc(i);
+  end;
+end;
+{$IFDEF JOPTSET}
+{$J- }
+{$ENDIF JOPTSET}
+{$UNDEF JOPTSET}
 
 initialization
 

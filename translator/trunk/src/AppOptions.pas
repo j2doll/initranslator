@@ -186,6 +186,7 @@ type
     property Header:TTntStrings read FHeader write SetHeader;
     property Footer:TTntStrings read FFooter write SetFooter;
 
+
     // find replace
     property FindText: WideString read FFindText write FFindText;
     property ReplaceText: WideString read FReplaceText write FReplaceText;
@@ -502,6 +503,11 @@ begin
     GlobalPath := ini.ReadBool('General', 'GlobalPath', GlobalPath);
     UseTranslationEverywhere := ini.ReadBool('General', 'UseTranslationEverywhere', UseTranslationEverywhere);
     AutoFocusTranslation := ini.ReadBool('General', 'AutoFocusTranslation', AutoFocusTranslation);
+    Theme := ini.ReadString('General', 'Theme', Theme);
+    DictIgnoreNonEmpty := ini.ReadBool('General', 'DictIgnoreNonEmpty', false);
+    DictEditFilter := ini.ReadInteger('General', 'DictEditFilter', 0);
+    ShowFullNameInColumns := ini.ReadBool('General', 'ShowFullNameInColumns', ShowFullNameInColumns);
+
     FilterIndex := ini.ReadInteger('Files', 'FilterIndex', FilterIndex);
     LanguageFile := ini.ReadString('Files', 'LanguageFile', LanguageFile);
     HelpFile := ini.ReadString('Files', 'HelpFile', HelpFile);
@@ -512,19 +518,12 @@ begin
     OrigEncoding := ini.ReadInteger('Files', 'OrigEncoding', OrigEncoding);
     DefaultTransEncoding := ini.ReadInteger('Files', 'DefaultTransEncoding', TransEncoding);
     DefaultOrigEncoding  := ini.ReadInteger('Files', 'DefaultOrigEncoding', OrigEncoding);
-
     MonitorFiles := ini.ReadBool('Files', 'MonitorFiles', MonitorFiles);
 
     Header.Text := Tnt_WideStringReplace(ini.ReadString('UserData','Header',''), #2, #13#10, [rfReplaceAll]);
     Footer.Text := Tnt_WideStringReplace(ini.ReadString('UserData','Footer',''), #2, #13#10, [rfReplaceAll]);
 
-    Theme := ini.ReadString('General', 'Theme', Theme);
-    DictIgnoreNonEmpty := ini.ReadBool('General', 'DictIgnoreNonEmpty', false);
-    DictEditFilter := ini.ReadInteger('General', 'DictEditFilter', 0);
-
-
     PinCommentWindow := ini.ReadBool('Comments', 'PinCommentWindow', PinCommentWindow);
-    ShowFullNameInColumns := ini.ReadBool('General', 'ShowFullNameInColumns', ShowFullNameInColumns);
 
     // find/replace dialog
     FindText := ini.ReadString('FindReplace', 'FindText', FindText);
@@ -612,6 +611,10 @@ begin
     ini.WriteBool('General', 'GlobalPath', GlobalPath);
     ini.WriteBool('General', 'UseTranslationEverywhere', UseTranslationEverywhere);
     ini.WriteBool('General', 'AutoFocusTranslation', AutoFocusTranslation);
+    ini.WriteString('General', 'Theme', Theme);
+    ini.WriteBool('General', 'DictIgnoreNonEmpty', DictIgnoreNonEmpty);
+    ini.WriteInteger('General', 'DictEditFilter', DictEditFilter);
+    ini.WriteBool('General', 'ShowFullNameInColumns', ShowFullNameInColumns);
 
     ini.WriteInteger('Files', 'FilterIndex', FilterIndex);
     ini.WriteString('Files', 'LanguageFile', LanguageFile);
@@ -628,12 +631,6 @@ begin
     ini.WriteString('UserData', 'Header', Tnt_WideStringReplace(Header.Text, #13#10,#2,[rfReplaceAll]));
     ini.WriteString('UserData', 'Footer', Tnt_WideStringReplace(Footer.Text, #13#10,#2,[rfReplaceAll]));
 
-    ini.WriteString('General', 'Theme', Theme);
-    ini.WriteBool('General', 'DictIgnoreNonEmpty', DictIgnoreNonEmpty);
-    ini.WriteInteger('General', 'DictEditFilter', DictEditFilter);
-
-    ini.WriteBool('General', 'ShowFullNameInColumns', ShowFullNameInColumns);
-
     ini.WriteBool('Comments', 'PinCommentWindow', PinCommentWindow);
     // find replace dialog
     ini.WriteString('FindReplace', 'FindText', FindText);
@@ -645,10 +642,12 @@ begin
     ini.WriteBool('FindReplace', 'SearchUp', SearchUp);
     ini.WriteBool('FindReplace', 'FuzzySearch', FuzzySearch);
     ini.WriteInteger('FindReplace', 'FindInIndex', FindInIndex);
+
     ini.WriteString('Trim', 'TrimWhat', TrimWhat);
     ini.WriteInteger('Trim', 'TrimWhere', TrimWhere);
     ini.WriteInteger('Trim', 'TrimHow', TrimHow);
     ini.WriteBool('Trim', 'TrimWhiteSpace', TrimWhiteSpace);
+
     ini.WriteString('MisMatch', 'Items', MisMatchItems);
     ini.WriteBool('MisMatch', 'MisMatchLeadingSpaces', MisMatchLeadingSpaces);
     ini.WriteBool('MisMatch', 'MisMatchTrailingSpaces', MisMatchTrailingSpaces);

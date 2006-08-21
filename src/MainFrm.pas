@@ -2565,24 +2565,30 @@ procedure TfrmMain.lvTranslateStringsAdvancedCustomDrawItem(
   Sender: TCustomListView; Item: TListItem; State: TCustomDrawState;
   Stage: TCustomDrawStage; var DefaultDraw: boolean);
 begin
-  DefaultDraw := true;
   if (Item <> nil) and (Stage = cdPrePaint) then
   begin
-    if not FTranslateFile.Items[Item.Index].Translated then
+    Sender.Canvas.Font := TListView(Sender).Font;
+    if [cdsFocused] *  State <> [] then
+    begin
+      Sender.Canvas.Brush.Color := clHighlight;
+      Sender.Canvas.Font.Color := clHighlightText;
+    end
+    else if not FTranslateFile.Items[Item.Index].Translated then
     begin
       Sender.Canvas.Brush.Color := GlobalAppOptions.ColorUntranslated;
-      Sender.Canvas.Font.COlor := GlobalAppOptions.ColorFontUntranslated;
+      Sender.Canvas.Font.Color := GlobalAppOptions.ColorFontUntranslated;
     end
     else if Odd(Item.Index) then
     begin
       Sender.Canvas.Brush.Color := GlobalAppOptions.ColorEvenRow;
-      Sender.Canvas.Font.COlor := GlobalAppOptions.ColorFontEvenRow;
+      Sender.Canvas.Font.Color := GlobalAppOptions.ColorFontEvenRow;
     end
     else
     begin
       Sender.Canvas.Brush.Color := GlobalAppOptions.ColorOddRow;
       Sender.Canvas.Font.Color := GlobalAppOptions.ColorFontOddRow;
     end;
+    DefaultDraw := true;;
   end;
 end;
 
@@ -4060,6 +4066,7 @@ procedure TfrmMain.SetSelectedListItem(const Value: TTntListItem);
 begin
   lvTranslateStrings.Selected := Value;
 end;
+
 
 end.
 

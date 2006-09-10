@@ -73,7 +73,6 @@ object frmFindReplace: TfrmFindReplace
     Height = 21
     Hint = 'The text to search for'
     BevelInner = bvNone
-    BevelKind = bkFlat
     BevelOuter = bvRaised
     ItemHeight = 13
     TabOrder = 0
@@ -109,7 +108,6 @@ object frmFindReplace: TfrmFindReplace
     Height = 21
     Hint = 'The text to replace the found text with'
     BevelInner = bvNone
-    BevelKind = bkFlat
     BevelOuter = bvRaised
     ItemHeight = 13
     TabOrder = 1
@@ -131,14 +129,13 @@ object frmFindReplace: TfrmFindReplace
     Height = 21
     Hint = 'Select the field(s) to search in'
     BevelInner = bvNone
-    BevelKind = bkFlat
     BevelOuter = bvRaised
     Style = csDropDownList
     ItemHeight = 13
     ItemIndex = 0
     TabOrder = 6
     Text = 'Original'
-    Items.WideStrings = (
+    Items.Strings = (
       'Original'
       'Translation'
       'Both')

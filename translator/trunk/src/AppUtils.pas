@@ -60,12 +60,13 @@ function ValueFromIndex(S: TTntStrings; i: integer): WideString; overload;
 function ValueFromIndex(S: TStrings; i: integer): AnsiString; overload;
 function strtok(Search, Delim: WideString): WideString;
 
+procedure SetXPComboStyle(AControl:TControl);
 
 implementation
 uses
-  Windows, Forms, Dialogs, Math, Registry,
+  Windows, Forms, Dialogs, Math, Registry, StdCtrls, 
   WideIniFiles, Menus, Consts, ShFolder,
-  CommonUtils, ShlObj, ActiveX,
+  CommonUtils, ShlObj, ActiveX, TbxUxThemes, 
   TntWindows, TntSysUtils, TntWideStrUtils;
 
 var
@@ -533,6 +534,27 @@ end;
 {$J- }
 {$ENDIF JOPTSET}
 {$UNDEF JOPTSET}
+
+type
+  TAccessComboBox = class(TCustomComboBox);
+
+procedure SetXPComboStyle(AControl:TControl);
+var i:integer;
+begin
+  if (AControl is TWinControl) then
+    for i := 0 to TWinControl(AControl).ControlCount - 1 do
+    begin
+      if TWinControl(AControl).Controls[i] is TCustomComboBox then
+      begin
+        if IsAppThemed {Win32PlatformIsXP} then
+          TAccessComboBox(TWinControl(AControl).Controls[i]).BevelKind := bkNone
+        else
+          TAccessComboBox(TWinControl(AControl).Controls[i]).BevelKind := bkFlat;
+      end;
+      if TWinControl(AControl).Controls[i] is TWinControl then
+        SetXPComboStyle(TWinControl(TWinControl(AControl).Controls[i]));
+    end;
+end;
 
 initialization
 

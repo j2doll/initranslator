@@ -4,6 +4,8 @@ uses
   Forms,
   MainFrm in 'MainFrm.pas' {frmMain};
 
+// for XP theme support
+{$R 'manifest.res' 'manifest.rc'}
 {$R *.res}
 
 begin

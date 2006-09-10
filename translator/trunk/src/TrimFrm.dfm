@@ -45,14 +45,13 @@ inherited frmTrim: TfrmTrim
     Top = 112
     Width = 373
     Height = 21
-    BevelKind = bkFlat
     Style = csDropDownList
     Anchors = [akLeft, akTop, akRight]
     ItemHeight = 13
     ItemIndex = 2
     TabOrder = 2
     Text = 'Both'
-    Items.WideStrings = (
+    Items.Strings = (
       'Original'
       'Translation'
       'Both')
@@ -62,14 +61,13 @@ inherited frmTrim: TfrmTrim
     Top = 160
     Width = 373
     Height = 21
-    BevelKind = bkFlat
     Style = csDropDownList
     Anchors = [akLeft, akTop, akRight]
     ItemHeight = 13
     ItemIndex = 2
     TabOrder = 3
     Text = 'Both'
-    Items.WideStrings = (
+    Items.Strings = (
       'Leading'
       'Trailing'
       'Both')

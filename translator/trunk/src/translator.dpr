@@ -58,6 +58,7 @@ uses
   ColorsFrm in 'ColorsFrm.pas' {frmColors: TTntForm};
 
 {$R *.res}
+{$R 'manifest.res' 'manifest.rc'}
 
 begin
   Application.Initialize;

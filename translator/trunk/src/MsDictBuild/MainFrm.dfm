@@ -15,7 +15,7 @@ object frmMain: TfrmMain
   OnCreate = FormCreate
   DesignSize = (
     524
-    390)
+    383)
   PixelsPerInch = 96
   TextHeight = 13
   object Label1: TTntLabel
@@ -195,7 +195,7 @@ object frmMain: TfrmMain
   end
   object StatusBar1: TStatusBar
     Left = 0
-    Top = 371
+    Top = 364
     Width = 524
     Height = 19
     Panels = <

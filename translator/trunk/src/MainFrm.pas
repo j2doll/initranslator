@@ -486,7 +486,7 @@ type
 }
     {IApplication end}
     function NotifyChanging(Msg, WParam, LParam: integer): WordBool;
-    procedure NotifyChange(Msg, WParam, LParam: integer);
+    procedure NotifyChanged(Msg, WParam, LParam: integer);
 {$IFDEF USEADDICTSPELLCHECKER}
     procedure SpellCheckComplete(Sender: TObject);
     procedure CreateSpellChecker;
@@ -913,7 +913,7 @@ begin
   FLastFolder := WideExtractFilePath(Filename);
 
   Result := FTranslateFile.LoadOriginal(FileName, Encoding);
-  NotifyChange(NOTIFY_ITEM_FILE_OPEN, Ord(false), Integer(PWideChar(Filename)));
+  NotifyChanged(NOTIFY_ITEM_FILE_OPEN, Ord(false), Integer(PWideChar(Filename)));
   GlobalAppOptions.OrigEncoding := Ord(Result);
   StartMonitor(FFileMonitors[cOrigMonitor], Filename);
 
@@ -947,7 +947,7 @@ begin
   AddMRUFile(FileName, false);
 
   Result := FTranslateFile.LoadTranslation(FileName, Encoding);
-  NotifyChange(NOTIFY_ITEM_FILE_OPEN, Ord(true), Integer(PWideChar(Filename)));
+  NotifyChanged(NOTIFY_ITEM_FILE_OPEN, Ord(true), Integer(PWideChar(Filename)));
   GlobalAppOptions.TransEncoding := Ord(Result);
   StartMonitor(FFileMonitors[cTransMonitor], FileName);
   lvTranslateStrings.Items.Count := FTranslateFile.Items.Count;
@@ -1005,7 +1005,7 @@ begin
     else
       FTranslateFile.Footer := '';
     FTranslateFile.SaveTranslation(FileName, Encoding);
-    NotifyChange(NOTIFY_ITEM_FILE_SAVE, Ord(true), Integer(PWideChar(Filename)));
+    NotifyChanged(NOTIFY_ITEM_FILE_SAVE, Ord(true), Integer(PWideChar(Filename)));
   except
     on E: Exception do
       HandleFileCreateException(Self, E, FileName);
@@ -1078,7 +1078,7 @@ begin
     else
       FTranslateFile.Footer := '';
     FTranslateFile.SaveOriginal(FileName, Encoding);
-    NotifyChange(NOTIFY_ITEM_FILE_SAVE, Ord(false), Integer(PWideChar(Filename)));
+    NotifyChanged(NOTIFY_ITEM_FILE_SAVE, Ord(false), Integer(PWideChar(Filename)));
   except
     on E: Exception do
       HandleFileCreateException(Self, E, FileName);
@@ -1139,7 +1139,7 @@ begin
   for i := 0 to FTranslateFile.Items.Count - 1 do
     with FTranslateFile.Items[i] do
       DictAdd(trim(Original), trim(Translation));
-  NotifyChange(NOTIFY_ITEM_DICT_NEW, 0, 0);
+  NotifyChanged(NOTIFY_ITEM_DICT_NEW, 0, 0);
   OpenDictDlg.Filename := '';
   SaveDictDlg.FileName := '';
   UpdateStatus;
@@ -1157,7 +1157,7 @@ begin
   if acDictInvert.Checked then
     acDictInvert.Execute; // toggle invert
   FDictionary.LoadFromFile(FileName);
-  NotifyChange(NOTIFY_ITEM_DICT_OPEN, Integer(PWideChar(Filename)), 0);
+  NotifyChanged(NOTIFY_ITEM_DICT_OPEN, Integer(PWideChar(Filename)), 0);
   GlobalAppOptions.DictionaryFile := Filename;
   if not acDictInvert.Checked and GlobalAppOptions.InvertDictionary then
     acDictInvert.Execute; // toggle invert
@@ -1174,7 +1174,7 @@ begin
   StopMonitor(FFileMonitors[cDictMonitor]);
   try
     FDictionary.SaveToFile(SaveDictDlg.FileName);
-    NotifyChange(NOTIFY_ITEM_DICT_SAVE, Integer(PWideChar(Filename)), 0);
+    NotifyChanged(NOTIFY_ITEM_DICT_SAVE, Integer(PWideChar(Filename)), 0);
     GlobalAppOptions.DictionaryFile := Filename;
   except
     on E: Exception do
@@ -2396,7 +2396,7 @@ begin
       if not NotifyChanging(NOTIFY_ITEM_TRANS_CHANGE, Integer(PWideChar(Translation)), Integer(PWideChar(reTranslation.Text))) then
         Exit;
       Translation := RemoveQuotes(trimCRLFRight(reTranslation.Text));
-      NotifyChange(NOTIFY_ITEM_TRANS_CHANGE, Integer(PWideChar(Translation)), 0);
+      NotifyChanged(NOTIFY_ITEM_TRANS_CHANGE, Integer(PWideChar(Translation)), 0);
         Translated := MyWideDequotedStr(Translation, TransQuote) <> '';
         lvTranslateStrings.Invalidate;
         if GlobalAppOptions.UseTranslationEverywhere then
@@ -3290,7 +3290,7 @@ begin
     GlobalAppOptions.OriginalFIle := '';
     acRestoreSort.Execute;
     Modified := true;
-    NotifyChange(NOTIFY_ITEM_IMPORT, 0, 0);
+    NotifyChanged(NOTIFY_ITEM_IMPORT, 0, 0);
   end;
   lvTranslateStrings.Items.Count := FTranslateFile.Items.Count;
   ScrollToTop;
@@ -3308,7 +3308,7 @@ begin
   if TfrmImportExport.Edit(FTranslateFile.Items, FTranslateFile.Orphans, WideExtractFilePath(Application.ExeName) + 'plugins',
     false, FImportIndex, Dummy) then
   begin
-    NotifyChange(NOTIFY_ITEM_EXPORT, 0, 0);
+    NotifyChanged(NOTIFY_ITEM_EXPORT, 0, 0);
     lvTranslateStrings.Items.Count := FTranslateFile.Items.Count;
   end;
 end;
@@ -3865,7 +3865,7 @@ begin
       end;
       Inc(i);
     end;
-    NotifyChange(NOTIFY_ITEM_NEW_ITEM, Integer(AItem), 0);
+    NotifyChanged(NOTIFY_ITEM_NEW_ITEM, Integer(AItem), 0);
   finally
     FTranslateFile.Items.Sort := FOldSort;
   end;
@@ -3889,7 +3889,7 @@ begin
   begin
     if not NotifyChanging(NOTIFY_ITEM_DEL_ITEM, Index, 0) then Exit;
     FTranslateFile.Items.Delete(Index);
-    NotifyChange(NOTIFY_ITEM_DEL_ITEM, Index, 0);
+    NotifyChanged(NOTIFY_ITEM_DEL_ITEM, Index, 0);
   end;
 end;
 
@@ -4004,7 +4004,7 @@ begin
         lvTranslateStrings.Items.EndUpdate;
       end;
     end;
-    NotifyChange(NOTIFY_ITEM_EDIT_ITEM, Integer(AItem), 0);
+    NotifyChanged(NOTIFY_ITEM_EDIT_ITEM, Integer(AItem), 0);
   finally
     ASections.Free;
   end;
@@ -4232,7 +4232,7 @@ begin
     FNotify.Remove(ANotify);
 end;
 
-procedure TfrmMain.NotifyChange(Msg, WParam, LParam: integer);
+procedure TfrmMain.NotifyChanged(Msg, WParam, LParam: integer);
 var i: integer;
 begin
   if FNotify <> nil then

@@ -145,6 +145,8 @@ type
     procedure SetTools(const Value: TToolItems);
     procedure SetFooter(const Value: TTntStrings);
     procedure SetHeader(const Value: TTntStrings);
+    function GetOption(const Section, Name: WideString): WideString;
+    procedure SetOption(const Section, Name, Value: WideString);
   public
     constructor Create(const AFilename: WideString);
     destructor Destroy; override;
@@ -154,6 +156,7 @@ type
     property Filename: WideString read FFilename;
     property WindowInfos[AForm: TForm]: TAppWindowInfo read GetWindowInfo write SetWindowInfo;
   public
+    property Option[const Section, Name: WideString]: WideString read GetOption write SetOption;
     property ShowQuotes: boolean read FShowQuotes write FShowQuotes;
     property InvertDictionary: boolean read FInvertDictionary write FInvertDictionary;
     property SaveFormPos: boolean read FSaveFormPos write FSaveFormPos default true;
@@ -741,6 +744,26 @@ end;
 procedure TAppOptions.SetHeader(const Value: TTntStrings);
 begin
   FHeader.Assign(Value);
+end;
+
+function TAppOptions.GetOption(const Section, Name: WideString): WideString;
+begin
+  with TWideIniFile.Create(Filename) do
+  try
+    Result := ReadString(Section, Name, '');
+  finally
+    Free;
+  end;
+end;
+
+procedure TAppOptions.SetOption(const Section, Name, Value: WideString);
+begin
+  with TWideIniFile.Create(Filename) do
+  try
+    WriteString(Section, Name, Value);
+  finally
+    Free;
+  end;
 end;
 
 end.

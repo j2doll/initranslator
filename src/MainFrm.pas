@@ -65,7 +65,7 @@ const
   WM_DELAYLOADED = WM_USER + 1001;
 
 type
-  TfrmMain = class(TfrmBase)
+  TfrmMain = class(TfrmBase, IApplication)
     StatusBar1: TTBXStatusBar;
     alMain: TTntActionList;
     acOpenOrig: TTntAction;
@@ -450,7 +450,7 @@ type
     FTranslateFile: TTranslateFiles;
     FLastFindText, FLastFolder: WideString;
     FModified: boolean;
-    FDict: TDictionaryItems;
+    FDictionary: TDictionaryItems;
     FCommandProcessor: boolean;
     FFileMonitors: array of TFileMonitorThread;
     FBookmarks: array[0..9] of integer;
@@ -458,6 +458,36 @@ type
     FExternalToolItems: TExternalToolItems;
 {$IFDEF USEADDICTSPELLCHECKER}
     adSpellChecker: TAddictSpell3;
+{$ENDIF USEADDICTSPELLCHECKER}
+    {IApplication}
+    FNotify: TInterfaceList;
+    function GetItems: ITranslationItems;
+    function GetOrphans: ITranslationItems;
+    function GetAppHandle: Cardinal;
+    function GetDictionaryItems: IDictionaryItems;
+    function GetHeader: WideString;
+    procedure SetHeader(const Value: WideString);
+    function GetFooter: WideString;
+    procedure SetFooter(const Value: WideString);
+    function GetAppOption(const Section, Name, Default: WideString): WideString; safecall;
+    procedure SetAppOption(const Section, Name, Value: WideString); safecall;
+    procedure RegisterNotify(const ANotify: INotify); safecall;
+    procedure UnRegisterNotify(const ANotify: INotify); safecall;
+    function BeginUpdate: Integer; safecall;
+    function EndUpdate: Integer; safecall;
+
+{
+    property Items:ITranslationItems read GetItems;
+    property Orphans:ITranslationItems read GetOrphans;
+    property Dictionary:IDictionaryItems read GetDictionaryItems;
+    property AppHandle:Cardinal read GetAppHandle;
+    property Header:WideString read GetHeader write SetHeader;
+    property Footer:WideString read GetFooter write SetFooter;
+}
+    {IApplication end}
+    function NotifyChanging(Msg, WParam, LParam: integer): WordBool;
+    procedure NotifyChange(Msg, WParam, LParam: integer);
+{$IFDEF USEADDICTSPELLCHECKER}
     procedure SpellCheckComplete(Sender: TObject);
     procedure CreateSpellChecker;
     procedure SpellCheckGetString(Sender: TObject;
@@ -473,11 +503,11 @@ type
     procedure LoadSettings(FirstLoad: boolean);
     procedure SaveSettings;
     procedure LoadTranslate;
-    function LoadOriginal(const FileName: WideString; Encoding: TEncoding):TEncoding;
-    function LoadTranslation(const FileName: WideString; Encoding: TEncoding):TEncoding;
-    function SaveTranslation(const FileName: WideString; Encoding: TEncoding; const InsertHeader:boolean=false; const InsertFooter:boolean = false): boolean;
+    function LoadOriginal(const FileName: WideString; Encoding: TEncoding): TEncoding;
+    function LoadTranslation(const FileName: WideString; Encoding: TEncoding): TEncoding;
+    function SaveTranslation(const FileName: WideString; Encoding: TEncoding; const InsertHeader: boolean = false; const InsertFooter: boolean = false): boolean;
     function SaveTranslationAs(const FileName: WideString; Encoding: TEncoding): boolean;
-    function SaveOriginal(const FileName: WideString; Encoding: TEncoding; const InsertHeader:boolean=false; const InsertFooter:boolean = false): boolean;
+    function SaveOriginal(const FileName: WideString; Encoding: TEncoding; const InsertHeader: boolean = false; const InsertFooter: boolean = false): boolean;
     function SaveOrigAs(const FileName: WideString; Encoding: TEncoding): boolean;
     procedure SetModified(const Value: boolean);
     function GetModified: boolean;
@@ -557,8 +587,8 @@ type
   public
     { Public declarations }
     property Modified: boolean read GetModified write SetModified;
-    property SelectedItem:ITranslationItem read GetSelectedItem write SetSelectedItem;
-    property SelectedListItem:TTntListItem read GetSelectedListItem write SetSelectedListItem;
+    property SelectedItem: ITranslationItem read GetSelectedItem write SetSelectedItem;
+    property SelectedListItem: TTntListItem read GetSelectedListItem write SetSelectedListItem;
   end;
 
 var
@@ -566,7 +596,7 @@ var
 
 implementation
 uses
-  ShellAPI, StrUtils, TntWindows, TntClipbrd, TntWideStrUtils, 
+  ShellAPI, StrUtils, TntWindows, TntClipbrd, TntWideStrUtils,
 {$IFDEF USEADDICTSPELLCHECKER}
   ad3ParseEngine,
 {$ENDIF USEADDICTSPELLCHECKER}
@@ -645,7 +675,7 @@ begin
   Application.ShowHint := GlobalAppOptions.ShowToolTips;
   Application.HintShortCuts := GlobalAppOptions.ShowToolTipShortCuts;
   ShowHint := Application.ShowHint;
-  FDict.IgnorePunctuation := GlobalAppOptions.DictIgnoreSpeedKeys;
+  FDictionary.IgnorePunctuation := GlobalAppOptions.DictIgnoreSpeedKeys;
   if GlobalAppOptions.ShowQuotes <> acShowQuotes.Checked then
     acShowQuotes.Execute;
   if acDictInvert.Checked <> GlobalAppOptions.InvertDictionary then
@@ -775,7 +805,7 @@ begin
   else if WideSameText('CREATEDICT', tmp) then
     CreateDict(false)
   else if WideSameText('CLEARDICT', tmp) then
-    FDict.Clear
+    FDictionary.Clear
   else if WideSameText('USEDICT', tmp) then
     UseDictionary
   else if WideSameText('INVERTDICT', tmp) then
@@ -855,15 +885,15 @@ begin
   Modified := false;
 end;
 
-function TfrmMain.LoadOriginal(const FileName: WideString; Encoding: TEncoding):TEncoding;
+function TfrmMain.LoadOriginal(const FileName: WideString; Encoding: TEncoding): TEncoding;
 begin
   WaitCursor;
+  Result := Encoding;
 
-  if not CheckModified then
-  begin
-    Result := Encoding;
+  if NotifyChanging(NOTIFY_ITEM_FILE_OPEN, Ord(false), Integer(PWideChar(Filename))) then
     Exit;
-  end;
+  if not CheckModified then
+    Exit;
 
   if WideFileExists(Filename) and not FCommandProcessor then
   begin
@@ -883,6 +913,7 @@ begin
   FLastFolder := WideExtractFilePath(Filename);
 
   Result := FTranslateFile.LoadOriginal(FileName, Encoding);
+  NotifyChange(NOTIFY_ITEM_FILE_OPEN, Ord(false), Integer(PWideChar(Filename)));
   GlobalAppOptions.OrigEncoding := Ord(Result);
   StartMonitor(FFileMonitors[cOrigMonitor], Filename);
 
@@ -895,14 +926,14 @@ begin
   acRestoreSortExecute(nil);
 end;
 
-function TfrmMain.LoadTranslation(const FileName: WideString; Encoding: TEncoding):TEncoding;
+function TfrmMain.LoadTranslation(const FileName: WideString; Encoding: TEncoding): TEncoding;
 begin
   WaitCursor;
-  if not CheckModified then
-  begin
-    Result := Encoding;
+  Result := Encoding;
+  if NotifyChanging(NOTIFY_ITEM_FILE_OPEN, Ord(true), Integer(PWideChar(Filename))) then
     Exit;
-  end;
+  if not CheckModified then
+    Exit;
   StopMonitor(FFileMonitors[cTransMonitor]);
   reOriginal.Clear;
   reTranslation.Clear;
@@ -916,6 +947,7 @@ begin
   AddMRUFile(FileName, false);
 
   Result := FTranslateFile.LoadTranslation(FileName, Encoding);
+  NotifyChange(NOTIFY_ITEM_FILE_OPEN, Ord(true), Integer(PWideChar(Filename)));
   GlobalAppOptions.TransEncoding := Ord(Result);
   StartMonitor(FFileMonitors[cTransMonitor], FileName);
   lvTranslateStrings.Items.Count := FTranslateFile.Items.Count;
@@ -938,7 +970,7 @@ begin
 end;
 
 function TfrmMain.SaveTranslation(const FileName: WideString; Encoding: TEncoding;
-   const InsertHeader:boolean=false; const InsertFooter:boolean = false): boolean;
+  const InsertHeader: boolean = false; const InsertFooter: boolean = false): boolean;
 var
   i: integer;
 begin
@@ -948,7 +980,14 @@ begin
     Result := SaveTranslationAs(FileName, Encoding);
     Exit;
   end;
+
   WaitCursor;
+
+  if NotifyChanging(NOTIFY_ITEM_FILE_SAVE, Ord(true), Integer(PWideChar(Filename))) then
+  begin
+    Result := false;
+    Exit;
+  end;
 
   // stop the monitor thread
   StopMonitor(FFileMonitors[cTransMonitor]);
@@ -966,6 +1005,7 @@ begin
     else
       FTranslateFile.Footer := '';
     FTranslateFile.SaveTranslation(FileName, Encoding);
+    NotifyChange(NOTIFY_ITEM_FILE_SAVE, Ord(true), Integer(PWideChar(Filename)));
   except
     on E: Exception do
       HandleFileCreateException(Self, E, FileName);
@@ -995,16 +1035,16 @@ begin
     GlobalAppOptions.FilterIndex := SaveTransDlg.FilterIndex;
     SaveTranslation(SaveTransDlg.FileName,
       TEncoding(SaveTransDlg.EncodingIndex),
-        SaveTransDlg.InsertHeader, SaveTransDlg.InsertFooter);
+      SaveTransDlg.InsertHeader, SaveTransDlg.InsertFooter);
     Result := true;
-  end;         
+  end;
   // clear for next time
   SaveTransDlg.InsertHeader := false;
   SaveTransDlg.InsertFooter := false;
 end;
 
 function TfrmMain.SaveOriginal(const FileName: WideString; Encoding: TEncoding;
-   const InsertHeader:boolean=false; const InsertFooter:boolean = false): boolean;
+  const InsertHeader: boolean = false; const InsertFooter: boolean = false): boolean;
 var
   i: integer;
 begin
@@ -1014,7 +1054,13 @@ begin
     Result := SaveOrigAs(FileName, Encoding);
     Exit;
   end;
+  
   WaitCursor;
+  if NotifyChanging(NOTIFY_ITEM_FILE_SAVE, Ord(false), Integer(PWideChar(Filename))) then
+  begin
+    Result := false;
+    Exit;
+  end;
 
   // stop the monitor thread
   StopMonitor(FFileMonitors[cTransMonitor]);
@@ -1032,6 +1078,7 @@ begin
     else
       FTranslateFile.Footer := '';
     FTranslateFile.SaveOriginal(FileName, Encoding);
+    NotifyChange(NOTIFY_ITEM_FILE_SAVE, Ord(false), Integer(PWideChar(Filename)));
   except
     on E: Exception do
       HandleFileCreateException(Self, E, FileName);
@@ -1071,24 +1118,28 @@ end;
 procedure TfrmMain.CreateDict(ClearList: boolean);
 var
   i: integer;
-  procedure DictAdd(const AOriginal, ATranslation:WideString);
+
+  procedure DictAdd(const AOriginal, ATranslation: WideString);
   var
-    D:TDictionaryItem;
+    D: TDictionaryItem;
   begin
     if (trim(AOriginal) <> '') then
     begin
-      D := FDict.Add(trim(AOriginal));
+      D := FDictionary.Add(trim(AOriginal));
       if (trim(ATranslation) <> '') then
         D.Translations.Add(trim(ATranslation));
     end;
   end;
 begin
   WaitCursor;
+  if not NotifyChanging(NOTIFY_ITEM_DICT_NEW, 0, 0) then
+    Exit;
   if ClearList then
-    FDict.Clear;
+    FDictionary.Clear;
   for i := 0 to FTranslateFile.Items.Count - 1 do
     with FTranslateFile.Items[i] do
       DictAdd(trim(Original), trim(Translation));
+  NotifyChange(NOTIFY_ITEM_DICT_NEW, 0, 0);
   OpenDictDlg.Filename := '';
   SaveDictDlg.FileName := '';
   UpdateStatus;
@@ -1097,13 +1148,16 @@ end;
 procedure TfrmMain.LoadDictionary(const FileName: WideString);
 begin
   WaitCursor;
+  if not NotifyChanging(NOTIFY_ITEM_DICT_OPEN, Integer(PWideChar(Filename)), 0) then
+    Exit;
   if not CheckDictModified then
     Exit;
   SaveDictDlg.FileName := FileName;
   OpenDictDlg.FileName := FileName;
   if acDictInvert.Checked then
     acDictInvert.Execute; // toggle invert
-  FDict.LoadFromFile(FileName);
+  FDictionary.LoadFromFile(FileName);
+  NotifyChange(NOTIFY_ITEM_DICT_OPEN, Integer(PWideChar(Filename)), 0);
   GlobalAppOptions.DictionaryFile := Filename;
   if not acDictInvert.Checked and GlobalAppOptions.InvertDictionary then
     acDictInvert.Execute; // toggle invert
@@ -1114,10 +1168,13 @@ end;
 procedure TfrmMain.SaveDictionary(const FileName: WideString);
 begin
   WaitCursor;
+  if not NotifyChanging(NOTIFY_ITEM_DICT_SAVE, Integer(PWideChar(Filename)), 0) then
+    Exit;
   // stop the monitor thread
   StopMonitor(FFileMonitors[cDictMonitor]);
   try
-    FDict.SaveToFile(SaveDictDlg.FileName);
+    FDictionary.SaveToFile(SaveDictDlg.FileName);
+    NotifyChange(NOTIFY_ITEM_DICT_SAVE, Integer(PWideChar(Filename)), 0);
     GlobalAppOptions.DictionaryFile := Filename;
   except
     on E: Exception do
@@ -1141,7 +1198,7 @@ begin
   begin
     if FTranslateFile.Items[i].Translated and GlobalAppOptions.DictIgnoreNonEmpty then
       Continue;
-    j := FDict.IndexOf(FTranslateFile.Items[i].Original);
+    j := FDictionary.IndexOf(FTranslateFile.Items[i].Original);
     if (j >= 0) then // dictionary item found
     begin
       if FPrompt then
@@ -1150,17 +1207,17 @@ begin
         lvTranslateStrings.Items[i].Selected := true;
         lvTranslateStrings.Items[i].Focused := true;
       end;
-      S := FDict[j].DefaultTranslation;
+      S := FDictionary[j].DefaultTranslation;
       if S = '' then
         S := FTranslateFile.Items[i].Translation;
       FModified := false;
       if FPrompt then
-        FResult := TfrmDictTranslationSelect.Edit(FDict[j], S, FModified, FPrompt)
-      else if FDict[j].Translations.Count > 0 then
-        S := FDict[j].DefaultTranslation
+        FResult := TfrmDictTranslationSelect.Edit(FDictionary[j], S, FModified, FPrompt)
+      else if FDictionary[j].Translations.Count > 0 then
+        S := FDictionary[j].DefaultTranslation
       else
         Continue;
-      FDict.Modified := FDict.Modified or FModified;
+      FDictionary.Modified := FDictionary.Modified or FModified;
       case FResult of
         cDictIgnore:
           if not FPrompt then
@@ -1170,7 +1227,7 @@ begin
         cDictAdd:
           begin
             if (S <> '') and FPrompt then
-              FDict[j].Translations.Add(S);
+              FDictionary[j].Translations.Add(S);
             FTranslateFile.Items[i].Translation := S;
           end;
         cDictUse:
@@ -1288,15 +1345,16 @@ var
   i: integer;
 
   // NB! Pass in Font.Size for StartSize and MinSize. AWidth is max width in pixels. Returns positive Font.Height
+
   function WideGetTextExtentPoint32(DC: HDC; Str: PWideChar; Count: Integer;
-  var Size: TSize): BOOL;
+    var Size: TSize): BOOL;
   begin
     if Win32PlatformIsUnicode then
       Result := GetTextExtentPoint32W(DC, Str, Count, Size)
     else
       Result := GetTextExtentPoint32A(DC, PAnsiChar(AnsiString(Str)), Count, Size);
   end;
-  
+
   function CalcMaxFontSize(ACanvas: TCanvas; const S: WideString; AWidth: integer; StartSize, MinSize: integer): integer;
   var
     aSize: TSize;
@@ -1931,7 +1989,7 @@ end;
 function TfrmMain.CheckDictModified: boolean;
 begin
   Result := true;
-  if FDict.Modified then
+  if FDictionary.Modified then
   begin
     case YesNoCancel(Translate(ClassName, SSaveDictPrompt), Translate(ClassName, SConfirmCaption)) of
       IDYES:
@@ -2031,9 +2089,9 @@ begin
     Index := -1;
   ACount := FTranslateFile.Items.Count;
   acUndo.Enabled := reTranslation.Focused and Modified;
-  acDictSave.Enabled := FDict.Count > 0;
+  acDictSave.Enabled := FDictionary.Count > 0;
   acDictEdit.Enabled := acDictSave.Enabled;
-  acDictTranslate.Enabled := (FDict.Count > 0) and (ACount > 0);
+  acDictTranslate.Enabled := (FDictionary.Count > 0) and (ACount > 0);
   acDictAdd.Enabled := (Index > -1) and (FTranslateFile.Items[Index].Original <> '') and (FTranslateFile.Items[Index].Translation <> '');
 
   acFind.Enabled := ACount > 0;
@@ -2181,7 +2239,7 @@ end;
 
 procedure TfrmMain.acDictSaveExecute(Sender: TObject);
 begin
-  if FDict.Count = 0 then
+  if FDictionary.Count = 0 then
   begin
     ErrMsg(Translate(ClassName, SErrDictEmpty), Translate(ClassName, SInfoCaption));
     Exit;
@@ -2212,7 +2270,7 @@ end;
 
 procedure TfrmMain.acDictTranslateExecute(Sender: TObject);
 begin
-  if FDict.Count = 0 then
+  if FDictionary.Count = 0 then
   begin
     ErrMsg(Translate(ClassName, SErrDictEmpty), Translate(ClassName, SInfoCaption));
     Exit;
@@ -2272,7 +2330,7 @@ begin
   ToolbarFont.CharSet := DEFAULT_CHARSET;
   FTranslateFile := TTranslateFiles.Create;
   FFindReplace := TFindReplace.Create(Self);
-  FDict := TDictionaryItems.Create;
+  FDictionary := TDictionaryItems.Create;
   SetLength(FFileMonitors, 3);
 
   LoadSettings(true);
@@ -2297,9 +2355,10 @@ begin
   DragAcceptFiles(Handle, false);
   SaveEditChanges;
   SaveSettings;
-  FTranslateFile.Free;
-  FDict.Free;
-  FExternalToolItems.Free;
+  FreeAndNil(FNotify);
+  FreeAndNil(FTranslateFile);
+  FreeAndNil(FDictionary);
+  FreeAndNil(FExternalToolItems);
   for i := 0 to Length(FFileMonitors) - 1 do
     if FFileMonitors[i] <> nil then
       FFileMonitors[i].Terminate;
@@ -2334,15 +2393,18 @@ begin
     i := SelectedListItem.Index;
     with FTranslateFile.Items[i] do
     begin
+      if not NotifyChanging(NOTIFY_ITEM_TRANS_CHANGE, Integer(PWideChar(Translation)), Integer(PWideChar(reTranslation.Text))) then
+        Exit;
       Translation := RemoveQuotes(trimCRLFRight(reTranslation.Text));
-      Translated := MyWideDequotedStr(Translation, TransQuote) <> '';
-      lvTranslateStrings.Invalidate;
-      if GlobalAppOptions.UseTranslationEverywhere then
-      begin
-        reTranslation.Modified := false; // avoid infinite recursion
-        acReplaceEverywhere.Execute;
-      end;
-      Modified := true;
+      NotifyChange(NOTIFY_ITEM_TRANS_CHANGE, Integer(PWideChar(Translation)), 0);
+        Translated := MyWideDequotedStr(Translation, TransQuote) <> '';
+        lvTranslateStrings.Invalidate;
+        if GlobalAppOptions.UseTranslationEverywhere then
+        begin
+          reTranslation.Modified := false; // avoid infinite recursion
+          acReplaceEverywhere.Execute;
+        end;
+        Modified := true;
     end;
     UpdateStatus;
   end
@@ -2411,7 +2473,6 @@ end;
 
 procedure TfrmMain.acSaveTransExecute(Sender: TObject);
 begin
-  //  if not HandleImportedSave then
   SaveTranslation(GlobalAppOptions.TranslationFile, TEncoding(GlobalAppOptions.TransEncoding));
 end;
 
@@ -2568,7 +2629,7 @@ begin
   if (Item <> nil) and (Stage = cdPrePaint) then
   begin
     Sender.Canvas.Font := TListView(Sender).Font;
-    if [cdsFocused] *  State <> [] then
+    if [cdsFocused] * State <> [] then
     begin
       Sender.Canvas.Brush.Color := clHighlight;
       Sender.Canvas.Font.Color := clHighlightText;
@@ -2588,7 +2649,8 @@ begin
       Sender.Canvas.Brush.Color := GlobalAppOptions.ColorOddRow;
       Sender.Canvas.Font.Color := GlobalAppOptions.ColorFontOddRow;
     end;
-    DefaultDraw := true;;
+    DefaultDraw := true;
+    ;
   end;
 end;
 
@@ -2659,7 +2721,7 @@ procedure TfrmMain.acDictInvertExecute(Sender: TObject);
 begin
   WaitCursor;
   acDictInvert.Checked := not acDictInvert.Checked;
-  FDict.Invert;
+  FDictionary.Invert;
   UpdateStatus;
 end;
 
@@ -2670,9 +2732,9 @@ begin
   Index := SelectedListItem.Index;
   with FTranslateFile.Items[Index] do
     if acDictInvert.Checked then
-      FDict.Add(Translation).Translations.Add(Original)
+      FDictionary.Add(Translation).Translations.Add(Original)
     else
-      FDict.Add(Original).Translations.Add(Translation);
+      FDictionary.Add(Original).Translations.Add(Translation);
 end;
 
 procedure TfrmMain.acHelpExecute(Sender: TObject);
@@ -2740,20 +2802,20 @@ begin
         lvTranslateStrings.Items[j];
   end;
   GlobalAppOptions.TranslationFile := '';
-  GlobalAppOptions.TransEncoding := GlobalAppOptions.DefaultTransEncoding; 
+  GlobalAppOptions.TransEncoding := GlobalAppOptions.DefaultTransEncoding;
   UpdateStatus;
 end;
 
 procedure TfrmMain.acCreateTranslationFileExecute(Sender: TObject);
 const
-  cTranslatableForms:array [0..11] of TFormClass =
-    (TfrmOptions, TfrmOrphans,TfrmConfigKbd,TfrmImportExport, TfrmTools, TfrmPromptArgs,
-     TfrmEditItem, TfrmTrim, TfrmConfigSuspicious, TfrmDictTranslationSelect,
-     TfrmDictEdit, TfrmColors);
+  cTranslatableForms: array[0..11] of TFormClass =
+  (TfrmOptions, TfrmOrphans, TfrmConfigKbd, TfrmImportExport, TfrmTools, TfrmPromptArgs,
+    TfrmEditItem, TfrmTrim, TfrmConfigSuspicious, TfrmDictTranslationSelect,
+    TfrmDictEdit, TfrmColors);
 
 var
-  i:integer;
-  AForms:array[0..11] of TForm;
+  i: integer;
+  AForms: array[0..11] of TForm;
 begin
   with TTntSaveDialog.Create(nil) do
   try
@@ -3207,6 +3269,7 @@ end;
 procedure TfrmMain.acImportExecute(Sender: TObject);
 begin
   WaitCursor;
+  if not NotifyChanging(NOTIFY_ITEM_IMPORT, 0, 0) then Exit;
   SaveEditChanges;
   //  (FTranslateFile.Items as ITranslationItems)._AddRef;
   if not CheckModified then
@@ -3227,6 +3290,7 @@ begin
     GlobalAppOptions.OriginalFIle := '';
     acRestoreSort.Execute;
     Modified := true;
+    NotifyChange(NOTIFY_ITEM_IMPORT, 0, 0);
   end;
   lvTranslateStrings.Items.Count := FTranslateFile.Items.Count;
   ScrollToTop;
@@ -3240,9 +3304,13 @@ var
 begin
   //  (FTranslateFile.Items as ITranslationItems)._AddRef;
   WaitCursor;
-  TfrmImportExport.Edit(FTranslateFile.Items, FTranslateFile.Orphans, WideExtractFilePath(Application.ExeName) + 'plugins',
-    false, FImportIndex, Dummy);
-  lvTranslateStrings.Items.Count := FTranslateFile.Items.Count;
+  if not NotifyChanging(NOTIFY_ITEM_EXPORT, 0, 0) then Exit;
+  if TfrmImportExport.Edit(FTranslateFile.Items, FTranslateFile.Orphans, WideExtractFilePath(Application.ExeName) + 'plugins',
+    false, FImportIndex, Dummy) then
+  begin
+    NotifyChange(NOTIFY_ITEM_EXPORT, 0, 0);
+    lvTranslateStrings.Items.Count := FTranslateFile.Items.Count;
+  end;
 end;
 
 procedure TfrmMain.acToggleTranslatedExecute(Sender: TObject);
@@ -3370,18 +3438,18 @@ begin
   else
     R := nil;
   i := -1;
-  if Assigned(R) and (FDict.Count > 0) then
+  if Assigned(R) and (FDictionary.Count > 0) then
   begin
     if R.SelLength = 0 then
       S := R.Text
     else
       S := R.SelText;
-    i := FDict.IndexOf(trim(S));
+    i := FDictionary.IndexOf(trim(S));
     if i >= 0 then
-      for j := 0 to FDict[i].Translations.Count - 1 do
+      for j := 0 to FDictionary[i].Translations.Count - 1 do
       begin
         M := TSpTBXItem.Create(popEdit);
-        M.Caption := FDict[i].Translations[j];
+        M.Caption := FDictionary[i].Translations[j];
         M.OnClick := DoTranslateSuggestionClick;
         smiDictionary.Add(M);
       end;
@@ -3400,6 +3468,7 @@ procedure TfrmMain.SpellCheckExecute(Sender: TObject);
 var
   i, j: integer;
 begin
+  if not NotifyChanging(NOTIFY_ITEM_SPELLCHECK, 0, 0) then Exit;
   CreateSpellChecker;
   adSpellChecker.StartSequenceCheck;
   try
@@ -3416,7 +3485,6 @@ begin
       adSpellChecker.CheckWinControl(reTranslation, ctAll);
       if adSpellChecker.CheckCanceled then
         Exit;
-      // here I would like to check if the dialog was closed (Cancel clicked) so I can break out of the loop
     end;
     if j <> 0 then
       for i := 0 to j do
@@ -3426,7 +3494,6 @@ begin
         SelectedListItem.MakeVisible(false);
         // the OnCompleteCheck event is hooked up to save any changes to the richedit back to the listview
         adSpellChecker.CheckWinControl(reTranslation, ctAll);
-        // here I would like to check if the dialog was closed (Cancel clicked) so I can break out of the loop
         if adSpellChecker.CheckCanceled then
           Exit;
       end;
@@ -3434,6 +3501,7 @@ begin
     adSpellChecker.StopSequenceCheck;
     FreeAndNil(adSpellChecker);
   end;
+  NotifyChanged(NOTIFY_ITEM_SPELLCHECK, 0, 0);
 end;
 
 procedure TfrmMain.SpellCheckComplete(Sender: TObject);
@@ -3573,7 +3641,7 @@ procedure TfrmMain.DoExternalToolClick(Sender: TObject);
 var
   T: TExternalToolItem;
   i: integer;
-  AItem:ITranslationItem;
+  AItem: ITranslationItem;
 begin
 
   i := lvTranslateStrings.ItemIndex;
@@ -3722,7 +3790,7 @@ begin
   begin
     if RunProcess(trim(Cmd), trim(Args), trim(Dir), ATool.WaitForCompletion,
       ATool.WaitForCompletion, SW_SHOWNORMAL, ReturnValue) then
-        ReturnValue := 0;
+      ReturnValue := 0;
   end;
 
   if (ReturnValue <> 0) and (ATool.WaitForCompletion or ATool.UseShellExecute) then
@@ -3767,6 +3835,7 @@ var
   AIndex, i: integer;
   FOldSort: TTranslateSortType;
 begin
+  if not NotifyChanging(NOTIFY_ITEM_NEW_ITEM, Integer(AItem), 0) then Exit;
   FOldSort := FTranslateFile.Items.Sort;
   try
     FTranslateFile.Items.Sort := stIndex;
@@ -3779,12 +3848,12 @@ begin
       begin
         while i <= AIndex do
         begin
-                // find first item with another section name
+          // find first item with another section name
           if not WideSameText(FTranslateFile.Items[i].Section, AItem.Section) then
           begin
-                  // insert our new item into the list
+            // insert our new item into the list
             FTranslateFile.Items[AIndex].Index := i;
-                  // increment index of all subsequent items
+            // increment index of all subsequent items
             while i < AIndex do
             begin
               FTranslateFile.Items[i].Index := FTranslateFile.Items[i].Index + 1;
@@ -3796,6 +3865,7 @@ begin
       end;
       Inc(i);
     end;
+    NotifyChange(NOTIFY_ITEM_NEW_ITEM, Integer(AItem), 0);
   finally
     FTranslateFile.Items.Sort := FOldSort;
   end;
@@ -3816,7 +3886,11 @@ end;
 procedure TfrmMain.DeleteItem(Index: integer);
 begin
   if (Index >= 0) and (Index < FTranslateFile.Items.Count) then
+  begin
+    if not NotifyChanging(NOTIFY_ITEM_DEL_ITEM, Index, 0) then Exit;
     FTranslateFile.Items.Delete(Index);
+    NotifyChange(NOTIFY_ITEM_DEL_ITEM, Index, 0);
+  end;
 end;
 
 procedure TfrmMain.acAddItemExecute(Sender: TObject);
@@ -3870,34 +3944,36 @@ var
   AItem, ANewItem: ITranslationItem;
   ASections: TTntStringlist;
 
-  procedure CopyItem(const FromItem, ToItem: ITranslationItem);
+  procedure CopyItem(const Src, Dest: ITranslationItem);
   begin
-    ToItem.Index := FromItem.Index;
-    ToItem.Translated := FromItem.Translated;
-    ToItem.TransComments := FromItem.TransComments;
-    ToItem.OrigComments := FromItem.OrigComments;
-    ToItem.Original := FromItem.Original;
-    ToItem.Translation := FromItem.Translation;
-    ToItem.Section := FromItem.Section;
-    ToItem.Name := FromItem.Name;
-    ToItem.ClearOriginal := FromItem.ClearOriginal;
-    ToItem.ClearTranslation := FromItem.ClearTranslation;
-    ToItem.PrivateStorage := FromItem.PrivateStorage;
+    Dest.Index := Src.Index;
+    Dest.Translated := Src.Translated;
+    Dest.TransComments := Src.TransComments;
+    Dest.OrigComments := Src.OrigComments;
+    Dest.Original := Src.Original;
+    Dest.Translation := Src.Translation;
+    Dest.Section := Src.Section;
+    Dest.Name := Src.Name;
+    Dest.ClearOriginal := Src.ClearOriginal;
+    Dest.ClearTranslation := Src.ClearTranslation;
+    Dest.PrivateStorage := Src.PrivateStorage;
   end;
 
-  function EqualItems(const FromItem, ToItem: ITranslationItem): boolean;
+  function EqualItems(const Src, Dest: ITranslationItem): boolean;
   begin
     Result :=
-      WideSameStr(FromItem.Section, ToItem.Section)
-      and WideSameStr(FromItem.Original, ToItem.Original)
-      and WideSameStr(FromItem.Translation, ToItem.Translation)
-      and WideSameStr(FromItem.OrigComments, ToItem.OrigComments)
-      and WideSameStr(FromItem.TransComments, ToItem.TransComments);
+      WideSameStr(Src.Section, Dest.Section)
+      and WideSameStr(Src.Name, Dest.Name)
+      and WideSameStr(Src.Original, Dest.Original)
+      and WideSameStr(Src.Translation, Dest.Translation)
+      and WideSameStr(Src.OrigComments, Dest.OrigComments)
+      and WideSameStr(Src.TransComments, Dest.TransComments);
   end;
 begin
-  ANewItem := FTranslateFile.Items.CreateItem;
   Index := SelectedListItem.Index;
   AItem := FTranslateFile.Items[Index];
+  if not NotifyChanging(NOTIFY_ITEM_EDIT_ITEM, Integer(AItem), 0) then Exit;
+  ANewItem := FTranslateFile.Items.CreateItem;
   ASections := TTntStringlist.Create;
   try
     GetSections(ASections);
@@ -3928,6 +4004,7 @@ begin
         lvTranslateStrings.Items.EndUpdate;
       end;
     end;
+    NotifyChange(NOTIFY_ITEM_EDIT_ITEM, Integer(AItem), 0);
   finally
     ASections.Free;
   end;
@@ -4038,7 +4115,7 @@ end;
 
 procedure TfrmMain.acDictEditExecute(Sender: TObject);
 begin
-  TfrmDictEdit.Edit(FDict);
+  TfrmDictEdit.Edit(FDictionary);
 end;
 
 function TfrmMain.GetSelectedItem: ITranslationItem;
@@ -4067,6 +4144,120 @@ begin
   lvTranslateStrings.Selected := Value;
 end;
 
+function TfrmMain.BeginUpdate: Integer;
+begin
+  lvTranslateStrings.Items.BeginUpdate;
+end;
+
+function TfrmMain.EndUpdate: Integer;
+begin
+  lvTranslateStrings.Items.EndUpdate;
+  if lvTranslateStrings.Items.Count <> FTRanslateFile.Items.Count then
+  begin
+    lvTranslateStrings.Items.Count := FTRanslateFile.Items.Count;
+    lvTranslateStrings.Invalidate;
+  end;
+end;
+
+function TfrmMain.GetAppHandle: Cardinal;
+begin
+  Result := Application.Handle;
+end;
+
+function TfrmMain.GetAppOption(const Section, Name,
+  Default: WideString): WideString;
+begin
+  Result := GlobalAppOptions.Option[Section, Name];
+  if Result = '' then
+    Result := Default;
+end;
+
+function TfrmMain.GetDictionaryItems: IDictionaryItems;
+begin
+  Result := FDictionary;
+end;
+
+function TfrmMain.GetFooter: WideString;
+begin
+  Result := GlobalAppOptions.Footer.Text;
+end;
+
+function TfrmMain.GetHeader: WideString;
+begin
+  Result := GlobalAppOptions.Header.Text;
+end;
+
+function TfrmMain.GetItems: ITranslationItems;
+begin
+  Result := FTranslateFile.Items;
+end;
+
+function TfrmMain.GetOrphans: ITranslationItems;
+begin
+  Result := FTranslateFile.Orphans;
+end;
+
+procedure TfrmMain.RegisterNotify(const ANotify: INotify);
+begin
+  if FNotify = nil then
+    FNotify := TInterfaceList.Create;
+  FNotify.Add(ANotify);
+end;
+
+procedure TfrmMain.SetAppOption(const Section, Name, Value: WideString);
+var S: WideString;
+begin
+  S := GlobalAppOptions.Option[Section, Name];
+  if not WideSameStr(S, Value) then
+  begin
+    SaveSettings;
+    GlobalAppOptions.Option[Section, Name] := Value;
+    LoadSettings(false);
+  end;
+end;
+
+procedure TfrmMain.SetFooter(const Value: WideString);
+begin
+  GlobalAppOptions.Footer.Text := Value;
+end;
+
+procedure TfrmMain.SetHeader(const Value: WideString);
+begin
+  GlobalAppOptions.Header.Text := Value;
+end;
+
+procedure TfrmMain.UnRegisterNotify(const ANotify: INotify);
+begin
+  if FNotify <> nil then
+    FNotify.Remove(ANotify);
+end;
+
+procedure TfrmMain.NotifyChange(Msg, WParam, LParam: integer);
+var i: integer;
+begin
+  if FNotify <> nil then
+    for i := 0 to FNotify.Count - 1 do
+      INotify(FNotify[i]).Changed(Msg, WParam, LParam);
+end;
+
+function TfrmMain.NotifyChanging(Msg, WParam, LParam: integer): WordBool;
+var
+  i: integer;
+  AllowChange: WordBool;
+begin
+  Result := true;
+  if FNotify <> nil then
+    for i := 0 to FNotify.Count - 1 do
+    begin
+      AllowChange := true;
+      INotify(FNotify[i]).Changing(Msg, WParam, LParam, AllowChange);
+      if not AllowChange then
+      begin
+        Result := false;
+        Break;
+      end;
+    end;
+end;
 
 end.
 

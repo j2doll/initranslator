@@ -25,7 +25,9 @@ interface
 
 type
   TTranslateSortType = integer;
+  
 const
+  // IFileParser.Capabilities
   CAP_IMPORT = 1; // we can import
   CAP_EXPORT = 2; // we can export
   CAP_CONFIGURE = 4; // we have a configuration dialog
@@ -33,6 +35,7 @@ const
   CAP_ITEM_INSERT = 16; // we support adding items
   CAP_ITEM_EDIT = 32; // we support modifying the items
 
+  // ITranslationItem.Sort (TTranslateSortType)
   stNone = 0;
   stSection = 1;
   stOriginal = 2;
@@ -42,9 +45,25 @@ const
   stIndex = 6;
   stInvertIndex = 7;
 
+  // IToolItem.Status
   TOOL_ENABLED = 1;
   TOOL_CHECKED = 2;
   TOOL_VISIBLE = 4;
+
+  // INotify
+  NOTIFY_ITEM_TRANS_CHANGE =  1;  // WParam = PWideChar(original), LParam = PWideChar(new)
+  NOTIFY_ITEM_ORIG_CHANGE  =  2;  // WParam = PWideChar(original), LParam = PWideChar(new)
+  NOTIFY_ITEM_FILE_OPEN    =  3;  // WParam = 0 if original, 1 if translation,  LParam = PWideChar(Filename)
+  NOTIFY_ITEM_FILE_SAVE    =  4;  // WParam = 0 if original, 1 if translation , LParam = PWideChar(Filename)
+  NOTIFY_ITEM_DICT_OPEN    =  5;  // WParam = PWideChar(Filename)
+  NOTIFY_ITEM_DICT_SAVE    =  6;  // WParam = PWideChar(Filename)
+  NOTIFY_ITEM_DICT_NEW     =  7;  // no params
+  NOTIFY_ITEM_IMPORT       =  8;  // no params
+  NOTIFY_ITEM_EXPORT       =  9;  // no params
+  NOTIFY_ITEM_SPELLCHECK   = 10;  // no params
+  NOTIFY_ITEM_NEW_ITEM     = 11;  // WParam = Integer(Item) to be added (ITranslationItem)
+  NOTIFY_ITEM_EDIT_ITEM    = 12;  // WParam = Integer(Item) to be edited (ITranslationItem)
+  NOTIFY_ITEM_DEL_ITEM     = 13;  // WParam = Index of item to delete
 
 type
   ITranslationItems = interface;
@@ -147,9 +166,11 @@ type
     procedure Init(AppHandle: Cardinal); safecall;
   end;
 
+  // NB! not used!
   IFileParsers = interface(IInterface)
   ['{492B53C5-4FE1-4B3C-9A0B-4E9B3541E5C5}']
     function Count:Integer;safecall;
+    // return S_OK if the index is valid
     function FileParser(Index:Integer; out FileParser:IFileParsers):HResult; safecall;
   end;
 
@@ -159,7 +180,7 @@ type
   ['{E14F5620-0EC9-43B5-816C-1A265C3FF237}']
     function DisplayName:WideString;safecall; // what to display on the menu
     function About:WideString;safecall;
-    function Status(const Items, Orphans: ITranslationItems; const SelectedItem:ITranslationItem):Integer; safecall; // TOOL_ENABLED or TOOL_CHECKED
+    function Status(const Items, Orphans: ITranslationItems; const SelectedItem:ITranslationItem):Integer; safecall; // TOOL_VISIBLE, TOOL_ENABLED, TOOL_CHECKED
     function Icon:LongWord; safecall; // HICON: return <= 0 for no icon
 
     function Execute(const Items, Orphans: ITranslationItems; var SelectedItem:ITranslationItem): HResult; safecall;
@@ -174,6 +195,15 @@ type
     function ToolItem(Index:Integer; out ToolItem:IToolItem):HResult;safecall;
   end;
 
+  INotify = interface(IInterface)
+  ['{01A00A6A-2AC6-478C-872D-E75E9F5D6D42}']
+    // Msg is one of the NOTIFY_ message constants, WParam and LParam are dependent on context
+    // If you set AllowChange to false, IniTranslator will abort the change *without notifying the user*
+    procedure Changing(Msg:Integer; WParam, LParam:Integer; out AllowChange:WordBool);safecall;
+    procedure Changed(Msg:Integer; WParam, LParam:Integer);safecall;
+  end;
+
+  // NB! not used!
   // not completed
   IApplication = interface(IInterface)
   ['{61FD76C9-714C-4DDF-BEB2-19A4631B444C}']
@@ -181,16 +211,25 @@ type
     function GetOrphans:ITranslationItems;
     function GetAppHandle:Cardinal;
     function GetDictionaryItems:IDictionaryItems;
+    function GetHeader:WideString;
+    procedure SetHeader(const Value:WideString);
+    function GetFooter:WideString;
+    procedure SetFooter(const Value:WideString);
+
+    function GetAppOption(const Section, Name, Default: WideString):WideString;safecall;
+    procedure SetAppOption(const Section, Name, Value:WideString);safecall;
+    function BeginUpdate:Integer;safecall;
+    function EndUpdate:Integer;safecall;
+    procedure RegisterNotify(const ANotify:INotify);safecall;
+    procedure UnRegisterNotify(const ANotify:INotify);safecall;
+
 
     property Items:ITranslationItems read GetItems;
     property Orphans:ITranslationItems read GetOrphans;
-    property Dicitonary:IDictionaryItems read GetDictionaryItems;
+    property Dictionary:IDictionaryItems read GetDictionaryItems;
     property AppHandle:Cardinal read GetAppHandle;
-
-    function Changing:WordBool;safecall;
-    procedure Change;safecall;
-    function BeginUpdate:Integer;safecall;
-    function EndUpdate:Integer;safecall;
+    property Header:WideString read GetHeader write SetHeader;
+    property Footer:WideString read GetFooter write SetFooter;
   end;
 
   // return S_OK if all is fine

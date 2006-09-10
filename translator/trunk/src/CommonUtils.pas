@@ -166,8 +166,8 @@ begin
       cbSize := sizeof(TMsgBoxParamsW);
       hwndOwner := GetActiveWindow;
       hInstance := SysInit.hInstance;
-      lpszText := PWideChar(WideString(AText));
-      lpszCaption := PWideChar(WideString(ACaption));
+      lpszText := PWideChar(AText);
+      lpszCaption := PWideChar(ACaption);
       dwStyle := MB_OK or MB_USERICON;
       lpszIcon := PWideChar(WideString('MAINICON'));
       dwContextHelpId := 0;

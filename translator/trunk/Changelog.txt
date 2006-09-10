@@ -2,9 +2,9 @@ Ini Translator Changelog
 ========================
 2006-08-17:
 - Added support for Headers and Footers
-- UI for setting default encoding for new files (OPtionsFrm)
+- UI for setting default encoding for new files (OptionsFrm)
 - New interfaces for accessing Dictionary (TransIntf)
-- Renamed DLL entry point (TRansIntf)
+- Renamed DLL entry point (TransIntf)
 - Updated docs
 - Header and Footer added
 - Rearranged items in OptionsFrm
@@ -55,7 +55,7 @@ Ini Translator Changelog
 
 2006-07-27:
 - The colors of untranslated items and even and odd rows can now be configured by the user
-- ToolListEdit: new tool plugin that displays an alternate type of list editor (similar to the one in Azuerus)
+- ToolListEdit: new tool plugin that displays an alternate type of list editor (similar to the one in Azureus)
 
 2006-07-26:
 - Reverted to TB2k 2.1.8, TBX 2.1 beta 1 and now use SpTBXLib 1.7 for Unicode enabling. There were too many bugs with TBX 2.2 alpha

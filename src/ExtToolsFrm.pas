@@ -465,7 +465,7 @@ begin
   acDelete.Enabled := (lbContents.ItemIndex >= 0) and (lbContents.ItemIndex < FTools.Count);
   acMoveUp.Enabled := lbContents.ItemIndex > 0;
   acMoveDown.Enabled := lbContents.ItemIndex < FTools.Count - 1;
-  acTest.Enabled := btnDelete.Enabled and Assigned(OnTestClick);
+  acTest.Enabled := btnDelete.Enabled and Assigned(OnTestClick) and (edCommand.Text <> '');
   acClear.Enabled := edShortCut.ShortCut <> 0;
   PropagateEnabled(pnlEditTool, acDelete.Enabled);
   acWait.Enabled := not acUseShellexecute.Checked;

@@ -72,7 +72,6 @@ inherited frmEditItem: TfrmEditItem
     Width = 430
     Height = 21
     BevelInner = bvNone
-    BevelKind = bkFlat
     BevelOuter = bvRaised
     Anchors = [akLeft, akTop, akRight]
     ItemHeight = 13

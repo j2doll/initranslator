@@ -606,7 +606,6 @@ uses
   DictEditFrm, ColorsFrm;
 
 {$R *.dfm}
-{$R manifest.res} // for XP theme support
 
 { TfrmMain }
 // frmMain support routines
@@ -890,7 +889,7 @@ begin
   WaitCursor;
   Result := Encoding;
 
-  if NotifyChanging(NOTIFY_ITEM_FILE_OPEN, Ord(false), Integer(PWideChar(Filename))) then
+  if not NotifyChanging(NOTIFY_ITEM_FILE_OPEN, Ord(false), Integer(PWideChar(Filename))) then
     Exit;
   if not CheckModified then
     Exit;
@@ -930,7 +929,7 @@ function TfrmMain.LoadTranslation(const FileName: WideString; Encoding: TEncodin
 begin
   WaitCursor;
   Result := Encoding;
-  if NotifyChanging(NOTIFY_ITEM_FILE_OPEN, Ord(true), Integer(PWideChar(Filename))) then
+  if not NotifyChanging(NOTIFY_ITEM_FILE_OPEN, Ord(true), Integer(PWideChar(Filename))) then
     Exit;
   if not CheckModified then
     Exit;
@@ -983,7 +982,7 @@ begin
 
   WaitCursor;
 
-  if NotifyChanging(NOTIFY_ITEM_FILE_SAVE, Ord(true), Integer(PWideChar(Filename))) then
+  if not NotifyChanging(NOTIFY_ITEM_FILE_SAVE, Ord(true), Integer(PWideChar(Filename))) then
   begin
     Result := false;
     Exit;
@@ -1054,9 +1053,9 @@ begin
     Result := SaveOrigAs(FileName, Encoding);
     Exit;
   end;
-  
+
   WaitCursor;
-  if NotifyChanging(NOTIFY_ITEM_FILE_SAVE, Ord(false), Integer(PWideChar(Filename))) then
+  if not NotifyChanging(NOTIFY_ITEM_FILE_SAVE, Ord(false), Integer(PWideChar(Filename))) then
   begin
     Result := false;
     Exit;
@@ -1500,7 +1499,12 @@ end;
 function TfrmMain.GetFilename(const Filename: WideString): WideString;
 begin
   if GlobalAppOptions.GlobalPath and (FLastFolder <> '') then
-    Result := WideIncludeTrailingPathDelimiter(FLastFolder) + WideExtractFileName(Filename)
+  begin
+    if Filename = '' then
+      Result := WideIncludeTrailingPathDelimiter(FLastFolder) + '*.*'
+    else
+      Result := WideIncludeTrailingPathDelimiter(FLastFolder) + WideExtractFileName(Filename);
+  end
   else
     Result := Filename;
   Result := WideExcludeTrailingPathDelimiter(Result);
@@ -2397,14 +2401,14 @@ begin
         Exit;
       Translation := RemoveQuotes(trimCRLFRight(reTranslation.Text));
       NotifyChanged(NOTIFY_ITEM_TRANS_CHANGE, Integer(PWideChar(Translation)), 0);
-        Translated := MyWideDequotedStr(Translation, TransQuote) <> '';
-        lvTranslateStrings.Invalidate;
-        if GlobalAppOptions.UseTranslationEverywhere then
-        begin
-          reTranslation.Modified := false; // avoid infinite recursion
-          acReplaceEverywhere.Execute;
-        end;
-        Modified := true;
+      Translated := MyWideDequotedStr(Translation, TransQuote) <> '';
+      lvTranslateStrings.Invalidate;
+      if GlobalAppOptions.UseTranslationEverywhere then
+      begin
+        reTranslation.Modified := false; // avoid infinite recursion
+        acReplaceEverywhere.Execute;
+      end;
+      Modified := true;
     end;
     UpdateStatus;
   end
@@ -3269,7 +3273,8 @@ end;
 procedure TfrmMain.acImportExecute(Sender: TObject);
 begin
   WaitCursor;
-  if not NotifyChanging(NOTIFY_ITEM_IMPORT, 0, 0) then Exit;
+  if not NotifyChanging(NOTIFY_ITEM_IMPORT, 0, 0) then
+    Exit;
   SaveEditChanges;
   //  (FTranslateFile.Items as ITranslationItems)._AddRef;
   if not CheckModified then
@@ -3304,7 +3309,8 @@ var
 begin
   //  (FTranslateFile.Items as ITranslationItems)._AddRef;
   WaitCursor;
-  if not NotifyChanging(NOTIFY_ITEM_EXPORT, 0, 0) then Exit;
+  if not NotifyChanging(NOTIFY_ITEM_EXPORT, 0, 0) then
+    Exit;
   if TfrmImportExport.Edit(FTranslateFile.Items, FTranslateFile.Orphans, WideExtractFilePath(Application.ExeName) + 'plugins',
     false, FImportIndex, Dummy) then
   begin
@@ -3468,7 +3474,8 @@ procedure TfrmMain.SpellCheckExecute(Sender: TObject);
 var
   i, j: integer;
 begin
-  if not NotifyChanging(NOTIFY_ITEM_SPELLCHECK, 0, 0) then Exit;
+  if not NotifyChanging(NOTIFY_ITEM_SPELLCHECK, 0, 0) then
+    Exit;
   CreateSpellChecker;
   adSpellChecker.StartSequenceCheck;
   try
@@ -3835,7 +3842,8 @@ var
   AIndex, i: integer;
   FOldSort: TTranslateSortType;
 begin
-  if not NotifyChanging(NOTIFY_ITEM_NEW_ITEM, Integer(AItem), 0) then Exit;
+  if not NotifyChanging(NOTIFY_ITEM_NEW_ITEM, Integer(AItem), 0) then
+    Exit;
   FOldSort := FTranslateFile.Items.Sort;
   try
     FTranslateFile.Items.Sort := stIndex;
@@ -3887,7 +3895,8 @@ procedure TfrmMain.DeleteItem(Index: integer);
 begin
   if (Index >= 0) and (Index < FTranslateFile.Items.Count) then
   begin
-    if not NotifyChanging(NOTIFY_ITEM_DEL_ITEM, Index, 0) then Exit;
+    if not NotifyChanging(NOTIFY_ITEM_DEL_ITEM, Index, 0) then
+      Exit;
     FTranslateFile.Items.Delete(Index);
     NotifyChanged(NOTIFY_ITEM_DEL_ITEM, Index, 0);
   end;
@@ -3972,7 +3981,8 @@ var
 begin
   Index := SelectedListItem.Index;
   AItem := FTranslateFile.Items[Index];
-  if not NotifyChanging(NOTIFY_ITEM_EDIT_ITEM, Integer(AItem), 0) then Exit;
+  if not NotifyChanging(NOTIFY_ITEM_EDIT_ITEM, Integer(AItem), 0) then
+    Exit;
   ANewItem := FTranslateFile.Items.CreateItem;
   ASections := TTntStringlist.Create;
   try

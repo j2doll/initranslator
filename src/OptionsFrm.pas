@@ -72,6 +72,8 @@ type
     reHeader: TTntRichEdit;
     reFooter: TTntRichEdit;
     Bevel3: TBevel;
+    Bevel4: TBevel;
+    Bevel5: TBevel;
     procedure chkShowToolTipsClick(Sender: TObject);
     procedure chkReturnToSaveClick(Sender: TObject);
     procedure btnLanguageClick(Sender: TObject);

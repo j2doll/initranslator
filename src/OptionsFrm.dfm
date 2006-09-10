@@ -1,7 +1,7 @@
 object frmOptions: TfrmOptions
   Left = 316
   Top = 175
-  ActiveControl = chkGlobalPath
+  ActiveControl = chkShowQuotes
   BorderStyle = bsDialog
   Caption = 'Preferences'
   ClientHeight = 449
@@ -29,18 +29,18 @@ object frmOptions: TfrmOptions
   end
   object btnOK: TTntButton
     Left = 303
-    Top = 415
+    Top = 413
     Width = 80
     Height = 23
     Anchors = [akRight, akBottom]
     Caption = 'OK'
     Default = True
     ModalResult = 1
-    TabOrder = 0
+    TabOrder = 1
   end
   object btnCancel: TTntButton
     Left = 387
-    Top = 415
+    Top = 413
     Width = 80
     Height = 23
     Anchors = [akRight, akBottom]
@@ -51,13 +51,13 @@ object frmOptions: TfrmOptions
   end
   object btnColors: TTntButton
     Left = 20
-    Top = 415
+    Top = 413
     Width = 80
     Height = 23
     Hint = 'Select a new font for the list and edit fields'
     Anchors = [akLeft, akBottom]
     Caption = 'Color&s...'
-    TabOrder = 1
+    TabOrder = 0
     OnClick = btnColorsClick
   end
   object pcSettings: TTntPageControl
@@ -65,7 +65,7 @@ object frmOptions: TfrmOptions
     Top = 2
     Width = 477
     Height = 387
-    ActivePage = tsAdvanced
+    ActivePage = tsGeneral
     Anchors = [akLeft, akTop, akRight, akBottom]
     TabOrder = 3
     object tsGeneral: TTntTabSheet
@@ -76,7 +76,7 @@ object frmOptions: TfrmOptions
       object Label1: TTntLabel
         Left = 16
         Top = 239
-        Width = 50
+        Width = 51
         Height = 13
         Anchors = [akLeft, akRight, akBottom]
         Caption = '&Language:'
@@ -85,7 +85,7 @@ object frmOptions: TfrmOptions
       object Label2: TTntLabel
         Left = 16
         Top = 287
-        Width = 24
+        Width = 25
         Height = 13
         Anchors = [akLeft, akRight, akBottom]
         Caption = '&Help:'
@@ -93,7 +93,15 @@ object frmOptions: TfrmOptions
       end
       object Bevel1: TBevel
         Left = 1
-        Top = 192
+        Top = 148
+        Width = 466
+        Height = 3
+        Anchors = [akLeft, akTop, akRight]
+        Shape = bsTopLine
+      end
+      object Bevel5: TBevel
+        Left = 1
+        Top = 219
         Width = 466
         Height = 3
         Anchors = [akLeft, akTop, akRight]
@@ -110,7 +118,7 @@ object frmOptions: TfrmOptions
       end
       object btnFont: TTntButton
         Left = 355
-        Top = 206
+        Top = 172
         Width = 80
         Height = 23
         Hint = 'Select a new font for the list and edit fields'
@@ -218,7 +226,7 @@ object frmOptions: TfrmOptions
       end
       object pnlFontPreview: TTntPanel
         Left = 16
-        Top = 206
+        Top = 172
         Width = 329
         Height = 25
         Anchors = [akLeft, akRight, akBottom]
@@ -306,12 +314,19 @@ object frmOptions: TfrmOptions
         Anchors = [akLeft, akTop, akRight]
         Shape = bsTopLine
       end
+      object Bevel4: TBevel
+        Left = 1
+        Top = 95
+        Width = 466
+        Height = 3
+        Anchors = [akLeft, akTop, akRight]
+        Shape = bsTopLine
+      end
       object cbDefaultTransEncoding: TTntComboBox
         Left = 247
         Top = 32
         Width = 190
         Height = 21
-        BevelKind = bkFlat
         Style = csDropDownList
         ItemHeight = 13
         ItemIndex = 0
@@ -423,7 +438,7 @@ object frmOptions: TfrmOptions
     Font.Style = []
     Device = fdBoth
     Options = []
-    Left = 310
-    Top = 176
+    Left = 350
+    Top = 120
   end
 end

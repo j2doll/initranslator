@@ -48,7 +48,6 @@ inherited frmDictEdit: TfrmDictEdit
     Width = 408
     Height = 21
     Hint = 'The current original string'
-    BevelKind = bkFlat
     Anchors = [akLeft, akTop, akRight]
     ItemHeight = 13
     Sorted = True
@@ -153,7 +152,6 @@ inherited frmDictEdit: TfrmDictEdit
     Width = 184
     Height = 21
     Hint = 'CHange the selection to see different subsets of the dictionary'
-    BevelKind = bkTile
     Style = csDropDownList
     Anchors = [akLeft, akRight, akBottom]
     ItemHeight = 13

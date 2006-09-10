@@ -23,7 +23,7 @@ object frmMain: TfrmMain
   TextHeight = 13
   object StatusBar1: TTBXStatusBar
     Left = 0
-    Top = 504
+    Top = 497
     Width = 643
     Height = 19
     Panels = <
@@ -667,19 +667,19 @@ object frmMain: TfrmMain
     Left = 0
     Top = 49
     Width = 9
-    Height = 446
+    Height = 439
     Position = dpLeft
   end
   object TBDock2: TSpTBXDock
     Left = 634
     Top = 49
     Width = 9
-    Height = 446
+    Height = 439
     Position = dpRight
   end
   object TBDock3: TSpTBXDock
     Left = 0
-    Top = 495
+    Top = 488
     Width = 643
     Height = 9
     Position = dpBottom
@@ -688,14 +688,14 @@ object frmMain: TfrmMain
     Left = 9
     Top = 49
     Width = 625
-    Height = 446
+    Height = 439
     Align = alClient
     BevelOuter = bvNone
     BorderWidth = 4
     TabOrder = 5
     object splitHorz: TSplitter
       Left = 4
-      Top = 246
+      Top = 239
       Width = 617
       Height = 5
       Cursor = crVSplit
@@ -706,7 +706,7 @@ object frmMain: TfrmMain
     end
     object pnlBottom: TTntPanel
       Left = 4
-      Top = 251
+      Top = 244
       Width = 617
       Height = 191
       Align = alBottom
@@ -796,7 +796,7 @@ object frmMain: TfrmMain
       Left = 4
       Top = 45
       Width = 617
-      Height = 201
+      Height = 194
       Align = alClient
       BevelInner = bvNone
       BevelOuter = bvRaised

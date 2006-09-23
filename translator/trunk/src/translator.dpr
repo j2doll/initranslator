@@ -19,8 +19,7 @@ program translator;
 {%File '..\Changelog.txt'}
 
 // disable this define if you don't have JCL installed or want to use another exception handler:
-{$DEFINE USEJCLDEBUGHANDLER}
-
+{$I TRANSLATOR.INC}
 uses
   Forms,
   AppConsts in 'AppConsts.pas',

@@ -75,6 +75,7 @@ begin
     P := lvItems.Selected.GetPosition;
     // add a bit of offset
     Inc(P.Y, 19);
+    P.X := lvItems.Left + lvItems.Columns[0].Width + 4;
     if TfrmEditItem.Edit(FItems[lvItems.Selected.Index], lvItems.ClientToScreen(P)) then
       lvItems.Invalidate;
   end;

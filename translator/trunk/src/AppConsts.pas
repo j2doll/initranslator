@@ -90,7 +90,7 @@ resourcestring
   SArgumentsPrompt = 'Arguments:';
   SErrToolExecFmt = 'Failed to execute "%s %s": %s';
   SNewToolNameFmt = '(New Tool %d)';
-  SErrCreateFileFmt = 'Could not create file "%s".'#13#10'Please check that you have sufficient permissions to create and modify files in the affected folder.';
+  SErrCreateFileFmt = 'Could not create file "%s".'#13#10'Please check that the file is writable and that you have sufficient permissions to create and modify files in the affected folder.';
 
   SPromptDeleteItem = 'Delete selected item?';
   SConfirmDelete = 'Confirm Delete';

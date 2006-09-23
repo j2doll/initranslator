@@ -26,9 +26,9 @@ interface
 
 uses
   Windows, Messages, SysUtils, Classes, Graphics, Controls, Forms,
-  Dialogs, StdCtrls, ExtCtrls, AppOptions, BaseForm,
-  TntStdCtrls,
-  TntExtCtrls, ComCtrls, TntComCtrls, CheckLst, TntCheckLst;
+  Dialogs, StdCtrls, ExtCtrls, ComCtrls, CheckLst,
+  AppOptions, BaseForm,
+  TntClasses, TntStdCtrls,  TntExtCtrls, TntComCtrls, TntCheckLst;
 
 type
   TfrmOptions = class(TfrmBase)
@@ -43,7 +43,6 @@ type
     Label2: TTntLabel;
     Bevel1: TBevel;
     chkShowQuotes: TTntCheckBox;
-    btnFont: TTntButton;
     chkShowDetails: TTntCheckBox;
     chkShowToolTips: TTntCheckBox;
     chkShowShortCuts: TTntCheckBox;
@@ -56,7 +55,6 @@ type
     pnlFontPreview: TTntPanel;
     chkUseTranslationEverywhere: TTntCheckBox;
     chkAutoFocusTranslation: TTntCheckBox;
-    FontDialog: TFontDialog;
     TntLabel1: TTntLabel;
     cbDefaultTransEncoding: TTntComboBox;
     chkGlobalPath: TTntCheckBox;
@@ -74,19 +72,30 @@ type
     Bevel3: TBevel;
     Bevel4: TBevel;
     Bevel5: TBevel;
+    cbFonts: TTntComboBox;
+    TntLabel4: TTntLabel;
+    TntLabel5: TTntLabel;
+    cbFontSizes: TTntComboBox;
+    TntLabel6: TTntLabel;
     procedure chkShowToolTipsClick(Sender: TObject);
     procedure chkReturnToSaveClick(Sender: TObject);
     procedure btnLanguageClick(Sender: TObject);
     procedure btnHelpClick(Sender: TObject);
-    procedure btnFontClick(Sender: TObject);
     procedure chkSavePositionClick(Sender: TObject);
     procedure btnColorsClick(Sender: TObject);
+    procedure cbFontsChange(Sender: TObject);
+    procedure cbFontSizesChange(Sender: TObject);
   private
     { Private declarations }
+
     FOptions:TAppOptions;
+    procedure GetFonts(Strings:TTntStrings);
     procedure UpdatePreview;
+    procedure UpdateFontList;
+    procedure UpdateFontSizes;
     procedure LoadOptions(Options: TAppOptions);
     procedure SaveOptions(Options: TAppOptions);
+    procedure GetFontSizes(const FontName: WideString; Items: Tlist);
   public
     { Public declarations }
     class function Execute(Options: TAppOptions): boolean;
@@ -136,12 +145,6 @@ begin
   end;
 end;
 
-procedure TfrmOptions.btnFontClick(Sender: TObject);
-begin
-  FontDialog.Execute;
-  UpdatePreview;
-end;
-
 procedure TfrmOptions.chkSavePositionClick(Sender: TObject);
 begin
   chkSaveMinMax.Enabled := chkSavePosition.Checked;
@@ -172,9 +175,11 @@ end;
 
 procedure TfrmOptions.UpdatePreview;
 begin
-  pnlFontPreview.Font := FontDialog.Font;
-  pnlFontPreview.Caption :=
-    WideFormat('%s, %dpt', [FontDialog.Font.Name, FontDialog.Font.Size]);
+  pnlFontPreview.Font.Name := cbFonts.Text;
+  pnlFontPreview.Font.Size := StrToIntDef(cbFontSizes.Text,pnlFontPreview.Font.Size);
+  with pnlFontPreview do
+    Caption :=
+      WideFormat('%s, %dpt', [Font.Name, Font.Size]);
 end;
 
 procedure TfrmOptions.btnColorsClick(Sender: TObject);
@@ -204,10 +209,11 @@ begin
   cbDefaultTransEncoding.ItemIndex := Options.DefaultTransEncoding;
   edLanguage.Text := Options.LanguageFile;
   edHelp.Text := Options.HelpFile;
-  FontDialog.Font := Options.AppFont;
+  pnlFontPreview.Font.Name := Options.FontName;
+  pnlFontPreview.Font.Size := Options.FontSize;
   reHeader.Lines := Options.Header;
   reFooter.Lines := Options.Footer;
-  UpdatePreview;
+  UpdateFontList;
 end;
 
 procedure TfrmOptions.SaveOptions(Options: TAppOptions);
@@ -232,9 +238,122 @@ begin
   Options.ShowFullNameInColumns := chkShowFullNames.Checked;
   Options.LanguageFile := edLanguage.Text;
   Options.HelpFile := edHelp.Text;
-  Options.AppFont.Assign(FontDialog.Font);
+  Options.FontName := pnlFontPreview.Font.Name;
+  Options.FontSize := pnlFontPreview.Font.Size;
+
   Options.Header := reHeader.Lines;
   Options.Footer := reFooter.Lines;
+end;
+
+procedure TfrmOptions.GetFonts(Strings: TTntStrings);
+begin
+  Strings.Assign(Screen.Fonts);
+end;
+
+procedure AddDefaultSizes(Items:Tlist);
+begin
+  Items.Add(Pointer(8));
+  Items.Add(Pointer(9));
+  Items.Add(Pointer(10));
+  Items.Add(Pointer(11));
+  Items.Add(Pointer(12));
+  Items.Add(Pointer(14));
+  Items.Add(Pointer(16));
+  Items.Add(Pointer(18));
+  Items.Add(Pointer(20));
+  Items.Add(Pointer(22));
+  Items.Add(Pointer(24));
+  Items.Add(Pointer(26));
+  Items.Add(Pointer(28));
+  Items.Add(Pointer(36));
+  Items.Add(Pointer(48));
+  Items.Add(Pointer(72));
+end;
+
+function EnumProc(var elf: TEnumLogFont;
+  var ntm: TNewTextMetric; FontType: Integer; Items: TList): Integer; stdcall;
+var Size:integer;
+begin
+  if FontType = TRUETYPE_FONTTYPE then
+  begin
+    AddDefaultSizes(Items);
+    Result := 0;
+  end
+  else
+  begin
+    Size := elf.elfLogFont.lfHeight;
+    if Items.IndexOf(Pointer(Size)) < 0 then
+      Items.Add(Pointer(Size));
+    Result := 1;
+  end;
+end;
+
+
+procedure TfrmOptions.GetFontSizes(const FontName:WideString; Items:TList);
+begin
+  Items.Clear;
+  EnumFontFamilies(Canvas.Handle, PChar(string(FontName)),
+    @EnumProc, integer(Items));
+  if Items.Count < 1 then
+    AddDefaultSizes(Items);
+end;
+
+procedure TfrmOptions.cbFontsChange(Sender: TObject);
+begin
+  inherited;
+  UpdateFontSizes;
+end;
+
+procedure TfrmOptions.cbFontSizesChange(Sender: TObject);
+begin
+  inherited;
+  UpdatePreview;
+end;
+
+procedure TfrmOptions.UpdateFontList;
+begin
+  GetFonts(cbFonts.Items);
+  cbFonts.Items.Add('MS Shell Dlg');
+  cbFonts.Items.Add('MS Shell Dlg 2');
+  if cbFonts.Items.IndexOf(pnlFontPreview.Font.Name) < 0 then
+    cbFonts.Items.Add(pnlFontPreview.Font.Name);
+  cbFonts.ItemIndex := cbFonts.Items.IndexOf(pnlFontPreview.Font.Name);
+  UpdateFontSizes;
+end;
+
+function IntCompare(Item1, Item2:POinter):integer;
+begin
+  Result := integer(Item1) - integer(Item2);
+end;
+
+procedure TfrmOptions.UpdateFontSizes;
+var
+  S:string;
+  L:TList;
+  i:integer;
+begin
+  S := cbFontSizes.Text;
+  if S = '' then
+    S := IntToStr(pnlFontPreview.Font.Size);
+  L := TList.Create;
+  try
+  cbFontSizes.Items.BeginUpdate;
+  try
+    GetFontSizes(cbFonts.Text, L);
+    L.Sort(IntCompare);
+    cbFontSizes.Items.Clear;
+    for i := 0 to L.Count - 1 do
+      cbFontSizes.Items.Add(IntToStr(integer(L[i])));
+    finally
+      cbFontSizes.Items.EndUpdate;
+    end;
+    cbFontSizes.ItemIndex := cbFontSizes.Items.IndexOf(S);
+    if cbFontSizes.ItemIndex < 0 then
+      cbFontSizes.ItemIndex := 0;
+  finally
+    L.Free;
+  end;
+  UpdatePreview;
 end;
 
 end.

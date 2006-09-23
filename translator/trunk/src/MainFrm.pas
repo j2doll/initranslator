@@ -87,7 +87,6 @@ type
     acFocusListView: TTntAction;
     acFocusOriginal: TTntAction;
     acShowQuotes: TTntAction;
-    acFont: TTntAction;
     acRestoreSort: TTntAction;
     acDictSave: TTntAction;
     acDictLoad: TTntAction;
@@ -133,8 +132,6 @@ type
     About2: TSpTBXSeparatorItem;
     Previousuntranslated1: TSpTBXItem;
     Nextuntranslated1: TSpTBXItem;
-    N2: TSpTBXSeparatorItem;
-    Font1: TSpTBXItem;
     N4: TSpTBXSeparatorItem;
     ShowQuotes1: TSpTBXItem;
     Unsort1: TSpTBXItem;
@@ -284,7 +281,6 @@ type
     TBXItem2: TSpTBXItem;
     TBXSeparatorItem3: TSpTBXSeparatorItem;
     TBXVisibilityToggleItem1: TSpTBXItem;
-    MainFontDlg: TFontDialog;
     acImport: TTntAction;
     acExport: TTntAction;
     TBXSeparatorItem4: TSpTBXSeparatorItem;
@@ -371,8 +367,6 @@ type
     procedure acFocusOriginalExecute(Sender: TObject);
     procedure acShowQuotesExecute(Sender: TObject);
     procedure alMainUpdate(Action: TBasicAction; var Handled: boolean);
-    procedure acFontExecute(Sender: TObject);
-    procedure MainFontDlgApply(Sender: TObject; Wnd: HWND);
     procedure lvTranslateStringsColumnClick(Sender: TObject;
       Column: TListColumn);
     procedure acRestoreSortExecute(Sender: TObject);
@@ -659,14 +653,16 @@ begin
   UpdateColumn(0, GlobalAppOptions.OriginalFile);
   UpdateColumn(1, GlobalAppOptions.TranslationFile);
 
-  lvTranslateStrings.Font := GlobalAppOptions.AppFont;
-  reOriginal.Font := GlobalAppOptions.AppFont;
+  lvTranslateStrings.Font.Name := GlobalAppOptions.FontName;
+  lvTranslateStrings.Font.Size := GlobalAppOptions.FontSize;
+
+  reOriginal.Font := lvTranslateStrings.Font;
   reOriginal.Color := GlobalAppOptions.ColorUntranslated;
   reOriginal.DefAttributes.Assign(reOriginal.Font);
   reOriginal.DefAttributes.Color := GlobalAppOptions.ColorFontUntranslated;
   m := reTranslation.Modified;
   try
-    reTranslation.Font := GlobalAppOptions.AppFont;
+    reTranslation.Font := lvTranslateStrings.Font;
     reTranslation.DefAttributes.Assign(reTranslation.Font);
   finally
     reTranslation.Modified := m;
@@ -715,7 +711,9 @@ begin
   GlobalAppOptions.ShowDetails := acViewDetails.Checked;
   GlobalAppOptions.ShowToolTips := Application.ShowHint;
   //  GlobalAppOptions.ShowToolTipShortCuts := Application.HintShortCuts;
-  GlobalAppOptions.AppFont.Assign(reOriginal.Font);
+  GlobalAppOptions.FontName := reOriginal.Font.Name;
+  GlobalAppOptions.FontSize := reOriginal.Font.Size;
+
   if (frmComments <> nil) then
     GlobalAppOptions.PinCommentWindow := frmComments.Pinned;
   // find / replace dialog
@@ -2123,29 +2121,6 @@ begin
   acEditItem.Enabled := (Index <> -1) and ((FCapabilitesSupported = 0) or (FCapabilitesSupported and CAP_ITEM_EDIT = CAP_ITEM_EDIT));
   acTrim.Enabled := FTranslateFile.Items.Count > 0;
   // Handled := true;
-end;
-
-procedure TfrmMain.acFontExecute(Sender: TObject);
-begin
-  MainFontDlg.Font := GlobalAppOptions.AppFont;
-  if MainFontDlg.Execute then
-    MainFontDlgApply(Sender, MainFontDlg.Handle);
-end;
-
-procedure TfrmMain.MainFontDlgApply(Sender: TObject; Wnd: HWND);
-var
-  tmp: boolean;
-begin
-  tmp := reTranslation.Modified;
-  try
-    GlobalAppOptions.AppFont.Assign(MainFontDlg.Font);
-    Font.CharSet := DEFAULT_CHARSET;
-    lvTranslateStrings.Font := GlobalAppOptions.AppFont;
-    reOriginal.Font := GlobalAppOptions.AppFont;
-    reTranslation.Font := GlobalAppOptions.AppFont;
-  finally
-    reTranslation.Modified := tmp;
-  end;
 end;
 
 procedure TfrmMain.lvTranslateStringsColumnClick(Sender: TObject;

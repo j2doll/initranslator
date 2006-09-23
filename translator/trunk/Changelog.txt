@@ -1,5 +1,14 @@
 Ini Translator Changelog
 ========================
+2006-09-23:
+- Added new MsTermBuild project to convert MS Terminology Translations to IniTranslator dictionaries
+- Dictionary class now removes empty translations automatically when loading and merging etc
+- Changed the way fonts are specified so we can use the MS Shell Dlg substituions
+- DictEditFrm: Fixed error where the TTranslations = 1 returned all items with < 2 translations
+
+
+
+
 2006-08-17:
 - Added support for Headers and Footers
 - UI for setting default encoding for new files (OptionsFrm)

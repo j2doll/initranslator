@@ -17,7 +17,7 @@
 // $Id$
 
 unit WideIniFiles;
-
+{$I TRANSLATOR.INC}
 interface
 uses
   Windows, SysUtils, Classes, TntClasses;

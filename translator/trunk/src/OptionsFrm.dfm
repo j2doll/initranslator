@@ -107,6 +107,29 @@ object frmOptions: TfrmOptions
         Anchors = [akLeft, akTop, akRight]
         Shape = bsTopLine
       end
+      object TntLabel4: TTntLabel
+        Left = 16
+        Top = 161
+        Width = 26
+        Height = 13
+        Caption = '&Font:'
+        FocusControl = cbFonts
+      end
+      object TntLabel5: TTntLabel
+        Left = 161
+        Top = 161
+        Width = 23
+        Height = 13
+        Caption = 'Si&ze:'
+        FocusControl = cbFontSizes
+      end
+      object TntLabel6: TTntLabel
+        Left = 245
+        Top = 161
+        Width = 42
+        Height = 13
+        Caption = 'Preview:'
+      end
       object chkShowQuotes: TTntCheckBox
         Left = 16
         Top = 16
@@ -115,17 +138,6 @@ object frmOptions: TfrmOptions
         Hint = 'Enclose strings in quote characters when editing them'
         Caption = 'Show &quotes'
         TabOrder = 0
-      end
-      object btnFont: TTntButton
-        Left = 355
-        Top = 172
-        Width = 80
-        Height = 23
-        Hint = 'Select a new font for the list and edit fields'
-        Anchors = [akRight, akBottom]
-        Caption = '&Font...'
-        TabOrder = 11
-        OnClick = btnFontClick
       end
       object chkShowDetails: TTntCheckBox
         Left = 16
@@ -148,7 +160,7 @@ object frmOptions: TfrmOptions
       end
       object chkShowShortCuts: TTntCheckBox
         Left = 32
-        Top = 69
+        Top = 74
         Width = 186
         Height = 17
         Hint = 'Show shortcuts in tooltips windows'
@@ -189,7 +201,7 @@ object frmOptions: TfrmOptions
         BevelKind = bkFlat
         BevelOuter = bvRaised
         BorderStyle = bsNone
-        TabOrder = 12
+        TabOrder = 13
       end
       object btnLanguage: TTntButton
         Left = 412
@@ -198,7 +210,7 @@ object frmOptions: TfrmOptions
         Height = 19
         Anchors = [akRight, akBottom]
         Caption = '...'
-        TabOrder = 13
+        TabOrder = 14
         OnClick = btnLanguageClick
       end
       object edHelp: TTntEdit
@@ -212,7 +224,7 @@ object frmOptions: TfrmOptions
         BevelKind = bkFlat
         BevelOuter = bvRaised
         BorderStyle = bsNone
-        TabOrder = 14
+        TabOrder = 15
       end
       object btnHelp: TTntButton
         Left = 412
@@ -221,18 +233,18 @@ object frmOptions: TfrmOptions
         Height = 19
         Anchors = [akRight, akBottom]
         Caption = '...'
-        TabOrder = 15
+        TabOrder = 16
         OnClick = btnHelpClick
       end
       object pnlFontPreview: TTntPanel
-        Left = 16
-        Top = 172
-        Width = 329
-        Height = 25
+        Left = 245
+        Top = 179
+        Width = 202
+        Height = 21
         Anchors = [akLeft, akRight, akBottom]
         BevelKind = bkFlat
         BevelOuter = bvNone
-        TabOrder = 10
+        TabOrder = 12
       end
       object chkUseTranslationEverywhere: TTntCheckBox
         Left = 214
@@ -247,7 +259,7 @@ object frmOptions: TfrmOptions
       end
       object chkAutoFocusTranslation: TTntCheckBox
         Left = 214
-        Top = 69
+        Top = 74
         Width = 195
         Height = 17
         Hint = 
@@ -259,7 +271,7 @@ object frmOptions: TfrmOptions
       end
       object chkSavePosition: TTntCheckBox
         Left = 16
-        Top = 90
+        Top = 95
         Width = 188
         Height = 17
         Hint = 'Remember location of main window'
@@ -269,12 +281,31 @@ object frmOptions: TfrmOptions
       end
       object chkSaveMinMax: TTntCheckBox
         Left = 32
-        Top = 109
+        Top = 114
         Width = 179
         Height = 17
         Hint = 'Remember whether main window was minimized /maximized'
         Caption = 'Remember form min/ma&x state'
         TabOrder = 5
+      end
+      object cbFonts: TTntComboBox
+        Left = 16
+        Top = 177
+        Width = 134
+        Height = 21
+        ItemHeight = 13
+        Sorted = True
+        TabOrder = 10
+        OnChange = cbFontsChange
+      end
+      object cbFontSizes: TTntComboBox
+        Left = 161
+        Top = 177
+        Width = 64
+        Height = 21
+        ItemHeight = 13
+        TabOrder = 11
+        OnChange = cbFontSizesChange
       end
     end
     object tsAdvanced: TTntTabSheet
@@ -429,16 +460,5 @@ object frmOptions: TfrmOptions
         WordWrap = False
       end
     end
-  end
-  object FontDialog: TFontDialog
-    Font.Charset = DEFAULT_CHARSET
-    Font.Color = clWindowText
-    Font.Height = -11
-    Font.Name = 'MS Shell Dlg 2'
-    Font.Style = []
-    Device = fdBoth
-    Options = []
-    Left = 350
-    Top = 120
   end
 end

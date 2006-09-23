@@ -94,7 +94,6 @@ type
     FHelpFile: WideString;
     FDictionaryFile: WideString;
     FFilename: WideString;
-    FAppFont: TFont;
     FFilterIndex: integer;
     FGlobalPath: boolean;
     FPinCommentWindow: boolean;
@@ -138,6 +137,8 @@ type
     FDefaultTransEncoding: integer;
     FFooter: TTntStrings;
     FHeader: TTntStrings;
+    FFontSize: integer;
+    FFontName: WideString;
     procedure ReadWindowInfos(ini: TWideCustomIniFile);
     procedure WriteWindowInfos(ini: TWideCustomIniFile);
     function GetWindowInfo(AForm: TForm): TAppWindowInfo;
@@ -183,7 +184,8 @@ type
     property SplitterPosition: integer read FSplitterPosition write FSplitterPosition default 160;
     property FilterIndex: integer read FFilterIndex write FFilterIndex default 1;
     property AppTitle: WideString read FAppTitle write FAppTitle;
-    property AppFont: TFont read FAppFont;
+    property FontName: WideString read FFontName write FFontName;
+    property FontSize:integer read FFontSize write FFontSize;
     property MonitorFiles: boolean read FMonitorFiles write FMonitorFiles default true;
     property Theme: WideString read FTheme write FTheme;
     property Header:TTntStrings read FHeader write SetHeader;
@@ -411,8 +413,6 @@ begin
   inherited Create;
   FTools := TToolItems.Create;
   // set defaults
-  FAppFont := TFont.Create;
-  FAppFont.Name := 'MS Shell Dlg 2';
   FWindowInfos := TTntStringlist.Create;
   TTntStringlist(FWindowInfos).Sorted := true;
   FHeader := TTntStringlist.Create;
@@ -427,13 +427,14 @@ begin
   PinCommentWindow := true;
   MonitorFiles := true;
   Theme := sDefault;
+  FontName := 'MS Shell Dlg 2';
+  FontSize := 9;
   LoadFromFile(AFilename);
 end;
 
 destructor TAppOptions.Destroy;
 begin
   ClearWindowInfos;
-  FAppFont.Free;
   FWindowInfos.Free;
   FTools.Free;
   FHeader.Free;
@@ -486,10 +487,8 @@ begin
   ini := TWideMemIniFile.Create(AFilename);
   try
     FFilename := AFilename;
-    FAppFont.Name := ini.ReadString('Font', 'Font.Name', FAppFont.Name);
-    FAppFont.Height := ini.ReadInteger('Font', 'Font.Height', FAppFont.Height);
-    FAppFont.Style := StrToFontStyles(ini.ReadString('Font', 'Font.Style', FontStylesToStr(FAppFont.Style)));
-    FAppFont.Color := ini.ReadInteger('Font', 'Font.Color', FAppFont.Color);
+    FontName := ini.ReadString('Font', 'FontName', FontName);
+    FontSize := ini.ReadInteger('Font', 'FontSize', FontSize);
 
     ShowQuotes := ini.ReadBool('General', 'ShowQuotes', ShowQuotes);
     InvertDictionary := ini.ReadBool('General', 'InvertDictionary', InvertDictionary);
@@ -594,10 +593,8 @@ begin
   ini := TWideMemIniFile.Create(AFilename);
   try
     FFilename := AFilename;
-    ini.WriteString('Font', 'Font.Name', FAppFont.Name);
-    ini.WriteInteger('Font', 'Font.Height', FAppFont.Height);
-    ini.WriteString('Font', 'Font.Style', FontStylesToStr(FAppFont.Style));
-    ini.WriteInteger('Font', 'Font.Color', FAppFont.Color);
+    ini.WriteString('Font', 'FontName', FontName);
+    ini.WriteInteger('Font', 'FontSize', FontSize);
 
     ini.WriteBool('General', 'ShowQuotes', ShowQuotes);
     ini.WriteBool('General', 'InvertDictionary', InvertDictionary);

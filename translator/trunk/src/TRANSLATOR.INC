@@ -1,7 +1,20 @@
 // define this if you have Addict SpellCheck (http://www.addictivesoftware.com)
 
 {$DEFINE USEADDICTSPELLCHECKER}
+{$DEFINE USEJCLDEBUGHANDLER}
 {$ifdef Win32}
+  {$ifdef VER180}
+    {$define COMPILER_10}
+    {$define DELPHI}
+    {$define DELPHI_10}
+  {$endif}
+
+  {$ifdef VER170}
+    {$define COMPILER_9}
+    {$define DELPHI}
+    {$define DELPHI_9}
+  {$endif}
+
   {$ifdef VER150}
     {$define COMPILER_7}
     {$define DELPHI}
@@ -215,6 +228,37 @@
   {$define COMPILER_5_UP}
   {$define COMPILER_6_UP}
   {$define COMPILER_7_UP}
+{$endif}
+
+{$ifdef COMPILER_9}
+  {$define COMPILER_1_UP}
+  {$define COMPILER_2_UP}
+  {$define COMPILER_3_UP}
+  {$define COMPILER_4_UP}
+  {$define COMPILER_5_UP}
+  {$define COMPILER_6_UP}
+  {$define COMPILER_7_UP}
+  {$define COMPILER_9_UP}
+{$endif}
+
+{$ifdef COMPILER_10}
+  {$define COMPILER_1_UP}
+  {$define COMPILER_2_UP}
+  {$define COMPILER_3_UP}
+  {$define COMPILER_4_UP}
+  {$define COMPILER_5_UP}
+  {$define COMPILER_6_UP}
+  {$define COMPILER_7_UP}
+  {$define COMPILER_9_UP}
+  {$define COMPILER_10_UP}
+{$endif}
+
+{$define TURBO_DELPHI}
+{$ifdef TURBO_DELPHI}
+  {$undef COMPILER_9}
+  {$undef COMPILER_9_UP}
+  {$undef COMPILER_10}
+  {$undef COMPILER_10_UP}
 {$endif}
 
 //----------------------------------------------------------------------------------------------------------------------

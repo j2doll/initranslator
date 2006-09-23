@@ -1,9 +1,9 @@
 object frmMain: TfrmMain
   Left = 282
   Top = 167
-  Width = 532
-  Height = 417
   Caption = 'MS Dictionary Builder'
+  ClientHeight = 383
+  ClientWidth = 524
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
   Font.Color = clWindowText

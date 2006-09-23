@@ -50,7 +50,7 @@ object frmToolListEdit: TfrmToolListEdit
   TextHeight = 13
   object TntStatusBar1: TTntStatusBar
     Left = 0
-    Top = 393
+    Top = 386
     Width = 585
     Height = 19
     Panels = <
@@ -62,7 +62,7 @@ object frmToolListEdit: TfrmToolListEdit
     Left = 0
     Top = 0
     Width = 585
-    Height = 393
+    Height = 386
     Align = alClient
     BevelKind = bkFlat
     BorderStyle = bsNone

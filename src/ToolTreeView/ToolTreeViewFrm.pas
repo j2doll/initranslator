@@ -10,20 +10,16 @@ uses
 type
   TfrmToolTreeView = class(TTntForm)
     StatusBottom: TTntStatusBar;
-    TntSplitter1: TTntSplitter;
-    TntPanel5: TTntPanel;
-    TntLabel3: TTntLabel;
+    splitVertical: TTntSplitter;
+    pnlLeft: TTntPanel;
+    lblSections: TTntLabel;
     tvSections: TTntTreeView;
     nbViews: TNotebook;
-    TntPanel1: TTntPanel;
-    TntSplitter2: TTntSplitter;
-    TntPanel2: TTntPanel;
-    TntLabel1: TTntLabel;
+    pnlRight: TTntPanel;
+    splitHorizontal: TTntSplitter;
+    pnlTopRight: TTntPanel;
+    lblOriginal: TTntLabel;
     reOriginal: TTntRichEdit;
-    TntPanel3: TTntPanel;
-    TntPanel4: TTntPanel;
-    TntLabel2: TTntLabel;
-    reTranslation: TTntRichEdit;
     lvView: TTntListView;
     popTreeview: TTntPopupMenu;
     mnuPrevSection: TTntMenuItem;
@@ -35,6 +31,9 @@ type
     mnuMoveUp: TTntMenuItem;
     mnuMoveDown: TTntMenuItem;
     ilTreeView: TImageList;
+    pnlBottomRight: TTntPanel;
+    lblTranslation: TTntLabel;
+    reTranslation: TTntRichEdit;
     procedure reOriginalKeyDown(Sender: TObject; var Key: Word;
       Shift: TShiftState);
     procedure tvSectionsChanging(Sender: TObject; Node: TTreeNode;
@@ -61,6 +60,7 @@ type
     procedure lvViewEnter(Sender: TObject);
     procedure tvSectionsMouseUp(Sender: TObject; Button: TMouseButton;
       Shift: TShiftState; X, Y: Integer);
+    procedure TntFormResize(Sender: TObject);
   private
     { Private declarations }
     procedure BuildTree(const Items: ITranslationItems; const SelectedItem: ITranslationItem);
@@ -227,6 +227,7 @@ end;
 procedure TfrmToolTreeView.FillListView(Node: TTntTreeNode);
 var
   N: TTntTreeNode;
+  T:ITranslationItem;
 begin
   lvView.Items.BeginUpdate;
   try
@@ -236,7 +237,15 @@ begin
     begin
       with lvView.Items.Add do
       begin
-        Caption := N.Text;
+        if N.Data <> nil then
+        begin
+          T := ITranslationItem(N.Data);
+          Caption := T.Name;
+          SubItems.Add(T.Original);
+          SubItems.Add(T.Translation);
+        end
+        else
+          Caption := N.Text;
         Data := N.Data;
         ImageIndex := N.ImageIndex;
         StateIndex := N.StateIndex;
@@ -520,6 +529,16 @@ procedure TfrmToolTreeView.tvSectionsMouseUp(Sender: TObject;
   Button: TMouseButton; Shift: TShiftState; X, Y: Integer);
 begin
   if Button = mbRight then
+end;
+
+procedure TfrmToolTreeView.TntFormResize(Sender: TObject);
+var i, j:integer;
+begin
+  i := ClientHeight div 2;
+  pnlTopRight.Height := i;
+  i := lvView.ClientWidth div lvView.Columns.Count;
+  for j := 0 to lvView.Columns.Count - 1 do
+    lvView.Columns[j].Width := i;
 end;
 
 end.

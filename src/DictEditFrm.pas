@@ -270,7 +270,7 @@ begin
       if FItems[i].Translations.Count > 1 then
         cbOriginal.Items.Add(FItems[i].Original);
     4:
-      if FItems[i].Translations.Count < 2 then
+      if FItems[i].Translations.Count = 1 then
         cbOriginal.Items.Add(FItems[i].Original);
   end;
   if cbOriginal.Items.Count > 0 then

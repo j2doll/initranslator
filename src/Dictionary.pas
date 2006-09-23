@@ -79,6 +79,7 @@ type
     function Find(const S: WideString; var Index: integer): boolean;
     procedure Clear;
     procedure Sort;
+    procedure TrimTranslations; // removes empty translations
     constructor Create;
     destructor Destroy; override;
     property Items[Index: integer]: TDictionaryItem read GetItems; default;
@@ -244,6 +245,7 @@ begin
     Clear;
     for i := 0 to TDictionaryItems(Source).Count - 1 do
       Add(TDictionaryItems(Source).Items[i].Original).Translations.Assign(TDictionaryItems(Source).Items[i].Translations);
+    TrimTranslations;
   end
   else
   begin
@@ -422,6 +424,7 @@ begin
     // TODO: merge duplicate items
     Inc(i);
   end;
+  TrimTranslations;
 end;
 
 procedure TDictionaryItems.SaveToFile(const Filename: WideString);
@@ -429,6 +432,7 @@ var
   AFile: TTntStringlist;
   i: integer;
 begin
+  TrimTranslations;
   AFile := TTNtStringlist.Create;
   try
     for i := 0 to Count - 1 do
@@ -453,6 +457,18 @@ end;
 procedure TDictionaryItems.Sort;
 begin
   FItems.Sort(OriginalCompare);
+end;
+
+procedure TDictionaryItems.TrimTranslations;
+var i, j:integer;
+begin
+  for i := 0 to Count - 1 do
+    for j := Items[i].Translations.Count - 1 downto 0 do
+      if Items[i].Translations[j] = '' then
+      begin
+        Items[i].Translations.Delete(j);
+        Modified := true;
+      end;
 end;
 
 end.

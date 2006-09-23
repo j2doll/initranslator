@@ -151,7 +151,7 @@ inherited frmDictEdit: TfrmDictEdit
     Top = 316
     Width = 184
     Height = 21
-    Hint = 'CHange the selection to see different subsets of the dictionary'
+    Hint = 'Change the selection to see different subsets of the dictionary'
     Style = csDropDownList
     Anchors = [akLeft, akRight, akBottom]
     ItemHeight = 13

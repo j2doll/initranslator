@@ -134,7 +134,8 @@ begin
     SetLength(AnsiBuff, MAX_PATH * 2);
     Result := SHGetFolderPathA(hwnd, csidl, hToken, dwFlags, PAnsiChar(AnsiBuff));
     AnsiBuff := AnsiString(PAnsiChar(AnsiBuff));
-    pszPath := WStrPLCopy(pszPath, AnsiBuff, Length(AnsiBuff));
+    // pszPath :=
+    WStrPLCopy(pszPath, AnsiBuff, Length(AnsiBuff));
    end;
 end;
 

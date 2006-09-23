@@ -10,7 +10,7 @@ DCC = $(ROOT)\bin\dcc32.exe $**
 BRCC = $(ROOT)\bin\brcc32.exe $**
 #------------------------------------------------------------------------------
 PROJECTS = IBForumsParser.dll MozillaDTDParser.dll MozillaPropsParser.dll \
-  MSDictBuild.exe MSDictParser.dll OlegParser.dll OOGSIParser.dll \
+  MSDictBuild.exe MSDictParser.dll MsTermBuild.exe OlegParser.dll OOGSIParser.dll \
   PHPNukeParser.dll PHPParser.dll PolyGlotParser.dll POParser.dll SciTEParser.dll \
   TMXParser.dll XLIFFParser.dll ToolTreeView.dll ToolListEdit.dll \
   ToolPropertiesView.dll translator.exe
@@ -70,6 +70,9 @@ XLIFFParser.dll: src\XLIFFPlugin\XLIFFParser.dpr
   $(DCC)
 
 ToolPropertiesView.dll: src\ToolPropertiesView\ToolPropertiesView.dpr
+  $(DCC)
+
+MsTermBuild.exe: src\MsTermBuild\MsTermBuild.dpr
   $(DCC)
 
 

@@ -52,6 +52,8 @@ Source: ..\bin\translator.exe; DestDir: {app}; Flags: comparetimestamp ignorever
 Source: ..\bin\translator.map; DestDir: {app}; Components: DEBUGFILES
 Source: ..\bin\MsDictBuild.exe; DestDir: {app}; Components: MSDICTBUILDINSTALL
 Source: ..\bin\MsDictBuild.map; DestDir: {app}; Components: DEBUGFILES and MSDICTBUILDINSTALL
+Source: ..\bin\MsTermBuild.exe; DestDir: {app}; Components: MSDICTBUILDINSTALL
+Source: ..\bin\MsTermBuild.map; DestDir: {app}; Components: DEBUGFILES and MSDICTBUILDINSTALL
 Source: ..\Changelog.txt; DestDir: {app}; Components: MAINAPPLICATION
 Source: ..\description.txt; DestDir: {app}; Components: MAINAPPLICATION
 Source: ..\releasenote.txt; DestDir: {app}; Components: MAINAPPLICATION
@@ -118,7 +120,8 @@ Filename: {app}\translator.exe; WorkingDir: {app}; Description: Run program now;
 
 [Icons]
 Name: {group}\Ini Translator; Filename: {app}\translator.exe; WorkingDir: {app}; IconFilename: {app}\translator.exe; IconIndex: 0
-Name: {group}\MS Dictionary Converter; Filename: {app}\MsDictBuild.exe; WorkingDir: {app}; IconIndex: 0; IconFilename: {app}\MsDictBuild.exe; Flags: createonlyiffileexists
+Name: {group}\MS Dictionary Converter; Filename: {app}\MsDictBuild.exe; WorkingDir: {app}; IconFilename: {app}\MsDictBuild.exe; Flags: createonlyiffileexists
+Name: {group}\MS Terminology Translations Converter; Filename: {app}\MsTermBuild.exe; WorkingDir: {app}; IconFilename: {app}\MsTermBuild.exe; Flags: createonlyiffileexists
 Name: {group}\Ini Translator Help; Filename: {app}\help\translator.html; WorkingDir: {app}\help; IconFilename: {app}\help\translator.html; Components: HTMLSOURCEHELP
 Name: {group}\Internet\Ini Translator Homepage; Filename: {app}\Ini Translator Home Page.url; WorkingDir: {app}
 Name: {group}\Internet\Browse CVS Repository; Filename: {app}\Browse CVS Repository.url; WorkingDir: {app}
@@ -137,5 +140,5 @@ Name: HTMLSOURCEHELP; Description: HTML based Help; Types: full
 Name: PLUGINS; Description: Available Plugins; Types: custom full
 
 Name: DEBUGFILES; Description: Debug map files; Types: custom full
-Name: MSDICTBUILDINSTALL; Description: MS Dictionary Converter; Types: custom full
+Name: MSDICTBUILDINSTALL; Description: MS Dictionary Converters; Types: custom full
 Name: DEFAULT_TOOLS; Description: Install default tools; Types: custom full compact

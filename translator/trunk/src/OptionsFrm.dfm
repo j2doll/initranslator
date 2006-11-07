@@ -428,7 +428,7 @@ object frmOptions: TfrmOptions
         Top = 157
         Width = 257
         Height = 17
-        Hint = 'Skip already trasnlated items when using dictionary'
+        Hint = 'Skip already translated items when using dictionary'
         Anchors = [akLeft, akTop, akRight]
         Caption = '&Ignore translated items when using dictionary'
         TabOrder = 6

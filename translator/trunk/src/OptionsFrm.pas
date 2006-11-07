@@ -321,7 +321,7 @@ begin
   UpdateFontSizes;
 end;
 
-function IntCompare(Item1, Item2:POinter):integer;
+function IntCompare(Item1, Item2:Pointer):integer;
 begin
   Result := integer(Item1) - integer(Item2);
 end;

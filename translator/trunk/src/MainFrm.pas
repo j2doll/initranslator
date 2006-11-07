@@ -45,7 +45,7 @@ uses
   TBXOffice11XPTheme, TBXOffice11AdaptiveTheme, TBXTristanTheme, TBXTristan2Theme,
   TBXAthenTheme, TBXMonaiXPTheme, TBXMonaiTheme,
   TBXNewOfficeTheme, TBXNewOfficeAdaptiveTheme, TBXDreamTheme,
-  TBXEosTheme,
+  TBXEosTheme, TBXOffice2007Theme,
   TBXNexos2Theme, TBXNexos3Theme, TBXNexos4Theme, TBXNexos5Theme, TBXNexosXTheme,
   TBXOfficeCTheme, TBXOfficeKTheme, TBXReliferTheme, TBXRomaTheme,
   TBXSentimoXTheme, TBXUxThemes, TBXXitoTheme,

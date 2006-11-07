@@ -1,265 +1,269 @@
 // define this if you have Addict SpellCheck (http://www.addictivesoftware.com)
-
 {$DEFINE USEADDICTSPELLCHECKER}
+// define this if you have the JCL exception handler
 {$DEFINE USEJCLDEBUGHANDLER}
-{$ifdef Win32}
-  {$ifdef VER180}
-    {$define COMPILER_10}
-    {$define DELPHI}
-    {$define DELPHI_10}
-  {$endif}
+// define this to use TBX pre 2.2 beta
+{$DEFINE USEOLDTBX}
 
-  {$ifdef VER170}
-    {$define COMPILER_9}
-    {$define DELPHI}
-    {$define DELPHI_9}
-  {$endif}
+// defines for various Delphi/Kylix versions
+{$IFDEF WIN32}
+  {$IFDEF VER180}
+    {$DEFINE COMPILER_10}
+    {$DEFINE DELPHI}
+    {$DEFINE DELPHI_10}
+  {$ENDIF}
 
-  {$ifdef VER150}
-    {$define COMPILER_7}
-    {$define DELPHI}
-    {$define DELPHI_7}
-  {$endif}
+  {$IFDEF VER170}
+    {$DEFINE COMPILER_9}
+    {$DEFINE DELPHI}
+    {$DEFINE DELPHI_9}
+  {$ENDIF}
 
-  {$ifdef VER140}
-    {$define COMPILER_6}
-    {$ifdef BCB}
-      {$define CPPB}
-      {$define CPPB_6}
-    {$else}
-      {$define DELPHI}
-      {$define DELPHI_6}
-    {$endif}
-  {$endif}
+  {$IFDEF VER150}
+    {$DEFINE COMPILER_7}
+    {$DEFINE DELPHI}
+    {$DEFINE DELPHI_7}
+  {$ENDIF}
 
-  {$ifdef VER130}
-    {$define COMPILER_5}
-    {$ifdef BCB}
-      {$define CPPB}
-      {$define CPPB_5}
-    {$else}
-      {$define DELPHI}
-      {$define DELPHI_5}
-    {$endif}
-  {$endif}
+  {$IFDEF VER140}
+    {$DEFINE COMPILER_6}
+    {$IFDEF BCB}
+      {$DEFINE CPPB}
+      {$DEFINE CPPB_6}
+    {$ELSE}
+      {$DEFINE DELPHI}
+      {$DEFINE DELPHI_6}
+    {$ENDIF}
+  {$ENDIF}
 
-  {$ifdef VER125}
-    {$define COMPILER_4}
-    {$define CPPB}
-    {$define CPPB_4}
-  {$endif}
+  {$IFDEF VER130}
+    {$DEFINE COMPILER_5}
+    {$IFDEF BCB}
+      {$DEFINE CPPB}
+      {$DEFINE CPPB_5}
+    {$ELSE}
+      {$DEFINE DELPHI}
+      {$DEFINE DELPHI_5}
+    {$ENDIF}
+  {$ENDIF}
 
-  {$ifdef VER120}
-    {$define COMPILER_4}
-    {$define DELPHI}
-    {$define DELPHI_4}
-  {$endif}
+  {$IFDEF VER125}
+    {$DEFINE COMPILER_4}
+    {$DEFINE CPPB}
+    {$DEFINE CPPB_4}
+  {$ENDIF}
 
-  {$ifdef VER110}
-    {$define COMPILER_3}
-    {$define CPPB}
-    {$define CPPB_3}
-  {$endif}
+  {$IFDEF VER120}
+    {$DEFINE COMPILER_4}
+    {$DEFINE DELPHI}
+    {$DEFINE DELPHI_4}
+  {$ENDIF}
 
-  {$ifdef VER100}
-    {$define COMPILER_3}
-    {$define DELPHI}
-    {$define DELPHI_3}
-  {$endif}
+  {$IFDEF VER110}
+    {$DEFINE COMPILER_3}
+    {$DEFINE CPPB}
+    {$DEFINE CPPB_3}
+  {$ENDIF}
 
-  {$ifdef VER93}
-    {$define COMPILER_2} // C++ Builder v1 compiler is really v2
-    {$define CPPB}
-    {$define CPPB_1}
-  {$endif}
+  {$IFDEF VER100}
+    {$DEFINE COMPILER_3}
+    {$DEFINE DELPHI}
+    {$DEFINE DELPHI_3}
+  {$ENDIF}
 
-  {$ifdef VER90}
-    {$define COMPILER_2}
-    {$define DELPHI}
-    {$define DELPHI_2}
-  {$endif}
+  {$IFDEF VER93}
+    {$DEFINE COMPILER_2} // C++ Builder v1 compiler is really v2
+    {$DEFINE CPPB}
+    {$DEFINE CPPB_1}
+  {$ENDIF}
 
-  {$ifdef VER80}
-    {$define COMPILER_1}
-    {$define DELPHI}
-    {$define DELPHI_1}
-  {$endif}
+  {$IFDEF VER90}
+    {$DEFINE COMPILER_2}
+    {$DEFINE DELPHI}
+    {$DEFINE DELPHI_2}
+  {$ENDIF}
 
-  {$ifdef DELPHI_2}
-    {$define DELPHI_2_UP}
-  {$endif}
+  {$IFDEF VER80}
+    {$DEFINE COMPILER_1}
+    {$DEFINE DELPHI}
+    {$DEFINE DELPHI_1}
+  {$ENDIF}
 
-  {$ifdef DELPHI_3}
-    {$define DELPHI_2_UP}
-    {$define DELPHI_3_UP}
-  {$endif}
+  {$IFDEF DELPHI_2}
+    {$DEFINE DELPHI_2_UP}
+  {$ENDIF}
 
-  {$ifdef DELPHI_4}
-    {$define DELPHI_2_UP}
-    {$define DELPHI_3_UP}
-    {$define DELPHI_4_UP}
-  {$endif}
+  {$IFDEF DELPHI_3}
+    {$DEFINE DELPHI_2_UP}
+    {$DEFINE DELPHI_3_UP}
+  {$ENDIF}
 
-  {$ifdef DELPHI_5}
-    {$define DELPHI_2_UP}
-    {$define DELPHI_3_UP}
-    {$define DELPHI_4_UP}
-    {$define DELPHI_5_UP}
-  {$endif}
+  {$IFDEF DELPHI_4}
+    {$DEFINE DELPHI_2_UP}
+    {$DEFINE DELPHI_3_UP}
+    {$DEFINE DELPHI_4_UP}
+  {$ENDIF}
 
-  {$ifdef DELPHI_6}
-    {$define DELPHI_2_UP}
-    {$define DELPHI_3_UP}
-    {$define DELPHI_4_UP}
-    {$define DELPHI_5_UP}
-    {$define DELPHI_6_UP}
-  {$endif}
+  {$IFDEF DELPHI_5}
+    {$DEFINE DELPHI_2_UP}
+    {$DEFINE DELPHI_3_UP}
+    {$DEFINE DELPHI_4_UP}
+    {$DEFINE DELPHI_5_UP}
+  {$ENDIF}
 
-  {$ifdef DELPHI_7}
-    {$define DELPHI_2_UP}
-    {$define DELPHI_3_UP}
-    {$define DELPHI_4_UP}
-    {$define DELPHI_5_UP}
-    {$define DELPHI_6_UP}
-    {$define DELPHI_7_UP}
-  {$endif}
+  {$IFDEF DELPHI_6}
+    {$DEFINE DELPHI_2_UP}
+    {$DEFINE DELPHI_3_UP}
+    {$DEFINE DELPHI_4_UP}
+    {$DEFINE DELPHI_5_UP}
+    {$DEFINE DELPHI_6_UP}
+  {$ENDIF}
 
-  {$ifdef CPPB_3}
-    {$define CPPB_3_UP}
-  {$endif}
+  {$IFDEF DELPHI_7}
+    {$DEFINE DELPHI_2_UP}
+    {$DEFINE DELPHI_3_UP}
+    {$DEFINE DELPHI_4_UP}
+    {$DEFINE DELPHI_5_UP}
+    {$DEFINE DELPHI_6_UP}
+    {$DEFINE DELPHI_7_UP}
+  {$ENDIF}
 
-  {$ifdef CPPB_4}
-    {$define CPPB_3_UP}
-    {$define CPPB_4_UP}
-  {$endif}
+  {$IFDEF CPPB_3}
+    {$DEFINE CPPB_3_UP}
+  {$ENDIF}
 
-  {$ifdef CPPB_5}
-    {$define CPPB_3_UP}
-    {$define CPPB_4_UP}
-    {$define CPPB_5_UP}
-  {$endif}
+  {$IFDEF CPPB_4}
+    {$DEFINE CPPB_3_UP}
+    {$DEFINE CPPB_4_UP}
+  {$ENDIF}
 
-  {$ifdef CPPB_6}
-    {$define CPPB_3_UP}
-    {$define CPPB_4_UP}
-    {$define CPPB_5_UP}
-    {$define CPPB_6_UP}
-  {$endif}
+  {$IFDEF CPPB_5}
+    {$DEFINE CPPB_3_UP}
+    {$DEFINE CPPB_4_UP}
+    {$DEFINE CPPB_5_UP}
+  {$ENDIF}
 
-  {$ifdef CPPB_3_UP}
+  {$IFDEF CPPB_6}
+    {$DEFINE CPPB_3_UP}
+    {$DEFINE CPPB_4_UP}
+    {$DEFINE CPPB_5_UP}
+    {$DEFINE CPPB_6_UP}
+  {$ENDIF}
+
+  {$IFDEF CPPB_3_UP}
     // C++ Builder requires this if you use Delphi components in run-time packages.
-    {$ObjExportAll On}
-  {$endif}
+    {$OBJEXPORTALL ON}
+  {$ENDIF}
 
-{$else (not Windows)}
+{$ELSE (NOT WINDOWS)}
   // Linux is the target
-  {$define QT_CLX}
+  {$DEFINE QT_CLX}
 
-  {$define KYLIX}
-  {$define KYLIX_1}
-  {$define KYLIX_1_UP}
+  {$DEFINE KYLIX}
+  {$DEFINE KYLIX_1}
+  {$DEFINE KYLIX_1_UP}
 
-  {$ifdef VER150}
-    {$define COMPILER_7}
-    {$define KYLIX_3}
-  {$endif}
+  {$IFDEF VER150}
+    {$DEFINE COMPILER_7}
+    {$DEFINE KYLIX_3}
+  {$ENDIF}
 
-  {$ifdef VER140}
-    {$define COMPILER_6}
-    {$define KYLIX_2}
-  {$endif}
+  {$IFDEF VER140}
+    {$DEFINE COMPILER_6}
+    {$DEFINE KYLIX_2}
+  {$ENDIF}
 
-  {$ifdef KYLIX_2}
-    {$define KYLIX_2_UP}
-  {$endif}
+  {$IFDEF KYLIX_2}
+    {$DEFINE KYLIX_2_UP}
+  {$ENDIF}
 
-  {$ifdef KYLIX_3}
-    {$define KYLIX_2_UP}
-    {$define KYLIX_3_UP}
-  {$endif}
+  {$IFDEF KYLIX_3}
+    {$DEFINE KYLIX_2_UP}
+    {$DEFINE KYLIX_3_UP}
+  {$ENDIF}
 
-{$endif}
+{$ENDIF}
 
 // Compiler defines common to all platforms.
-{$ifdef COMPILER_1}
-  {$define COMPILER_1_UP}
-{$endif}
+{$IFDEF COMPILER_1}
+  {$DEFINE COMPILER_1_UP}
+{$ENDIF}
 
-{$ifdef COMPILER_2}
-  {$define COMPILER_1_UP}
-  {$define COMPILER_2_UP}
-{$endif}
+{$IFDEF COMPILER_2}
+  {$DEFINE COMPILER_1_UP}
+  {$DEFINE COMPILER_2_UP}
+{$ENDIF}
 
-{$ifdef COMPILER_3}
-  {$define COMPILER_1_UP}
-  {$define COMPILER_2_UP}
-  {$define COMPILER_3_UP}
-{$endif}
+{$IFDEF COMPILER_3}
+  {$DEFINE COMPILER_1_UP}
+  {$DEFINE COMPILER_2_UP}
+  {$DEFINE COMPILER_3_UP}
+{$ENDIF}
 
-{$ifdef COMPILER_4}
-  {$define COMPILER_1_UP}
-  {$define COMPILER_2_UP}
-  {$define COMPILER_3_UP}
-  {$define COMPILER_4_UP}
-{$endif}
+{$IFDEF COMPILER_4}
+  {$DEFINE COMPILER_1_UP}
+  {$DEFINE COMPILER_2_UP}
+  {$DEFINE COMPILER_3_UP}
+  {$DEFINE COMPILER_4_UP}
+{$ENDIF}
 
-{$ifdef COMPILER_5}
-  {$define COMPILER_1_UP}
-  {$define COMPILER_2_UP}
-  {$define COMPILER_3_UP}
-  {$define COMPILER_4_UP}
-  {$define COMPILER_5_UP}
-{$endif}
+{$IFDEF COMPILER_5}
+  {$DEFINE COMPILER_1_UP}
+  {$DEFINE COMPILER_2_UP}
+  {$DEFINE COMPILER_3_UP}
+  {$DEFINE COMPILER_4_UP}
+  {$DEFINE COMPILER_5_UP}
+{$ENDIF}
 
-{$ifdef COMPILER_6}
-  {$define COMPILER_1_UP}
-  {$define COMPILER_2_UP}
-  {$define COMPILER_3_UP}
-  {$define COMPILER_4_UP}
-  {$define COMPILER_5_UP}
-  {$define COMPILER_6_UP}
-{$endif}
+{$IFDEF COMPILER_6}
+  {$DEFINE COMPILER_1_UP}
+  {$DEFINE COMPILER_2_UP}
+  {$DEFINE COMPILER_3_UP}
+  {$DEFINE COMPILER_4_UP}
+  {$DEFINE COMPILER_5_UP}
+  {$DEFINE COMPILER_6_UP}
+{$ENDIF}
 
-{$ifdef COMPILER_7}
-  {$define COMPILER_1_UP}
-  {$define COMPILER_2_UP}
-  {$define COMPILER_3_UP}
-  {$define COMPILER_4_UP}
-  {$define COMPILER_5_UP}
-  {$define COMPILER_6_UP}
-  {$define COMPILER_7_UP}
-{$endif}
+{$IFDEF COMPILER_7}
+  {$DEFINE COMPILER_1_UP}
+  {$DEFINE COMPILER_2_UP}
+  {$DEFINE COMPILER_3_UP}
+  {$DEFINE COMPILER_4_UP}
+  {$DEFINE COMPILER_5_UP}
+  {$DEFINE COMPILER_6_UP}
+  {$DEFINE COMPILER_7_UP}
+{$ENDIF}
 
-{$ifdef COMPILER_9}
-  {$define COMPILER_1_UP}
-  {$define COMPILER_2_UP}
-  {$define COMPILER_3_UP}
-  {$define COMPILER_4_UP}
-  {$define COMPILER_5_UP}
-  {$define COMPILER_6_UP}
-  {$define COMPILER_7_UP}
-  {$define COMPILER_9_UP}
-{$endif}
+{$IFDEF COMPILER_9}
+  {$DEFINE COMPILER_1_UP}
+  {$DEFINE COMPILER_2_UP}
+  {$DEFINE COMPILER_3_UP}
+  {$DEFINE COMPILER_4_UP}
+  {$DEFINE COMPILER_5_UP}
+  {$DEFINE COMPILER_6_UP}
+  {$DEFINE COMPILER_7_UP}
+  {$DEFINE COMPILER_9_UP}
+{$ENDIF}
 
-{$ifdef COMPILER_10}
-  {$define COMPILER_1_UP}
-  {$define COMPILER_2_UP}
-  {$define COMPILER_3_UP}
-  {$define COMPILER_4_UP}
-  {$define COMPILER_5_UP}
-  {$define COMPILER_6_UP}
-  {$define COMPILER_7_UP}
-  {$define COMPILER_9_UP}
-  {$define COMPILER_10_UP}
-{$endif}
+{$IFDEF COMPILER_10}
+  {$DEFINE COMPILER_1_UP}
+  {$DEFINE COMPILER_2_UP}
+  {$DEFINE COMPILER_3_UP}
+  {$DEFINE COMPILER_4_UP}
+  {$DEFINE COMPILER_5_UP}
+  {$DEFINE COMPILER_6_UP}
+  {$DEFINE COMPILER_7_UP}
+  {$DEFINE COMPILER_9_UP}
+  {$DEFINE COMPILER_10_UP}
+{$ENDIF}
 
-{$define TURBO_DELPHI}
-{$ifdef TURBO_DELPHI}
-  {$undef COMPILER_9}
-  {$undef COMPILER_9_UP}
-  {$undef COMPILER_10}
-  {$undef COMPILER_10_UP}
-{$endif}
+{$DEFINE TURBO_DELPHI}
+{$IFDEF TURBO_DELPHI}
+  {$UNDEF COMPILER_9}
+  {$UNDEF COMPILER_9_UP}
+  {$UNDEF COMPILER_10}
+  {$UNDEF COMPILER_10_UP}
+{$ENDIF}
 
 //----------------------------------------------------------------------------------------------------------------------
 

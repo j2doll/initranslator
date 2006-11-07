@@ -155,16 +155,14 @@ inherited frmDictEdit: TfrmDictEdit
     Style = csDropDownList
     Anchors = [akLeft, akRight, akBottom]
     ItemHeight = 13
-    ItemIndex = 0
     TabOrder = 7
-    Text = 'All items'
     OnChange = cbFilterChange
     Items.Strings = (
       'All items'
       'Items with translations'
       'Items without translations'
       'Items with > 1 translations'
-      'Items with = 1 translation')
+      'Items with 1 translation')
   end
   object alDictEdit: TTntActionList
     OnUpdate = alDictEditUpdate

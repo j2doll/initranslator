@@ -144,6 +144,7 @@ type
   public
     constructor Create;
     destructor Destroy; override;
+
     property Header:WideString read FHeader write FHeader;
     property Footer:WideString read FFooter write FFooter;
     property Items: ITranslationItems read FItems;
@@ -657,7 +658,7 @@ begin
     S.Add(tmp);
   end;
 end;
-
+                                       
 procedure TTranslateFiles.SaveOriginal(const Filename: WideString; Encoding: TEncoding);
 var
   i: integer;

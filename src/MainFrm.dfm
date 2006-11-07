@@ -648,7 +648,8 @@ object frmMain: TfrmMain
       object TBXSeparatorItem1: TSpTBXSeparatorItem
       end
       object SpTBXSubmenuItem1: TSpTBXSubmenuItem
-        DisplayMode = nbdmTextOnlyInMenus
+        DisplayMode = nbdmImageAndText
+        MinWidth = 90
         DropdownCombo = True
         CaptionW = 'Themes'
         object SpTBXThemeGroupItem1: TSpTBXThemeGroupItem

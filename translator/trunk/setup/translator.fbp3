@@ -113,7 +113,7 @@ NEWS_NOTIFY
               <Property MultiValue="0" name="Value" type="String">0</Property>
               </Object>
             <Object Class="TPersistParam" XMLID="{61C26F12-53A5-41FA-8F60-F567944EDE65}"><Property MultiValue="0" name="Caption" type="String">&amp;amp;Build:</Property>
-              <Property MultiValue="0" name="DefaultValue" type="String">33</Property>
+              <Property MultiValue="0" name="DefaultValue" type="String">36</Property>
               <Property name="InUse" type="Boolean">True</Property>
               <Property name="List" type="TStrings"><![CDATA[]]>
                 </Property>

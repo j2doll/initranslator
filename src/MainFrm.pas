@@ -553,7 +553,7 @@ type
     procedure FixXPPanelBug;
     procedure AddMRUFile(const FileName: WideString; AOriginal: boolean);
     procedure OpenMRUFiles(const FileName: WideString);
-    function MRUFileExists(const FileName: WideString): boolean;
+    function MRUFilesExists(const FileName: WideString): boolean;
     procedure DoCommentModified(Sender: TObject; const AText: WideString);
     procedure UpdateColumn(Index: integer; const AFileName: WideString);
     procedure DoTranslateSuggestionClick(Sender: TObject);
@@ -2029,11 +2029,16 @@ procedure TfrmMain.AddMRUFile(const FileName: WideString; AOriginal: boolean);
 var
   S: WideString;
 begin
-  if AOriginal then
-    S := WideFormat('%s [%s]', [FileName, GlobalAppOptions.TranslationFile])
-  else
-    S := WideFormat('%s [%s]', [GlobalAppOptions.OriginalFile, FileName]);
-  MRUFiles.Add(S);
+  S := '';
+  if (Filename <> '') then
+  begin
+    if AOriginal and (GlobalAppOptions.TranslationFile <> '') then
+      S := WideFormat('%s [%s]', [FileName, GlobalAppOptions.TranslationFile])
+    else if (GlobalAppOptions.OriginalFile <> '') then
+      S := WideFormat('%s [%s]', [GlobalAppOptions.OriginalFile, FileName])
+  end;
+  if S <> '' then
+    MRUFiles.Add(S);
 end;
 
 procedure TfrmMain.OpenMRUFiles(const FileName: WideString);
@@ -2049,14 +2054,19 @@ begin
     Orig := FileName;
   end;
   if (Orig <> '') and WideFileExists(Orig) then
-    LoadOriginal(Orig, DetectEncoding(Orig));
+    LoadOriginal(Orig, DetectEncoding(Orig))
+  else
+  begin
+    acOpenOrig.Execute;
+    Exit;
+  end;
   if (Trans <> '') and WideFileExists(Trans) then
     LoadTranslation(Trans, DetectEncoding(Trans))
   else
     acOpenTrans.Execute;
 end;
 
-function TfrmMain.MRUFileExists(const FileName: WideString): boolean;
+function TfrmMain.MRUFilesExists(const FileName: WideString): boolean;
 var
   Orig, Trans: WideString;
 begin
@@ -2989,7 +2999,7 @@ var
   i: integer;
 begin
   for i := MRUFiles.Items.Count - 1 downto 0 do
-    if not MRUFileExists(MRUFiles.Items[i]) then
+    if not MRUFilesExists(MRUFiles.Items[i]) then
       MRUFiles.Items.Delete(i);
 end;
 

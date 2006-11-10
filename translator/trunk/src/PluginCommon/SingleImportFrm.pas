@@ -21,12 +21,12 @@ interface
 
 uses
   Windows, Messages, SysUtils, Classes, Graphics, Controls, Forms,
-  Dialogs, StdCtrls, ComCtrls;
+  Dialogs, StdCtrls, ComCtrls, TransIntf;
 
 type
 
   TfrmImport = class(TForm)
-    Label1: TLabel;
+    lblFilename: TLabel;
     edFilename: TEdit;
     btnBrowse: TButton;
     btnOK: TButton;
@@ -35,9 +35,12 @@ type
     procedure btnBrowseClick(Sender: TObject);
   private
     { Private declarations }
+    FApplicationServices:IApplicationServices;
+    function Translate(const Value:WideString):WideString;
   public
     { Public declarations }
-    class function Execute(var AFilename: string; const ACaption, Filter, InitialDir, DefaultExt: string): boolean;
+    class function Execute(var AFilename: string; const ACaption, Filter, InitialDir, DefaultExt: string): boolean;overload;
+    class function Execute(const ApplicationServices:IApplicationServices; var AFilename: string; const ACaption, Filter, InitialDir, DefaultExt: string): boolean;overload;
   end;
 
 implementation
@@ -47,14 +50,35 @@ implementation
 { TfrmImport }
 
 class function TfrmImport.Execute(var AFilename: string; const ACaption, Filter, InitialDir, DefaultExt: string): boolean;
+begin
+  Result := Execute(nil, AFilename, ACaption, Filter, InitialDir, DefaultExt);
+end;
+
+procedure TfrmImport.btnBrowseClick(Sender: TObject);
+begin
+  OpenDialog1.Filename := edFilename.Text;
+  if OpenDialog1.Execute then
+    edFilename.Text := OpenDialog1.Filename;
+end;
+
+class function TfrmImport.Execute(
+  const ApplicationServices: IApplicationServices; var AFilename: string;
+  const ACaption, Filter, InitialDir, DefaultExt: string): boolean;
 var
   frmImport: TfrmImport;
 begin
   frmImport := self.Create(Application);
   with frmImport do
   try
-    Caption := ACaption;
-    OpenDialog1.Filter := Filter;
+    FApplicationServices := ApplicationServices;
+    if ACaption <> '' then
+      Caption := Translate(ACaption)
+    else
+      Caption := Translate(Caption);
+    OpenDialog1.Filter := Translate(Filter);
+    lblFilename.Caption := Translate(lblFilename.Caption);
+    btnOK.Caption := Translate(btnOK.Caption);
+    btnCancel.Caption := Translate(btnCancel.Caption);
     OpenDialog1.InitialDir := InitialDir;
     OpenDialog1.DefaultExt := DefaultExt;
     edFilename.Text := AFilename;
@@ -64,13 +88,15 @@ begin
   finally
     Free;
   end;
+
 end;
 
-procedure TfrmImport.btnBrowseClick(Sender: TObject);
+function TfrmImport.Translate(const Value: WideString): WideString;
 begin
-  OpenDialog1.Filename := edFilename.Text;
-  if OpenDialog1.Execute then
-    edFilename.Text := OpenDialog1.Filename;
+  if FApplicationServices <> nil then
+    Result := FApplicationServices.Translate(self.ClassName, Value, Value)
+  else
+    Result := Value;
 end;
 
 end.

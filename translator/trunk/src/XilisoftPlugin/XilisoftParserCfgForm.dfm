@@ -14,7 +14,6 @@ object XilisoftCfgForm: TXilisoftCfgForm
   Font.Style = []
   OldCreateOrder = False
   Position = poMainFormCenter
-  OnShow = FormShow
   PixelsPerInch = 96
   TextHeight = 13
   object TCB1: TTntCheckBox

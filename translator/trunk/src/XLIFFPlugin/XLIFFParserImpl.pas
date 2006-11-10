@@ -26,9 +26,12 @@ type
   TXLIFFParser = class(TInterfacedObject, IInterface, IFileParser)
   private
     FOldAppHandle: Cardinal;
+    FApplicationServices: IApplicationServices;
     FFilename: string;
     procedure LoadSettings;
     procedure SaveSettings;
+    function Translate(const Value:WideString):WideString;
+
   protected
     function Capabilities: Integer; safecall;
     function Configure(Capability: Integer): HRESULT; safecall;
@@ -94,9 +97,9 @@ function TXLIFFParser.DisplayName(Capability: Integer): WideString;
 begin
   case Capability of
     CAP_IMPORT:
-      Result := cXLIFFImportTitle;
+      Result := Translate(cXLIFFImportTitle);
     CAP_EXPORT:
-      Result := cXLIFFExportTitle;
+      Result := Translate(cXLIFFExportTitle);
   else
     Result := '';
   end;
@@ -134,7 +137,7 @@ begin
   try
     try
       BuildPreview(Items, Orphans, Strings);
-      if TfrmExport.Execute(FFilename, cXLIFFExportTitle, cXLIFFFilter, '.', '.xlf', Strings) then
+      if TfrmExport.Execute(FApplicationServices, FFilename, Translate(cXLIFFExportTitle), Translate(cXLIFFFilter), '.', '.xlf', Strings) then
       begin
         SaveSettings;
         Strings.SaveToFile(FFilename);
@@ -211,7 +214,7 @@ begin
     Items.Clear;
     Orphans.Clear;
     LoadSettings;
-    if TfrmImport.Execute(FFilename, cXLIFFImportTitle, cXLIFFFilter, '.', '.xlf') then
+    if TfrmImport.Execute(FApplicationServices, FFilename, Translate(cXLIFFImportTitle), Translate(cXLIFFFilter), '.', '.xlf') then
     begin
       SaveSettings;
       FXMLImport := LoadXMLDocument(FFilename);
@@ -282,6 +285,7 @@ begin
   if FOldAppHandle = 0 then
     FOldAppHandle := Application.Handle;
   Application.Handle := ApplicationServices.AppHandle;
+  FApplicationServices := ApplicationServices;
 end;
 
 procedure TXLIFFParser.LoadSettings;
@@ -302,6 +306,14 @@ begin
   finally
     Free;
   end;
+end;
+
+function TXLIFFParser.Translate(const Value: WideString): WideString;
+begin
+  if FApplicationServices <> nil then
+    Result := FApplicationServices.Translate(ClassName, Value, Value)
+  else
+    Result := Value;
 end;
 
 end.

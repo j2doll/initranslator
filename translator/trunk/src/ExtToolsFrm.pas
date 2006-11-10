@@ -129,7 +129,7 @@ type
     procedure acDirExecute(Sender: TObject);
     procedure alToolsUpdate(Action: TBasicAction; var Handled: Boolean);
     function lbContentsDataFind(Control: TWinControl;
-      FindString: String): Integer;
+      FindString: string): Integer;
     procedure lbContentsData(Control: TWinControl; Index: Integer;
       var Data: WideString);
   private
@@ -304,7 +304,7 @@ var
   S: WideString;
 begin
   i := 1;
-  S := Translate(Application.MainForm.ClassName, SNewToolNameFmt);
+  S := _(Application.MainForm.ClassName, SNewToolNameFmt);
   Result := WideFormat(S, [i]);
   while FTools.IndexOf(Result) >= 0 do
   begin
@@ -450,7 +450,7 @@ end;
 procedure TfrmTools.alToolsUpdate(Action: TBasicAction;
   var Handled: Boolean);
 
-procedure PropagateEnabled(AWinControl: TWinControl; Enabled: boolean);
+  procedure PropagateEnabled(AWinControl: TWinControl; Enabled: boolean);
   var i: integer;
   begin
     if AWinControl.Tag <> -1 then // leave these alone
@@ -472,7 +472,7 @@ begin
 end;
 
 function TfrmTools.lbContentsDataFind(Control: TWinControl;
-  FindString: String): Integer;
+  FindString: string): Integer;
 begin
   Result := FTools.IndexOf(FindString);
 end;

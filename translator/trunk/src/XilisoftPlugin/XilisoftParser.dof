@@ -21,7 +21,7 @@ PackageDLLOutputDir=
 PackageDCPOutputDir=
 [Parameters]
 RunParams=
-HostApplication=C:\Program\Borland\Projects\Private\initranslator\bin\translator.exe
+HostApplication=C:\Program Files\Borland\projects\Private\translator\trunk\bin\translator.exe
 Launcher=
 UseLauncher=0
 DebugCWD=

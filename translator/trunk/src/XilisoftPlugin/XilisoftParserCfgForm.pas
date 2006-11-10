@@ -18,38 +18,29 @@ unit XilisoftParserCfgForm;
 interface
 
 uses
-  PluginLocale,
   Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
-  Dialogs, StdCtrls, TntStdCtrls;
+  Dialogs, StdCtrls, TntStdCtrls, TransIntf;
 
 type
   TXilisoftCfgForm = class(TForm)
     TCB1: TTntCheckBox;
     TntButton1: TTntButton;
     procedure TntButton1Click(Sender: TObject);
-    procedure FormShow(Sender: TObject);
   private
     { Private declarations }
-    FLocale: TPlgLocale;
+    FApplicationServices: IApplicationServices;
   public
     { Public declarations }
-    procedure FillLocale(LocaleFile: TPlgLocale);
+    property ApplicationServices: IApplicationServices read FApplicationServices write FApplicationServices;
+    class function Edit(const ApplicationServices: IApplicationServices; var Checked: boolean): boolean;
   end;
-
-var
-  XilisoftCfgForm: TXilisoftCfgForm;
 
 implementation
 
 uses
-  IniFiles;
+  IniFiles, XiliSoftParserConsts;
 
 {$R *.dfm}
-
-const
-  cfgSection = 'CfgForm';
-  cCaption = 'Caption';
-  cSkip = 'SkipEmpty';
 
 procedure TXilisoftCfgForm.TntButton1Click(Sender: TObject);
 begin
@@ -59,24 +50,26 @@ begin
     ModalResult := mrNo;
 end;
 
-procedure TXilisoftCfgForm.FillLocale(LocaleFile: TPlgLocale);
-begin
-  FLocale := LocaleFile;
-  FLocale.FormSection := cfgSection;
-  FLocale.AddKey(sForm, cCaption);
-  FLocale.AddKey(sForm, cSkip);
-end;
-
-procedure TXilisoftCfgForm.FormShow(Sender: TObject);
+class function TXilisoftCfgForm.Edit(
+  const ApplicationServices: IApplicationServices; var Checked: boolean): boolean;
 var
-  s: string;
+  frm: TXilisoftCfgForm;
 begin
-  s := FLocale.GetLocalizedKey(sForm, cCaption);
-  if s <> '' then
-    Caption := s;
-  s := FLocale.GetLocalizedKey(sForm, cSkip);
-  if s <> '' then
-    TCB1.Caption := s;
+  frm := self.Create(Application);
+  try
+    if ApplicationServices <> nil then
+    begin
+      frm.Caption := ApplicationServices.Translate(SLocalizeSectionName, SFormCaption, SFormCaption);
+      frm.TCB1.Caption := ApplicationServices.Translate(SLocalizeSectionName, SCheckBoxCaption, SCheckBoxCaption);
+      frm.TntButton1.Caption := ApplicationServices.Translate(SLocalizeSectionName, SButtonCaption, SButtonCaption);
+    end;
+    frm.TCB1.Checked := Checked;
+    Result := frm.ShowModal = mrOK;
+    if Result then
+      Checked := frm.TCB1.Checked
+  finally
+    frm.Free;
+  end;
 end;
 
 end.

@@ -38,7 +38,7 @@ function GetCurrentYear:Integer;
 function ActionShortCutInUse(AM: TActionList; ShortCut: Word): boolean;
 function FindActionShortCut(AM: TActionList; ShortCut: Word): TCustomAction;
 function RemoveActionShortCut(AM: TActionList; ShortCut: Word): integer;
-function Translate(const ASection, AMsg: WideString): WideString;
+function _(const ASection, AMsg: WideString): WideString;
 function MyShortCutToText(ShortCut: TShortCut): WideString;
 function BinarySearch(AList: TList; L, R: integer; CompareItem: Pointer; CompareFunc: TListSortCompare; var Index: integer): boolean;
 
@@ -64,17 +64,22 @@ function strtok(Search, Delim: WideString): WideString;
 
 procedure SetXPComboStyle(AControl:TControl);
 
+type
+  TApplicationServicesFunc = function:IApplicationServices;
+
+var
+  GlobalApplicationServicesFunc:TApplicationServicesFunc = nil;
+
 implementation
 uses
-  Windows, Forms, Dialogs, Math, Registry, StdCtrls, 
+  Windows, Forms, Dialogs, Math, Registry, StdCtrls,
   WideIniFiles, Menus, Consts, ShFolder,
-  CommonUtils, ShlObj, ActiveX, TbxUxThemes, 
+  CommonUtils, ShlObj, ActiveX, TbxUxThemes,
   TntWindows, TntSysUtils, TntWideStrUtils;
 
 var
   FLanguageFile: TAppLanguage = nil;
   FAppOptions: TAppOptions = nil;
-  FApplicationServices:IApplicationServices = nil;
 
 function AutoDetectCharacterSet(Stream: TStream): TEncoding;
 begin
@@ -127,9 +132,10 @@ end;
 
 function GlobalApplicationServices:IApplicationServices;
 begin
-  if FApplicationServices = nil then
-    FApplicationServices := Application.MainForm as IApplicationServices;
-  Result := FApplicationServices;
+  if Assigned(GlobalApplicationServicesFunc) then
+    Result := GlobalApplicationServicesFunc
+  else
+    Result := nil;
 end;
 
 function SHGetFolderPathW2(hwnd: HWND; csidl: Integer; hToken: THandle; dwFlags: DWord; pszPath: PWideChar): HRESULT; stdcall; external 'SHFolder.dll' name 'SHGetFolderPathW';
@@ -184,7 +190,8 @@ begin
   Result := WideIncludeTrailingPathDelimiter(Result) + 'translator.ini';
 end;
 
-function Translate(const ASection, AMsg: WideString): WideString;
+
+function _(const ASection, AMsg: WideString): WideString;
 begin
   if GlobalLanguageFile <> nil then
     Result := GlobalLanguageFile.Translate(ASection, AMsg, AMsg)
@@ -418,7 +425,7 @@ end;
 procedure HandleFileCreateException(Sender: TObject; E: Exception; const Filename: WideString);
 begin
   if E is EFCreateError then
-    ErrMsg(WideFormat(Translate(Sender.ClassName, SErrCreateFileFmt), [Filename]), Translate(Sender.ClassName, SErrorCaption))
+    ErrMsg(WideFormat(_(Sender.ClassName, SErrCreateFileFmt), [Filename]), _(Sender.ClassName, SErrorCaption))
   else
     Application.HandleException(Sender);
 end;

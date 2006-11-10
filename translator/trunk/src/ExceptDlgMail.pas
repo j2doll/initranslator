@@ -57,7 +57,7 @@ implementation
 const
   SendBugReportAddress = 'peter3@users.sourceforge.net';
   SendBugReportSubject = 'IniTranslator Bug Report';
-  
+
 resourcestring
   SSendReport = '&Send Report...';
 

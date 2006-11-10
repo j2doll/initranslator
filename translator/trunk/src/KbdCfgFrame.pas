@@ -216,7 +216,7 @@ procedure TFrmKbdCfg.acRemoveExecute(Sender: TObject);
 var
   A: TTntAction;
   S: TShortCut;
-  Index:integer;
+  Index: integer;
 begin
   A := GetCurrentAction;
   if A = nil then
@@ -226,7 +226,7 @@ begin
     // check if the shortcut to delete is the main shortcut, delete if so
     S := WideTextToShortCut(Items[ItemIndex]);
     if A.ShortCut = S then
-      A.ShortCut := 0;                       
+      A.ShortCut := 0;
     Index := A.SecondaryShortCuts.IndexOfShortCut(S);
     if Index > -1 then
       A.SecondaryShortCuts.Delete(Index);
@@ -466,7 +466,7 @@ end;
 
 function TFrmKbdCfg.DoTranslate(const S: WideString): WideString;
 begin
-  Result := Translate(Application.MainForm.ClassName, S);
+  Result := _(Application.MainForm.ClassName, S);
 end;
 
 procedure TFrmKbdCfg.ClearCatList;

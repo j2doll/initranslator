@@ -121,8 +121,8 @@ type
     constructor Create;
     destructor Destroy; override;
     function Find(const Section, Name: WideString; CaseSense: WordBool; var Index: integer): boolean;
-    function IndexOf(const Section, Name: WideString; CaseSense: WordBool = false): integer;overload;
-    function IndexOf(const AItem:ITranslationItem): integer;overload;
+    function IndexOf(const Section, Name: WideString; CaseSense: WordBool = false): integer; overload;
+    function IndexOf(const AItem: ITranslationItem): integer; overload;
     // NB! sorting is *not* maintained when new items are inserted!
     property Sort: TTranslateSortType read GetSort write SetSort;
     property Count: integer read GetCount;
@@ -145,8 +145,8 @@ type
     constructor Create;
     destructor Destroy; override;
 
-    property Header:WideString read FHeader write FHeader;
-    property Footer:WideString read FFooter write FFooter;
+    property Header: WideString read FHeader write FHeader;
+    property Footer: WideString read FFooter write FFooter;
     property Items: ITranslationItems read FItems;
     // Orphans are the items in the translation file that didn't match up with
     // any items in the original file
@@ -658,7 +658,7 @@ begin
     S.Add(tmp);
   end;
 end;
-                                       
+
 procedure TTranslateFiles.SaveOriginal(const Filename: WideString; Encoding: TEncoding);
 var
   i: integer;
@@ -938,4 +938,3 @@ begin
 end;
 
 end.
-

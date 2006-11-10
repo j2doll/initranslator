@@ -18,22 +18,22 @@ unit XilisoftParserImpl;
 
 interface
 uses
-  PluginLocale,
   Classes, Types, TntClasses, TransIntf;
 
 type
-  TXilisoftParser = class(TInterfacedObject, IUnknown, IFileParser)
+  TXilisoftParser = class(TInterfacedObject, IUnknown, IFileParser, ILocalizable)
   private
     FOldAppHandle: Cardinal;
     FOrigFile: string;
     FTransFile: string;
-    FLangFile: string;
     FSkip: Boolean;
-    FPLocale: TPlgLocale;
+    FStringIndex: integer;
+    FApplicationServices: IApplicationServices;
     procedure LoadSettings;
     procedure SaveSettings;
     procedure BuildPreview(Items, Orphans: ITranslationItems; Strings: TTntStrings);
-    procedure InitLocale;
+    function Translate(const Value: WideString): WideString;
+
   public
     constructor Create;
     destructor Destroy; override;
@@ -47,27 +47,14 @@ type
       const Orphans: ITranslationItems): HRESULT; safecall;
     procedure Init(const ApplicationServices: IApplicationServices); safecall;
     property SkipEmpty: Boolean read FSkip write FSkip;
+    function GetString(out Section: WideString; out Name: WideString; out Value: WideString): WordBool;
   end;
 
 implementation
 uses
-  XilisoftParserCfgForm,
+  XilisoftParserCfgForm, XiliSoftParserConsts,
   Controls,
   Windows, SysUtils, Forms, IniFiles, DualImportFrm;
-
-const
-  cSectionName = 'XilisoftTranslator';
-  cSkip = 'SkipEmpty';
-  cPlugin = 'Plugin';
-  cImport = 'ImportFrom';
-  cExport = 'ExportTo';
-  cAllFiles = 'AllFiles';
-  cLangFiles = 'LangFiles';
-
-var
-  cXilisoftFilter: string = 'Lang files (*.lang)|*.lang|All files (*.*)|*.*';
-  cXilisoftImportTitle: string = 'Import from Xilisoft .lang file';
-  cXilisoftExportTitle: string = 'Export to Xilisoft .lang file';
 
 function GetLocaleInformation(Flag: Integer): string;
 var
@@ -98,62 +85,18 @@ end;
 
 function TXilisoftParser.Capabilities: Integer;
 begin
-  Result := CAP_IMPORT or CAP_EXPORT; // or CAP_CONFIGURE;
-end;
-
-procedure TXiliSoftParser.InitLocale;
-var s: string;
-begin
-  if FPLocale = nil then
-  begin
-    FLangFile := ChangeFileExt(GetModuleName(hInstance), '.lng');
-    FPLocale := TPlgLocale.Create(FLangFile);
-    FPLocale.PluginSection := cPlugin;
-    FPLocale.AddKey(sPlugin, cImport);
-    FPLocale.AddKey(sPlugin, cExport);
-    FPLocale.AddKey(sPlugin, cAllFiles);
-    FPLocale.AddKey(sPlugin, cLangFiles);
-    s := FPLocale.GetLocalizedKey(sPlugin, cImport);
-    if s <> '' then
-      cXilisoftImportTitle := s + ' Xilisoft .lang'
-    else
-      cXilisoftImportTitle := 'Import from Xilisoft .lang file';
-    s := FPLocale.GetLocalizedKey(sPlugin, cExport);
-    if s <> '' then
-      cXilisoftExportTitle := s + ' Xilisoft .lang'
-    else
-      cXilisoftExportTitle := 'Export to Xilisoft .lang file';
-    s := FPLocale.GetLocalizedKey(sPlugin, cLangFiles);
-    if s <> '' then
-      cXilisoftFilter := s + '|*.lang'
-    else
-      cXilisoftFilter := 'Lang files (*.lang)|*.lang|';
-    s := FPLocale.GetLocalizedKey(sPlugin, cAllFiles);
-    if s <> '' then
-      cXilisoftFilter := cXilisoftFilter + s + '|*.*'
-    else
-      cXilisoftFilter := cXilisoftFilter + 'All files (*.*)|*.*';
-  end;
-
+  Result := CAP_IMPORT or CAP_EXPORT or CAP_CONFIGURE;
 end;
 
 function TXilisoftParser.Configure(Capability: Integer): HRESULT;
 begin
-//  InitLocale;
+  Result := S_FALSE;
   case Capability of
     CAP_EXPORT:
       begin
-        XilisoftCfgForm := TXilisoftCfgForm.Create(nil);
-        try
-        // XilisoftCfgForm.FillLocale(FPLocale);
-          XilisoftCfgForm.TCB1.Checked := SkipEmpty;
-          if XilisoftCfgForm.ShowModal = mrYes then
-            SkipEmpty := true
-          else
-            SkipEmpty := false;
-        finally
-          XilisoftCfgForm.Free;
-        end;
+        LoadSettings;
+        if TXilisoftCfgForm.Edit(FApplicationServices, FSkip) then
+          SaveSettings;
         Result := S_OK;
       end;
   else
@@ -169,45 +112,34 @@ end;
 
 destructor TXilisoftParser.Destroy;
 begin
-  FreeAndNil(FPLocale);
   Application.Handle := FOldAppHandle;
   inherited;
 end;
 
 function TXilisoftParser.DisplayName(Capability: Integer): WideString;
 begin
-  {
-  if GetLocaleInformation(LOCALE_ILANGUAGE)='0419' then
-   begin
-    cXilisoftFilter := 'Файлы Lang (*.lang)|*.lang|Все файлы (*.*)|*.*';
-    cXilisoftImportTitle := 'Импорт из файла Xilisoft .lang';
-    cXilisoftExportTitle := 'Экспорт в файл Xilisoft .lang';
-   end
-  else
-   begin
-    cXilisoftFilter := 'Lang files (*.lang)|*.lang|All files (*.*)|*.*';
-    cXilisoftImportTitle := 'Import from Xilisoft .lang file';
-    cXilisoftExportTitle := 'Export to Xilisoft .lang file';
-   end;
-  }
   case Capability of
     CAP_IMPORT:
-      Result := cXilisoftImportTitle;
+      Result := Translate(SXilisoftImportTitle);
     CAP_EXPORT:
-      Result := cXilisoftExportTitle;
+      Result := Translate(SXilisoftExportTitle);
   else
     Result := '';
   end;
 end;
 
-function TXilisoftParser.ExportItems(const Items,
-  Orphans: ITranslationItems): HRESULT;
+function TXilisoftParser.ExportItems(const Items, Orphans: ITranslationItems): HRESULT;
 var
   S: TTntStringlist;
 begin
   Result := S_FALSE;
   try
     LoadSettings;
+    if not FileExists(FTransFile) then
+    begin
+      MessageBox(0, PChar(string(Translate(SImportBeforeExport))), PChar(string(Translate(SFileNotFound))), MB_OK);
+      Exit;
+    end;
     S := TTntStringlist.Create;
     try
       BuildPreview(Items, Orphans, S);
@@ -238,7 +170,8 @@ begin
     Orphans.Clear;
     TI := nil;
     LoadSettings;
-    if TfrmImport.Execute(FOrigFile, FTransFile, cXilisoftImportTitle, cXilisoftFilter, '.', 'lang') then
+    if TfrmImport.Execute(FApplicationServices, FOrigFile, FTransFile,
+      Translate(SXilisoftImportTitle), Translate(SXilisoftFilter), '.', 'lang') then
     begin
       Items.Sort := stNone;
       SO := TTntStringlist.Create;
@@ -346,9 +279,18 @@ begin
   end;
 end;
 
+function TXilisoftParser.Translate(const Value: WideString): WideString;
+begin
+  if FApplicationServices <> nil then
+    Result := FApplicationServices.Translate(SLocalizeSectionName, Value, Value)
+  else
+    Result := Value;
+end;
+
 procedure TXilisoftParser.Init(const ApplicationServices: IApplicationServices);
 begin
   Application.Handle := ApplicationServices.AppHandle;
+  FApplicationServices := ApplicationServices;
 end;
 
 procedure TXilisoftParser.LoadSettings;
@@ -381,6 +323,34 @@ begin
   except
     Application.HandleException(self);
   end;
+end;
+
+function TXilisoftParser.GetString(out Section, Name, Value: WideString): WordBool;
+begin
+  Section := SLocalizeSectionName;
+  Result := true;
+  case FStringIndex of
+    0:
+      Name := SXilisoftFilter;
+    1:
+      Name := SXilisoftImportTitle;
+    2:
+      Name := SXilisoftExportTitle;
+    3:
+      Name := SImportBeforeExport;
+    4:
+      Name := SFileNotFound;
+    5:
+      Name := SFormCaption;
+    6:
+      Name := SCheckBoxCaption;
+    7:
+      Name := SButtonCaption;
+  else
+    Result := false;
+  end;
+  Value := Name;
+  Inc(FStringIndex);
 end;
 
 end.

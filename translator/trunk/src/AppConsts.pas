@@ -29,7 +29,7 @@ resourcestring
     'Toolbars and menus courtesy of Toolbar2000.'#10#9'For more information, see http://www.jrsoftware.org/tb2k.php.'#10 +
     'Theme enabled toolbars and menus courtesy of TBX.'#10#9'For more information, see http://g32.org/tbx/index.html.'#10 +
     'Extra themes for TBX courtesy of Roy Magne Klever.'#10#9'For more information, see http://www.rmklever.com/delphitbx.'#10 +
-    'Unicode enabled add-on package for Toolbar2000 and TBX courtesy of Silverpoint Development'#10#9'For more information, see http://club.telepolis.com/silverpointdev/sptbxlib.'#10+
+    'Unicode enabled add-on package for Toolbar2000 and TBX courtesy of Silverpoint Development'#10#9'For more information, see http://club.telepolis.com/silverpointdev/sptbxlib.'#10 +
     'Unicode controls courtesy of Troy Wolbrink''s TNT controls.'#10#9'For more information, see http://www.tntware.com/delphicontrols/unicode/.'#10 +
     'Spell checker kindly donated by Addictive Software.'#10#9'For more info and additional dictionaries, see http://www.addictivesoftware.com'#10#10 +
     'This program is released subject to the MPL 1.1 license (http://www.mozilla.org/MPL/MPL-1.1.html for details)'#10'and come with absolutely no warranty of any kind.';

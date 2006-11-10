@@ -28,8 +28,8 @@ function YesNo(const AText, ACaption: WideString): boolean;
 function YesNoCancel(const AText, ACaption: WideString): integer;
 
 function GetCmdSwitchValue(const Switch: AnsiString; SwitchChars: TSysCharSet; var Value: AnsiString; IgnoreCase: boolean): boolean;
-function ScreenCursor(ACursor: TCursor): IUnknown;
-function WaitCursor: IUnknown;
+function ScreenCursor(ACursor: TCursor): IInterface;
+function WaitCursor: IInterface;
 
 function StripChars(const S: AnsiString; Ch: TSysCharSet): AnsiString; overload;
 function StripChars(const S: WideString; const Ch: WideString): WideString; overload;
@@ -52,8 +52,7 @@ function RunProcess(const Filename, Params: WideString; WorkingDir: WideString;
   const WaitUntilTerminated, WaitUntilIdle: Boolean; const ShowCmd: Integer; var ResultCode: Cardinal): Boolean;
 function SubStrCount(const SubStr, Str: WideString): integer;
 function WideContainsChar(Ch: WideChar; const S: WideString): boolean;
-function IsCharPunct(const S:WideChar):boolean;
-
+function IsCharPunct(const S: WideChar): boolean;
 
 implementation
 uses
@@ -121,7 +120,7 @@ begin
 end;
 
 function trimCRLFRight(const S: WideString): WideString;
-var i:integer;
+var i: integer;
 begin
   Result := S;
   i := Length(Result);
@@ -237,7 +236,7 @@ begin
 end;
 
 type
-  TScreenCursor = class(TInterfacedObject, IUnknown)
+  TScreenCursor = class(TInterfacedObject, IInterface)
   private
     FCursor: TCursor;
   public
@@ -261,12 +260,12 @@ begin
   inherited;
 end;
 
-function ScreenCursor(ACursor: TCursor): IUnknown;
+function ScreenCursor(ACursor: TCursor): IInterface;
 begin
   Result := TScreenCursor.Create(ACursor);
 end;
 
-function WaitCursor: IUnknown;
+function WaitCursor: IInterface;
 begin
   Result := ScreenCursor(crHourGlass);
 end;
@@ -490,7 +489,7 @@ begin
   Result := SubStrCount(Ch, S) > 0;
 end;
 
-function IsCharPunct(const S:WideChar):boolean;
+function IsCharPunct(const S: WideChar): boolean;
 var
   CharType: integer;
 begin
@@ -501,4 +500,3 @@ begin
 end;
 
 end.
-

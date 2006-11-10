@@ -178,8 +178,7 @@ begin
   pnlFontPreview.Font.Name := cbFonts.Text;
   pnlFontPreview.Font.Size := StrToIntDef(cbFontSizes.Text,pnlFontPreview.Font.Size);
   with pnlFontPreview do
-    Caption :=
-      WideFormat('%s, %dpt', [Font.Name, Font.Size]);
+    Caption := WideFormat('%s, %dpt', [Font.Name, Font.Size]);
 end;
 
 procedure TfrmOptions.btnColorsClick(Sender: TObject);
@@ -349,7 +348,7 @@ begin
     end;
     cbFontSizes.ItemIndex := cbFontSizes.Items.IndexOf(S);
     if cbFontSizes.ItemIndex < 0 then
-      cbFontSizes.ItemIndex := 0;
+      cbFontSizes.Text := S;
   finally
     L.Free;
   end;

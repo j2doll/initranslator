@@ -273,6 +273,17 @@ object frmMain: TfrmMain
           CaptionW = 'Next untranslated'
           HintW = 'Go to next untranslated item'
         end
+        object SpTBXSeparatorItem1: TSpTBXSeparatorItem
+        end
+        object SpTBXItem2: TSpTBXItem
+          Action = acReplaceEverywhere
+          CaptionW = 'Use this translation everywhere'
+          HintW = 'Use this translation everywhere'
+        end
+        object SpTBXItem1: TSpTBXItem
+          Action = acMakeConsistent
+          CaptionW = 'Make all translations consistent'
+        end
         object N4: TSpTBXSeparatorItem
         end
         object Unsort1: TSpTBXItem
@@ -1391,6 +1402,11 @@ object frmMain: TfrmMain
       Hint = 'Trim leading and trailing characters'
       ShortCut = 24660
       OnExecute = acTrimExecute
+    end
+    object acMakeConsistent: TTntAction
+      Category = 'Actions'
+      Caption = 'Make all translations consistent'
+      OnExecute = acMakeConsistentExecute
     end
   end
   object SaveDictDlg: TTntSaveDialog

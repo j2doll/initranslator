@@ -336,6 +336,10 @@ type
     pbTranslated: TTntProgressBar;
     SpTBXSubmenuItem1: TSpTBXSubmenuItem;
     SpTBXThemeGroupItem1: TSpTBXThemeGroupItem;
+    acMakeConsistent: TTntAction;
+    SpTBXItem1: TSpTBXItem;
+    SpTBXSeparatorItem1: TSpTBXSeparatorItem;
+    SpTBXItem2: TSpTBXItem;
     procedure FormCreate(Sender: TObject);
     procedure FormCloseQuery(Sender: TObject; var CanClose: boolean);
     procedure lvTranslateStringsChange(Sender: TObject; Item: TListItem;
@@ -436,6 +440,7 @@ type
     procedure acConfigSuspiciousExecute(Sender: TObject);
     procedure acDictEditExecute(Sender: TObject);
     procedure mnuPluginsPopup(Sender: TTBCustomItem; FromLink: Boolean);
+    procedure acMakeConsistentExecute(Sender: TObject);
   private
     { Private declarations }
     OpenOrigDlg, OpenTransDlg: TEncodingOpenDialog;
@@ -578,6 +583,7 @@ type
     procedure SetSelectedItem(const Value: ITranslationItem);
     function GetSelectedListItem: TTntListItem;
     procedure SetSelectedListItem(const Value: TTntListItem);
+    procedure MakeTranslationsConsistent;
   public
     { Public declarations }
     property Modified: boolean read GetModified write SetModified;
@@ -3087,6 +3093,38 @@ begin
   lvTranslateStrings.Refresh;
 end;
 
+procedure TfrmMain.MakeTranslationsConsistent;
+var
+  i, j, FOldSort: integer;
+  FOrig, FTrans: WideString;
+begin
+  SaveEditChanges;
+  FOldSort := FTranslateFile.Items.Sort;
+  try
+    FTranslateFile.Items.Sort := stTranslation; // empty items at the top
+    for i := 0 to FTranslateFile.Items.Count - 1 do
+    begin
+      FTrans := FTranslateFile.Items[i].Translation;
+      if FTrans <> '' then
+      begin
+        FOrig := FTranslateFile.Items[i].Original;
+        for j := 0 to FTranslateFile.Items.Count - 1 do
+        begin
+          if WideSameText(FOrig, FTranslateFile.Items[j].Original) and
+            not WideSameText(FTrans, FTranslateFile.Items[j].Translation) then
+          begin
+            FTranslateFile.Items[j].Translation := FTrans;
+            Modified := true;
+          end;
+        end;
+      end;
+    end;
+  finally
+    FTranslateFile.Items.Sort := FOldSort;
+    lvTranslateStrings.Refresh;
+  end;
+end;
+
 procedure TfrmMain.acReplaceEverywhereExecute(Sender: TObject);
 var
   FOrig, FTrans: WideString;
@@ -3108,6 +3146,12 @@ begin
     end;
   end;
   lvTranslateStrings.Refresh;
+end;
+
+procedure TfrmMain.acMakeConsistentExecute(Sender: TObject);
+begin
+  WaitCursor;
+  MakeTranslationsConsistent;
 end;
 
 procedure TfrmMain.acNextSuspiciousExecute(Sender: TObject);
@@ -4253,6 +4297,7 @@ begin
       end;
     end;
 end;
+
 
 end.
 

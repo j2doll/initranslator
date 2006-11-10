@@ -28,7 +28,7 @@ uses
   Windows, Messages, SysUtils, Classes, Graphics, Controls, Forms,
   Dialogs, StdCtrls, ExtCtrls, ComCtrls, CheckLst,
   AppOptions, BaseForm,
-  TntClasses, TntStdCtrls,  TntExtCtrls, TntComCtrls, TntCheckLst;
+  TntClasses, TntStdCtrls, TntExtCtrls, TntComCtrls, TntCheckLst;
 
 type
   TfrmOptions = class(TfrmBase)
@@ -88,8 +88,8 @@ type
   private
     { Private declarations }
 
-    FOptions:TAppOptions;
-    procedure GetFonts(Strings:TTntStrings);
+    FOptions: TAppOptions;
+    procedure GetFonts(Strings: TTntStrings);
     procedure UpdatePreview;
     procedure UpdateFontList;
     procedure UpdateFontSizes;
@@ -165,7 +165,7 @@ begin
     begin
       // save options
       if AnsiCompareFilename(frm.edLanguage.Text, Options.LanguageFile) <> 0 then
-        InfoMsg(Translate(Application.MainForm.ClassName, SLanguageNotChangedUntilRestart), Translate(Application.MainForm.ClassName, SInfoCaption));
+        InfoMsg(_(Application.MainForm.ClassName, SLanguageNotChangedUntilRestart), _(Application.MainForm.ClassName, SInfoCaption));
       frm.SaveOptions(Options);
     end;
   finally
@@ -176,7 +176,7 @@ end;
 procedure TfrmOptions.UpdatePreview;
 begin
   pnlFontPreview.Font.Name := cbFonts.Text;
-  pnlFontPreview.Font.Size := StrToIntDef(cbFontSizes.Text,pnlFontPreview.Font.Size);
+  pnlFontPreview.Font.Size := StrToIntDef(cbFontSizes.Text, pnlFontPreview.Font.Size);
   with pnlFontPreview do
     Caption := WideFormat('%s, %dpt', [Font.Name, Font.Size]);
 end;
@@ -249,7 +249,7 @@ begin
   Strings.Assign(Screen.Fonts);
 end;
 
-procedure AddDefaultSizes(Items:Tlist);
+procedure AddDefaultSizes(Items: Tlist);
 begin
   Items.Add(Pointer(8));
   Items.Add(Pointer(9));
@@ -271,7 +271,7 @@ end;
 
 function EnumProc(var elf: TEnumLogFont;
   var ntm: TNewTextMetric; FontType: Integer; Items: TList): Integer; stdcall;
-var Size:integer;
+var Size: integer;
 begin
   if FontType = TRUETYPE_FONTTYPE then
   begin
@@ -287,8 +287,7 @@ begin
   end;
 end;
 
-
-procedure TfrmOptions.GetFontSizes(const FontName:WideString; Items:TList);
+procedure TfrmOptions.GetFontSizes(const FontName: WideString; Items: TList);
 begin
   Items.Clear;
   EnumFontFamilies(Canvas.Handle, PChar(string(FontName)),
@@ -320,29 +319,29 @@ begin
   UpdateFontSizes;
 end;
 
-function IntCompare(Item1, Item2:Pointer):integer;
+function IntCompare(Item1, Item2: Pointer): integer;
 begin
   Result := integer(Item1) - integer(Item2);
 end;
 
 procedure TfrmOptions.UpdateFontSizes;
 var
-  S:string;
-  L:TList;
-  i:integer;
+  S: string;
+  L: TList;
+  i: integer;
 begin
   S := cbFontSizes.Text;
   if S = '' then
     S := IntToStr(pnlFontPreview.Font.Size);
   L := TList.Create;
   try
-  cbFontSizes.Items.BeginUpdate;
-  try
-    GetFontSizes(cbFonts.Text, L);
-    L.Sort(IntCompare);
-    cbFontSizes.Items.Clear;
-    for i := 0 to L.Count - 1 do
-      cbFontSizes.Items.Add(IntToStr(integer(L[i])));
+    cbFontSizes.Items.BeginUpdate;
+    try
+      GetFontSizes(cbFonts.Text, L);
+      L.Sort(IntCompare);
+      cbFontSizes.Items.Clear;
+      for i := 0 to L.Count - 1 do
+        cbFontSizes.Items.Add(IntToStr(integer(L[i])));
     finally
       cbFontSizes.Items.EndUpdate;
     end;

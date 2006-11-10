@@ -65,7 +65,7 @@ type
     FItems: TDictionaryItems;
     procedure SetItems(const Value: TDictionaryItems);
     function GetItems: TDictionaryItems;
-    function CurrentItem:TDictionaryItem;
+    function CurrentItem: TDictionaryItem;
     procedure UpdateUI;
   public
     { Public declarations }
@@ -130,7 +130,7 @@ end;
 
 procedure TfrmDictEdit.cbOriginalChange(Sender: TObject);
 var
-  D:TDictionaryItem;
+  D: TDictionaryItem;
 begin
 
   lbTranslations.Count := 0;
@@ -147,7 +147,7 @@ procedure TfrmDictEdit.alDictEditUpdate(Action: TBasicAction;
   var Handled: Boolean);
 var
   i: integer;
-  D:TDictionaryItem;
+  D: TDictionaryItem;
 begin
   D := CurrentItem;
   acAddOriginal.Enabled := (cbOriginal.Text <> '') and (D = nil);
@@ -157,7 +157,7 @@ begin
     i := D.Translations.IndexOf(edTranslation.Text);
     acAddTranslation.Enabled := (edTranslation.Text <> '') and (i < 0);
     acRemoveTranslation.Enabled := i > -1;
-    acMakeDefault.Enabled := (D.Translations.Count > 1) and  (D.DefaultIndex <> lbTranslations.ItemIndex);
+    acMakeDefault.Enabled := (D.Translations.Count > 1) and (D.DefaultIndex <> lbTranslations.ItemIndex);
   end
   else
   begin
@@ -169,7 +169,7 @@ end;
 
 procedure TfrmDictEdit.acAddOriginalExecute(Sender: TObject);
 var
-  D:TDictionaryItem;
+  D: TDictionaryItem;
 begin
   if (cbOriginal.Text <> '') and (CurrentItem <> nil) then
   begin
@@ -225,7 +225,7 @@ end;
 
 procedure TfrmDictEdit.acRemoveTranslationExecute(Sender: TObject);
 var
-  D:TDictionaryItem;
+  D: TDictionaryItem;
 begin
   D := CurrentItem;
   if (D <> nil) then
@@ -252,27 +252,27 @@ begin
 end;
 
 procedure TfrmDictEdit.cbFilterChange(Sender: TObject);
-var i:integer;
+var i: integer;
 begin
   cbOriginal.Text := '';
   cbOriginal.Items.Clear;
   for i := 0 to FItems.Count - 1 do
     case cbFilter.ItemIndex of
-    0:  // all items
-      cbOriginal.Items.Add(FItems[i].Original);
-    1:  // items with translations
-      if FItems[i].Translations.Count > 0 then
+      0: // all items
         cbOriginal.Items.Add(FItems[i].Original);
-    2:
-      if FItems[i].Translations.Count = 0 then
-        cbOriginal.Items.Add(FItems[i].Original);
-    3:
-      if FItems[i].Translations.Count > 1 then
-        cbOriginal.Items.Add(FItems[i].Original);
-    4:
-      if FItems[i].Translations.Count = 1 then
-        cbOriginal.Items.Add(FItems[i].Original);
-  end;
+      1: // items with translations
+        if FItems[i].Translations.Count > 0 then
+          cbOriginal.Items.Add(FItems[i].Original);
+      2:
+        if FItems[i].Translations.Count = 0 then
+          cbOriginal.Items.Add(FItems[i].Original);
+      3:
+        if FItems[i].Translations.Count > 1 then
+          cbOriginal.Items.Add(FItems[i].Original);
+      4:
+        if FItems[i].Translations.Count = 1 then
+          cbOriginal.Items.Add(FItems[i].Original);
+    end;
   if cbOriginal.Items.Count > 0 then
     cbOriginal.ItemIndex := 0;
   cbOriginalChange(Sender);
@@ -284,7 +284,7 @@ begin
 end;
 
 function TfrmDictEdit.CurrentItem: TDictionaryItem;
-var i:integer;
+var i: integer;
 begin
   i := Items.IndexOf(cbOriginal.Text);
   if i >= 0 then
@@ -296,8 +296,8 @@ end;
 procedure TfrmDictEdit.lbTranslationsDrawItem(Control: TWinControl;
   Index: Integer; Rect: TRect; State: TOwnerDrawState);
 var
-  D:TDictionaryItem;
-  C:TCanvas;
+  D: TDictionaryItem;
+  C: TCanvas;
 begin
   C := lbTranslations.Canvas;
   C.Font := lbTranslations.Font;
@@ -317,7 +317,7 @@ end;
 
 procedure TfrmDictEdit.acMakeDefaultExecute(Sender: TObject);
 var
-  D:TDictionaryItem;
+  D: TDictionaryItem;
 begin
   // set the selected item as the default translation
   D := CurrentItem;
@@ -329,4 +329,3 @@ begin
 end;
 
 end.
-

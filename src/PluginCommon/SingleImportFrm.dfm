@@ -53,7 +53,7 @@ object frmImport: TfrmImport
     106)
   PixelsPerInch = 96
   TextHeight = 13
-  object Label1: TLabel
+  object lblFilename: TLabel
     Left = 8
     Top = 8
     Width = 46

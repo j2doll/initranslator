@@ -288,7 +288,7 @@ begin
   if not LogOpen then
   begin
     FLogFileHandle := Tnt_CreateFileW(PWideChar(FLogFileName), GENERIC_WRITE, FILE_SHARE_READ, nil,
-       OPEN_ALWAYS, FILE_ATTRIBUTE_NORMAL, 0);
+      OPEN_ALWAYS, FILE_ATTRIBUTE_NORMAL, 0);
     if LogOpen then
       FLogWasEmpty := SetFilePointer(FLogFileHandle, 0, nil, FILE_END) = 0;
   end

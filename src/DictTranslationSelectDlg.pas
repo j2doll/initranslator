@@ -46,14 +46,13 @@ type
     procedure lbTranslationsDblClick(Sender: TObject);
   private
     { Private declarations }
-    FResult:integer;
-    FModified:boolean;
-    FDictionaryItem:TDictionaryItem;
+    FResult: integer;
+    FModified: boolean;
+    FDictionaryItem: TDictionaryItem;
   public
     { Public declarations }
-    class function Edit(DictionaryItem:TDictionaryItem; var Translation:WideString; out Modified:boolean; var Prompt:boolean):Integer;
+    class function Edit(DictionaryItem: TDictionaryItem; var Translation: WideString; out Modified: boolean; var Prompt: boolean): Integer;
   end;
-
 
 implementation
 uses
@@ -64,7 +63,7 @@ uses
 { TfrmDictTranslationSelect }
 
 class function TfrmDictTranslationSelect.Edit(
-  DictionaryItem: TDictionaryItem; var Translation: WideString; out Modified:boolean; var Prompt:boolean): Integer;
+  DictionaryItem: TDictionaryItem; var Translation: WideString; out Modified: boolean; var Prompt: boolean): Integer;
 var
   frm: TfrmDictTranslationSelect;
 begin

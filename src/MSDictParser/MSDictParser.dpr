@@ -7,7 +7,7 @@ uses
   PreviewExportFrm in '..\PluginCommon\PreviewExportFrm.pas' {frmExport},
   MSDictParserImpl in 'MSDictParserImpl.pas',
   CommonUtils in '..\CommonUtils.pas',
-  SingleImportFrm in '.\SingleImportFrm.pas' {frmImport};
+  MSDictParserImportFrm in '.\MSDictParserImportFrm.pas' {frmImport};
 
 {$R *.res}
 function InstallPlugin(out Parser:IFileParser):HResult;stdcall;

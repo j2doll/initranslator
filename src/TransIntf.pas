@@ -25,7 +25,7 @@ interface
 
 type
   TTranslateSortType = integer;
-  
+
 const
   // IFileParser.Capabilities
   CAP_IMPORT = 1; // we can import
@@ -51,26 +51,26 @@ const
   TOOL_VISIBLE = 4;
 
   // INotify
-  NOTIFY_ITEM_TRANS_CHANGE =  1;  // WParam = PWideChar(original), LParam = PWideChar(new)
-  NOTIFY_ITEM_ORIG_CHANGE  =  2;  // WParam = PWideChar(original), LParam = PWideChar(new)
-  NOTIFY_ITEM_FILE_OPEN    =  3;  // WParam = 0 if original, 1 if translation,  LParam = PWideChar(Filename)
-  NOTIFY_ITEM_FILE_SAVE    =  4;  // WParam = 0 if original, 1 if translation , LParam = PWideChar(Filename)
-  NOTIFY_ITEM_DICT_OPEN    =  5;  // WParam = PWideChar(Filename)
-  NOTIFY_ITEM_DICT_SAVE    =  6;  // WParam = PWideChar(Filename)
-  NOTIFY_ITEM_DICT_NEW     =  7;  // no params
-  NOTIFY_ITEM_IMPORT       =  8;  // no params
-  NOTIFY_ITEM_EXPORT       =  9;  // no params
-  NOTIFY_ITEM_SPELLCHECK   = 10;  // no params
-  NOTIFY_ITEM_NEW_ITEM     = 11;  // WParam = Integer(Item) to be added (ITranslationItem)
-  NOTIFY_ITEM_EDIT_ITEM    = 12;  // WParam = Integer(Item) to be edited (ITranslationItem)
-  NOTIFY_ITEM_DEL_ITEM     = 13;  // WParam = Index of item to delete
+  NOTIFY_ITEM_TRANS_CHANGE = 1; // WParam = PWideChar(original), LParam = PWideChar(new)
+  NOTIFY_ITEM_ORIG_CHANGE = 2; // WParam = PWideChar(original), LParam = PWideChar(new)
+  NOTIFY_ITEM_FILE_OPEN = 3; // WParam = 0 if original, 1 if translation,  LParam = PWideChar(Filename)
+  NOTIFY_ITEM_FILE_SAVE = 4; // WParam = 0 if original, 1 if translation , LParam = PWideChar(Filename)
+  NOTIFY_ITEM_DICT_OPEN = 5; // WParam = PWideChar(Filename)
+  NOTIFY_ITEM_DICT_SAVE = 6; // WParam = PWideChar(Filename)
+  NOTIFY_ITEM_DICT_NEW = 7; // no params
+  NOTIFY_ITEM_IMPORT = 8; // no params
+  NOTIFY_ITEM_EXPORT = 9; // no params
+  NOTIFY_ITEM_SPELLCHECK = 10; // no params
+  NOTIFY_ITEM_NEW_ITEM = 11; // WParam = Integer(Item) to be added (ITranslationItem)
+  NOTIFY_ITEM_EDIT_ITEM = 12; // WParam = Integer(Item) to be edited (ITranslationItem)
+  NOTIFY_ITEM_DEL_ITEM = 13; // WParam = Index of item to delete
 
 type
   ITranslationItems = interface;
   IDictionaryItem = interface;
   IDictionaryItems = interface;
   IApplicationServices = interface;
-  
+
   ITranslationItem = interface(IInterface)
     ['{5B400D54-5B0E-48B4-BEE3-9DBDA02AE3D6}']
     function GetIndex: integer;
@@ -121,14 +121,13 @@ type
     // like along with each item.
     property PrivateStorage: WideString read GetPrivateStorage write SetPrivateStorage;
     property Modified: WordBool read GetModified write SetModified;
-    function GetPreData:WideString;
-    procedure SetPreData(const Value:WideString);
-    function GetPostData:WideString;
-    procedure SetPostData(const Value:WideString);
-    property PreData:WideString read GetPreData write SetPreData;
-    property PostData:WideString read GetPostData write SetPostData;
+    function GetPreData: WideString;
+    procedure SetPreData(const Value: WideString);
+    function GetPostData: WideString;
+    procedure SetPostData(const Value: WideString);
+    property PreData: WideString read GetPreData write SetPreData;
+    property PostData: WideString read GetPostData write SetPostData;
   end;
-
 
   ITranslationItems = interface(IInterface)
     ['{6ACD4934-9B26-4232-B11E-95FB18B60FCA}']
@@ -141,26 +140,19 @@ type
     function GetItem(Index: integer): ITranslationItem;
     function GetCount: integer;
 
-    function Add: ITranslationItem;overload;
+    function Add: ITranslationItem; overload;
     function Add(const Item: ITranslationItem): integer; overload;
     function CreateItem: ITranslationItem; // create an item that isn't added to the list
     procedure Delete(Index: integer);
     procedure Clear;
-    function IndexOf(const Section, Name: WideString; CaseSense: WordBool = false): integer;overload;
-    function IndexOf(const AItem:ITranslationItem): integer;overload;
+    function IndexOf(const Section, Name: WideString; CaseSense: WordBool = false): integer; overload;
+    function IndexOf(const AItem: ITranslationItem): integer; overload;
 
     property Count: integer read GetCount;
     property Items[Index: integer]: ITranslationItem read GetItem; default;
     property TranslatedCount: integer read GetTranslatedCount write SetTranslatedCount;
     property Sort: TTranslateSortType read GetSort write SetSort;
-    property Modified:WordBool read GetModified write SetModified;
-  end;
-
-  // interface that provides access to the currently loaded IniTranslator language file
-  // (i.e the file IniTranslator uses to localize its own UI)
-  ITranslationService = interface(IInterface)
-  ['{06543944-7920-4900-9AE0-E2BB9B8369A6}']
-    function Translate(const Section, Name, Value:string):WideString;
+    property Modified: WordBool read GetModified write SetModified;
   end;
 
   IFileParser = interface(IInterface)
@@ -176,70 +168,78 @@ type
 
   // NB! not used!
   IFileParsers = interface(IInterface)
-  ['{492B53C5-4FE1-4B3C-9A0B-4E9B3541E5C5}']
-    function Count:Integer;safecall;
+    ['{492B53C5-4FE1-4B3C-9A0B-4E9B3541E5C5}']
+    function Count: Integer; safecall;
     // return S_OK if the index is valid
-    function FileParser(Index:Integer; out FileParser:IFileParsers):HResult; safecall;
+    function FileParser(Index: Integer; out FileParser: IFileParsers): HResult; safecall;
+  end;
+  
+  // plugins that support localizing should implement this interface
+  // when the user elects to create a new translation template, this interface is called
+  // and the returned items are added to the resulting lng file
+  ILocalizable = interface(IInterface)
+  ['{E10D0143-B334-4CCE-898A-F25384D79C6E}']
+    // return false if the parameters contains no valid values (i.e the return values for the
+    // last call are not used)
+    function GetString(out Section:WideString; out Name:WideString; out Value:WideString):WordBool;
   end;
 
   // An item that can reside on the "Plugins" menu
   // When clicked, the Execute function is called
   IToolItem = interface(IInterface)
-  ['{E14F5620-0EC9-43B5-816C-1A265C3FF237}']
-    function DisplayName:WideString;safecall; // what to display on the menu
-    function About:WideString;safecall;
-    function Status(const Items, Orphans: ITranslationItems; const SelectedItem:ITranslationItem):Integer; safecall; // TOOL_VISIBLE, TOOL_ENABLED, TOOL_CHECKED
-    function Icon:LongWord; safecall; // HICON: return <= 0 for no icon
+    ['{E14F5620-0EC9-43B5-816C-1A265C3FF237}']
+    function DisplayName: WideString; safecall; // what to display on the menu
+    function About: WideString; safecall;
+    function Status(const Items, Orphans: ITranslationItems; const SelectedItem: ITranslationItem): Integer; safecall; // TOOL_VISIBLE, TOOL_ENABLED, TOOL_CHECKED
+    function Icon: LongWord; safecall; // HICON: return <= 0 for no icon
 
-    function Execute(const Items, Orphans: ITranslationItems; var SelectedItem:ITranslationItem): HResult; safecall;
+    function Execute(const Items, Orphans: ITranslationItems; var SelectedItem: ITranslationItem): HResult; safecall;
     procedure Init(const ApplicationServices: IApplicationServices); safecall;
   end;
 
   // A list of IToolItem
   IToolItems = interface(IInterface)
-  ['{05D4D3AB-366D-48A1-8913-F4EAEEE4DE2F}']
-    function Count:Integer;safecall;
+    ['{05D4D3AB-366D-48A1-8913-F4EAEEE4DE2F}']
+    function Count: Integer; safecall;
     // return S_OK if the index is valid
-    function ToolItem(Index:Integer; out ToolItem:IToolItem):HResult;safecall;
+    function ToolItem(Index: Integer; out ToolItem: IToolItem): HResult; safecall;
   end;
 
   INotify = interface(IInterface)
-  ['{01A00A6A-2AC6-478C-872D-E75E9F5D6D42}']
+    ['{01A00A6A-2AC6-478C-872D-E75E9F5D6D42}']
     // Msg is one of the NOTIFY_ message constants, WParam and LParam are dependent on context
     // If you set AllowChange to false, IniTranslator will abort the change *without notifying the user*
-    procedure Changing(Msg:Integer; WParam, LParam:Integer; out AllowChange:WordBool);safecall;
-    procedure Changed(Msg:Integer; WParam, LParam:Integer);safecall;
+    procedure Changing(Msg: Integer; WParam, LParam: Integer; out AllowChange: WordBool); safecall;
+    procedure Changed(Msg: Integer; WParam, LParam: Integer); safecall;
   end;
 
   // NB! not used!
   // not completed
   IApplicationServices = interface(IInterface)
-  ['{61FD76C9-714C-4DDF-BEB2-19A4631B444C}']
-    function GetItems:ITranslationItems;
-    function GetOrphans:ITranslationItems;
-    function GetAppHandle:Cardinal;
-    function GetDictionaryItems:IDictionaryItems;
-    function GetHeader:WideString;
-    procedure SetHeader(const Value:WideString);
-    function GetFooter:WideString;
-    procedure SetFooter(const Value:WideString);
-    function GetTranslationService:ITranslationService;
+    ['{61FD76C9-714C-4DDF-BEB2-19A4631B444C}']
+    function GetItems: ITranslationItems;
+    function GetOrphans: ITranslationItems;
+    function GetAppHandle: Cardinal;
+    function GetDictionaryItems: IDictionaryItems;
+    function GetHeader: WideString;
+    procedure SetHeader(const Value: WideString);
+    function GetFooter: WideString;
+    procedure SetFooter(const Value: WideString);
 
-    function GetAppOption(const Section, Name, Default: WideString):WideString;safecall;
-    procedure SetAppOption(const Section, Name, Value:WideString);safecall;
-    function BeginUpdate:Integer;safecall;
-    function EndUpdate:Integer;safecall;
-    procedure RegisterNotify(const ANotify:INotify);safecall;
-    procedure UnRegisterNotify(const ANotify:INotify);safecall;
+    function GetAppOption(const Section, Name, Default: WideString): WideString; safecall;
+    procedure SetAppOption(const Section, Name, Value: WideString); safecall;
+    function BeginUpdate: Integer; safecall;
+    function EndUpdate: Integer; safecall;
+    procedure RegisterNotify(const ANotify: INotify); safecall;
+    procedure UnRegisterNotify(const ANotify: INotify); safecall;
+    function Translate(const Section, Name, Value: string): WideString; safecall;
 
-
-    property Items:ITranslationItems read GetItems;
-    property Orphans:ITranslationItems read GetOrphans;
-    property Dictionary:IDictionaryItems read GetDictionaryItems;
-    property AppHandle:Cardinal read GetAppHandle;
-    property TranslationService:ITranslationService read GetTranslationService;
-    property Header:WideString read GetHeader write SetHeader;
-    property Footer:WideString read GetFooter write SetFooter;
+    property Items: ITranslationItems read GetItems;
+    property Orphans: ITranslationItems read GetOrphans;
+    property Dictionary: IDictionaryItems read GetDictionaryItems;
+    property AppHandle: Cardinal read GetAppHandle;
+    property Header: WideString read GetHeader write SetHeader;
+    property Footer: WideString read GetFooter write SetFooter;
   end;
 
   // return S_OK if all is fine
@@ -248,28 +248,28 @@ type
   TExportToolItemsFunc = function(out ToolItems: IToolItems): HResult; stdcall;
 
   IDictionaryItem = interface(IInterface)
-  ['{C3AC69B2-1062-4929-A127-DA878CFDFB9F}']
+    ['{C3AC69B2-1062-4929-A127-DA878CFDFB9F}']
     procedure SetOriginal(const Value: WideString);
-    function GetOriginal:WideString;
-    function Add(const Translation:WideString):Integer;
-    function IndexOf(const Translation:WideString):integer;
-    procedure Delete(Index:integer);
+    function GetOriginal: WideString;
+    function Add(const Translation: WideString): Integer;
+    function IndexOf(const Translation: WideString): integer;
+    procedure Delete(Index: integer);
     procedure Clear;
-    function GetTranslation(Index:Integer):WideString;
-    procedure SetTranslation(Index:Integer; const Value:WideString);
-    function TranslationCount:integer;
-    property Original:WideString read GetOriginal write SetOriginal;
-    property Translation[Index:integer]:WideString read GetTranslation write SetTranslation; default;
+    function GetTranslation(Index: Integer): WideString;
+    procedure SetTranslation(Index: Integer; const Value: WideString);
+    function TranslationCount: integer;
+    property Original: WideString read GetOriginal write SetOriginal;
+    property Translation[Index: integer]: WideString read GetTranslation write SetTranslation; default;
   end;
 
   IDictionaryItems = interface(IInterface)
-  ['{252A86F1-D50A-4433-A556-030C145A7E33}']
-    function GetModified:WordBool;
-    procedure SetModified(Value:WordBool);
-    function GetItem(Index:integer):IDictionaryItem;
-    function GetCount:integer;
-    function GetIgnorePunctuation:WordBool;
-    procedure SetIgnorePunctuation(Value:WordBool);
+    ['{252A86F1-D50A-4433-A556-030C145A7E33}']
+    function GetModified: WordBool;
+    procedure SetModified(Value: WordBool);
+    function GetItem(Index: integer): IDictionaryItem;
+    function GetCount: integer;
+    function GetIgnorePunctuation: WordBool;
+    procedure SetIgnorePunctuation(Value: WordBool);
     procedure Invert;
     function Add(const AOriginal: WideString): IDictionaryItem;
     procedure Delete(Index: integer);
@@ -278,7 +278,7 @@ type
     procedure Sort;
     property Items[Index: integer]: IDictionaryItem read GetItem; default;
     property Count: integer read GetCount;
-    property Modified:WordBool read GetModified write SetModified;
+    property Modified: WordBool read GetModified write SetModified;
     property IgnorePunctuation: WordBool read GetIgnorePunctuation write SetIgnorePunctuation;
   end;
 
@@ -290,4 +290,3 @@ const
 implementation
 
 end.
-

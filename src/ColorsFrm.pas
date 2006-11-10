@@ -51,9 +51,8 @@ type
     procedure SaveOptions(Options: TAppOptions);
   public
     { Public declarations }
-    class function Edit(Options:TAppOptions):boolean;
+    class function Edit(Options: TAppOptions): boolean;
   end;
-
 
 implementation
 

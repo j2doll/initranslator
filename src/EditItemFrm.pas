@@ -85,7 +85,7 @@ begin
     frm.edTranslation.Text := AItem.Translation;
     frm.edOrigComments.Text := AItem.OrigComments;
     frm.edTransComment.Text := AItem.TransComments;
-    If IsNewItem then
+    if IsNewItem then
       frm.ActiveControl := frm.cbSections
     else
       frm.ActiveControl := frm.edTranslation;

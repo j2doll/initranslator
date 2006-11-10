@@ -21,7 +21,7 @@ interface
 
 uses
   Windows, Messages, SysUtils, Classes, Graphics, Controls, Forms,
-  Dialogs, StdCtrls;
+  Dialogs, StdCtrls, TransIntf;
 
 type
   TfrmImport = class(TForm)
@@ -41,12 +41,15 @@ type
   private
     { Private declarations }
     FSecondIsOptional: boolean;
+    FApplicationServices: IApplicationServices;
     procedure LoadSettings;
     procedure SaveSettings;
+    function Translate(const Value: WideString): WideString;
   public
     { Public declarations }
     // SecondIsOptional parameter suggested by Chris Thornton
-    class function Execute(var AOriginalFile, ATranslationFile: string; const ACaption, Filter, InitialDir, DefaultExt: string; const SecondIsOptional: Boolean = false): boolean;
+    class function Execute(var AOriginalFile, ATranslationFile: string; const ACaption, Filter, InitialDir, DefaultExt: string; const SecondIsOptional: Boolean = false): boolean; overload;
+    class function Execute(const ApplicationServices: IApplicationServices; var AOriginalFile, ATranslationFile: string; const ACaption, Filter, InitialDir, DefaultExt: string; const SecondIsOptional: Boolean = false): boolean; overload;
   end;
 
 implementation
@@ -61,36 +64,8 @@ resourcestring
 { TfrmImport }
 
 class function TfrmImport.Execute(var AOriginalFile, ATranslationFile: string; const ACaption, Filter, InitialDir, DefaultExt: string; const SecondIsOptional: Boolean = false): boolean;
-var
-  frmImport: TfrmImport;
 begin
-  frmImport := self.Create(Application);
-  with frmImport do
-  try
-    LoadSettings;
-    FSecondIsOptional := SecondIsOptional;
-    Caption := ACaption;
-    OpenDialog1.Filter := Filter;
-    OpenDialog1.InitialDir := InitialDir;
-    OpenDialog1.DefaultExt := DefaultExt;
-    OpenDialog2.Filter := Filter;
-    OpenDialog2.InitialDir := InitialDir;
-    OpenDialog2.DefaultExt := DefaultExt;
-    edFilename.Text := AOriginalFile;
-    if SecondIsOptional then
-      lblTranslation.Caption := SOptional;
-    edFilename2.Text := ATranslationFile;
-    CheckChange(nil);
-    Result := (ShowModal = mrOk) and FileExists(edFilename.Text) and (SecondIsOptional or FileExists(edFilename2.Text));
-    if Result then
-    begin
-      AOriginalFile := edFilename.Text;
-      ATranslationFile := edFilename2.Text;
-    end;
-    SaveSettings;
-  finally
-    Free;
-  end;
+  Result := Execute(nil, AOriginalFile, ATranslationFile, ACaption, Filter, InitialDir, DefaultExt, SecondIsOptional);
 end;
 
 procedure TfrmImport.CheckChange(Sender: TObject);
@@ -115,7 +90,8 @@ begin
 end;
 
 procedure TfrmImport.LoadSettings;
-var M: TMemoryStream; FRect: TRect;
+var M: TMemoryStream;
+  FRect: TRect;
 begin
   try
     FRect := Rect(0, 0, 0, 0);
@@ -123,7 +99,7 @@ begin
     try
       M := TMemoryStream.Create;
       try
-        if ReadBinaryStream('Forms', ClassName, M) = SizeOf(TRect) then
+        if ReadBinaryStream('Forms', self.ClassName, M) = SizeOf(TRect) then
         begin
           M.Seek(0, soFromBeginning);
           Move(M.Memory^, Pointer(@FRect)^, sizeof(TRect));
@@ -155,7 +131,8 @@ begin
 end;
 
 procedure TfrmImport.SaveSettings;
-var M: TMemoryStream; FRect: TRect;
+var M: TMemoryStream;
+  FRect: TRect;
 begin
   if WindowState = wsNormal then
   try
@@ -166,7 +143,7 @@ begin
       try
         M.Write(FRect, sizeof(TRect));
         M.Seek(0, soFromBeginning);
-        WriteBinaryStream('Forms', ClassName, M);
+        WriteBinaryStream('Forms', self.ClassName, M);
       finally
         M.Free;
       end;
@@ -176,6 +153,61 @@ begin
   except
     Application.HandleException(Self);
   end;
+end;
+
+class function TfrmImport.Execute(
+  const ApplicationServices: IApplicationServices; var AOriginalFile,
+  ATranslationFile: string; const ACaption, Filter, InitialDir,
+  DefaultExt: string; const SecondIsOptional: Boolean): boolean;
+var
+  frmImport: TfrmImport;
+begin
+  frmImport := self.Create(Application);
+  with frmImport do
+  try
+    LoadSettings;
+    FSecondIsOptional := SecondIsOptional;
+    FApplicationServices := ApplicationServices;
+    if ACaption <> '' then
+      Caption := Translate(ACaption)
+    else
+      Caption := Translate(Caption);
+    OpenDialog1.Filter := Translate(Filter);
+    OpenDialog1.InitialDir := InitialDir;
+    OpenDialog1.DefaultExt := Translate(DefaultExt);
+    OpenDialog2.Filter := Translate(Filter);
+    OpenDialog2.InitialDir := InitialDir;
+    OpenDialog2.DefaultExt := Translate(DefaultExt);
+    edFilename.Text := AOriginalFile;
+    if SecondIsOptional then
+      lblTranslation.Caption := Translate(SOptional)
+    else
+      lblTranslation.Caption := Translate(lblTranslation.Caption);
+    lblOriginal.Caption := Translate(lblOriginal.Caption);
+    edFilename2.Text := ATranslationFile;
+    btnOK.Caption := Translate(btnOK.Caption);
+    btnCancel.Caption := Translate(btnCancel.Caption);
+
+    CheckChange(nil);
+    Result := (ShowModal = mrOk) and FileExists(edFilename.Text) and (SecondIsOptional or FileExists(edFilename2.Text));
+    if Result then
+    begin
+      AOriginalFile := edFilename.Text;
+      ATranslationFile := edFilename2.Text;
+    end;
+    SaveSettings;
+  finally
+    Free;
+  end;
+
+end;
+
+function TfrmImport.Translate(const Value: WideString): WideString;
+begin
+  if FApplicationServices <> nil then
+    Result := FApplicationServices.Translate(self.ClassName, Value, Value)
+  else
+    Result := Value;
 end;
 
 end.

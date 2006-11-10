@@ -42,7 +42,7 @@ type
     FParentWnd: HWND;
     procedure WMNCDestroy(var Message: TWMNCDestroy); message WM_NCDESTROY;
   protected
-    procedure Initialize;virtual;
+    procedure Initialize; virtual;
   public
     constructor Create(OpenDialog: TTntOpenDialog); reintroduce;
     destructor Destroy; override;
@@ -69,8 +69,8 @@ type
     property Encodings: TTntStrings read FEncodings write SetEncodings;
     property EncodingLabel: WideString read FEncodingLabel write FEncodingLabel;
     property EncodingIndex: integer read FEncodingIndex write SetEncodingIndex default 0;
-    property InsertHeader:boolean read FInsertHeader write FInsertHeader;
-    property InsertFooter:boolean read FInsertFooter write FInsertFooter;
+    property InsertHeader: boolean read FInsertHeader write FInsertHeader;
+    property InsertFooter: boolean read FInsertFooter write FInsertFooter;
   end;
 
   TEncodingSaveDialog = class(TEncodingOpenDialog)

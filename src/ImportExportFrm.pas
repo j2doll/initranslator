@@ -24,7 +24,7 @@ interface
 uses
   Windows, Messages, SysUtils, Classes, Graphics, Controls, Forms,
   Dialogs, StdCtrls, ComCtrls, ActnList,
-  BaseForm, TranslateFile, TransIntf,
+  BaseForm, TranslateFile, TransIntf, WideIniFiles,
   TntActnList, TntStdCtrls, TntComCtrls;
 
 type
@@ -55,13 +55,14 @@ type
     function LoadPlugins(const PluginFolder: WideString; ForImport: boolean): integer;
   public
     { Public declarations }
+    class procedure GetStrings(const PluginFolder: WideString; ini: TWideCustomIniFile);
     class function Edit(const Items, Orphans: ITranslationItems; const PluginFolder: WideString;
       const DoImport: boolean; var ItemIndex, CapabilitesSupported: integer): boolean;
   end;
 
 implementation
 uses
-  AppConsts, AppUtils, TntWindows, TntSysUtils;
+  AppConsts, AppUtils, TntClasses, TntWindows, TntSysUtils;
 
 {$R *.dfm}
 var
@@ -219,7 +220,8 @@ begin
             if (LibItem.Parser.Capabilities and cCapability[ForImport] = cCapability[ForImport]) then
             begin
               li := lvItems.Items.Add;
-              li.Caption := DoTranslate(LibItem.Parser.DisplayName(cCapability[ForImport]));
+              LibItem.Parser.Init(GlobalApplicationServices);
+              li.Caption := LibItem.Parser.DisplayName(cCapability[ForImport]);
               li.Data := LibItem;
               Inc(Result);
             end;
@@ -260,14 +262,13 @@ begin
   Parser := TLibItem(lvItems.Selected.Data).Parser;
   Parser.Init(GlobalApplicationServices);
   FCapabilitiesSupported := Parser.Capabilities;
-{  if FCapabilitiesSupported and CAP_CONFIGURE = CAP_CONFIGURE then
+  if FCapabilitiesSupported and CAP_CONFIGURE = CAP_CONFIGURE then
     if Parser.Configure(CAP_IMPORT) <> S_OK then
     begin
       ModalResult := mrAbort;
       Close;
       Exit;
     end;
-    }
   if Parser.ImportItems(FItems, FOrphans) <> S_OK then
     ModalResult := mrNone;
 end;
@@ -278,14 +279,13 @@ var
 begin
   Parser := TLibItem(lvItems.Selected.Data).Parser;
   Parser.Init(GlobalApplicationServices);
-{  if Parser.Capabilities and CAP_CONFIGURE = CAP_CONFIGURE then
+  if Parser.Capabilities and CAP_CONFIGURE = CAP_CONFIGURE then
     if Parser.Configure(CAP_EXPORT) <> S_OK then
     begin
       ModalResult := mrAbort;
       Close;
       Exit;
     end;
-    }
   if Parser.ExportItems(FItems, FOrphans) <> S_OK then
     ModalResult := mrNone;
 end;
@@ -306,10 +306,48 @@ begin
     Result := S;
 end;
 
+class procedure TfrmImportExport.GetStrings(const PluginFolder: WideString; ini: TWideCustomIniFile);
+var
+  i: integer;
+  LibItem: TLibItem;
+  frm: TfrmImportExport;
+  Section, Name, Value: WideString;
+  Obj: ILocalizable;
+begin
+  frm := self.Create(Application);
+  try
+    frm.LoadPlugins(PluginFolder, false);
+    for i := 0 to frm.lvItems.Items.Count - 1 do
+    begin
+      LibItem := TLibItem(frm.lvItems.Items[i].Data);
+      if Assigned(LibItem) and Supports(LibItem.Parser, ILocalizable, Obj) then
+        while Obj.GetString(Section, Name, Value) do
+          ini.WriteString(Section, Name, Value);
+    end;
+  finally
+    frm.Free;
+  end;
+  frm := self.Create(Application);
+  try
+    frm.LoadPlugins(PluginFolder, true);
+    for i := 0 to frm.lvItems.Items.Count - 1 do
+    begin
+      LibItem := TLibItem(frm.lvItems.Items[i].Data);
+      if Assigned(LibItem) and Supports(LibItem.Parser, ILocalizable, Obj) then
+        while Obj.GetString(Section, Name, Value) do
+          ini.WriteString(Section, Name, Value);
+    end;
+  finally
+    frm.Free;
+  end;
+end;
+
 initialization
   FLoadedLibs := TList.Create;
+
 finalization
   FreeLibraries;
   FreeAndNil(FLoadedLibs);
 
 end.
+

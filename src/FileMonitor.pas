@@ -53,7 +53,7 @@ type
 implementation
 uses
   TntSysUtils;
-  
+
 resourcestring
   SFmtMonitorFileNotFound = 'File "%s" not found: cannot monitor a nonexistent file!';
 

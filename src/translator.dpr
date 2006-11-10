@@ -54,7 +54,8 @@ uses
   DictTranslationSelectDlg in 'DictTranslationSelectDlg.pas' {frmDictTranslationSelect: TTntForm},
   DictEditFrm in 'DictEditFrm.pas' {frmDictEdit: TTntForm},
   ToolItems in 'ToolItems.pas',
-  ColorsFrm in 'ColorsFrm.pas' {frmColors: TTntForm};
+  ColorsFrm in 'ColorsFrm.pas' {frmColors: TTntForm},
+  ApplicationServices in 'ApplicationServices.pas';
 
 {$R *.res}
 {$R 'manifest.res' 'manifest.rc'}

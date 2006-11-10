@@ -22,7 +22,7 @@ unit MsgTranslate;
 
 interface
 uses
-  SysUtils, WideIniFiles, Classes, TntClasses;
+  SysUtils, WideIniFiles, Classes, TransIntf, TntClasses;
 
 type
   TTranslateEvent = procedure(Sender, AnObject: TObject; const APropName, ASection: WideString; var AValue: WideString) of object;
@@ -30,12 +30,8 @@ type
   TCheckTranslateEvent = procedure(Sender, AnObject: TObject; const APropName: WideString; var ATranslate: boolean) of object;
 
   TSaveTranslationEvent = procedure(Sender: TObject; ini: TWideCustomIniFile) of object;
-  IApplicationTranslator = interface
-    ['{C52E0714-4487-4AC6-BBCF-886FFEF9643E}']
-    function Translate(const Section, Name, Value: WideString): WideString; stdcall;
-  end;
 
-  TAppLanguage = class(TObject, IUnknown, IApplicationTranslator)
+  TAppLanguage = class(TObject, IInterface)
   private
     FLangFile: TWideMemIniFile;
     FSkipList: TTntStrings;
@@ -47,7 +43,7 @@ type
     FOnReading: TCheckTranslateEvent;
     FOnWriting: TCheckTranslateEvent;
     procedure WriteTranslationSub(IniFile: TWideCustomIniFile; AnObject: TObject);
-    { IUnknown }
+    { IInterface }
     function _AddRef: Integer; stdcall;
     function _Release: Integer; stdcall;
     function QueryInterface(const IID: TGUID; out Obj): HRESULT; stdcall;
@@ -57,8 +53,7 @@ type
     procedure DoReadObject(AnObject: TObject; const PropName, Section: WideString; var AValue: WideString); dynamic;
     procedure DoWriteObject(AnObject: TObject; const PropName: WideString; var ASection, AName, AValue: WideString); dynamic;
   public
-    { IApplicationTranslator }
-    function Translate(const Section, Name, Default: WideString): WideString; stdcall;
+    function Translate(const Section, Name, Value: string): WideString;
 
     constructor Create(const Filename: WideString = '');
     destructor Destroy; override;
@@ -317,6 +312,7 @@ procedure TAppLanguage.CreateTemplate(const AFilename: WideString;
   AnObject: TObject);
 var
   ini: TWideMemIniFile;
+  S:WideString;
 begin
   ini := TWideMemIniFile.Create(AFilename);
   try
@@ -490,18 +486,18 @@ begin
       TranslateObject(TComponent(AnObject).Components[i], Section);
 end;
 
-function TAppLanguage.Translate(const Section, Name, Default: WideString): WideString;
+function TAppLanguage.Translate(const Section, Name, Value: string): WideString;
 begin
   if FLangFile <> nil then
   begin
-    Result := FLangFile.ReadString(Section, trim(EncodeStrings(Name)), EncodeStrings(Default));
+    Result := FLangFile.ReadString(Section, trim(EncodeStrings(Name)), EncodeStrings(Value));
     if Result <> '' then
       Result := DecodeStrings(Result)
     else
-      Result := Default;
+      Result := Value;
   end
   else
-    Result := Default;
+    Result := Value;
 end;
 
 procedure TAppLanguage.DoWriteObject(AnObject: TObject;

@@ -22,7 +22,7 @@ AutoIncBuild=1
 MajorVer=1
 MinorVer=9
 Release=0
-Build=13
+Build=14
 Debug=0
 PreRelease=0
 Special=0
@@ -33,7 +33,7 @@ CodePage=1252
 [Version Info Keys]
 CompanyName=Peter Thörnqvist
 FileDescription=Alternate List Editor plugin for IniTranslator
-FileVersion=1.9.0.13
+FileVersion=1.9.0.14
 InternalName=ToolListEdit.dll
 LegalCopyright=Copyright (c) 2003-2006 by Peter Thörnqvist; all rights reserved
 LegalTrademarks=
@@ -41,13 +41,3 @@ OriginalFilename=ToolListEdit.dll
 ProductName=IniTranslator
 ProductVersion=1.9.0.13
 Comments=Latest version from http://initranslator.sourceforge.net
-[HistoryLists\hlUnitAliases]
-Count=1
-Item0=WinTypes=Windows;WinProcs=Windows;DbiTypes=BDE;DbiProcs=BDE;DbiErrs=BDE;
-[HistoryLists\hlUnitOutputDirectory]
-Count=1
-Item0=..\..\dcu
-[HistoryLists\hlOutputDirectorry]
-Count=2
-Item0=..\..\bin\plugins
-Item1=..\..\bin

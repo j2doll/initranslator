@@ -48,10 +48,10 @@ object frmExport: TfrmExport
   OldCreateOrder = False
   DesignSize = (
     392
-    273)
+    266)
   PixelsPerInch = 96
   TextHeight = 13
-  object Label1: TLabel
+  object lblFilename: TLabel
     Left = 12
     Top = 6
     Width = 46
@@ -59,7 +59,7 @@ object frmExport: TfrmExport
     Caption = '&Filename:'
     FocusControl = edFilename
   end
-  object Label2: TLabel
+  object lblPreview: TLabel
     Left = 12
     Top = 60
     Width = 91

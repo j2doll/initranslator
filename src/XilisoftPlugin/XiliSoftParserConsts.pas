@@ -1,4 +1,3 @@
-{@abstract(Project file for Xilisoft parser) }
 {
   Copyright © 2006 by Alexander Kornienko; all rights reserved
 
@@ -13,28 +12,23 @@
    WITHOUT WARRANTY OF ANY KIND, either express or implied. See the License for
    the specific language governing rights and limitations under the License.
 }
-
 // $Id: $
-library XilisoftParser;
+unit XiliSoftParserConsts;
 
-uses
-  SysUtils,
-  Classes,
-  TransIntf in '..\TransIntf.pas',
-  DualImportFrm in '..\PluginCommon\DualImportFrm.pas' {frmImport},
-  XilisoftParserImpl in 'XilisoftParserImpl.pas',
-  XilisoftParserCfgForm in 'XilisoftParserCfgForm.pas' {XilisoftCfgForm};
+interface
+const
+  cSectionName = 'XilisoftTranslator';
+  cSkip = 'SkipEmpty';
+  SLocalizeSectionName = 'TXilisoftParser';
+  SXilisoftFilter = 'Lang files (*.lang)|*.lang|All files (*.*)|*.*';
+  SXilisoftImportTitle = 'Import from Xilisoft lang file';
+  SXilisoftExportTitle = 'Export to Xilisoft lang file';
+  SImportBeforeExport = 'Please import before export!';
+  SFileNotFound = 'File not found';
+  SFormCaption = 'Configuration';
+  SCheckBoxCaption = 'Do not export empty translations';
+  SButtonCaption = 'OK';
 
-{$R *.res}
+implementation
 
-function InstallPlugin(out Parser: IFileParser): HResult; stdcall;
-begin
-  Parser := TXilisoftParser.Create;
-  Result := S_OK;
-end;
-
-exports InstallPlugin name cRegisterTransFileParserFuncName;
-
-begin
 end.
-

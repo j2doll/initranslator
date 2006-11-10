@@ -176,8 +176,8 @@ type
     property DictionaryFile: WideString read FDictionaryFile write FDictionaryFile;
 
     property TranslationFile: WideString read FTranslationFile write FTranslationFile;
-    property DefaultTransEncoding:integer read FDefaultTransEncoding write FDefaultTransEncoding;
-    property DefaultOrigEncoding:integer read FDefaultOrigEncoding write FDefaultOrigEncoding;
+    property DefaultTransEncoding: integer read FDefaultTransEncoding write FDefaultTransEncoding;
+    property DefaultOrigEncoding: integer read FDefaultOrigEncoding write FDefaultOrigEncoding;
     property TransEncoding: integer read FTransEncoding write FTransEncoding;
     property OriginalFile: WideString read FOriginalFile write FOriginalFile;
     property OrigEncoding: integer read FOrigEncoding write FOrigEncoding;
@@ -185,12 +185,11 @@ type
     property FilterIndex: integer read FFilterIndex write FFilterIndex default 1;
     property AppTitle: WideString read FAppTitle write FAppTitle;
     property FontName: WideString read FFontName write FFontName;
-    property FontSize:integer read FFontSize write FFontSize;
+    property FontSize: integer read FFontSize write FFontSize;
     property MonitorFiles: boolean read FMonitorFiles write FMonitorFiles default true;
     property Theme: WideString read FTheme write FTheme;
-    property Header:TTntStrings read FHeader write SetHeader;
-    property Footer:TTntStrings read FFooter write SetFooter;
-
+    property Header: TTntStrings read FHeader write SetHeader;
+    property Footer: TTntStrings read FFooter write SetFooter;
 
     // find replace
     property FindText: WideString read FFindText write FFindText;
@@ -222,18 +221,13 @@ type
     property DictIgnoreNonEmpty: boolean read FDictIgnoreNonEmpty write FDictIgnoreNonEmpty;
     property DictEditFilter: Integer read FDictEditFilter write FDictEditFilter;
 
-    property ColorUntranslated:TColor read FColorUntranslated write FColorUntranslated;
-    property ColorFontUntranslated:TColor read FColorFontUntranslated write FColorFontUntranslated;
+    property ColorUntranslated: TColor read FColorUntranslated write FColorUntranslated;
+    property ColorFontUntranslated: TColor read FColorFontUntranslated write FColorFontUntranslated;
 
-    property ColorEvenRow:TColor read FColorEvenRow write FColorEvenRow;
-    property ColorFontEvenRow:TColor read FColorFontEvenRow write FColorFontEvenRow;
-    property ColorOddRow:TColor read FColorOddRow write FColorOddRow;
-    property ColorFontOddRow:TColor read FColorFontOddRow write FColorFontOddRow;
-  end;
-
-  TTranslationService = class(TInterfacedObject, ITranslationService)
-  public
-    function Translate(const Section, Name, Value: String): WideString;
+    property ColorEvenRow: TColor read FColorEvenRow write FColorEvenRow;
+    property ColorFontEvenRow: TColor read FColorFontEvenRow write FColorFontEvenRow;
+    property ColorOddRow: TColor read FColorOddRow write FColorOddRow;
+    property ColorFontOddRow: TColor read FColorFontOddRow write FColorFontOddRow;
   end;
 
 implementation
@@ -447,7 +441,6 @@ begin
   inherited;
 end;
 
-
 procedure TAppOptions.ReadWindowInfos(ini: TWideCustomIniFile);
 var
   i: integer;
@@ -524,11 +517,11 @@ begin
     TransEncoding := ini.ReadInteger('Files', 'TransEncoding', TransEncoding);
     OrigEncoding := ini.ReadInteger('Files', 'OrigEncoding', OrigEncoding);
     DefaultTransEncoding := ini.ReadInteger('Files', 'DefaultTransEncoding', TransEncoding);
-    DefaultOrigEncoding  := ini.ReadInteger('Files', 'DefaultOrigEncoding', OrigEncoding);
+    DefaultOrigEncoding := ini.ReadInteger('Files', 'DefaultOrigEncoding', OrigEncoding);
     MonitorFiles := ini.ReadBool('Files', 'MonitorFiles', MonitorFiles);
 
-    Header.Text := Tnt_WideStringReplace(ini.ReadString('UserData','Header',''), #2, #13#10, [rfReplaceAll]);
-    Footer.Text := Tnt_WideStringReplace(ini.ReadString('UserData','Footer',''), #2, #13#10, [rfReplaceAll]);
+    Header.Text := Tnt_WideStringReplace(ini.ReadString('UserData', 'Header', ''), #2, #13#10, [rfReplaceAll]);
+    Footer.Text := Tnt_WideStringReplace(ini.ReadString('UserData', 'Footer', ''), #2, #13#10, [rfReplaceAll]);
 
     PinCommentWindow := ini.ReadBool('Comments', 'PinCommentWindow', PinCommentWindow);
 
@@ -557,12 +550,12 @@ begin
     MisMatchIdentical := ini.ReadBool('MisMatch', 'MisMatchIdentical', true);
     MisMatchEmptyTranslation := ini.ReadBool('MisMatch', 'MisMatchEmptyTranslation', true);
 
-    ColorUntranslated := ini.ReadInteger('Colors','ColorUntranslated', $EFEFEF);
-    ColorFontUntranslated := ini.ReadInteger('Colors','ColorFontUntranslated', $000000);
-    ColorEvenRow := ini.ReadInteger('Colors','ColorEvenRow',$FFFFFF);
-    ColorFontEvenRow := ini.ReadInteger('Colors','ColorFontEvenRow',$000000);
-    ColorOddRow := ini.ReadInteger('Colors','ColorOddRow',$FFFFFF);
-    ColorFontOddRow := ini.ReadInteger('Colors','ColorFontOddRow',$000000);
+    ColorUntranslated := ini.ReadInteger('Colors', 'ColorUntranslated', $EFEFEF);
+    ColorFontUntranslated := ini.ReadInteger('Colors', 'ColorFontUntranslated', $000000);
+    ColorEvenRow := ini.ReadInteger('Colors', 'ColorEvenRow', $FFFFFF);
+    ColorFontEvenRow := ini.ReadInteger('Colors', 'ColorFontEvenRow', $000000);
+    ColorOddRow := ini.ReadInteger('Colors', 'ColorOddRow', $FFFFFF);
+    ColorFontOddRow := ini.ReadInteger('Colors', 'ColorFontOddRow', $000000);
 
     ReadWindowInfos(ini);
     FTools.LoadFromIni(ini);
@@ -633,8 +626,8 @@ begin
     ini.WriteInteger('Files', 'DefaultOrigEncoding', DefaultOrigEncoding);
     ini.WriteBool('Files', 'MonitorFiles', MonitorFiles);
 
-    ini.WriteString('UserData', 'Header', Tnt_WideStringReplace(Header.Text, #13#10,#2,[rfReplaceAll]));
-    ini.WriteString('UserData', 'Footer', Tnt_WideStringReplace(Footer.Text, #13#10,#2,[rfReplaceAll]));
+    ini.WriteString('UserData', 'Header', Tnt_WideStringReplace(Header.Text, #13#10, #2, [rfReplaceAll]));
+    ini.WriteString('UserData', 'Footer', Tnt_WideStringReplace(Footer.Text, #13#10, #2, [rfReplaceAll]));
 
     ini.WriteBool('Comments', 'PinCommentWindow', PinCommentWindow);
     // find replace dialog
@@ -660,13 +653,12 @@ begin
     ini.WriteBool('MisMatch', 'MisMatchIdentical', MisMatchIdentical);
     ini.WriteBool('MisMatch', 'MisMatchEmptyTranslation', MisMatchEmptyTranslation);
 
-    ini.WriteInteger('Colors','ColorUntranslated', ColorUntranslated);
-    ini.WriteInteger('Colors','ColorFontUntranslated', ColorFontUntranslated);
-    ini.WriteInteger('Colors','ColorEvenRow',ColorEvenRow);
-    ini.WriteInteger('Colors','ColorFontEvenRow',ColorFontEvenRow);
-    ini.WriteInteger('Colors','ColorOddRow',ColorOddRow);
-    ini.WriteInteger('Colors','ColorFontOddRow',ColorFontOddRow);
-
+    ini.WriteInteger('Colors', 'ColorUntranslated', ColorUntranslated);
+    ini.WriteInteger('Colors', 'ColorFontUntranslated', ColorFontUntranslated);
+    ini.WriteInteger('Colors', 'ColorEvenRow', ColorEvenRow);
+    ini.WriteInteger('Colors', 'ColorFontEvenRow', ColorFontEvenRow);
+    ini.WriteInteger('Colors', 'ColorOddRow', ColorOddRow);
+    ini.WriteInteger('Colors', 'ColorFontOddRow', ColorFontOddRow);
 
     WriteWindowInfos(ini);
     FTools.SaveToIni(ini);
@@ -768,15 +760,4 @@ begin
   end;
 end;
 
-{ TTranslationService }
-
-{ TTranslationService }
-
-function TTranslationService.Translate(const Section, Name,
-  Value: String): WideString;
-begin
-  Result := GlobalLanguageFile.Translate(Section, Name, Value);
-end;
-
 end.
-

@@ -21,32 +21,37 @@ interface
 
 uses
   Windows, Messages, SysUtils, Classes, Graphics, Controls, Forms,
-  Dialogs, StdCtrls, ComCtrls, TntClasses, TntComCtrls;
+  Dialogs, StdCtrls, ComCtrls, TntClasses, TntComCtrls, TransIntf;
 
 type
   TfrmExport = class(TForm)
-    Label1: TLabel;
+    lblFilename: TLabel;
     edFilename: TEdit;
     btnBrowse: TButton;
     rePreview: TTntRichEdit;
     btnOK: TButton;
     btnCancel: TButton;
-    Label2: TLabel;
+    lblPreview: TLabel;
     SaveDialog1: TSaveDialog;
     procedure btnBrowseClick(Sender: TObject);
   private
     { Private declarations }
     FHasPrompted: boolean;
+    FApplicationServices:IApplicationServices;
     function CheckFilename: boolean;
     function IsValidFilename: boolean;
     function OverwriteOK: boolean;
     procedure LoadSettings;
     procedure SaveSettings;
+    function Translate(const Value:WideString):WideString;
   public
     { Public declarations }
     class function Execute(var FileName: string;
       const ACaption, Filter, InitialDir, DefaultExt: string;
-      Preview: TTntStrings): boolean;
+      Preview: TTntStrings): boolean;overload;
+    class function Execute(const ApplicationServices:IApplicationServices;var FileName: string;
+      const ACaption, Filter, InitialDir, DefaultExt: string;
+      Preview: TTntStrings): boolean;overload;
 
   end;
 
@@ -67,32 +72,8 @@ const
 class function TfrmExport.Execute(var FileName: string;
   const ACaption, Filter, InitialDir, DefaultExt: string;
   Preview: TTntStrings): boolean;
-var
-  frmExport: TfrmExport;
 begin
-  Result := false;
-  frmExport := self.Create(Application);
-  with frmExport do
-  try
-    LoadSettings;
-    Caption := ACaption;
-    SaveDialog1.Filter := Filter;
-    SaveDialog1.InitialDir := InitialDir;
-    SaveDialog1.DefaultExt := DefaultExt;
-    edFilename.Text := Filename;
-    rePreview.Lines := Preview;
-    rePreview.SelStart := 0;
-    SendMessage(rePreview.Handle, EM_SCROLLCARET, 0, 0);
-    if (ShowModal = mrOK) and CheckFilename and OverwriteOK then
-    begin
-      Result := true;
-      Preview.Assign(rePreview.Lines);
-      Filename := edFilename.Text;
-    end;
-    SaveSettings;
-  finally
-    Free;
-  end;
+  Result := Execute(nil, Filename, ACaption, Filter, InitialDir, DefaultExt, Preview);  
 end;
 
 procedure TfrmExport.btnBrowseClick(Sender: TObject);
@@ -203,6 +184,54 @@ begin
   Result := IsValidFilename;
   if not Result then
     MessageBox(Handle, PChar(Format(SFmtErrIvalidFilename, [edFilename.Text])), PChar(SError), MB_OK or MB_TASKMODAl or MB_ICONERROR);
+end;
+
+class function TfrmExport.Execute(
+  const ApplicationServices: IApplicationServices; var FileName: string;
+  const ACaption, Filter, InitialDir, DefaultExt: string;
+  Preview: TTntStrings): boolean;
+var
+  frmExport: TfrmExport;
+begin
+  Result := false;
+  frmExport := self.Create(Application);
+  with frmExport do
+  try
+    LoadSettings;
+    FApplicationServices := ApplicationServices;
+    if ACaption <> '' then
+      Caption := Translate(ACaption)
+    else
+      Caption := Translate(Caption);
+    lblFilename.Caption := Translate(lblFilename.Caption);
+    lblPreview.Caption := Translate(lblPreview.Caption);
+    btnOK.Caption := Translate(btnOK.Caption);
+    btnCancel.Caption := Translate(btnCancel.Caption);
+    SaveDialog1.Filter := Translate(Filter);
+    SaveDialog1.InitialDir := InitialDir;
+    SaveDialog1.DefaultExt := DefaultExt;
+    edFilename.Text := Filename;
+    rePreview.Lines := Preview;
+    rePreview.SelStart := 0;
+    SendMessage(rePreview.Handle, EM_SCROLLCARET, 0, 0);
+    if (ShowModal = mrOK) and CheckFilename and OverwriteOK then
+    begin
+      Result := true;
+      Preview.Assign(rePreview.Lines);
+      Filename := edFilename.Text;
+    end;
+    SaveSettings;
+  finally
+    Free;
+  end;
+end;
+
+function TfrmExport.Translate(const Value: WideString): WideString;
+begin
+  if FApplicationServices <> nil then
+    Result := FApplicationServices.Translate(ClassName, Value, Value)
+  else
+    Result := Value;
 end;
 
 end.

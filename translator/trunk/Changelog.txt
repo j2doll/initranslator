@@ -1,5 +1,10 @@
 Ini Translator Changelog
 ========================
+2006-11-10:
+- Added new "Make translations consistent" command
+- Updated documentation (menu command reference - Appendix B)
+- Updated some language files
+
 2006-11-08:
 - MRU items only saved if both original and translation contains valid filenames
 - Logic for opening Original and/or Translation file changed

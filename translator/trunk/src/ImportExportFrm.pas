@@ -258,15 +258,16 @@ var
   Parser: IFileParser;
 begin
   Parser := TLibItem(lvItems.Selected.Data).Parser;
-  Parser.Init(Application.Handle);
+  Parser.Init(GlobalApplicationServices);
   FCapabilitiesSupported := Parser.Capabilities;
-  if FCapabilitiesSupported and CAP_CONFIGURE = CAP_CONFIGURE then
+{  if FCapabilitiesSupported and CAP_CONFIGURE = CAP_CONFIGURE then
     if Parser.Configure(CAP_IMPORT) <> S_OK then
     begin
       ModalResult := mrAbort;
       Close;
       Exit;
     end;
+    }
   if Parser.ImportItems(FItems, FOrphans) <> S_OK then
     ModalResult := mrNone;
 end;
@@ -276,14 +277,15 @@ var
   Parser: IFileParser;
 begin
   Parser := TLibItem(lvItems.Selected.Data).Parser;
-  Parser.Init(Application.Handle);
-  if Parser.Capabilities and CAP_CONFIGURE = CAP_CONFIGURE then
+  Parser.Init(GlobalApplicationServices);
+{  if Parser.Capabilities and CAP_CONFIGURE = CAP_CONFIGURE then
     if Parser.Configure(CAP_EXPORT) <> S_OK then
     begin
       ModalResult := mrAbort;
       Close;
       Exit;
     end;
+    }
   if Parser.ExportItems(FItems, FOrphans) <> S_OK then
     ModalResult := mrNone;
 end;
@@ -292,6 +294,7 @@ procedure TfrmImportExport.acConfigureExecute(Sender: TObject);
 const
   cCapability: array[boolean] of integer = (CAP_EXPORT, CAP_IMPORT);
 begin
+  TLibItem(lvItems.Selected.Data).Parser.Init(GlobalApplicationServices);
   TLibItem(lvItems.Selected.Data).Parser.Configure(cCapability[FImport]);
 end;
 

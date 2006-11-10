@@ -21,7 +21,7 @@ unit AppUtils;
 interface
 uses
   SysUtils, Classes, Controls, ActnList, ActnMan,
-  MsgTranslate, AppConsts, AppOptions,
+  MsgTranslate, AppConsts, AppOptions, TransIntf,
   TntClasses, TBXExtItems;
 
 procedure TBMRULoadFromIni(MRU: TTBXMRUList);
@@ -44,6 +44,8 @@ function BinarySearch(AList: TList; L, R: integer; CompareItem: Pointer; Compare
 
 function GlobalLanguageFile: TAppLanguage;
 function GlobalAppOptions: TAppOptions;
+function GlobalApplicationServices:IApplicationServices;
+
 function GetUserAppDataFolder(const Default: WideString): WideString;
 function GetUserShortcutFile: WideString;
 function GetUserAppOptionsFile: WideString;
@@ -72,6 +74,7 @@ uses
 var
   FLanguageFile: TAppLanguage = nil;
   FAppOptions: TAppOptions = nil;
+  FApplicationServices:IApplicationServices = nil;
 
 function AutoDetectCharacterSet(Stream: TStream): TEncoding;
 begin
@@ -120,6 +123,13 @@ begin
   if FAppOptions = nil then
     FAppOptions := TAppOptions.Create(GetUserAppOptionsFile);
   Result := FAppOptions;
+end;
+
+function GlobalApplicationServices:IApplicationServices;
+begin
+  if FApplicationServices = nil then
+    FApplicationServices := Application.MainForm as IApplicationServices;
+  Result := FApplicationServices;
 end;
 
 function SHGetFolderPathW2(hwnd: HWND; csidl: Integer; hToken: THandle; dwFlags: DWord; pszPath: PWideChar): HRESULT; stdcall; external 'SHFolder.dll' name 'SHGetFolderPathW';

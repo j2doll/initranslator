@@ -41,7 +41,7 @@ type
       const Orphans: ITranslationItems): HRESULT; safecall;
     function ImportItems(const Items: ITranslationItems;
       const Orphans: ITranslationItems): HRESULT; safecall;
-    procedure Init(AppHandle: Cardinal); safecall;
+    procedure Init(const ApplicationServices: IApplicationServices); safecall;
   end;
 
 implementation
@@ -243,9 +243,9 @@ begin
   end;
 end;
 
-procedure TTMXParser.Init(AppHandle: Cardinal);
+procedure TTMXParser.Init(const ApplicationServices: IApplicationServices);
 begin
-  Application.Handle := AppHandle;
+  Application.Handle := ApplicationServices.AppHandle;
 end;
 
 procedure TTMXParser.LoadSettings;

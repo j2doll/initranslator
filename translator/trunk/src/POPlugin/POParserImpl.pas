@@ -43,7 +43,7 @@ type
     function DisplayName(Capability: integer): WideString; safecall;
     function ExportItems(const Items, Orphans: ITranslationItems): HResult; safecall;
     function ImportItems(const Items, Orphans: ITranslationItems): HResult; safecall;
-    procedure Init(AppHandle: Cardinal); safecall;
+    procedure Init(const ApplicationServices: IApplicationServices); safecall;
   end;
 
 implementation
@@ -394,9 +394,9 @@ begin
   end;
 end;
 
-procedure TPOFileParser.Init(AppHandle: Cardinal);
+procedure TPOFileParser.Init(const ApplicationServices: IApplicationServices);
 begin
-  Application.Handle := AppHandle;
+  Application.Handle := ApplicationServices.AppHandle;
 end;
 
 procedure TPOFileParser.LoadSettings;

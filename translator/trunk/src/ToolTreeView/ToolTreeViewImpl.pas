@@ -37,7 +37,7 @@ type
     function DisplayName: WideString; safecall;
     function Execute(const Items, Orphans: ITranslationItems; var SelectedItem:ITranslationItem): HRESULT; safecall;
     function Icon: Cardinal; safecall;
-    procedure Init(AppHandle: Cardinal); safecall;
+    procedure Init(const ApplicationServices: IApplicationServices); safecall;
     function Status(const Items, Orphans: ITranslationItems; const SelectedItem:ITranslationItem): Integer; safecall;
     destructor Destroy; override;
   end;
@@ -77,10 +77,10 @@ begin
   Result := 0;
 end;
 
-procedure TToolTreeViewPlugin.Init(AppHandle: Cardinal);
+procedure TToolTreeViewPlugin.Init(const ApplicationServices: IApplicationServices);
 begin
-  FOldAppHandle := AppHandle;
-  Application.Handle := AppHandle;
+  FOldAppHandle := Application.Handle;
+  Application.Handle := ApplicationServices.AppHandle;
 end;
 
 function TToolTreeViewPlugin.Status(const Items, Orphans: ITranslationItems; const SelectedItem:ITranslationItem): Integer;

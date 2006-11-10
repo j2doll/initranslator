@@ -37,7 +37,7 @@ type
       const Orphans: ITranslationItems): HRESULT; safecall;
     function ImportItems(const Items: ITranslationItems;
       const Orphans: ITranslationItems): HRESULT; safecall;
-    procedure Init(AppHandle: Cardinal); safecall;
+    procedure Init(const ApplicationServices: IApplicationServices); safecall;
   public
     constructor Create;
     destructor Destroy; override;
@@ -277,11 +277,11 @@ begin
   end;
 end;
 
-procedure TXLIFFParser.Init(AppHandle: Cardinal);
+procedure TXLIFFParser.Init(const ApplicationServices: IApplicationServices);
 begin
   if FOldAppHandle = 0 then
     FOldAppHandle := Application.Handle;
-  Application.Handle := AppHandle;
+  Application.Handle := ApplicationServices.AppHandle;
 end;
 
 procedure TXLIFFParser.LoadSettings;

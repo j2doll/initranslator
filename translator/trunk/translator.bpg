@@ -12,8 +12,8 @@ BRCC = $(ROOT)\bin\brcc32.exe $**
 PROJECTS = IBForumsParser.dll MozillaDTDParser.dll MozillaPropsParser.dll \
   MSDictBuild.exe MSDictParser.dll MsTermBuild.exe OlegParser.dll OOGSIParser.dll \
   PHPNukeParser.dll PHPParser.dll PolyGlotParser.dll POParser.dll SciTEParser.dll \
-  TMXParser.dll XLIFFParser.dll ToolTreeView.dll ToolListEdit.dll \
-  ToolPropertiesView.dll translator.exe
+  TMXParser.dll ToolTreeView.dll ToolListEdit.dll ToolPropertiesView.dll \
+  XLIFFParser.dll XilisoftParser.dll translator.exe
 #------------------------------------------------------------------------------
 default: $(PROJECTS)
 #------------------------------------------------------------------------------
@@ -73,6 +73,9 @@ ToolPropertiesView.dll: src\ToolPropertiesView\ToolPropertiesView.dpr
   $(DCC)
 
 MsTermBuild.exe: src\MsTermBuild\MsTermBuild.dpr
+  $(DCC)
+
+XilisoftParser.dll: src\XilisoftPlugin\XilisoftParser.dpr
   $(DCC)
 
 

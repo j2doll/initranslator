@@ -1,4 +1,4 @@
-{@abstract(Generic single file select dialog) }
+{@abstract(Single file select dialog for MS Dict Parser) }
 {
   Copyright © 2003-2006 by Peter Thornqvist; all rights reserved
   Developer(s):
@@ -15,7 +15,7 @@
 
 // $Id$
 
-unit SingleImportFrm;
+unit MSDictParserImportFrm;
 
 interface
 

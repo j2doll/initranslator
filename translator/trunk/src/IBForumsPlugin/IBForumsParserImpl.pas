@@ -45,7 +45,7 @@ type
     function ExportItems(const Items, Orphans: ITranslationItems): HRESULT; safecall;
     function ImportItems(const Items, Orphans: ITranslationItems): HRESULT; safecall;
 
-    procedure Init(AppHandle: Cardinal); safecall;
+    procedure Init(const ApplicationServices:IApplicationServices); safecall;
     function Capabilities: Integer; safecall;
     function HandleOrig(const AFilename: WideString; const Items: ITranslationItems; const Orphans: ITranslationItems): Boolean; safecall;
     function HandleTrans(const AFilename: WideString; const Items: ITranslationItems; const Orphans: ITranslationItems): Boolean; safecall;
@@ -321,9 +321,9 @@ begin
   end;
 end;
 
-procedure TIBFParser.Init(AppHandle: Cardinal);
+procedure TIBFParser.Init(const ApplicationServices:IApplicationServices);
 begin
-  Application.Handle := AppHandle;
+  Application.Handle := ApplicationServices.AppHandle;
 end;
 
 procedure TIBFParser.LoadSettings;

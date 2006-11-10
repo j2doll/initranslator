@@ -69,6 +69,7 @@ type
   ITranslationItems = interface;
   IDictionaryItem = interface;
   IDictionaryItems = interface;
+  IApplicationServices = interface;
   
   ITranslationItem = interface(IInterface)
     ['{5B400D54-5B0E-48B4-BEE3-9DBDA02AE3D6}']
@@ -155,6 +156,13 @@ type
     property Modified:WordBool read GetModified write SetModified;
   end;
 
+  // interface that provides access to the currently loaded IniTranslator language file
+  // (i.e the file IniTranslator uses to localize its own UI)
+  ITranslationService = interface(IInterface)
+  ['{06543944-7920-4900-9AE0-E2BB9B8369A6}']
+    function Translate(const Section, Name, Value:string):WideString;
+  end;
+
   IFileParser = interface(IInterface)
     ['{3E556846-9B4D-4722-B48F-48D020715509}']
     function ExportItems(const Items, Orphans: ITranslationItems): HResult; safecall;
@@ -163,7 +171,7 @@ type
     // return combination of the CAP_ constants
     function Capabilities: integer; safecall;
     function Configure(Capability: integer): HResult; safecall;
-    procedure Init(AppHandle: Cardinal); safecall;
+    procedure Init(const ApplicationServices: IApplicationServices); safecall;
   end;
 
   // NB! not used!
@@ -184,7 +192,7 @@ type
     function Icon:LongWord; safecall; // HICON: return <= 0 for no icon
 
     function Execute(const Items, Orphans: ITranslationItems; var SelectedItem:ITranslationItem): HResult; safecall;
-    procedure Init(AppHandle: Cardinal); safecall;
+    procedure Init(const ApplicationServices: IApplicationServices); safecall;
   end;
 
   // A list of IToolItem
@@ -205,7 +213,7 @@ type
 
   // NB! not used!
   // not completed
-  IApplication = interface(IInterface)
+  IApplicationServices = interface(IInterface)
   ['{61FD76C9-714C-4DDF-BEB2-19A4631B444C}']
     function GetItems:ITranslationItems;
     function GetOrphans:ITranslationItems;
@@ -215,6 +223,7 @@ type
     procedure SetHeader(const Value:WideString);
     function GetFooter:WideString;
     procedure SetFooter(const Value:WideString);
+    function GetTranslationService:ITranslationService;
 
     function GetAppOption(const Section, Name, Default: WideString):WideString;safecall;
     procedure SetAppOption(const Section, Name, Value:WideString);safecall;
@@ -228,6 +237,7 @@ type
     property Orphans:ITranslationItems read GetOrphans;
     property Dictionary:IDictionaryItems read GetDictionaryItems;
     property AppHandle:Cardinal read GetAppHandle;
+    property TranslationService:ITranslationService read GetTranslationService;
     property Header:WideString read GetHeader write SetHeader;
     property Footer:WideString read GetFooter write SetFooter;
   end;
@@ -280,3 +290,4 @@ const
 implementation
 
 end.
+

@@ -46,7 +46,7 @@ type
     function DisplayName(Capability: Integer): WideString; safecall;
     function ExportItems(const Items, Orphans: ITranslationItems): HRESULT; safecall;
     function ImportItems(const Items, Orphans: ITranslationItems): HRESULT; safecall;
-    procedure Init(AppHandle: Cardinal); safecall;
+    procedure Init(const ApplicationServices: IApplicationServices); safecall;
     function Capabilities: Integer; safecall;
   end;
 
@@ -277,9 +277,9 @@ begin
   end;
 end;
 
-procedure TPHPParser.Init(AppHandle: Cardinal);
+procedure TPHPParser.Init(const ApplicationServices: IApplicationServices);
 begin
-  Application.Handle := AppHandle;
+  Application.Handle := ApplicationServices.AppHandle;
 end;
 
 procedure TPHPParser.LoadSettings;

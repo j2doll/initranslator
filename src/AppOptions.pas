@@ -21,7 +21,7 @@ unit AppOptions;
 interface
 uses
   Classes, Forms, Types, SysUtils, Graphics, WideIniFiles,
-  TntClasses;
+  TntClasses, TransIntf;
 
 type
   PAppWindowInfo = ^TAppWindowInfo;
@@ -229,6 +229,11 @@ type
     property ColorFontEvenRow:TColor read FColorFontEvenRow write FColorFontEvenRow;
     property ColorOddRow:TColor read FColorOddRow write FColorOddRow;
     property ColorFontOddRow:TColor read FColorFontOddRow write FColorFontOddRow;
+  end;
+
+  TTranslationService = class(TInterfacedObject, ITranslationService)
+  public
+    function Translate(const Section, Name, Value: String): WideString;
   end;
 
 implementation
@@ -761,6 +766,16 @@ begin
   finally
     Free;
   end;
+end;
+
+{ TTranslationService }
+
+{ TTranslationService }
+
+function TTranslationService.Translate(const Section, Name,
+  Value: String): WideString;
+begin
+  Result := GlobalLanguageFile.Translate(Section, Name, Value);
 end;
 
 end.

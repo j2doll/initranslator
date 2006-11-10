@@ -40,12 +40,11 @@ type
       const Orphans: ITranslationItems;
       var SelectedItem: ITranslationItem): HRESULT; safecall;
     function Icon: Cardinal; safecall;
-    procedure Init(AppHandle: Cardinal); safecall;
+    procedure Init(const ApplicationServices: IApplicationServices); safecall;
     function Status(const Items: ITranslationItems;
       const Orphans: ITranslationItems;
       const SelectedItem: ITranslationItem): Integer; safecall;
     destructor Destroy; override;
-
   end;
 
 implementation
@@ -104,11 +103,11 @@ begin
   Result := 0;
 end;
 
-procedure TToolPropertiesViewPlugin.Init(AppHandle: Cardinal);
+procedure TToolPropertiesViewPlugin.Init(const ApplicationServices: IApplicationServices);
 begin
   if FOldAppHandle = 0 then
     FOldAppHandle := Application.Handle;
-  Application.Handle := AppHandle;
+  Application.Handle := ApplicationServices.AppHandle;
 end;
 
 function TToolPropertiesViewPlugin.Status(const Items,

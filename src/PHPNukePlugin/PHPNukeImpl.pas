@@ -37,7 +37,7 @@ type
     function DisplayName(Capability: integer): WideString; safecall;
     function ExportItems(const Items, Orphans: ITranslationItems): HRESULT; safecall;
     function ImportItems(const Items, Orphans: ITranslationItems): HRESULT; safecall;
-    procedure Init(AppHandle: Cardinal); safecall;
+    procedure Init(const ApplicationServices: IApplicationServices); safecall;
   end;
 
 implementation
@@ -291,10 +291,10 @@ begin
   end;
 end;
 
-procedure TPHPNukeParser.Init(AppHandle: Cardinal);
+procedure TPHPNukeParser.Init(const ApplicationServices: IApplicationServices);
 begin
   FOldHandle := Application.Handle;
-  Application.Handle := AppHandle;
+  Application.Handle := ApplicationServices.AppHandle;
 end;
 
 procedure TPHPNukeParser.LoadSettings;

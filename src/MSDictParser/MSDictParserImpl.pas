@@ -33,7 +33,7 @@ type
     function DisplayName(Capability: Integer): WideString; safecall;
     function ExportItems(const Items: ITranslationItems; const Orphans: ITranslationItems): HRESULT; safecall;
     function ImportItems(const Items: ITranslationItems; const Orphans: ITranslationItems): HRESULT; safecall;
-    procedure Init(AppHandle: Cardinal); safecall;
+    procedure Init(const ApplicationServices:IApplicationServices); safecall;
     function AddCopyright: boolean;
   protected
     FTransFile: string;
@@ -49,7 +49,7 @@ type
 implementation
 uses
   Forms, Windows, StrUtils, Controls, IniFiles, CommonUtils,
-  TntSysUtils, PreviewExportFrm, SingleImportFrm;
+  TntSysUtils, PreviewExportFrm, MSDictParserImportFrm;
 
 const
   cMsDictFilter = 'MS Glossary Files (*.csv)|*.csv|All files (*.*)|*.*';
@@ -289,9 +289,9 @@ begin
   end;
 end;
 
-procedure TMsDictParser.Init(AppHandle: Cardinal);
+procedure TMsDictParser.Init(const ApplicationServices:IApplicationServices);
 begin
-  Application.Handle := AppHandle;
+  Application.Handle := ApplicationServices.AppHandle;
 end;
 
 procedure TMsDictParser.LoadSettings;

@@ -46,7 +46,7 @@ type
     function ExportItems(const Items, Orphans: ITranslationItems): HRESULT; safecall;
     function ImportItems(const Items, Orphans: ITranslationItems): HRESULT; safecall;
 
-    procedure Init(AppHandle: Cardinal); safecall;
+    procedure Init(const ApplicationServices: IApplicationServices); safecall;
     function Capabilities: Integer; safecall;
   end;
 
@@ -297,9 +297,9 @@ begin
   end;
 end;
 
-procedure TGSIParser.Init(AppHandle: Cardinal);
+procedure TGSIParser.Init(const ApplicationServices: IApplicationServices);
 begin
-  Application.Handle := AppHandle;
+  Application.Handle := ApplicationServices.AppHandle;
 end;
 
 procedure TGSIParser.LoadSettings;

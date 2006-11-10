@@ -37,7 +37,7 @@ type
     function Icon:LongWord;
 
     function Execute(const Items, Orphans: ITranslationItems; var SelectedItem:ITranslationItem): HResult;
-    procedure Init(AppHandle: Cardinal);
+    procedure Init(const ApplicationServices:IApplicationServices);
     property ImageIndex:integer read FImageIndex default -1;
   end;
 
@@ -63,7 +63,7 @@ type
 
 implementation
 uses
-  Windows, CommCtrl, TntSysUtils;
+  Windows, CommCtrl, AppUtils, TntSysUtils;
 
 { TExternalToolItem }
 
@@ -97,9 +97,9 @@ begin
   Result := FToolItem.Icon;
 end;
 
-procedure TExternalToolItem.Init(AppHandle: Cardinal);
+procedure TExternalToolItem.Init(const ApplicationServices:IApplicationServices);
 begin
-  FToolItem.Init(AppHandle);
+  FToolItem.Init(ApplicationServices);
 end;
 
 procedure TExternalToolItem.SetImageIndex(Images: TImageList);
@@ -149,7 +149,7 @@ procedure TExternalToolItems.InitAll(AppHandle: Cardinal);
 var i:integer;
 begin
   for i := 0 to Count -1 do
-    Item[i].Init(AppHandle);
+    Item[i].Init(GlobalApplicationServices);
 end;
 
 procedure TExternalToolItems.LoadPlugins(const PluginFolder: WideString);

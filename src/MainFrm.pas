@@ -65,7 +65,7 @@ const
   WM_DELAYLOADED = WM_USER + 1001;
 
 type
-  TfrmMain = class(TfrmBase, IApplication)
+  TfrmMain = class(TfrmBase, IApplicationServices)
     StatusBar1: TTBXStatusBar;
     alMain: TTntActionList;
     acOpenOrig: TTntAction;
@@ -458,7 +458,7 @@ type
 {$IFDEF USEADDICTSPELLCHECKER}
     adSpellChecker: TAddictSpell3;
 {$ENDIF USEADDICTSPELLCHECKER}
-    {IApplication}
+    { IApplicationServices begin}
     FNotify: TInterfaceList;
     function GetItems: ITranslationItems;
     function GetOrphans: ITranslationItems;
@@ -474,12 +474,13 @@ type
     procedure UnRegisterNotify(const ANotify: INotify); safecall;
     function BeginUpdate: Integer; safecall;
     function EndUpdate: Integer; safecall;
-
+    function GetTranslationService:ITranslationService; 
 {
     property Items:ITranslationItems read GetItems;
     property Orphans:ITranslationItems read GetOrphans;
     property Dictionary:IDictionaryItems read GetDictionaryItems;
     property AppHandle:Cardinal read GetAppHandle;
+    property TranslationService:ITranslationService read GetTranslationService;
     property Header:WideString read GetHeader write SetHeader;
     property Footer:WideString read GetFooter write SetFooter;
 }
@@ -556,7 +557,7 @@ type
     procedure DoFindReplaceAll(Sender: TObject);
     procedure CreateDialogs;
     procedure FixXPPanelBug;
-    procedure AddMRUFile(const FileName: WideString; AOriginal: boolean);
+    procedure AddMRUFiles(const OriginalFileName, TranslationFilename: WideString);
     procedure OpenMRUFiles(const FileName: WideString);
     function MRUFilesExists(const FileName: WideString): boolean;
     procedure DoCommentModified(Sender: TObject; const AText: WideString);
@@ -901,7 +902,7 @@ begin
   if WideFileExists(Filename) and not FCommandProcessor then
   begin
     FCapabilitesSupported := 0;
-    AddMRUFile(FileName, true);
+    AddMRUFiles(FileName, GlobalAppOptions.TranslationFile);
   end;
 
   StopMonitor(FFileMonitors[cOrigMonitor]);
@@ -947,7 +948,7 @@ begin
   GlobalAppOptions.TransEncoding := Ord(Encoding);
   FLastFolder := WideExtractFilePath(Filename);
 
-  AddMRUFile(FileName, false);
+  AddMRUFiles(GlobalAppOptions.OriginalFile, FileName);
 
   Result := FTranslateFile.LoadTranslation(FileName, Encoding);
   NotifyChanged(NOTIFY_ITEM_FILE_OPEN, Ord(true), Integer(PWideChar(Filename)));
@@ -2031,20 +2032,10 @@ begin
 end;
 {$ENDIF}
 
-procedure TfrmMain.AddMRUFile(const FileName: WideString; AOriginal: boolean);
-var
-  S: WideString;
+procedure TfrmMain.AddMRUFiles(const OriginalFileName, TranslationFilename: WideString);
 begin
-  S := '';
-  if (Filename <> '') then
-  begin
-    if AOriginal and (GlobalAppOptions.TranslationFile <> '') then
-      S := WideFormat('%s [%s]', [FileName, GlobalAppOptions.TranslationFile])
-    else if (GlobalAppOptions.OriginalFile <> '') then
-      S := WideFormat('%s [%s]', [GlobalAppOptions.OriginalFile, FileName])
-  end;
-  if S <> '' then
-    MRUFiles.Add(S);
+  if (OriginalFilename <> '') and (TranslationFilename <> '') then
+    MRUFiles.Add(WideFormat('%s [%s]', [OriginalFilename, TranslationFilename]));
 end;
 
 procedure TfrmMain.OpenMRUFiles(const FileName: WideString);
@@ -4298,6 +4289,12 @@ begin
     end;
 end;
 
+
+
+function TfrmMain.GetTranslationService: ITranslationService;
+begin
+
+end;
 
 end.
 

@@ -19,7 +19,7 @@
 
 /* PREFORMATTING - CODE */ 
 	pre		{font-size: 100%; margin-top: 1.2em; margin-bottom: 1.5em;}
-	code	 	{font-family: "courier new", courier; font-size: 125%; }
+	code	{font-family: "courier new", courier; font-size: 125%; }
 	
 /* TABLES */ 
 	table		{font-size: 100%; margin-top: 1em; margin-bottom: 0em;}

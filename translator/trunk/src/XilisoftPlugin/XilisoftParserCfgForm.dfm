@@ -1,6 +1,6 @@
 object XilisoftCfgForm: TXilisoftCfgForm
-  Left = 192
-  Top = 107
+  Left = 241
+  Top = 254
   BorderIcons = []
   BorderStyle = bsSingle
   Caption = 'Configuration'
@@ -18,7 +18,7 @@ object XilisoftCfgForm: TXilisoftCfgForm
   TextHeight = 13
   object TCB1: TTntCheckBox
     Left = 8
-    Top = 8
+    Top = 9
     Width = 193
     Height = 17
     Caption = 'Do not export empty translations'

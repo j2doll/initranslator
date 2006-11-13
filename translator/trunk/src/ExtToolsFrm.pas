@@ -132,6 +132,8 @@ type
       FindString: string): Integer;
     procedure lbContentsData(Control: TWinControl; Index: Integer;
       var Data: WideString);
+    procedure lbContentsDrawItem(Control: TWinControl; Index: Integer;
+      Rect: TRect; State: TOwnerDrawState);
   private
     { Private declarations }
     FLastItemIndex: integer;
@@ -156,7 +158,7 @@ type
 
 implementation
 uses
-  TntClasses, AppUtils, AppConsts;
+  TntClasses, TntWindows, AppUtils, AppConsts;
 
 {$R *.dfm}
 
@@ -372,7 +374,7 @@ begin
       FTools.Exchange(i, i - 1);
       FLastItemIndex := -1;
       ItemIndex := i - 1;
-      Invalidate;
+      lbContents.Invalidate;
     end;
   end;
 end;
@@ -389,7 +391,7 @@ begin
       FTools.Exchange(i, i + 1);
       FLastItemIndex := -1;
       ItemIndex := i + 1;
-      Invalidate;
+      lbContents.Invalidate;
     end;
   end;
 end;
@@ -479,12 +481,34 @@ end;
 
 procedure TfrmTools.lbContentsData(Control: TWinControl; Index: Integer;
   var Data: WideString);
-var Action: TCustomAction;
+// var Action: TCustomAction;
 begin
+  Data := '';
+  {
   Data := FTools[Index].Title;
   Action := FindActionShortCut(FMainActionList, FTools[Index].ShortCut);
   if Action <> nil then
     Data := '!>  ' + Data + '  <!'; // ' (' + Action.Caption + ')';
+  }
+end;
+
+procedure TfrmTools.lbContentsDrawItem(Control: TWinControl;
+  Index: Integer; Rect: TRect; State: TOwnerDrawState);
+var
+  tmp:WideString;
+  Action: TCustomAction;
+begin
+  if (Index >= 0) and (Index < FTools.Count) then
+  with lbContents.Canvas do
+  begin
+    FillRect(Rect);
+    OffsetRect(Rect, 3, 0);
+    tmp := FTools[Index].Title;
+    Action := FindActionShortCut(FMainActionList, FTools[Index].ShortCut);
+    if Action <> nil then
+      tmp := '!>  ' + tmp + '  <!';
+    Tnt_DrawTextW(Handle, PWideChar(tmp), -1, Rect, DT_SINGLELINE or DT_VCENTER or DT_EXPANDTABS);
+  end;
 end;
 
 end.

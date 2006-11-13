@@ -562,6 +562,8 @@ type
     function GetSelectedListItem: TTntListItem;
     procedure SetSelectedListItem(const Value: TTntListItem);
     procedure MakeTranslationsConsistent;
+    function SelectOriginal(ShowDialog, ShowTransDialog: boolean): boolean;
+    function SelectTranslation(ShowDialog, CalledByOrig: boolean): boolean;
   public
     function GetItems: ITranslationItems;
     function GetOrphans: ITranslationItems;
@@ -905,7 +907,7 @@ begin
   if WideFileExists(Filename) and not FCommandProcessor then
   begin
     FCapabilitesSupported := 0;
-    AddMRUFiles(FileName, GlobalAppOptions.TranslationFile);
+//    AddMRUFiles(FileName, GlobalAppOptions.TranslationFile);
   end;
 
   StopMonitor(FFileMonitors[cOrigMonitor]);
@@ -2442,37 +2444,59 @@ begin
   Item.StateIndex := GetBookmark(Item.Index);
 end;
 
-procedure TfrmMain.acOpenOrigExecute(Sender: TObject);
+function TfrmMain.SelectOriginal(ShowDialog, ShowTransDialog: boolean): boolean;
 begin
   if not CheckModified then
     Exit;
   OpenOrigDlg.FileName := GetFilename(GlobalAppOptions.OriginalFile);
   OpenOrigDlg.FilterIndex := GlobalAppOptions.FilterIndex;
   OpenOrigDlg.EncodingIndex := GlobalAppOptions.OrigEncoding;
-  if OpenOrigDlg.Execute then
+  if not ShowDialog or OpenOrigDlg.Execute then
   begin
     GlobalAppOptions.FilterIndex := OpenOrigDlg.FilterIndex;
     Modified := false;
     LoadOriginal(OpenOrigDlg.FileName, TEncoding(OpenOrigDlg.EncodingIndex));
-    acOpenTrans.Execute;
-  end;
+    Result := SelectTranslation(ShowTransDialog, true);
+  end
+  else
+    Result := false;
 end;
 
-procedure TfrmMain.acOpenTransExecute(Sender: TObject);
+function TfrmMain.SelectTranslation(ShowDialog, CalledByOrig: boolean): boolean;
 begin
-  if not CheckModified then
+  Result := CheckModified;
+  if not Result then
     Exit;
   OpenTransDlg.FileName := GetFilename(GlobalAppOptions.TranslationFile);
   OpenTransDlg.FilterIndex := GlobalAppOptions.FilterIndex;
   OpenTransDlg.EncodingIndex := GlobalAppOptions.TransEncoding;
-  if OpenTransDlg.Execute then
+  if not ShowDialog or OpenTransDlg.Execute then
   begin
     GlobalAppOptions.FilterIndex := OpenOrigDlg.FilterIndex;
     Modified := false;
     LoadTranslation(OpenTransDlg.FileName, TEncoding(OpenTransDlg.EncodingIndex));
     // jump directly to first untranslated item (if available)
     acNextUntranslated.Execute;
+  end
+  else if not CalledByOrig then
+    Exit
+  else if FileExists(GlobalAppOptions.TranslationFile) then
+    LoadTranslation(GlobalAppOptions.TranslationFile, TEncoding(GlobalAppOptions.TransEncoding))
+  else
+  begin
+    acNewTrans.Execute;
+    Result := false;
   end;
+end;
+
+procedure TfrmMain.acOpenOrigExecute(Sender: TObject);
+begin
+  SelectOriginal(true, true);
+end;
+
+procedure TfrmMain.acOpenTransExecute(Sender: TObject);
+begin
+  SelectTranslation(true, false);
 end;
 
 procedure TfrmMain.acSaveTransExecute(Sender: TObject);

@@ -16,13 +16,6 @@ inherited frmConfigSuspicious: TfrmConfigSuspicious
     Anchors = [akLeft, akTop, akRight]
     Shape = bsFrame
   end
-  object TntLabel1: TTntLabel
-    Left = 17
-    Top = 5
-    Width = 95
-    Height = 13
-    Caption = 'Treat as suspicious:'
-  end
   object TntLabel2: TTntLabel
     Left = 8
     Top = 140
@@ -30,6 +23,14 @@ inherited frmConfigSuspicious: TfrmConfigSuspicious
     Height = 13
     Caption = '&Match between original and translation (one string per row):'
     FocusControl = reItems
+  end
+  object TntLabel1: TTntLabel
+    Left = 17
+    Top = 5
+    Width = 95
+    Height = 13
+    Caption = 'Treat as suspicious:'
+    Transparent = False
   end
   object chkLeading: TTntCheckBox
     Left = 16

@@ -39,7 +39,7 @@ object frmTools: TfrmTools
     Top = 29
     Width = 312
     Height = 130
-    Style = lbVirtual
+    Style = lbVirtualOwnerDraw
     Anchors = [akLeft, akTop, akRight]
     BevelInner = bvNone
     BevelKind = bkFlat
@@ -52,6 +52,7 @@ object frmTools: TfrmTools
     OnClick = lbContentsClick
     OnData = lbContentsData
     OnDataFind = lbContentsDataFind
+    OnDrawItem = lbContentsDrawItem
   end
   object btnOK: TTntButton
     Left = 240

@@ -174,13 +174,24 @@ type
     function FileParser(Index: Integer; out FileParser: IFileParsers): HResult; safecall;
   end;
   
-  // plugins that support localizing should implement this interface
-  // when the user elects to create a new translation template, this interface is called
-  // and the returned items are added to the resulting lng file
+  // Plugins that support localizing should implement this interface.
+  // When the user wants to create a new translation template,
+  // IniTranslator searches the plugins for implementors of this interface
+  // and repeatedly calls GetString to get all the untranslated strings
   ILocalizable = interface(IInterface)
   ['{E10D0143-B334-4CCE-898A-F25384D79C6E}']
-    // return false if the parameters contains no valid values (i.e the return values for the
-    // last call are not used)
+    // Fill out the out params and return true for each translatable string in your plugin.
+    // Return false when you have no more strings to translate.
+    // The out params are not used when the method returns false
+    // NB! To get the translated value of a string, call the
+    // IApplicationServices.Translate method
+    //
+    // Params:
+    // Section - should be unique to your plugin/company/application unless you are sure your strings are "common"
+    // Name    - must be unique within a Section, cannot contain the equal sign "=" or start with semi-colon ";"
+    // Value   - can be anything
+    // 
+    // Multiple calls do not have to use the same Section
     function GetString(out Section:WideString; out Name:WideString; out Value:WideString):WordBool;
   end;
 

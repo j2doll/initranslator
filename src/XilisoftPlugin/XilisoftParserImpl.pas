@@ -34,6 +34,8 @@ type
     procedure BuildPreview(Items, Orphans: ITranslationItems; Strings: TTntStrings);
     function Translate(const Value: WideString): WideString;
 
+    { ILocalizable }
+    function GetString(out Section: WideString; out Name: WideString; out Value: WideString): WordBool;
   public
     constructor Create;
     destructor Destroy; override;
@@ -47,7 +49,6 @@ type
       const Orphans: ITranslationItems): HRESULT; safecall;
     procedure Init(const ApplicationServices: IApplicationServices); safecall;
     property SkipEmpty: Boolean read FSkip write FSkip;
-    function GetString(out Section: WideString; out Name: WideString; out Value: WideString): WordBool;
   end;
 
 implementation

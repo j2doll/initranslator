@@ -312,7 +312,6 @@ procedure TAppLanguage.CreateTemplate(const AFilename: WideString;
   AnObject: TObject);
 var
   ini: TWideMemIniFile;
-  S:WideString;
 begin
   ini := TWideMemIniFile.Create(AFilename);
   try

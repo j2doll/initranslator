@@ -103,7 +103,7 @@ type
 
   { TWideMemIniFile - loads an entire INI file into memory and allows all
     operations to be performed on the memory image.  The image can then
-    be written out to the disk file }
+    be written out to the disk file by calling UpdateFile }
 
   TWideMemIniFile = class(TWideCustomIniFile)
   private
@@ -784,9 +784,8 @@ begin
     if not WritePrivateProfileStringW(PWideChar(Section), nil, nil, PWideChar(FFileName)) then
       raise EWideIniFileException.CreateResFmt(@SIniFileWriteError, [FileName]);
   end
-  else
-    if not WritePrivateProfileStringA(PChar2(Section), nil, nil, PChar2(FFileName)) then
-      raise EWideIniFileException.CreateResFmt(@SIniFileWriteError, [FileName]);
+  else if not WritePrivateProfileStringA(PChar2(Section), nil, nil, PChar2(FFileName)) then
+    raise EWideIniFileException.CreateResFmt(@SIniFileWriteError, [FileName]);
 
 end;
 

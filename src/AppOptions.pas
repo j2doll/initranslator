@@ -742,7 +742,7 @@ end;
 
 function TAppOptions.GetOption(const Section, Name: WideString): WideString;
 begin
-  with TWideIniFile.Create(Filename) do
+  with TWideMemIniFile.Create(Filename) do
   try
     Result := ReadString(Section, Name, '');
   finally
@@ -752,9 +752,10 @@ end;
 
 procedure TAppOptions.SetOption(const Section, Name, Value: WideString);
 begin
-  with TWideIniFile.Create(Filename) do
+  with TWideMemIniFile.Create(Filename) do
   try
     WriteString(Section, Name, Value);
+    UpdateFile;
   finally
     Free;
   end;

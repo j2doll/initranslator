@@ -224,8 +224,7 @@ type
     procedure Changed(Msg: Integer; WParam, LParam: Integer); safecall;
   end;
 
-  // NB! not used!
-  // not completed
+  // implemented by IniTranslator
   IApplicationServices = interface(IInterface)
     ['{61FD76C9-714C-4DDF-BEB2-19A4631B444C}']
     function GetItems: ITranslationItems;

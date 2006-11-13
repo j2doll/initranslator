@@ -277,17 +277,17 @@ end;
 
 procedure TBMRULoadFromIni(MRU: TTBXMRUList);
 var
-  ini: TWideIniFile;
-  I: Integer;
+  ini: TWideMemIniFile;
+  i: Integer;
   S: WideString;
 begin
-  ini := TWideIniFile.Create(GetUserAppOptionsFile);
+  ini := TWideMemIniFile.Create(GetUserAppOptionsFile);
   try
     MRU.Items.Clear;
 
-    for I := 1 to MRU.MaxItems do
+    for i := 1 to MRU.MaxItems do
     begin
-      S := Ini.ReadString(cIniMRUKey, MRU.Prefix + IntToStr(I), '');
+      S := ini.ReadString(cIniMRUKey, MRU.Prefix + IntToStr(i), '');
       if S <> '' then
         MRU.Items.Add(S);
     end;
@@ -298,17 +298,18 @@ end;
 
 procedure TBMRUSaveToIni(MRU: TTBXMRUList);
 var
-  ini: TWideIniFile;
-  I: Integer;
+  ini: TWideMemIniFile;
+  i: Integer;
 begin
-  ini := TWideIniFile.Create(GetUserAppOptionsFile);
+  ini := TWideMemIniFile.Create(GetUserAppOptionsFile);
   try
-    for I := 1 to MRU.MaxItems do
+    for i := 1 to MRU.MaxItems do
     begin
-      if I <= MRU.Items.Count then
-        Ini.WriteString(cIniMRUKey, MRU.Prefix + IntToStr(I), MRU.Items[I - 1])
+      if i <= MRU.Items.Count then
+        ini.WriteString(cIniMRUKey, MRU.Prefix + IntToStr(i), MRU.Items[i - 1])
       else
-        Ini.DeleteKey(cIniMRUKey, MRU.Prefix + IntToStr(I));
+        ini.DeleteKey(cIniMRUKey, MRU.Prefix + IntToStr(i));
+        ini.UpdateFile;
     end;
   finally
     ini.Free;

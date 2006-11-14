@@ -2446,7 +2446,8 @@ end;
 
 function TfrmMain.SelectOriginal(ShowDialog, ShowTransDialog: boolean): boolean;
 begin
-  if not CheckModified then
+  Result := CheckModified;
+  if not Result then
     Exit;
   OpenOrigDlg.FileName := GetFilename(GlobalAppOptions.OriginalFile);
   OpenOrigDlg.FilterIndex := GlobalAppOptions.FilterIndex;

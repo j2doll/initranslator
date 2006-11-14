@@ -21,53 +21,56 @@ supplying an alternative method of editing the items.</p>
 tool that fulfills these requirements :</p>
 <ol>
 	<li>it must understand interfaces </li>
-	<li>it must create pure 32-bit Windows DLL files</li>
+	<li>it must be able to create pure 32-bit Windows DLL files</li>
 </ol>
 <p>&nbsp;</p>
 <p>The following discussion assumes Delphi syntax, but you can use any tool that 
 supports the requirements above. </p>
 <p>&nbsp;</p>
+<p class="InfoField"><b>Note</b> <br>
+<br>
+When a function or method returns a <b>HResult</b>, you should generally return
+<b>S_OK</b> if the method executed normally, <b>S_FALSE</b> otherwise. If any 
+other return value is expected, it is described in the documentation.<br>
+&nbsp;</p>
+<p>&nbsp;</p>
 <h4>Writing a file parser</h4>
 <p>A file parser imports and exports file data to/from IniTranslator. It doesn't 
-matter to IniTranslator in what format the data is stored, as long as it can be 
+matter to IniTranslator in what format the data is stored as long as it can be 
 translated to the concept of a Original-Translation pair. A file parser must 
 implement the IFileParser interface:</p>
 <p>&nbsp;</p>
-<pre>type
+<pre><b>type</b>
   IFileParser = <b>interface</b>(IInterface)
-<i><font color="#000080">    </font></i>function ExportItems(const Items, Orphans: ITranslationItems): HResult;
-    function ImportItems(const Items, Orphans: ITranslationItems): HResult;
-    function DisplayName(Capability: integer): WideString; 
-    function Capabilities: integer; 
-    function Configure(Capability: integer): HResult; 
-    procedure Init(const ApplicationServices: IApplicationServices); 
-  end;</pre>
+  <font color="#000080">['{3E556846-9B4D-4722-B48F-48D020715509}']</font>
+<i><font color="#000080">    </font></i><b>function</b> ExportItems(<b>const</b> Items, Orphans: ITranslationItems): HResult; <b>safecall</b>;
+    <b>function</b> ImportItems(<b>const</b> Items, Orphans: ITranslationItems): HResult; <b>safecall</b>;
+    <b>function</b> DisplayName(Capability: integer): WideString; <b>safecall</b>; 
+    <b>function</b> Capabilities: integer; <b>safecall</b>; 
+    <b>function</b> Configure(Capability: integer): HResult; <b>safecall</b>;
+    <b>procedure</b> Init(<b>const</b> ApplicationServices: IApplicationServices); <b>safecall</b>;
+  <b>end</b>;</pre>
 <p><b>ExportItems </b>is called whenever the user has chosen to export the items 
 in IniTranslator using this file parser. You should provide a preview dialog 
 where the user can see the effect of his changes, provide additional options if 
 necessary and save the file if the user so chooses. A generic Delphi export form 
 is provided in the source sohould you need one or you could build your own.</p>
-<p>&nbsp;</p>
 <p><b>ImportItems </b>is called whenever the user chooses to import a file using 
 this parser. You should provide a dialog where the user can select the file(s) 
 to import and provide any additional options required to succesfully improt a 
 file.</p>
-<p>&nbsp;</p>
 <p><b>DisplayName </b>is called whenever IniTranslator needs to display info 
 about the plugin in the UI. Capability is either CAP_IMPORT or CAP_EXPORT 
 indicating which string is required.</p>
-<p>&nbsp;</p>
 <p><b>Capabilities </b>is called by Initransaltor to determine if the file 
 parser supports importing, exporting or bith. Additionally, if your plugin 
 provide some type of configuration dialog you can return this capability as well. 
 The return value of Capabilities is a combination of the values CAP_IMPORT, 
 CAP_EXPORT and CAP_CONFIGURE</p>
-<p>&nbsp;</p>
 <p><b>Configure </b>is called either when the user clicks the Configure button 
 in the UI or when he elects to import/export using this parser. Capability 
 indicates whether this request originated in the import (CAP_IMPORT) or export (CAP_EXPORT) 
 dialog.</p>
-<p>&nbsp;</p>
 <p><b>Init</b> is called before any other methods of the plugin. You should 
 store an internal reference to the IApplicationServices interface if you plan to 
 use any of its services later on (like calling the Translate method). If you are 
@@ -77,61 +80,104 @@ IApplicationServices.AppHandle and, when the DLL is unloaded, restore the
 original ApplicationHandle. This ensures that any dialogs that your plugin 
 displays, will behave correctly with IniTranslator.</p>
 <p>&nbsp;</p>
-<p>&nbsp;</p>
 <h4>Writing a tool plugin</h4>
-<p>&nbsp;</p>
+<p>A tool plugin works on the items loaded into IniTranslator. Typical usage is 
+performing a specific action on one or more items in the list, providing an 
+alternative editing experience or viewing the data in another format. The IToolItem 
+interface definition look like this:</p>
+<pre><b>type</b>
+  IToolItem = <b>interface</b>(IInterface)
+  <font color="#000080">['{E14F5620-0EC9-43B5-816C-1A265C3FF237}']
+</font>    <b>function </b>DisplayName: WideString; <b>safecall</b>;
+    <b>function </b>About: WideString; <b>safecall</b>;
+    <b>function </b>Status(<b>const </b>Items, Orphans: ITranslationItems; <b>const </b>SelectedItem: ITranslationItem): Integer; <b>safecall</b>;
+    <b>function </b>Icon: LongWord; <b>safecall</b>;
+    <b>function </b>Execute(<b>const </b>Items, Orphans: ITranslationItems; <b>var </b>SelectedItem: ITranslationItem): HResult; <b>safecall</b>;
+    <b>procedure </b>Init(<b>const </b>ApplicationServices: IApplicationServices); <b>safecall</b>;
+  <b>end</b>;
+</pre>
+<p><b>DisplayName </b>should return the text to show in the UI (on a menu item 
+or similar)</p>
+<p><b>About </b>should return a string that in more detail describes the plugin, 
+information about the creator etc (currently not used)</p>
+<p><b>Status</b> should return the current status of the plugin. Use the passed 
+in parameters to help you determine whether to enable or disable the plugin. The 
+valid values you can return is a bit-wise combination of the constants <b>
+TOOL_VISIBLE, TOOL_ENABLED, TOOL_CHECKED</b>. You should treat the parameters as 
+read-only in this method, i.e donät try to add, edit or delete items in the 
+lists.</p>
+<p><b>Icon</b> should return a handle to an icon (not currently used). Return 0 
+if there is no icon</p>
+<p><b>Execute</b> is called when the user activates the plugin (currently by 
+clicking the menu item). This is where the plugin does its work. You can add, 
+delete and modify the items in the Items and Orphans list and you can change the 
+value of the SelectedItem if you like. The UI is frozen until you return from 
+this method.</p>
+<p><b>Init</b> is called before any other methods of the plugin. You should 
+store an internal reference to the IApplicationServices interface if you plan to 
+use any of its services later on (like calling the Translate method). If you are 
+planning on displaying dialogs of your own (most file parses do), you should at 
+least store the DLL's current ApplicationHandle, change it to use IApplicationServices.AppHandle and, when the DLL is unloaded, restore the 
+original ApplicationHandle. This ensures that any dialogs that your plugin 
+displays, will behave correctly with IniTranslator.</p>
 <h4>Registering a plugin</h4>
 <p>Every plugin must export one or more functions from the DLL that tells 
-IniTranslator that it is available. Due to the internal structure of 
-IniTransaltor, a DLL can only contain one single file parser, but you can have 
-as meny tool plugins as you like. </p>
+IniTranslator that a plugin available from the DLL. Due to the internal structure of IniTranslator, a DLL can only contain one single file parser, but you can have 
+as meny tool plugins as you like.</p>
+<p>&nbsp;</p>
 <p>To register a file parser, export a function named <font color="#000080"><i>
 &quot;RegisterTransFileParser001&quot;</i> </font>with the following signature:</p>
-<pre>function (out Parser: IFileParser): HResult;
+<pre><b>function </b>(<b>out </b>Parser: IFileParser): HResult; <b>stdcall</b>;</pre>
+<pre>When this function is called, you should create an instance of a class that implements IFileParser and return it in the Parser variable.
 </pre>
 <p>To register your tool plugins, export a function named <i>
 <font color="#000080">&quot;RegisterTransToolItems001&quot;</font></i> with the following 
 signature:</p>
-<pre>function (out ToolItems: IToolItems): HResult;
+<pre><b>function </b>(<b>out </b>ToolItems: IToolItems): HResult; <b>stdcall</b>;
 </pre>
 <p>Note that this function actually returns an interface that can hold a list of 
-IToolItem and thus you can register more than one tool plugin per DLL.</p>
+IToolItem and thus you can register more than one tool plugin per DLL. When this 
+function is called, you should create an instance of a class that implements 
+IToolItems and return it in the ToolItems variable.</p>
 <p>&nbsp;</p>
 <h4>Supporting localization</h4>
 <p>Not only is IniTranslator a translation tool, but it also supports having its 
 own UI translated. IniTranslator uses text files in ini file format with the 
 extension .lng for its own language files. These files can be edited with 
-IniTranslator (this is a typical example of &quot;eating your own dog food&quot;). You can 
-use the IniTranslator transaltion mechanism in your plugins by performing two 
+IniTranslator itself. You can 
+use the IniTranslator translation mechanism in your plugins by performing two 
 simple steps:</p>
 <p>&nbsp;</p>
 <ol>
 	<li>Implement the ILocalizable interface in each of your file parsers and/or 
 	tool plugins</li>
-	<li>Call IApplicationServices.Translate whenever you nned to display a text 
+	<li>Call IApplicationServices.Translate whenever you need to display a text 
 	in your plugins UI </li>
 </ol>
 <p>&nbsp;</p>
-<p>The ILocalizable interface is declared like this:</p>
-<pre>ILocalizable = interface(IInterface)
-  function GetString(out Section:WideString; out Name:WideString; out Value:WideString):WordBool;
-end;</pre>
+<p>The ILocalizable interface looks like this:</p>
+<pre><b>type</b>
+  ILocalizable = <b>interface</b>(IInterface)
+  <font color="#000080">['{E10D0143-B334-4CCE-898A-F25384D79C6E}']
+</font>    <b>function </b>GetString(<b>out </b>Section:WideString; <b>out </b>Name:WideString; <b>out </b>Value:WideString):WordBool;<b> stdcall</b>;
+  <b>end</b>;</pre>
 <p>This is a very simple interface with only one method and the only thing you 
 need to do is to supply a new Name/Value pair every time the method is called. 
 You should also supply at least one Section name that is unique to you, your 
 company or your plugin (you can use several Section names if you like). Return 
-true as long as Section, Name and Value contains valid values. </p>
+true as long as Section, Name and Value contains valid values. Do not include 
+carriage returns or line feeds in the strings. Instead, encode these as &quot;\r\n&quot; 
+or use another scheme you prefer.</p>
 <p>&nbsp;</p>
-<p>This method is only ever called when the user wants to create a new 
+<p>This method is only called when the user creates a new 
 translation template for IniTranslator. This is not something users do 
 regularily. In fact, most users never do it, opting to use default.lng or 
 another language file in the languages folder of their installation.</p>
 <p>&nbsp;</p>
 <p>To access the translated strings at runtime (they might not be translated; 
-depends on whether the user has a UI language file loaded or not), use the <b>
+this depends on whether the user has a UI language file loaded or not), use the <b>
 IApplicationServices.Translate(Section, Name, Value)</b> method, passing in the 
-same Section and Name values as you used when <b>ILocalizable.GetString </b>was 
-called. As for Value, use the default value for the string. If the user has an .lng 
+same Section and Name as you returned from <b>ILocalizable.GetString</b>. As for Value, use the default value for the string. If the user has a .lng 
 file loaded and a translation for your string was found, the translation is 
 returned. If no string was found, the default Value is returned instead.<br>
 &nbsp;</p>

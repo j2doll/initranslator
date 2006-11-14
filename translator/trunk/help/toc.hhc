@@ -33,7 +33,6 @@
 		<LI> <OBJECT type="text/sitemap">
 			<param name="Name" value="Trimming">
 			<param name="Local" value="Trim.html">
-			<param name="New" value="1">
 			</OBJECT>
 		<LI> <OBJECT type="text/sitemap">
 			<param name="Name" value="Suspicious translations">
@@ -75,11 +74,15 @@
 		<LI> <OBJECT type="text/sitemap">
 			<param name="Name" value="Icons in the ListView">
 			<param name="Local" value="Icons in the ListView.html">
-			<param name="New" value="1">
 			</OBJECT>
 		<LI> <OBJECT type="text/sitemap">
 			<param name="Name" value="The Command-line Interface">
 			<param name="Local" value="Command-line interface.html">
+			</OBJECT>
+		<LI> <OBJECT type="text/sitemap">
+			<param name="Name" value="Plugins">
+			<param name="Local" value="Plugins.html">
+			<param name="New" value="1">
 			</OBJECT>
 		<LI> <OBJECT type="text/sitemap">
 			<param name="Name" value="Known Issues">

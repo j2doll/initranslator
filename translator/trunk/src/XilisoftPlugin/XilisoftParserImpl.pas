@@ -35,7 +35,7 @@ type
     function Translate(const Value: WideString): WideString;
 
     { ILocalizable }
-    function GetString(out Section: WideString; out Name: WideString; out Value: WideString): WordBool;
+    function GetString(out Section: WideString; out Name: WideString; out Value: WideString): WordBool; stdcall;
   public
     constructor Create;
     destructor Destroy; override;

@@ -102,6 +102,26 @@
 		<param name="Local" value="Appendix B.html">
 		</OBJECT>
 	<LI> <OBJECT type="text/sitemap">
+		<param name="Name" value="ILocalizable">
+		<param name="Name" value="Plugins">
+		<param name="Local" value="Plugins.html">
+		</OBJECT>
+	<LI> <OBJECT type="text/sitemap">
+		<param name="Name" value="Writing plugins">
+		<param name="Name" value="Plugins">
+		<param name="Local" value="Plugins.html">
+		</OBJECT>
+	<LI> <OBJECT type="text/sitemap">
+		<param name="Name" value="Register plugin">
+		<param name="Name" value="Plugins">
+		<param name="Local" value="Plugins.html">
+		</OBJECT>
+	<LI> <OBJECT type="text/sitemap">
+		<param name="Name" value="IApplicationServices.">
+		<param name="Name" value="Plugins">
+		<param name="Local" value="Plugins.html">
+		</OBJECT>
+	<LI> <OBJECT type="text/sitemap">
 		<param name="Name" value="Beneath">
 		<param name="Name" value="The Preferences Dialog">
 		<param name="Local" value="Preferences dialog.html">
@@ -1553,6 +1573,21 @@
 		<param name="Name" value="Phrases">
 		<param name="Name" value="Mozilla Public License version 1.1">
 		<param name="Local" value="..\MPL-1.1.html">
+		</OBJECT>
+	<LI> <OBJECT type="text/sitemap">
+		<param name="Name" value="Plugins">
+		<param name="Name" value="Plugins">
+		<param name="Local" value="Plugins.html">
+		</OBJECT>
+	<LI> <OBJECT type="text/sitemap">
+		<param name="Name" value="IFileParser">
+		<param name="Name" value="Plugins">
+		<param name="Local" value="Plugins.html">
+		</OBJECT>
+	<LI> <OBJECT type="text/sitemap">
+		<param name="Name" value="IToolItem">
+		<param name="Name" value="Plugins">
+		<param name="Local" value="Plugins.html">
 		</OBJECT>
 	<LI> <OBJECT type="text/sitemap">
 		<param name="Name" value="Portions">

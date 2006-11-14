@@ -1,6 +1,6 @@
 #define AppName "Ini Translator"
-#define AppVersion "1.9.0.36"
-#define AppShortVersion "19036"
+#define AppVersion "1.9.0.37"
+#define AppShortVersion "19037"
 #define GroupName "Ini Translator"
 #define URL "http://initranslator.sourceforge.net"
 #define AppPublisher "Peter Thörnqvist"

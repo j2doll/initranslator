@@ -1,8 +1,21 @@
 Ini Translator Changelog
 ========================
+2006-11-15:
+- Renamed string constants for consistency
+- Orphaned items can now be saved to a file and merged into the main items
+
+2006-11-14:
+- More on plugins
+- Added plugins to help file contents
+- safecall added to ILocalizable method
+
+2006-11-13:
+- added about doc in html format
+- added (initial) plugins docs
+- added htt template
+- text rendering bug in ExtTools fixed: TntListBox has problems with virtual mode. Changed to owner drawing
+
 2006-11-12:
-- Added new ILocalizable interface for plugins
-- Changed Init method of plugins to take an IApplicationServices instance
 - Changed MRU behavior (again).
 
   Rules:
@@ -15,13 +28,34 @@ Ini Translator Changelog
 - ExtTools: Tnt ListBox doesn't work consistently in virtual mode, change to virtual+ownerdraw fixed it
 
 2006-11-10:
-- Added new "Make translations consistent" command
+- Support for localizing plugins (ILocalizable)
+- Modifications to XiliSoftParser to support ILocalizable
+- The common plugin dialogs (frmImport, frmExport) can now optionally read translations from the applications current language file (not the one being edited, but the one used by IniTranslator)
+- Added XiliSoftParser to build script
+- Added XiliSoft parser by Alexander Kornienko
 - Updated documentation (menu command reference - Appendix B)
+- Changed Init method of interfaces, now takes an IApplicationService parameter
+- Added ITranslationService interface to TransIntf
+- Changed MRU file handling: only add when Original + Translation are both <> "" and only add when Translation file is opened
+- Added new "Make translations consistent" command
 - Updated some language files
 
 2006-11-08:
 - MRU items only saved if both original and translation contains valid filenames
 - Logic for opening Original and/or Translation file changed
+
+2006-11-07:
+- new russian.lng from Aleksandr Kornienko
+- Office 2007 theme added
+- Spell errors fixed
+
+2006-09-31:
+- Japanese language file for 1.9.0.13 by Nardog
+
+2006-09-26:
+- MsTermBuild added to build script
+- Added option to build script to use existing folder when building release
+
 
 2006-09-23:
 - Added new MsTermBuild project to convert MS Terminology Translations to IniTranslator dictionaries

@@ -24,7 +24,7 @@ object frmOrphans: TfrmOrphans
     Left = 0
     Top = 41
     Width = 433
-    Height = 249
+    Height = 201
     Align = alClient
     BevelInner = bvNone
     BevelOuter = bvRaised
@@ -41,19 +41,21 @@ object frmOrphans: TfrmOrphans
       end>
     GridLines = True
     HideSelection = False
+    OwnerData = True
     ReadOnly = True
     RowSelect = True
     ParentShowHint = False
-    PopupMenu = PopupMenu1
+    PopupMenu = popListView
     ShowHint = True
     TabOrder = 0
     ViewStyle = vsReport
     OnChange = lvOrphanedChange
+    OnData = lvOrphanedData
     OnResize = lvOrphanedResize
   end
   object StatusBar1: TTntStatusBar
     Left = 0
-    Top = 290
+    Top = 283
     Width = 433
     Height = 19
     Panels = <>
@@ -66,6 +68,7 @@ object frmOrphans: TfrmOrphans
     Align = alTop
     BevelOuter = bvNone
     BorderWidth = 3
+    ParentBackground = False
     ParentColor = True
     TabOrder = 2
     object Panel2: TTntPanel
@@ -92,6 +95,37 @@ object frmOrphans: TfrmOrphans
       end
     end
   end
+  object TntPanel1: TTntPanel
+    Left = 0
+    Top = 242
+    Width = 433
+    Height = 41
+    Align = alBottom
+    BevelOuter = bvNone
+    ParentBackground = False
+    TabOrder = 3
+    DesignSize = (
+      433
+      41)
+    object TntButton1: TTntButton
+      Left = 259
+      Top = 7
+      Width = 75
+      Height = 25
+      Action = acSave
+      Anchors = [akTop, akRight]
+      TabOrder = 0
+    end
+    object TntButton2: TTntButton
+      Left = 343
+      Top = 7
+      Width = 75
+      Height = 25
+      Action = acMerge
+      Anchors = [akTop, akRight]
+      TabOrder = 1
+    end
+  end
   object alOrphans: TTntActionList
     OnUpdate = alOrphansUpdate
     Left = 320
@@ -101,8 +135,18 @@ object frmOrphans: TfrmOrphans
       ShortCut = 16451
       OnExecute = acCopyExecute
     end
+    object acSave: TTntAction
+      Caption = '&Save...'
+      ShortCut = 16467
+      OnExecute = acSaveExecute
+    end
+    object acMerge: TTntAction
+      Caption = '&Merge...'
+      ShortCut = 16461
+      OnExecute = acMergeExecute
+    end
   end
-  object PopupMenu1: TSpTBXPopupMenu
+  object popListView: TSpTBXPopupMenu
     Left = 128
     Top = 144
     object Copy1: TSpTBXItem

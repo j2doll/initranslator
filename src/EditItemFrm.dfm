@@ -36,7 +36,7 @@ inherited frmEditItem: TfrmEditItem
     Caption = '&Translation:'
     FocusControl = edTranslation
   end
-  object Label6: TLabel
+  object Label6: TTntLabel
     Left = 8
     Top = 53
     Width = 31
@@ -111,7 +111,7 @@ inherited frmEditItem: TfrmEditItem
     WordWrap = False
     OnKeyDown = DoKeyDown
   end
-  object edName: TEdit
+  object edName: TTntEdit
     Left = 8
     Top = 69
     Width = 430

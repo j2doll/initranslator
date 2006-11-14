@@ -25,10 +25,10 @@ interface
 
 uses
   Windows, Messages, SysUtils, Classes, Graphics, Controls, Forms, Menus,
-  Dialogs, ComCtrls, StdCtrls, ExtCtrls,
+  ComCtrls, StdCtrls, ExtCtrls,
   ActnList,
-  BaseForm, TranslateFile, TransIntf,
-  TntClasses, TntComCtrls, TntStdCtrls, TntActnList, TntMenus, TntExtCtrls,
+  BaseForm, TranslateFile, TransIntf, WideIniFiles,
+  TntClasses, TntComCtrls, TntStdCtrls, TntActnList, TntMenus, TntExtCtrls, TntDialogs,
   TB2Item, TBX, SpTBXItem;
 
 type
@@ -39,42 +39,48 @@ type
     Panel2: TTntPanel;
     lblSection: TTntLabel;
     alOrphans: TTntActionList;
-    PopupMenu1: TSpTBXPopupMenu;
+    popListView: TSpTBXPopupMenu;
     Copy1: TSpTBXItem;
     acCopy: TTntAction;
+    TntPanel1: TTntPanel;
+    TntButton1: TTntButton;
+    TntButton2: TTntButton;
+    acSave: TTntAction;
+    acMerge: TTntAction;
     procedure lvOrphanedResize(Sender: TObject);
     procedure acCopyExecute(Sender: TObject);
     procedure alOrphansUpdate(Action: TBasicAction; var Handled: Boolean);
     procedure lvOrphanedChange(Sender: TObject; Item: TListItem;
       Change: TItemChange);
     procedure FormShow(Sender: TObject);
+    procedure acMergeExecute(Sender: TObject);
+    procedure lvOrphanedData(Sender: TObject; Item: TListItem);
+    procedure acSaveExecute(Sender: TObject);
   private
+    FItems, FOrphans: ITranslationItems;
+    procedure SaveToFile(const FileName: WideString);
+    procedure ShowError(Count:integer);
     { Private declarations }
   public
     { Public declarations }
-    class function Edit(const Items: ITranslationItems): boolean;
+    class function Edit(const Items, Orphans: ITranslationItems): boolean;
   end;
 
 implementation
 uses
-  AppUtils, TntClipbrd;
+  AppUtils, CommonUtils, AppConsts, TntClipbrd, Dialogs;
 
 {$R *.dfm}
 
-class function TfrmOrphans.Edit(const Items: ITranslationItems): boolean;
+class function TfrmOrphans.Edit(const Items, Orphans: ITranslationItems): boolean;
 var
   frmOrphans: TfrmOrphans;
-  i: integer;
 begin
   frmOrphans := self.Create(Application);
   try
-    for i := 0 to Items.Count - 1 do
-      with TTntListItem(frmOrphans.lvOrphaned.Items.Add) do
-      begin
-        Caption := Items[i].Original;
-        SubItems.Add(Items[i].Translation);
-        SubItems.Add(Items[i].Section);
-      end;
+    frmOrphans.FItems := Items;
+    frmOrphans.FOrphans := Orphans;
+    frmOrphans.lvOrphaned.Items.Count := Orphans.Count;
     Result := frmOrphans.ShowModal = mrOK;
   finally
     frmOrphans.Free;
@@ -90,11 +96,17 @@ end;
 procedure TfrmOrphans.acCopyExecute(Sender: TObject);
 var S: WideString;
 begin
-  S := lvOrphaned.Selected.SubItems[0];
-  if S = '' then
-    S := lvOrphaned.Selected.Caption;
-  if S <> '' then
-    TntClipboard.AsWideText := S;
+  with lvOrphaned.Selected do
+  begin
+    if (Index >= 0) and (Index < FOrphans.Count) then
+    begin
+      S := FOrphans.Items[Index].Translation;
+      if S = '' then
+        S := FOrphans.Items[Index].Original;
+      if S <> '' then
+        TntClipboard.AsWideText := S;
+    end;
+  end;
 end;
 
 procedure TfrmOrphans.alOrphansUpdate(Action: TBasicAction;
@@ -108,7 +120,7 @@ procedure TfrmOrphans.lvOrphanedChange(Sender: TObject; Item: TListItem;
   Change: TItemChange);
 begin
   if (lvOrphaned.Selected <> nil) then
-    lblSection.Caption := '[' + lvOrphaned.Selected.SubItems[1] + ']'
+    lblSection.Caption := '[' + FOrphans.Items[lvOrphaned.Selected.Index].Section + ']'
   else
     lblSection.Caption := '[]';
 end;
@@ -121,4 +133,63 @@ begin
     lvOrphaned.Selected.Focused := true;
 end;
 
+procedure TfrmOrphans.SaveToFile(const FileName: WideString);
+var i, iError: integer;
+begin
+  with TWideMemIniFile.Create(Filename) do
+  try
+    iError := 0;
+    for i := 0 to FOrphans.Count - 1 do
+      with FOrphans.Items[i] do
+        if Original <> '' then
+          WriteString(Section, Original, Translation)
+        else
+          Inc(iError);
+    UpdateFile;
+    if iError > 0 then
+      ShowError(iError);
+  finally
+    Free;
+  end;
+end;
+
+procedure TfrmOrphans.acMergeExecute(Sender: TObject);
+var i: integer;
+begin
+  for i := 0 to FOrphans.Count - 1 do
+    FItems.Add(FOrphans[i]);
+  FOrphans.Clear;
+  lvOrphaned.Items.Count := 0;
+  lvOrphaned.Invalidate;
+end;
+
+procedure TfrmOrphans.lvOrphanedData(Sender: TObject; Item: TListItem);
+begin
+  if (Item <> nil) and (Item.Index >= 0) and (Item.Index < FOrphans.Count) then
+    begin
+      TTntListItem(Item).Caption := FOrphans.Items[Item.Index].Original;
+      TTntListItem(Item).SubItems.Add(FOrphans.Items[Item.Index].Translation);
+    end;
+end;
+
+procedure TfrmOrphans.acSaveExecute(Sender: TObject);
+begin
+  with TTntSaveDialog.Create(nil) do
+  try
+    Options := Options + [ofOverwritePrompt];
+    Filter := SAllFileFilter;
+    InitialDir := '.';
+    if Execute then
+      SaveToFile(Filename);
+  finally
+    Free;
+  end;
+end;
+
+procedure TfrmOrphans.ShowError(Count: integer);
+begin
+  ErrMsg(WideFormat(SFmtSaveItemsNoName,[Count]), SErrorCaption);
+end;
+
 end.
+

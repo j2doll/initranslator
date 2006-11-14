@@ -1,5 +1,19 @@
 Ini Translator Changelog
 ========================
+2006-11-12:
+- Added new ILocalizable interface for plugins
+- Changed Init method of plugins to take an IApplicationServices instance
+- Changed MRU behavior (again).
+
+  Rules:
+  1. Opening original, cancel on trans - > new MRU (new orig, old trans)
+  1b. if not FileExists(old trans) -> new empty trans
+  2. Open orig + trans - > new MRU(new orig, new trans)
+  3. Open trans -> mew MRU(old orig, new trans)
+  if MRU item already exists, nothing is added
+
+- ExtTools: Tnt ListBox doesn't work consistently in virtual mode, change to virtual+ownerdraw fixed it
+
 2006-11-10:
 - Added new "Make translations consistent" command
 - Updated documentation (menu command reference - Appendix B)

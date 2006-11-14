@@ -658,12 +658,12 @@ object frmMain: TfrmMain
       end
       object TBXSeparatorItem1: TSpTBXSeparatorItem
       end
-      object SpTBXSubmenuItem1: TSpTBXSubmenuItem
+      object mnuThemes: TSpTBXSubmenuItem
         DisplayMode = nbdmImageAndText
         MinWidth = 90
         DropdownCombo = True
         CaptionW = 'Themes'
-        object SpTBXThemeGroupItem1: TSpTBXThemeGroupItem
+        object mnuThemesGroup: TSpTBXThemeGroupItem
         end
       end
     end
@@ -728,6 +728,7 @@ object frmMain: TfrmMain
         Alignment = taLeftJustify
         BevelInner = bvRaised
         BevelOuter = bvLowered
+        ParentBackground = False
         TabOrder = 0
         object lblTrans: TTntLabel
           Left = 8
@@ -767,6 +768,7 @@ object frmMain: TfrmMain
         Alignment = taLeftJustify
         BevelInner = bvRaised
         BevelOuter = bvLowered
+        ParentBackground = False
         TabOrder = 2
         object lblOrig: TTntLabel
           Left = 8

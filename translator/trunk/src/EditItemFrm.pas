@@ -35,8 +35,8 @@ type
     edOriginal: TTntRichEdit;
     Label3: TTntLabel;
     edTranslation: TTntRichEdit;
-    Label6: TLabel;
-    edName: TEdit;
+    Label6: TTntLabel;
+    edName: TTntEdit;
     pcComments: TTntPageControl;
     tabOriginal: TTntTabSheet;
     tabTranslation: TTntTabSheet;
@@ -80,7 +80,7 @@ begin
       frm.cbSections.ItemIndex := 0;
     frm.cbSections.Enabled := IsNewItem;
     frm.edName.Text := AItem.Name;
-    frm.edName.Enabled := IsNewItem;
+    frm.edName.ReadOnly := not IsNewItem;
     frm.edOriginal.Text := AItem.Original;
     frm.edTranslation.Text := AItem.Translation;
     frm.edOrigComments.Text := AItem.OrigComments;

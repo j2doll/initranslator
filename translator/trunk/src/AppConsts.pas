@@ -36,8 +36,8 @@ resourcestring
 
   SFmtAboutCaption = 'About %s...';
   SSavePrompt = 'The translation file has been modified, do you want to save it?';
-  SOriginalColumn = 'Original (%s)';
-  STranslationColumn = 'Translation (%s)';
+  SFmtOriginalColumn = 'Original (%s)';
+  SFmtTranslationColumn = 'Translation (%s)';
   SFmtTextNotFound = 'The text "%s" could not be found';
   SSearchFailCaption = 'Find';
   SAppTitle = 'Ini Translator';
@@ -70,7 +70,9 @@ resourcestring
   SSaveOrigTitle = 'Save Original Language File As';
   SFileFilter = 'Language files|*.lng|Inno Setup files|*.isl|Ini files|*.ini;*.inf|Text files|*.txt:*.inc;*.bat;*.doc|All supported files|*.lng;' +
     '*.isl;*.ini;*.inf;*.txt;*.inc;*.bat;*.doc|All files |*.*';
-  SCountOfCountTranslated = '%0:d of %1:d translated';
+  SAllFileFilter = 'All files (*.*)|*.*';
+
+  SFmtCountOfCountTranslated = '%0:d of %1:d translated';
   SQCopyToClipboard = 'Copy to Clipboard?';
   // KbdCfgFrame
   SNotAssigned = '(not assigned)';
@@ -88,9 +90,9 @@ resourcestring
   SPluginError = 'Plugin Error';
   SSaveDictPrompt = 'Save modifications to the dictionary?';
   SArgumentsPrompt = 'Arguments:';
-  SErrToolExecFmt = 'Failed to execute "%s %s": %s';
-  SNewToolNameFmt = '(New Tool %d)';
-  SErrCreateFileFmt = 'Could not create file "%s".'#13#10'Please check that the file is writable and that you have sufficient permissions to create and modify files in the affected folder.';
+  SFmtErrToolExec = 'Failed to execute "%s %s": %s';
+  SFmtNewToolName = '(New Tool %d)';
+  SFmtErrCreateFile = 'Could not create file "%s".'#13#10'Please check that the file is writable and that you have sufficient permissions to create and modify files in the affected folder.';
 
   SPromptDeleteItem = 'Delete selected item?';
   SConfirmDelete = 'Confirm Delete';
@@ -104,6 +106,7 @@ resourcestring
   SDictTranslationCompleted = 'Translating with dictionary finished';
   SSelectLanguageFile = 'Select a language file';
   SSelectHelpFile = 'Select a help file';
+  SFmtSaveItemsNoName = 'Some items (%d) could not be saved as they had no Original value';
 
 const
   SLngExt = 'lng';

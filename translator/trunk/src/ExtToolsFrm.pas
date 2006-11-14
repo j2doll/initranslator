@@ -306,7 +306,7 @@ var
   S: WideString;
 begin
   i := 1;
-  S := _(Application.MainForm.ClassName, SNewToolNameFmt);
+  S := _(Application.MainForm.ClassName, SFmtNewToolName);
   Result := WideFormat(S, [i]);
   while FTools.IndexOf(Result) >= 0 do
   begin

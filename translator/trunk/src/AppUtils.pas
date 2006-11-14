@@ -63,6 +63,10 @@ function ValueFromIndex(S: TStrings; i: integer): AnsiString; overload;
 function strtok(Search, Delim: WideString): WideString;
 
 procedure SetXPComboStyle(AControl:TControl);
+function GetPluginsFolder:WideString;
+
+function GetClipboardString(const Section, Name, Value: WideString):WideString;
+function ParseClipboardString(const Str:WideString; out Section, Name, Value:WideString):boolean;
 
 type
   TApplicationServicesFunc = function:IApplicationServices;
@@ -426,7 +430,7 @@ end;
 procedure HandleFileCreateException(Sender: TObject; E: Exception; const Filename: WideString);
 begin
   if E is EFCreateError then
-    ErrMsg(WideFormat(_(Sender.ClassName, SErrCreateFileFmt), [Filename]), _(Sender.ClassName, SErrorCaption))
+    ErrMsg(WideFormat(_(Sender.ClassName, SFmtErrCreateFile), [Filename]), _(Sender.ClassName, SErrorCaption))
   else
     Application.HandleException(Sender);
 end;
@@ -573,6 +577,49 @@ begin
       if TWinControl(AControl).Controls[i] is TWinControl then
         SetXPComboStyle(TWinControl(TWinControl(AControl).Controls[i]));
     end;
+end;
+
+function GetPluginsFolder:WideString;
+begin
+  Result := WideIncludeTrailingPathDelimiter(WideExtractFilePath(Application.ExeName)) + 'plugins';
+end;
+
+function GetClipboardString(const Section, Name, Value: WideString):WideString;
+var S:TTntStringlist;
+begin
+  S := TTntStringlist.Create;
+  try
+    S.Add(Section);
+    S.Add(Name);
+    S.Add(Value);
+    Result := S.CommaText;
+  finally
+    S.Free;
+  end;
+end;
+
+function ParseClipboardString(const Str:WideString; out Section, Name, Value:WideString):boolean;
+var S:TTntStringlist;
+begin
+  S := TTntStringlist.Create;
+  try
+    S.CommaText := Str;
+    if S.Count > 0 then
+      Section := S[0]
+    else
+      Section := '';
+    if S.Count > 1 then
+      Name := S[1]
+    else
+      Name := '';
+    if S.Count > 2 then
+      Value := S[2]
+    else
+      Value := '';
+    Result := S.Count > 2;
+  finally
+    S.Free;
+  end;
 end;
 
 initialization

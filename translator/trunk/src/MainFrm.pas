@@ -335,8 +335,8 @@ type
     TBXSeparatorItem8: TSpTBXSeparatorItem;
     mnuPlugins: TSpTBXSubmenuItem;
     pbTranslated: TTntProgressBar;
-    SpTBXSubmenuItem1: TSpTBXSubmenuItem;
-    SpTBXThemeGroupItem1: TSpTBXThemeGroupItem;
+    mnuThemes: TSpTBXSubmenuItem;
+    mnuThemesGroup: TSpTBXThemeGroupItem;
     acMakeConsistent: TTntAction;
     SpTBXItem1: TSpTBXItem;
     SpTBXSeparatorItem1: TSpTBXSeparatorItem;
@@ -1417,7 +1417,7 @@ begin
         SDictInverted)]);
   pbTranslated.Max := FTranslateFile.Items.Count;
   pbTranslated.Position := FTranslateFile.Items.TranslatedCount;
-  pbTranslated.Hint := '  ' + WideFormat(_(ClassName, SCountOfCountTranslated), [FTranslateFile.Items.TranslatedCount,
+  pbTranslated.Hint := '  ' + WideFormat(_(ClassName, SFmtCountOfCountTranslated), [FTranslateFile.Items.TranslatedCount,
     FTranslateFile.Items.Count]);
   StatusBar1.Panels[5].Caption := pbTranslated.Hint;
   for i := 0 to StatusBar1.Panels.Count - 1 do
@@ -1594,8 +1594,8 @@ begin
   ini.WriteString(ClassName, EncodeStrings(SFmtAboutText), EncodeStrings(SFmtAboutText));
   ini.WriteString(ClassName, EncodeStrings(SFmtAboutCaption), EncodeStrings(SFmtAboutCaption));
   ini.WriteString(ClassName, EncodeStrings(SSavePrompt), EncodeStrings(SSavePrompt));
-  ini.WriteString(ClassName, EncodeStrings(SOriginalColumn), EncodeStrings(SOriginalColumn));
-  ini.WriteString(ClassName, EncodeStrings(STranslationColumn), EncodeStrings(STranslationColumn));
+  ini.WriteString(ClassName, EncodeStrings(SFmtOriginalColumn), EncodeStrings(SFmtOriginalColumn));
+  ini.WriteString(ClassName, EncodeStrings(SFmtTranslationColumn), EncodeStrings(SFmtTranslationColumn));
   ini.WriteString(ClassName, EncodeStrings(SFmtTextNotFound), EncodeStrings(SFmtTextNotFound));
   ini.WriteString(ClassName, EncodeStrings(SSearchFailCaption), EncodeStrings(SSearchFailCaption));
   ini.WriteString(ClassName, EncodeStrings(SAppTitle), EncodeStrings(SAppTitle));
@@ -1631,7 +1631,8 @@ begin
   ini.WriteString(ClassName, EncodeStrings(SUTF8), EncodeStrings(SUTF8));
   ini.WriteString(ClassName, EncodeStrings(SUnicode), EncodeStrings(SUnicode));
   ini.WriteString(ClassName, EncodeStrings(SFileFilter), EncodeStrings(SFileFilter));
-  ini.WriteString(ClassName, EncodeStrings(SCountOfCountTranslated), EncodeStrings(SCountOfCountTranslated));
+  ini.WriteString(ClassName, EncodeStrings(SAllFileFilter), EncodeStrings(SAllFileFilter));
+  ini.WriteString(ClassName, EncodeStrings(SFmtCountOfCountTranslated), EncodeStrings(SFmtCountOfCountTranslated));
   ini.WriteString(ClassName, EncodeStrings(SQCopyToClipboard), EncodeStrings(SQCopyToClipboard));
   ini.WriteString(ClassName, EncodeStrings(SNotAssigned), EncodeStrings(SNotAssigned));
   ini.WriteString(ClassName, EncodeStrings(SAssignedTo), EncodeStrings(SAssignedTo));
@@ -1646,9 +1647,9 @@ begin
   ini.WriteString(ClassName, EncodeStrings(SPluginError), EncodeStrings(SPluginError));
   ini.WriteString(ClassName, EncodeStrings(SSaveDictPrompt), EncodeStrings(SSaveDictPrompt));
   ini.WriteString(ClassName, EncodeStrings(SArgumentsPrompt), EncodeStrings(SArgumentsPrompt));
-  ini.WriteString(ClassName, EncodeStrings(SErrToolExecFmt), EncodeStrings(SErrToolExecFmt));
-  ini.WriteString(ClassName, EncodeStrings(SNewToolNameFmt), EncodeStrings(SNewToolNameFmt));
-  ini.WriteString(ClassName, EncodeStrings(SErrCreateFileFmt), EncodeStrings(SErrCreateFileFmt));
+  ini.WriteString(ClassName, EncodeStrings(SFmtErrToolExec), EncodeStrings(SFmtErrToolExec));
+  ini.WriteString(ClassName, EncodeStrings(SFmtNewToolName), EncodeStrings(SFmtNewToolName));
+  ini.WriteString(ClassName, EncodeStrings(SFmtErrCreateFile), EncodeStrings(SFmtErrCreateFile));
   ini.WriteString(ClassName, EncodeStrings(SPromptDeleteItem), EncodeStrings(SPromptDeleteItem));
   ini.WriteString(ClassName, EncodeStrings(SConfirmDelete), EncodeStrings(SConfirmDelete));
   ini.WriteString(ClassName, EncodeStrings(SCaptionEditItem), EncodeStrings(SCaptionEditItem));
@@ -1660,6 +1661,7 @@ begin
   ini.WriteString(ClassName, EncodeStrings(SDictTranslationCompleted), EncodeStrings(SDictTranslationCompleted));
   ini.WriteString(ClassName, EncodeStrings(SSelectLanguageFile), EncodeStrings(SSelectLanguageFile));
   ini.WriteString(ClassName, EncodeStrings(SSelectHelpFile), EncodeStrings(SSelectHelpFile));
+  ini.WriteString(ClassName, EncodeStrings(SFmtSaveItemsNoName), EncodeStrings(SFmtSaveItemsNoName));
 
   for i := 0 to alMain.ActionCount - 1 do
   begin
@@ -1669,7 +1671,7 @@ begin
     ini.WriteString(ClassName, S, S);
   end;
   // write out all file plugins
-  TfrmImportExport.GetStrings(WideExtractFilePath(Application.ExeName) + 'plugins', ini);
+  TfrmImportExport.GetStrings(GetPluginsFolder, ini);
 
   // write out all tool plugins
   FExternalToolItems.GetStrings(ini);
@@ -3325,7 +3327,13 @@ end;
 
 procedure TfrmMain.acViewOrphansExecute(Sender: TObject);
 begin
-  TfrmOrphans.Edit(FTranslateFile.Orphans);
+//  lvTranslateStrings.Items.BeginUpdate;
+  try
+    TfrmOrphans.Edit(FTranslateFile.Items, FTranslateFile.Orphans);
+    lvTranslateStrings.Items.Count := FTranslateFile.Items.Count;
+  finally
+//    lvTranslateStrings.Items.EndUpdate;
+  end;
 end;
 
 procedure TfrmMain.acConfigureKeyboardExecute(Sender: TObject);
@@ -3348,7 +3356,7 @@ begin
   reOriginal.Clear;
   reTranslation.Clear;
   if TfrmImportExport.Edit(FTranslateFile.Items, FTranslateFile.Orphans,
-    WideExtractFilePath(Application.ExeName) + 'plugins', true, FImportIndex, FCapabilitesSupported) then
+    GetPluginsFolder, true, FImportIndex, FCapabilitesSupported) then
   begin
     // make sure the "Save As" dialog is shown on Ctrl+S to prevent inadverent saving to wrong file
     StopMonitor(FFileMonitors[cOrigMonitor]);
@@ -3374,7 +3382,7 @@ begin
   WaitCursor;
   if not NotifyChanging(NOTIFY_ITEM_EXPORT, 0, 0) then
     Exit;
-  if TfrmImportExport.Edit(FTranslateFile.Items, FTranslateFile.Orphans, WideExtractFilePath(Application.ExeName) + 'plugins',
+  if TfrmImportExport.Edit(FTranslateFile.Items, FTranslateFile.Orphans, GetPluginsFolder,
     false, FImportIndex, Dummy) then
   begin
     NotifyChanged(NOTIFY_ITEM_EXPORT, 0, 0);
@@ -3411,13 +3419,13 @@ begin
   case Index of
     0:
       if AFileName <> '' then
-        lvTranslateStrings.Columns[0].Caption := WideFormat(_(ClassName, SOriginalColumn),
+        lvTranslateStrings.Columns[0].Caption := WideFormat(_(ClassName, SFmtOriginalColumn),
           [GetMinimizedFilename(AFileName, not GlobalAppOptions.ShowFullNameInColumns)])
       else
         lvTranslateStrings.Columns[0].Caption := _(ClassName, SOriginal);
     1:
       if AFileName <> '' then
-        lvTranslateStrings.Columns[1].Caption := WideFormat(_(ClassName, STranslationColumn),
+        lvTranslateStrings.Columns[1].Caption := WideFormat(_(ClassName, SFmtTranslationColumn),
           [GetMinimizedFilename(AFileName, not GlobalAppOptions.ShowFullNameInColumns)])
       else
         lvTranslateStrings.Columns[1].Caption := _(ClassName, STranslation);
@@ -3744,7 +3752,7 @@ var
   i: integer;
   E: TExternalToolItem;
 begin
-  FExternalToolItems := TExternalToolItems.Create(WideExtractFilePath(Application.ExeName) + 'plugins');
+  FExternalToolItems := TExternalToolItems.Create(GetPluginsFolder);
   Parent.Clear;
   FExternalToolItems.InitAll();
   for i := 0 to FExternalToolItems.Count - 1 do
@@ -3864,7 +3872,7 @@ begin
   end;
 
   if (ReturnValue <> 0) and (ATool.WaitForCompletion or ATool.UseShellExecute) then
-    ErrMsg(WideFormat(_(ClassName, SErrToolExecFmt), [Cmd, Args, SysErrorMessage(ReturnValue)]), StripHotkey(ATool.Title));
+    ErrMsg(WideFormat(_(ClassName, SFmtErrToolExec), [Cmd, Args, SysErrorMessage(ReturnValue)]), StripHotkey(ATool.Title));
 end;
 
 procedure TfrmMain.DoToolMenuClick(Sender: TObject);

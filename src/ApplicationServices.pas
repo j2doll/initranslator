@@ -26,8 +26,7 @@ type
       const Name: WideString; const Value: WideString); safecall;
     procedure SetFooter(const Value: WideString);
     procedure SetHeader(const Value: WideString);
-    function Translate(const Section: string; const Name: string;
-      const Value: string): WideString; safecall;
+    function Translate(const Section, Name, Value: WideString): WideString; safecall;
     procedure UnRegisterNotify(const ANotify: INotify); safecall;
 
     function _Release: Integer; stdcall;
@@ -117,8 +116,7 @@ begin
   FForm.SetHeader(Value);
 end;
 
-function TApplicationServices.Translate(const Section, Name,
-  Value: string): WideString;
+function TApplicationServices.Translate(const Section, Name, Value: WideString): WideString; safecall;
 begin
   Result := FForm.Translate(Section, Name, Value);
 end;

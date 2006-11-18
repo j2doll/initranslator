@@ -334,7 +334,7 @@ type
     TBXItem16: TSpTBXItem;
     TBXSeparatorItem8: TSpTBXSeparatorItem;
     mnuPlugins: TSpTBXSubmenuItem;
-    pbTranslated: TTntProgressBar;
+    pbTranslated: TTntProgressBar;                 
     mnuThemes: TSpTBXSubmenuItem;
     mnuThemesGroup: TSpTBXThemeGroupItem;
     acMakeConsistent: TTntAction;
@@ -579,7 +579,7 @@ type
     procedure UnRegisterNotify(const ANotify: INotify); safecall;
     function BeginUpdate: Integer; safecall;
     function EndUpdate: Integer; safecall;
-    function Translate(const Section, Name, Value: string): WideString; safecall;
+    function Translate(const Section, Name, Value: WideString): WideString; 
 {
     property Items:ITranslationItems read GetItems;
     property Orphans:ITranslationItems read GetOrphans;
@@ -4340,7 +4340,7 @@ begin
     end;
 end;
 
-function TfrmMain.Translate(const Section, Name, Value: string): WideString;
+function TfrmMain.Translate(const Section, Name, Value: WideString): WideString;
 begin
   Result := GlobalLanguageFile.Translate(Section, Name, Value);
 end;

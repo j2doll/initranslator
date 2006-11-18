@@ -242,7 +242,7 @@ type
     function EndUpdate: Integer; safecall;
     procedure RegisterNotify(const ANotify: INotify); safecall;
     procedure UnRegisterNotify(const ANotify: INotify); safecall;
-    function Translate(const Section, Name, Value: string): WideString; safecall;
+    function Translate(const Section, Name, Value: WideString): WideString; safecall;
 
     property Items: ITranslationItems read GetItems;
     property Orphans: ITranslationItems read GetOrphans;

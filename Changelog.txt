@@ -1,5 +1,8 @@
 Ini Translator Changelog
 ========================
+2006-11-18:
+- For some strange reason, some parameters where declared as string when they should have been WideString. This messed up the display in the menu/toolbar control
+
 2006-11-15:
 - Renamed string constants for consistency
 - Orphaned items can now be saved to a file and merged into the main items
@@ -22,7 +25,7 @@ Ini Translator Changelog
   1. Opening original, cancel on trans - > new MRU (new orig, old trans)
   1b. if not FileExists(old trans) -> new empty trans
   2. Open orig + trans - > new MRU(new orig, new trans)
-  3. Open trans -> mew MRU(old orig, new trans)
+  3. Open trans -> new MRU(old orig, new trans)
   if MRU item already exists, nothing is added
 
 - ExtTools: Tnt ListBox doesn't work consistently in virtual mode, change to virtual+ownerdraw fixed it

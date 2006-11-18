@@ -53,7 +53,7 @@ type
     procedure DoReadObject(AnObject: TObject; const PropName, Section: WideString; var AValue: WideString); dynamic;
     procedure DoWriteObject(AnObject: TObject; const PropName: WideString; var ASection, AName, AValue: WideString); dynamic;
   public
-    function Translate(const Section, Name, Value: string): WideString;
+    function Translate(const Section, Name, Value: WideString): WideString;
 
     constructor Create(const Filename: WideString = '');
     destructor Destroy; override;
@@ -485,7 +485,7 @@ begin
       TranslateObject(TComponent(AnObject).Components[i], Section);
 end;
 
-function TAppLanguage.Translate(const Section, Name, Value: string): WideString;
+function TAppLanguage.Translate(const Section, Name, Value: WideString): WideString;
 begin
   if FLangFile <> nil then
   begin

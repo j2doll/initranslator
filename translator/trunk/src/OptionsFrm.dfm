@@ -1,7 +1,7 @@
 object frmOptions: TfrmOptions
   Left = 316
   Top = 175
-  ActiveControl = chkShowQuotes
+  ActiveControl = chkGlobalPath
   BorderStyle = bsDialog
   Caption = 'Preferences'
   ClientHeight = 449
@@ -65,7 +65,7 @@ object frmOptions: TfrmOptions
     Top = 2
     Width = 477
     Height = 387
-    ActivePage = tsGeneral
+    ActivePage = tsAdvanced
     Anchors = [akLeft, akTop, akRight, akBottom]
     TabOrder = 3
     object tsGeneral: TTntTabSheet
@@ -331,7 +331,7 @@ object frmOptions: TfrmOptions
       end
       object TntLabel3: TTntLabel
         Left = 238
-        Top = 210
+        Top = 208
         Width = 36
         Height = 13
         Caption = '&Footer:'
@@ -437,7 +437,7 @@ object frmOptions: TfrmOptions
         Left = 7
         Top = 224
         Width = 218
-        Height = 127
+        Height = 125
         BevelKind = bkFlat
         BorderStyle = bsNone
         PlainText = True
@@ -450,7 +450,7 @@ object frmOptions: TfrmOptions
         Left = 238
         Top = 224
         Width = 218
-        Height = 127
+        Height = 125
         BevelKind = bkFlat
         BorderStyle = bsNone
         PlainText = True

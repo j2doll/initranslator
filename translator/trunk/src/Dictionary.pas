@@ -43,7 +43,7 @@ type
   public
     constructor Create;
     destructor Destroy; override;
-    function DefaultTranslation: string;
+    function DefaultTranslation: WideString;
     property Original: WideString read GetOriginal write SetOriginal;
     property Translations: TTntStrings read FTranslations write SetTranslations;
     property DefaultIndex: integer read FDefaultIndex write FDefaultIndex;
@@ -143,7 +143,7 @@ begin
   TTntStringlist(FTranslations).Sorted := true;
 end;
 
-function TDictionaryItem.DefaultTranslation: string;
+function TDictionaryItem.DefaultTranslation: WideString;
 begin
   if (DefaultIndex >= 0) and (DefaultIndex < Translations.Count) then
     Result := Translations[DefaultIndex]

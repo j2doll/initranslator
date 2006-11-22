@@ -21,9 +21,10 @@ uses
   SysUtils,
   Classes,
   SciTEParserImpl in 'SciTEParserImpl.pas',
-  SingleImportFrm in '..\PluginCommon\SingleImportFrm.pas' {frmImport},
+  SingleImportFrm in '..\PluginCommon\SingleImportFrm.pas' {frmSingleImport},
   PreviewExportFrm in '..\PluginCommon\PreviewExportFrm.pas' {frmExport},
-  TransIntf in '..\TransIntf.pas';
+  TransIntf in '..\TransIntf.pas',
+  CommonUtils in '..\CommonUtils.pas';
 
 {$R *.res}
 

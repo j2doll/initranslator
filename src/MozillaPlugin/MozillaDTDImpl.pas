@@ -123,7 +123,7 @@ begin
     S := TTntStringlist.Create;
     try
       BuildPreview(Items, S);
-      if TfrmExport.Execute(FTransFile, Translate(cDTDExportTitle), Translate(cDTDFilter), '.', 'dtd', S) then
+      if TfrmExport.Execute(FAppServices, FTransFile, Translate(cDTDExportTitle), Translate(cDTDFilter), '.', 'dtd', S) then
       begin
         S.AnsiStrings.SaveToFile(FTransFile);
         Result := S_OK;
@@ -171,7 +171,7 @@ begin
     Orphans.Clear;
     TI := nil;
     LoadSettings;
-    if TfrmImport.Execute(FOrigFile, FTransFile, Translate(cDTDImportTitle), Translate(cDTDFilter), '.', 'dtd') then
+    if TfrmDualImport.Execute(FAppServices, FOrigFile, FTransFile, Translate(cDTDImportTitle), Translate(cDTDFilter), '.', 'dtd') then
     begin
       Items.Sort := stNone;
       S := TTntStringlist.Create;

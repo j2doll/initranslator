@@ -178,7 +178,7 @@ begin
     Items.Clear;
     Orphans.Clear;
     LoadSettings;
-    if TfrmImport.Execute(FOrigFile, FOrigLang, FTransLang, cTMXImportTitle, cTMXFilter, '.', 'tmx') then
+    if TfrmTMXImport.Execute(FOrigFile, FOrigLang, FTransLang, cTMXImportTitle, cTMXFilter, '.', 'tmx') then
     begin
       FXMLImport := TXMLDocument.Create(nil);
       try

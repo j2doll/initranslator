@@ -105,7 +105,7 @@ end;
 function TfrmImport.Translate(const Value: WideString): WideString;
 begin
   if FAppServices <> nil then
-    Result := FAppServices.Translate(ClassName, Value, Value)
+    Result := FAppServices.Translate('TMSDictParser', Value, Value)
   else
     Result := Value;
 end;
@@ -129,7 +129,7 @@ begin
   end;
   if Result then
     Inc(FCount);
-  Section := ClassName;
+  Section := 'TMsDictParser';
   Name := Value;
 end;
 

@@ -4,9 +4,10 @@ uses
   SysUtils,
   Classes,
   PreviewExportFrm in '..\PluginCommon\PreviewExportFrm.pas' {frmExport},
-  SingleImportFrm in '..\PluginCommon\SingleImportFrm.pas' {frmImport},
+  SingleImportFrm in '..\PluginCommon\SingleImportFrm.pas' {frmSingleImport},
   TransIntf in '..\TransIntf.pas',
-  OlegParserImpl in 'OlegParserImpl.pas';
+  OlegParserImpl in 'OlegParserImpl.pas',
+  CommonUtils in '..\CommonUtils.pas';
 
 {$R *.res}
 

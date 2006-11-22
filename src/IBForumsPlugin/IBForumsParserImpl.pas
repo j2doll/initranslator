@@ -52,8 +52,7 @@ type
     function Capabilities: Integer; safecall;
     function HandleOrig(const AFilename: WideString; const Items: ITranslationItems; const Orphans: ITranslationItems): Boolean; safecall;
     function HandleTrans(const AFilename: WideString; const Items: ITranslationItems; const Orphans: ITranslationItems): Boolean; safecall;
-    function GetString(out Section: WideString; out Name: WideString;
-      out Value: WideString): WordBool; safecall;
+    function GetString(out Section: WideString; out Name: WideString; out Value: WideString): WordBool; safecall;
 
   end;
 
@@ -295,7 +294,7 @@ begin
     S := TTntStringlist.Create;
     try
       BuildPreview(Items, S);
-      if TfrmExport.Execute(FTransFile, Translate(cIBFExportTitle), Translate(cPHPFilter), '.', 'php', S) then
+      if TfrmExport.Execute(FAppServices, FTransFile, Translate(cIBFExportTitle), Translate(cPHPFilter), '.', 'php', S) then
       begin
         S.AnsiStrings.SaveToFile(FTransFile);
         SaveSettings;
@@ -313,7 +312,7 @@ function TIBFParser.ImportItems(const Items, Orphans: ITranslationItems): HRESUL
 begin
   Result := S_FALSE;
   LoadSettings;
-  if TfrmImport.Execute(FOrigFile, FTransFile, Translate(cIBFImportTitle), Translate(cPHPFilter), '.', 'php') then
+  if TfrmDualImport.Execute(FAppServices, FOrigFile, FTransFile, Translate(cIBFImportTitle), Translate(cPHPFilter), '.', 'php') then
   begin
     if DoImport(Items, Orphans, FOrigFile, FTransFile) then
     begin
@@ -395,6 +394,8 @@ function TIBFParser.HandleTrans(const AFilename: WideString; const Items,
 begin
   Result := false;
 end;
+var
+  frmExport:TfrmExport = nil;
 
 function TIBFParser.GetString(out Section, Name,
   Value: WideString): WordBool;
@@ -408,13 +409,22 @@ begin
     4: Value := SError;
     // 5: Value := cSectionName;
   else
-    Result := false;
-    FCount := 0;
+    if frmExport = nil then
+      frmExport := tFrmExport.Create(Application);
+    Result := frmExport.GetString(Section, Name, Value);
+    if not Result then
+    begin
+      FreeAndNil(frmExport);
+      FCount := 0;
+    end;
   end;
   if Result then
     Inc(FCount);
-  Section := ClassName;
-  Name := Value;
+  if frmExport = nil then
+  begin
+    Section := ClassName;
+    Name := Value;
+  end;
 end;
 
 function TIBFParser.Translate(const Value: WideString): WideString;

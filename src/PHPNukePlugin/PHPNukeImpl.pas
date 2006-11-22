@@ -150,7 +150,7 @@ begin
           S.Add(Format('DEFINE("%s",%s);', [Items[i].Name, DefaultStr(Items[i].Translation, Items[i].TransQuote)]));
       end;
       S.AddStrings(FFooter);
-      if TfrmExport.Execute(FTransFile, Translate(cPHPNukeExportTitle), Translate(cPHPNukeFilter), '.', 'php', S) then
+      if TfrmExport.Execute(FAppServices, FTransFile, Translate(cPHPNukeExportTitle), Translate(cPHPNukeFilter), '.', 'php', S) then
       begin
         S.AnsiStrings.SaveToFile(FTransFile);
         Result := S_OK;
@@ -178,7 +178,7 @@ begin
     Result := false;
     FCount := 0;
   end;
-  if not Result then
+  if Result then
     Inc(FCount);
   Section := ClassName;
   Name := Value;
@@ -251,7 +251,7 @@ begin
     LoadSettings;
     //    Screen.Cursor := crHourGlass;
     try
-      if TfrmImport.Execute(FOrigFile, FTransFile, Translate(cPHPNukeImportTitle), Translate(cPHPNukeFilter), '.', 'php') then
+      if TfrmDualImport.Execute(FAppServices, FOrigFile, FTransFile, Translate(cPHPNukeImportTitle), Translate(cPHPNukeFilter), '.', 'php') then
       begin
         Items.Clear;
         Orphans.Clear;

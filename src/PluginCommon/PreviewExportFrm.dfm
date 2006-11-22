@@ -126,6 +126,7 @@ object frmExport: TfrmExport
   object SaveDialog1: TTntSaveDialog
     InitialDir = '.'
     Options = [ofOverwritePrompt, ofHideReadOnly, ofEnableSizing]
+    Title = 'Save file'
     Left = 58
     Top = 82
   end

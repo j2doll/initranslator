@@ -6,7 +6,8 @@ uses
   PreviewExportFrm in '..\PluginCommon\PreviewExportFrm.pas' {frmExport},
   TransIntf in '..\TransIntf.pas',
   PolyGlotParserImpl in 'PolyGlotParserImpl.pas',
-  DualImportFrm in '..\PluginCommon\DualImportFrm.pas' {frmImport};
+  DualImportFrm in '..\PluginCommon\DualImportFrm.pas' {frmDualImport},
+  CommonUtils in '..\CommonUtils.pas';
 
 {$R *.res}
 

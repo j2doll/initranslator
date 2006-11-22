@@ -23,7 +23,8 @@ uses
   TransIntf in '..\TransIntf.pas',
   MozillaPropsImpl in 'MozillaPropsImpl.pas',
   PreviewExportFrm in '..\PluginCommon\PreviewExportFrm.pas' {frmExport},
-  DualImportFrm in '..\PluginCommon\DualImportFrm.pas' {frmImport};
+  DualImportFrm in '..\PluginCommon\DualImportFrm.pas' {frmDualImport},
+  CommonUtils in '..\CommonUtils.pas';
 
 {$R *.res}
 

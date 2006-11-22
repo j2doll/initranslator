@@ -28,7 +28,7 @@ type
     FTransFile: string;
     FSkip: Boolean;
     FStringIndex: integer;
-    FApplicationServices: IApplicationServices;
+    FAppServices: IApplicationServices;
     procedure LoadSettings;
     procedure SaveSettings;
     procedure BuildPreview(Items, Orphans: ITranslationItems; Strings: TTntStrings);
@@ -95,7 +95,7 @@ begin
     CAP_EXPORT:
       begin
         LoadSettings;
-        if TXilisoftCfgForm.Edit(FApplicationServices, FSkip) then
+        if TXilisoftCfgForm.Edit(FAppServices, FSkip) then
           SaveSettings;
         Result := S_OK;
       end;
@@ -170,7 +170,7 @@ begin
     Orphans.Clear;
     TI := nil;
     LoadSettings;
-    if TfrmImport.Execute(FApplicationServices, FOrigFile, FTransFile,
+    if TfrmDualImport.Execute(FAppServices, FOrigFile, FTransFile,
       Translate(SXilisoftImportTitle), Translate(SXilisoftFilter), '.', 'lang') then
     begin
       Items.Sort := stNone;
@@ -281,8 +281,8 @@ end;
 
 function TXilisoftParser.Translate(const Value: WideString): WideString;
 begin
-  if FApplicationServices <> nil then
-    Result := FApplicationServices.Translate(SLocalizeSectionName, Value, Value)
+  if FAppServices <> nil then
+    Result := FAppServices.Translate(SLocalizeSectionName, Value, Value)
   else
     Result := Value;
 end;
@@ -290,7 +290,7 @@ end;
 procedure TXilisoftParser.Init(const ApplicationServices: IApplicationServices);
 begin
   Application.Handle := ApplicationServices.AppHandle;
-  FApplicationServices := ApplicationServices;
+  FAppServices := ApplicationServices;
 end;
 
 procedure TXilisoftParser.LoadSettings;

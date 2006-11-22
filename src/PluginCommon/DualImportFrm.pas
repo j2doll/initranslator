@@ -24,7 +24,7 @@ uses
   Dialogs, StdCtrls, TransIntf, TntForms, TntDialogs, TntStdCtrls;
 
 type
-  TfrmImport = class(TTntForm, IInterface, ILocalizable)
+  TfrmDualImport = class(TTntForm, IInterface, ILocalizable)
     lblOriginal: TTntLabel;
     edFilename: TTntEdit;
     btnBrowse: TTntButton;
@@ -66,17 +66,17 @@ resourcestring
 
 { TfrmImport }
 
-class function TfrmImport.Execute(var AOriginalFile, ATranslationFile: string; const ACaption, Filter, InitialDir, DefaultExt: string; const SecondIsOptional: Boolean = false): boolean;
+class function TfrmDualImport.Execute(var AOriginalFile, ATranslationFile: string; const ACaption, Filter, InitialDir, DefaultExt: string; const SecondIsOptional: Boolean = false): boolean;
 begin
   Result := Execute(nil, AOriginalFile, ATranslationFile, ACaption, Filter, InitialDir, DefaultExt, SecondIsOptional);
 end;
 
-procedure TfrmImport.CheckChange(Sender: TObject);
+procedure TfrmDualImport.CheckChange(Sender: TObject);
 begin
   btnOK.Enabled := (edFilename.Text <> '') and (FSecondIsOptional or ((edFilename2.Text <> '') and FileExists(edFilename.Text) and FileExists(edFilename2.Text)));
 end;
 
-procedure TfrmImport.btnBrowseClick(Sender: TObject);
+procedure TfrmDualImport.btnBrowseClick(Sender: TObject);
 begin
   OpenDialog1.Filename := edFilename.Text;
   if OpenDialog1.Execute then
@@ -84,7 +84,7 @@ begin
   CheckChange(Sender);
 end;
 
-procedure TfrmImport.btnBrowse2Click(Sender: TObject);
+procedure TfrmDualImport.btnBrowse2Click(Sender: TObject);
 begin
   OpenDialog2.Filename := edFilename2.Text;
   if OpenDialog2.Execute then
@@ -92,7 +92,7 @@ begin
   CheckChange(Sender);
 end;
 
-procedure TfrmImport.LoadSettings;
+procedure TfrmDualImport.LoadSettings;
 var M: TMemoryStream;
   FRect: TRect;
 begin
@@ -133,7 +133,7 @@ begin
   end;
 end;
 
-procedure TfrmImport.SaveSettings;
+procedure TfrmDualImport.SaveSettings;
 var M: TMemoryStream;
   FRect: TRect;
 begin
@@ -158,12 +158,12 @@ begin
   end;
 end;
 
-class function TfrmImport.Execute(
+class function TfrmDualImport.Execute(
   const ApplicationServices: IApplicationServices; var AOriginalFile,
   ATranslationFile: string; const ACaption, Filter, InitialDir,
   DefaultExt: string; const SecondIsOptional: Boolean): boolean;
 var
-  frmImport: TfrmImport;
+  frmImport: TfrmDualImport;
 begin
   frmImport := self.Create(Application);
   with frmImport do
@@ -205,7 +205,7 @@ begin
 
 end;
 
-function TfrmImport.Translate(const Value: WideString): WideString;
+function TfrmDualImport.Translate(const Value: WideString): WideString;
 begin
   if FApplicationServices <> nil then
     Result := FApplicationServices.Translate(self.ClassName, Value, Value)
@@ -213,7 +213,7 @@ begin
     Result := Value;
 end;
 
-function TfrmImport.GetString(out Section, Name, Value: WideString): WordBool;
+function TfrmDualImport.GetString(out Section, Name, Value: WideString): WordBool;
 begin
   Result := true;
   case FCount of

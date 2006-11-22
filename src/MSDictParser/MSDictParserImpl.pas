@@ -131,7 +131,7 @@ begin
     S := TTntStringlist.Create;
     try
       BuildPreview(Items, S);
-      if TfrmExport.Execute(FTransFile, Translate(cMsDictExportTitle), Translate(cMsDictFilter), '.', 'csv', S) then
+      if TfrmExport.Execute(FAppServices, FTransFile, Translate(cMsDictExportTitle), Translate(cMsDictFilter), '.', 'csv', S) then
       begin
         S.AnsiStrings.SaveToFile(FTransFile);
         Result := S_OK;
@@ -304,7 +304,7 @@ begin
     Items.Clear;
     Orphans.Clear;
     LoadSettings;
-    if TfrmImport.Execute(FTransFile, FSkipLines, Translate(cMsDictImportTitle), Translate(cMsDictFilter), '.', 'csv') then
+    if TfrmImport.Execute(FAppServices, FTransFile, FSkipLines, Translate(cMsDictImportTitle), Translate(cMsDictFilter), '.', 'csv') then
     begin
       Items.Sort := stNone;
       if FSkipLines < 0 then

@@ -114,7 +114,7 @@ begin
     S := TTntStringlist.Create;
     try
       BuildPreview(Items, S);
-      if TfrmExport.Execute(FTransFile, Translate(cOlegExportTitle), Translate(cOlegFilter), '.', 'txt', S) then
+      if TfrmExport.Execute(FAppServices, FTransFile, Translate(cOlegExportTitle), Translate(cOlegFilter), '.', 'txt', S) then
       begin
         S.AnsiStrings.SaveToFile(FTransFile);
         Result := S_OK;
@@ -128,6 +128,8 @@ begin
     Application.HandleException(self);
   end;
 end;
+var
+  frmImport:TfrmSingleImport = nil;
 
 function TOlegParser.GetString(out Section, Name, Value: WideString): WordBool;
 begin
@@ -137,13 +139,22 @@ begin
     1: Value := cOlegImportTitle;
     2: Value := cOlegExportTitle;
   else
-    Result := false;
-    FCount := 0;
+    if frmImport = nil then
+      frmImport := TfrmSingleImport.Create(Application);
+    Result := frmImport.GetString(Section, Name, Value);
+    if not Result then
+    begin
+      FreeAndNil(frmImport);
+      FCount := 0;
+    end;
   end;
   if Result then
     Inc(FCount);
-  Section := ClassName;
-  Name := Value;
+  if frmImport = nil then
+  begin
+    Section := ClassName;
+    Name := Value;
+  end;
 end;
 
 function TOlegParser.ImportItems(const Items, Orphans: ITranslationItems): HRESULT;
@@ -158,7 +169,7 @@ begin
     Orphans.Clear;
     TI := nil;
     LoadSettings;
-    if TfrmImport.Execute(FTransFile, Translate(cOlegImportTitle), Translate(cOlegFilter), '.', 'txt') then
+    if TfrmSingleImport.Execute(FAppServices, FTransFile, Translate(cOlegImportTitle), Translate(cOlegFilter), '.', 'txt') then
     begin
       Items.Sort := stNone;
       S := TTntStringlist.Create;

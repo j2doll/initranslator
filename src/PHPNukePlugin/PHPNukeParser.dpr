@@ -23,7 +23,7 @@ uses
   PHPNukeImpl in 'PHPNukeImpl.pas',
   TransIntf in '..\TransIntf.pas',
   PreviewExportFrm in '..\PluginCommon\PreviewExportFrm.pas' {frmExport},
-  DualImportFrm in '..\PluginCommon\DualImportFrm.pas' {frmImport},
+  DualImportFrm in '..\PluginCommon\DualImportFrm.pas' {frmDualImport},
   CommonUtils in '..\CommonUtils.pas';
 
 {$R *.res}

@@ -1,4 +1,4 @@
-object frmImport: TfrmImport
+object frmTMXImport: TfrmTMXImport
   Left = 412
   Top = 228
   Width = 392

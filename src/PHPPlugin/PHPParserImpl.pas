@@ -250,7 +250,7 @@ begin
     S := TTntStringlist.Create;
     try
       BuildPreview(Items, S);
-      if TfrmExport.Execute(FTransFile, Translate(cPHPExportTitle), Translate(cPHPFilter), '.', 'php', S) then
+      if TfrmExport.Execute(FAppServices, FTransFile, Translate(cPHPExportTitle), Translate(cPHPFilter), '.', 'php', S) then
       begin
         S.AnsiStrings.SaveToFile(FTransFile);
         SaveSettings;
@@ -269,7 +269,7 @@ begin
   try
     Result := S_FALSE;
     LoadSettings;
-    if TfrmImport.Execute(FAppServices, FOrigFile, FTransFile, Translate(cPHPImportTitle), Translate(cPHPFilter), '.', 'php') then
+    if TfrmDualImport.Execute(FAppServices, FOrigFile, FTransFile, Translate(cPHPImportTitle), Translate(cPHPFilter), '.', 'php') then
     begin
       if DoPHPImport(Items, Orphans, FOrigFile, FTransFile) then
       begin
@@ -341,8 +341,8 @@ begin
 end;
 
 var
-  frmImport: TFrmImport = nil;
-  frmExport: TFrmExport = nil;
+  frmImport: TfrmDualImport = nil;
+  frmExport: TfrmExport = nil;
 
 function TPHPParser.GetString(out Section, Name, Value: WideString): WordBool;
 begin
@@ -355,7 +355,7 @@ begin
     4: Value := SError;
   else
     if frmImport = nil then
-      frmImport := TfrmImport.Create(Application);
+      frmImport := TfrmDualImport.Create(Application);
     Result := frmImport.GetString(Section, Name, Value);
     if not Result then
     begin

@@ -4,10 +4,10 @@
 &Custom Dictionary:=
 &Delete=
 &Dictionaries ...=
-&Edit=
+&Edit=&Edita
 &Enter the new custom dictionary name:=
 &Excluded Words=
-&Help=
+&Help=&Ajuda
 &Ignore All=
 &Ignore this word:=
 &New=
@@ -25,10 +25,9 @@ Add&ed Words=
 Au&to-Correct=
 Automatically correct DUal capitals=
 C&hange=
-Cancel=
+Cancel=Anul·la
 Choose Folder Containing Dictionaries=
 Confirmation:=
-Custom Dictionaries:=
 Custom Dictionaries:=
 D&ictionaries:=
 Delete this custom dictionary?=
@@ -60,11 +59,11 @@ Words added with Ignore All / Change All=
 &Font color:=
 &Odd rows:=
 &Untranslated items:=
-Cancel=
+Cancel=Anul·la
 Color Preferences=
 Fo&nt color:=
 Fon&t color:=
-OK=
+OK=D'acord
 
 [TfrmComments]
 -=
@@ -101,28 +100,28 @@ Select shortcut:=
 &Match between original and translation (one string per row):=
 &Original and translation are the same=
 &Trailing spaces mismatch=
-Cancel=
+Cancel=Anul·la
 Configure suspicious translations=
 Mismatched &control characters at end=
-OK=
+OK=D'acord
 Translation is &empty=
 Treat as suspicious:=
 
 [TfrmDictEdit]
 &Add=
-&Original:=
+&Original:=&Original:
 &Remove=
 &Translations:=
 A&dd=
 Add a new original=
 Add a new translation=
 All items\r\nItems with translations\r\nItems without translations\r\nItems with > 1 translations\r\nItems with 1 translation\r\n=
-Cancel=
+Cancel=Anul·la
 Change the selection to see different subsets of the dictionary=
 Displays available translations. Bold items are the default translations.=
 Edit Dictionary=
 Make Default=
-OK=
+OK=D'acord
 Re&move=
 Remove selected original=
 Remove the selected translation=
@@ -133,11 +132,11 @@ S&how:=
 &Change=
 &Don't check translated items=
 &Ignore=
-&Original:=
-&Translation:=
+&Original:=&Original:
+&Translation:=&Traducció:
 A&vailable translations:=
 Add suggested translation to dictionary=
-Close=
+Close=Tanca
 Don't &ask again (in this session)=
 Don't show this dialog again and use the latest response=
 Ignore this item (don't translate)=
@@ -146,26 +145,50 @@ Skip items that are already translated=
 Stop translating=
 Use the suggested translation=
 
+[TfrmDualImport]
+&Original file:=
+&Translation file (optional):=
+&Translation file:=
+...=...
+Cancel=Anul·la
+OK=D'acord
+Select files=
+Select Original File=
+Select Translation File=
+
 [TfrmEditItem]
 &Name:=
 &OK=
-&Original:=
+&Original:=&Original:
 &Section:=
-&Translation:=
-Cancel=
+&Translation:=&Traducció:
+Cancel=Anul·la
 Edit Item=
 Ori&ginal Comment=
 T&ranslation Comment=
 
+[TfrmExport]
+&Filename:=
+&OK=
+&Preview (editable):=
+...=...
+Cancel=Anul·la
+Confirm=Confirma
+Error=Error
+File "%s" already exists. Do you want to overwrite it?=
+Invalid filename "%s". Select another filename and try again.=
+Preview=
+Save file=
+
 [TfrmFindReplace]
-Find/Replace=Recerca- Substitució
+Find/Replace=Recerca - Substitució
 
 [TfrmImportExport]
 (there is nothing to show in this view)=
-Close=
+Close=Tanca
 Configure...=
 Import/Export=
-OK=
+OK=D'acord
 
 [TfrmMain]
 "%s" has been changed outside the program, do you want to reload it?="%s" ha canviat a fora del programa, desitgeu recarregar-lo?
@@ -189,7 +212,7 @@ OK=
 &View=&Visualitza
 (New Tool %d)=
 (no dictionary)=(no hi ha cap diccionari)
-(none)=
+(none)=(cap)
 (not assigned)=
 [%0:s] - %1:s=[%0:s] - %1:s
 About %s...=Quant a l'%s...
@@ -200,6 +223,8 @@ Add Item=
 Add Item...=
 Add new item to original and translation=
 Add to Dictionary=
+All files (*.*)|*.*=
+Alternate list editor=
 An item with the specified Section and Name already exists=
 ANSI=
 ANSI\r\nUTF-8\r\nUnicode\r\n=
@@ -207,6 +232,7 @@ Arguments:=
 ASCII Value(s)...=
 ASCII Value(s):=Valor(s) ASCII:
 Assigned to:=
+Au&to-Correct=
 Available &plugins:=
 Bookmark 0=Apunt 0
 Bookmark 1=Apunt 1
@@ -218,6 +244,7 @@ Bookmark 6=Apunt 6
 Bookmark 7=Apunt 7
 Bookmark 8=Apunt 8
 Bookmark 9=Apunt 9
+Camel Case Translations=
 Case of letters (UPPER/lower) must match=
 Clear=Neteja
 Clear All Translations=
@@ -305,7 +332,7 @@ Import=
 Import from an external file or files=
 Import...=
 Information=Informació
-Ini Translator=
+Ini Translator=Pau Bosch i Crespo
 Invert Dictionary=Inverteix diccionari
 Invert the dictionary=Inverteix el diccionari
 inverted=invertit
@@ -313,6 +340,8 @@ Language files|*.lng|Inno Setup files|*.isl|Ini files|*.ini;*.inf|Text files|*.t
 lng=
 Load Dictionary...=Carrega un diccionari...
 Load existing dictionary=Carrega diccionari existent
+Lowercase translation=
+Make all translations consistent=
 Match &case=Cas &coincident
 Match &line=&Línia coincident
 Menu=Menú
@@ -394,6 +423,7 @@ Show Quotes=Mostra cometes
 Show quotes in texts=Mostra les cometes en els textos
 Show the ASCII values for the selected text=
 Skip any control characters (non-alphanumeric) when searching=
+Some items (%d) could not be saved as they had no Original value=
 Spell check the translations=
 Spelling...=
 T&ools=
@@ -402,6 +432,7 @@ Text must match the entire line=
 The language will not be changed until you restart the program=L'idioma no canviarà si reinicieu el programa
 The text "%s" could not be found=No s'ha pogut trobar el text "%s"
 The translation file has been modified, do you want to save it?=El fitxer de traducció ha estat modificat, desitgeu desar-lo?
+Themes=
 There are no plugins to show.=
 This action is just here to disable shortcuts in rich edits (no need to translate this text)=
 This function is not yet implemented=Aquesta funció encara no s'ha implementat
@@ -429,14 +460,17 @@ Translating with dictionary finished=
 Translation=Traducció
 Translation (%s)=(%s) traduït
 Trim leading and trailing characters=
+Trim translations=
 Trim...=
 Unable to locate the help file (%s). Make sure the file exists and try again.=No s'ha pogut localitzar el fitxer (%s) d'ajuda. Assegureu-vos de l'existència del fitxer i proveu-ho de nou.
 Undo=Desfés
 Undo last edit=Desfés l'última edició
 Unicode=Unicode
+Uppercase translations=
 Use this translation everywhere=
 UTF-8=UTF-8
 View=Mostra
+View all properties=
 View Comments=Mostra rètols
 View Orphaned Items=
 
@@ -492,19 +526,21 @@ When activated, typing in the listview will automatically move focus to the tran
 When translating with the dictionary, strip out any &'s in the original text before comparing=
 
 [TfrmOrphans]
+&Merge...=
+&Save...=
 Copy=
 Orphaned Items=
 
 [TfrmPromptArgs]
 Application Directory=
 Arguments:=
-Cancel=
+Cancel=Anul·la
 Command Line:=
 Dictionary Directory=
 Dictionary Extension=
 Dictionary Name=
 Dictionary Path=
-OK=
+OK=D'acord
 Original Directory=
 Original Extension=
 Original Line=
@@ -521,6 +557,13 @@ Translation Path=
 Translation Text=
 Windows Directory=
 
+[TfrmSingleImport]
+&Filename:=
+...=...
+Cancel=Anul·la
+OK=D'acord
+Select file=
+
 [TfrmTools]
 &...=
 &Add=
@@ -535,7 +578,7 @@ Add a new tool item=
 All Executables (*.exe;*.com;*.pif;*.bat;*.cmd)|*.exe;*.com;*.pif;*.bat;*.cmd|All files (*.*)|*.*=
 Application Directory=
 C&lear=
-Cancel=
+Cancel=Anul·la
 Dictionary Directory=
 Dictionary Extension=
 Dictionary Name=
@@ -547,7 +590,7 @@ Move &Up=
 Move Do&wn=
 Move item higher in list=
 Move item lower in list=
-OK=
+OK=D'acord
 Original Directory=
 Original Extension=
 Original Line=
@@ -571,18 +614,84 @@ When executed, a dialog is displayed where you can type in any additional argume
 Windows Directory=
 
 [TfrmTrim]
-Cancel=
+Cancel=Anul·la
 Leading\r\nTrailing\r\nBoth\r\n=
-OK=
-Original\r\nTranslation\r\nBoth\r\n=
+OK=D'acord
+Original\r\nTranslation\r\nBoth\r\n=Original\r\nTraducció\r\nTots dos\r\n
 Trim additional &whitespace also=
 Trim h&ow:=
 Trim Options=
 Trim wh&at:=
 Trim wh&ere:=
 
+[TGSIParser]
+Export to OpenOffice GSI language file=
+Import from OpenOffice GSI language file=
+OpenOffice GSI files (*.gsi)|*.gsi|All files (*.*)|*.*=
+OpenOffice GSI Parser Error=
+There was an error importing, please check the files and try again=
+
+[TIBFParser]
+Export to IB Forums language file=
+IB Forums Parser Error=
+Import from IB Forums language file=
+PHP files (*.php)|*.php|All files (*.*)|*.*=
+There was an error importing, please check the files and try again=
+
+[TMozillaDTDParser]
+Export to Mozilla DTD file=
+Import from Mozilla DTD file=
+Mozilla DTD Files (*.dtd)|*.dtd|All files (*.*)|*.*=
+
+[TMozillaPropsParser]
+Export to Mozilla Properties file=
+Import from Mozilla Properties file=
+Mozilla properties files|*.properties|All files (*.*)|*.*=
+
+[TMsDictParser]
+&Filename:=
+&Skip lines:=
+...=...
+Add Microsoft Copyright notice?=
+Cancel=Anul·la
+Confirm=Confirma
+Export to MS Glossary CSV file=
+Import from MS Glossary CSV file=
+MS Glossary Files (*.csv)|*.csv|All files (*.*)|*.*=
+OK=D'acord
+Select file=
+This glossary is intellectual property of Microsoft Corporation. Please refer to the complete copyright text in the README.TXT file included in this file.,,,,,,,=
+
+[TOlegParser]
+Export to OlegTranslator file=
+Import from OlegTranslator file=
+OlegTranslator  Files (*.txt)|*.txt|All files (*.*)|*.*=
+
+[TPHPNukeParser]
+Export to phpNuke language file=
+Import from phpNuke language file=
+PHP files (*.php)|*.php|All files (*.*)|*.*=
+phpNuke Parser=
+
+[TPHPParser]
+Export to PHP language file=
+Import from PHP language file=
+PHP files (*.php)|*.php;*.php3|All files (*.*)|*.*=
+PHP Parser Error=
+There was an error importing, please check the files and try again=
+
 [Translator]
 Author=Pau Bosch i Crespo
 EMail=(cap)
 Language=Català
 Version=1.5
+
+[TXilisoftParser]
+Configuration=
+Do not export empty translations=
+Export to Xilisoft lang file=
+File not found=
+Import from Xilisoft lang file=
+Lang files (*.lang)|*.lang|All files (*.*)|*.*=
+OK=D'acord
+Please import before export!=

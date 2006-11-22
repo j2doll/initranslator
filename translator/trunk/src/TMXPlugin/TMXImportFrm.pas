@@ -24,7 +24,7 @@ uses
   Dialogs, StdCtrls, TntForms, TntStdCtrls, TntDialogs;
 
 type
-  TfrmImport = class(TTntForm)
+  TfrmTMXImport = class(TTntForm)
     Label1: TTntLabel;
     edFilename: TTntEdit;
     btnBrowse: TTntButton;
@@ -53,9 +53,9 @@ uses
 
 { TfrmImport }
 
-class function TfrmImport.Execute(var AFilename, AOrigLang, ATransLang: string; const ACaption, Filter, InitialDir, DefaultExt: string): boolean;
+class function TfrmTMXImport.Execute(var AFilename, AOrigLang, ATransLang: string; const ACaption, Filter, InitialDir, DefaultExt: string): boolean;
 var
-  frmImport: TfrmImport;
+  frmImport: TfrmTMXImport;
 begin
   frmImport := self.Create(Application);
   with frmImport do
@@ -79,20 +79,20 @@ begin
   end;
 end;
 
-procedure TfrmImport.btnBrowseClick(Sender: TObject);
+procedure TfrmTMXImport.btnBrowseClick(Sender: TObject);
 begin
   OpenDialog1.Filename := edFilename.Text;
   if OpenDialog1.Execute then
     edFilename.Text := OpenDialog1.Filename;
 end;
 
-procedure TfrmImport.edFilenameChange(Sender: TObject);
+procedure TfrmTMXImport.edFilenameChange(Sender: TObject);
 begin
   if FileExists(edFilename.Text) then
     ParseLanguages(edFilename.Text);
 end;
 
-procedure TfrmImport.ParseLanguages(const Filename: string);
+procedure TfrmTMXImport.ParseLanguages(const Filename: string);
 var
   FXMLImport: TXMLDocument;
   NodeList: IDOMNodeList;

@@ -269,7 +269,7 @@ begin
     S := TTntStringlist.Create;
     try
       BuildPreview(Items, S);
-      if TfrmExport.Execute(FOrigFile, Translate(cGSIExportTitle), Translate(cGSIFilter), '.', 'gsi', S) then
+      if TfrmExport.Execute(FAppServices, FOrigFile, Translate(cGSIExportTitle), Translate(cGSIFilter), '.', 'gsi', S) then
       begin
       // GSI files are always encodeds as UTF-8 but without BOM
         S.AnsiStrings.SaveToFileEx(FOrigFile, CP_UTF8);

@@ -232,7 +232,7 @@ begin
   try
     Result := S_FALSE;
     LoadSettings;
-    if TfrmImport.Execute(FTransFile, cSciTEImportTitle, cSciTEFilter, '.', 'properties') then
+    if TfrmSingleImport.Execute(FTransFile, cSciTEImportTitle, cSciTEFilter, '.', 'properties') then
     begin
       if DoSciTEImport(Items, Orphans, FTransFile) then
       begin

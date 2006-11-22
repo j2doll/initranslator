@@ -162,7 +162,7 @@ begin
     Orphans.Clear;
     TI := nil;
     LoadSettings;
-    if TfrmImport.Execute(FOrigFile, FTransFile, cPolyGlotImportTitle, cPolyGlotFilter, '.', 'lng', True) then
+    if TfrmDualImport.Execute(FOrigFile, FTransFile, cPolyGlotImportTitle, cPolyGlotFilter, '.', 'lng', True) then
     begin
       Items.Sort := stNone;
       S := TTntStringlist.Create;

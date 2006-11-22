@@ -23,7 +23,7 @@ uses
   TransIntf in '..\TransIntf.pas',
   IBForumsParserImpl in 'IBForumsParserImpl.pas',
   PreviewExportFrm in '..\PluginCommon\PreviewExportFrm.pas' {frmExport},
-  DualImportFrm in '..\PluginCommon\DualImportFrm.pas' {frmImport},
+  DualImportFrm in '..\PluginCommon\DualImportFrm.pas' {frmDualImport},
   CommonUtils in '..\CommonUtils.pas';
 
 {$R *.res}

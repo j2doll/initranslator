@@ -1,4 +1,4 @@
-object frmImport: TfrmImport
+object frmSingleImport: TfrmSingleImport
   Left = 412
   Top = 228
   BorderStyle = bsDialog

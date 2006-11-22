@@ -21,9 +21,10 @@ uses
   SysUtils,
   Classes,
   TransIntf in '..\TransIntf.pas',
-  DualImportFrm in '..\PluginCommon\DualImportFrm.pas' {frmImport},
+  DualImportFrm in '..\PluginCommon\DualImportFrm.pas' {frmDualImport},
   XilisoftParserImpl in 'XilisoftParserImpl.pas',
-  XilisoftParserCfgForm in 'XilisoftParserCfgForm.pas' {XilisoftCfgForm};
+  XilisoftParserCfgForm in 'XilisoftParserCfgForm.pas' {XilisoftCfgForm},
+  CommonUtils in '..\CommonUtils.pas';
 
 {$R *.res}
 

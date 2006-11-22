@@ -119,7 +119,7 @@ begin
     try
       Items.Sort := stIndex;
       BuildPreview(Items, S);
-      if TfrmExport.Execute(FTransFile, Translate(cPropsExportTitle), Translate(cPropsFilter), '.', 'properties', S) then
+      if TfrmExport.Execute(FAppServices, FTransFile, Translate(cPropsExportTitle), Translate(cPropsFilter), '.', 'properties', S) then
       begin
         S.AnsiStrings.SaveToFile(FTransFile);
         Result := S_OK;
@@ -162,7 +162,7 @@ begin
   Result := S_FALSE;
   try
     LoadSettings;
-    if TfrmImport.Execute(FOrigFile, FTransFile, Translate(cPropsImportTitle), Translate(cPropsFilter), '.', 'properties') then
+    if TfrmDualImport.Execute(FAppServices, FOrigFile, FTransFile, Translate(cPropsImportTitle), Translate(cPropsFilter), '.', 'properties') then
     begin
       TI := nil;
       S := TTntStringlist.Create;

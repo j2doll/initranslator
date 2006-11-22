@@ -1,4 +1,4 @@
-object frmImport: TfrmImport
+object frmDualImport: TfrmDualImport
   Left = 412
   Top = 228
   ActiveControl = edFilename

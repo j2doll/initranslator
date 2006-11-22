@@ -214,7 +214,7 @@ begin
     Items.Clear;
     Orphans.Clear;
     LoadSettings;
-    if TfrmImport.Execute(FApplicationServices, FFilename, Translate(cXLIFFImportTitle), Translate(cXLIFFFilter), '.', '.xlf') then
+    if TfrmSingleImport.Execute(FApplicationServices, FFilename, Translate(cXLIFFImportTitle), Translate(cXLIFFFilter), '.', '.xlf') then
     begin
       SaveSettings;
       FXMLImport := LoadXMLDocument(FFilename);

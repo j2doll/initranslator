@@ -57,7 +57,7 @@ type
 
 implementation
 uses
-  ShellAPI, IniFiles;
+  ShellAPI, IniFiles, CommonUtils;
 
 const
   SFmtErrIvalidFilename = 'Invalid filename "%s". Select another filename and try again.';
@@ -79,6 +79,7 @@ end;
 procedure TfrmExport.btnBrowseClick(Sender: TObject);
 begin
   SaveDialog1.FileName := edFilename.Text;
+  SaveDialog1.Title := Translate(SaveDialog1.Title);
   if SaveDialog1.Execute then
   begin
     FHasPrompted := true;
@@ -89,7 +90,7 @@ end;
 function TfrmExport.OverwriteOK: boolean;
 begin
   Result := FHasPrompted or not FileExists(edFilename.Text) or
-    (MessageBox(Handle, PChar(Format(SFmtOverwriteOK, [edFilename.Text])), PChar(SConfirm), MB_YESNO or MB_TASKMODAl or MB_ICONQUESTION) = IDYES);
+    (WideMessageBox(Handle, PWideChar(Translate(Format(SFmtOverwriteOK, [edFilename.Text]))), PWideChar(Translate(SConfirm)), MB_YESNO or MB_TASKMODAl or MB_ICONQUESTION) = IDYES);
 end;
 
 procedure TfrmExport.LoadSettings;
@@ -185,11 +186,10 @@ function TfrmExport.CheckFilename: boolean;
 begin
   Result := IsValidFilename;
   if not Result then
-    MessageBox(Handle, PChar(Format(SFmtErrIvalidFilename, [edFilename.Text])), PChar(SError), MB_OK or MB_TASKMODAl or MB_ICONERROR);
+    WideMessageBox(Handle, PWideChar(Translate(Format(SFmtErrIvalidFilename, [edFilename.Text]))), PWideChar(Translate(SError)), MB_OK or MB_TASKMODAl or MB_ICONERROR);
 end;
 
-class function TfrmExport.Execute(
-  const ApplicationServices: IApplicationServices; var FileName: string;
+class function TfrmExport.Execute(const ApplicationServices: IApplicationServices; var FileName: string;
   const ACaption, Filter, InitialDir, DefaultExt: string;
   Preview: TTntStrings): boolean;
 var
@@ -249,7 +249,8 @@ begin
     6: Value := lblPreview.Caption;
     7: Value := btnBrowse.Caption;
     8: Value := btnOK.Caption;
-    9: Value := btnCancel.Caption;  
+    9: Value := btnCancel.Caption;
+    10: Value := SaveDialog1.Title;
   else
     Result := false;
     FCount := 0;

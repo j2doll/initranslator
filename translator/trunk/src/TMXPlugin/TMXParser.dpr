@@ -6,7 +6,8 @@ uses
   PreviewExportFrm in '..\PluginCommon\PreviewExportFrm.pas' {frmExport},
   TransIntf in '..\TransIntf.pas',
   TMXParserImpl in 'TMXParserImpl.pas',
-  TMXImportFrm in 'TMXImportFrm.pas' {frmImport};
+  TMXImportFrm in 'TMXImportFrm.pas' {frmTMXImport},
+  CommonUtils in '..\CommonUtils.pas';
 
 {$R *.res}
 

@@ -19,12 +19,6 @@ OutputDir=..\..\bin\plugins
 UnitOutputDir=..\..\dcu
 PackageDLLOutputDir=
 PackageDCPOutputDir=
-[Parameters]
-RunParams=
-HostApplication=C:\Program Files\Borland\projects\Private\translator\trunk\bin\translator.exe
-Launcher=
-UseLauncher=0
-DebugCWD=
 [Version Info]
 IncludeVerInfo=1
 AutoIncBuild=0
@@ -44,7 +38,7 @@ CompanyName=Alexander Kornienko
 FileDescription=Xilisoft plugin for IniTranslator
 FileVersion=1.9.0.1
 InternalName=
-LegalCopyright=
+LegalCopyright=Copyright (c) 2006 by Alexander Kornienko; all rights reserved
 LegalTrademarks=
 OriginalFilename=
 ProductName=IniTranslator

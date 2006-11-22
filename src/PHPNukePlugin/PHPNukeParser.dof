@@ -17,7 +17,6 @@ ExeDescription=phpNuke Plugin for IniTranslator
 [Directories]
 OutputDir=..\..\bin\plugins
 UnitOutputDir=..\..\dcu
-UsePackages=0
 [Version Info]
 IncludeVerInfo=1
 AutoIncBuild=0
@@ -37,7 +36,7 @@ CompanyName=IniTranslator
 FileDescription=phpNuke Plugin for IniTranslator
 FileVersion=1.7.0.0
 InternalName=phpNukeParser.dll
-LegalCopyright=Copyright (c) 2003-2004 by Peter Thornqvist; all rights reserved
+LegalCopyright=Copyright (c) 2003-2007 by Peter Thornqvist; all rights reserved
 LegalTrademarks=
 OriginalFilename=phpNukeParser.dll
 ProductName=phpNuke Plugin for IniTranslator

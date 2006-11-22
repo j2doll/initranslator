@@ -5,13 +5,14 @@ UnsafeType=0
 UnsafeCode=0
 UnsafeCast=0
 [Linker]
-[Linker]MapFile=3OutputObjs=0ConsoleApp=1DebugInfo=0RemoteSymbols=0MinStackSize=16384
+MapFile=0
+MinStackSize=16384
 MaxStackSize=1048576
 ImageBase=4194304
 [Directories]
 OutputDir=..\..\bin\plugins
 UnitOutputDir=..\..\dcu
-[Language]
+UsePackages=0
 [Version Info]
 IncludeVerInfo=1
 AutoIncBuild=0

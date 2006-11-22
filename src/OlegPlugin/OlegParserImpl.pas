@@ -21,13 +21,16 @@ uses
   Classes, Types, TntClasses, TransIntf;
 
 type
-  TOlegParser = class(TInterfacedObject, IUnknown, IFileParser)
+  TOlegParser = class(TInterfacedObject, IUnknown, IFileParser, ILocalizable)
   private
     FOldAppHandle: Cardinal;
+    FAppServices: IApplicationServices;
+    FCount: integer;
     FTransFile: string;
     procedure LoadSettings;
     procedure SaveSettings;
     procedure BuildPreview(Items: ITranslationItems; Strings: TTntStrings);
+    function Translate(const Value: WideString): WideString;
   public
     constructor Create;
     destructor Destroy; override;
@@ -40,6 +43,7 @@ type
     function ImportItems(const Items: ITranslationItems;
       const Orphans: ITranslationItems): HRESULT; safecall;
     procedure Init(const ApplicationServices: IApplicationServices); safecall;
+    function GetString(out Section: WideString; out Name: WideString; out Value: WideString): WordBool; safecall;
   end;
 
 implementation
@@ -88,9 +92,9 @@ function TOlegParser.DisplayName(Capability: Integer): WideString;
 begin
   case Capability of
     CAP_IMPORT:
-      Result := cOlegImportTitle;
+      Result := Translate(cOlegImportTitle);
     CAP_EXPORT:
-      Result := cOlegExportTitle;
+      Result := Translate(cOlegExportTitle);
   else
     Result := '';
   end;
@@ -110,7 +114,7 @@ begin
     S := TTntStringlist.Create;
     try
       BuildPreview(Items, S);
-      if TfrmExport.Execute(FTransFile, cOlegExportTitle, cOlegFilter, '.', 'txt', S) then
+      if TfrmExport.Execute(FTransFile, Translate(cOlegExportTitle), Translate(cOlegFilter), '.', 'txt', S) then
       begin
         S.AnsiStrings.SaveToFile(FTransFile);
         Result := S_OK;
@@ -125,6 +129,23 @@ begin
   end;
 end;
 
+function TOlegParser.GetString(out Section, Name, Value: WideString): WordBool;
+begin
+  Result := true;
+  case FCount of
+    0: Value := cOlegFilter;
+    1: Value := cOlegImportTitle;
+    2: Value := cOlegExportTitle;
+  else
+    Result := false;
+    FCount := 0;
+  end;
+  if Result then
+    Inc(FCount);
+  Section := ClassName;
+  Name := Value;
+end;
+
 function TOlegParser.ImportItems(const Items, Orphans: ITranslationItems): HRESULT;
 var
   S: TTntStringlist;
@@ -137,7 +158,7 @@ begin
     Orphans.Clear;
     TI := nil;
     LoadSettings;
-    if TfrmImport.Execute(FTransFile, cOlegImportTitle, cOlegFilter, '.', 'txt') then
+    if TfrmImport.Execute(FTransFile, Translate(cOlegImportTitle), Translate(cOlegFilter), '.', 'txt') then
     begin
       Items.Sort := stNone;
       S := TTntStringlist.Create;
@@ -168,6 +189,7 @@ end;
 
 procedure TOlegParser.Init(const ApplicationServices: IApplicationServices);
 begin
+  FAppServices := ApplicationServices;
   Application.Handle := ApplicationServices.AppHandle;
 end;
 
@@ -197,6 +219,14 @@ begin
   except
     Application.HandleException(self);
   end;
+end;
+
+function TOlegParser.Translate(const Value: WideString): WideString;
+begin
+  if FAppServices <> nil then
+    Result := FAppServices.Translate(ClassName, Value, Value)
+  else
+    Result := Value;
 end;
 
 end.

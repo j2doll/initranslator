@@ -23,7 +23,8 @@ uses
   TransIntf in '..\TransIntf.pas',
   OOGSIParserImpl in 'OOGSIParserImpl.pas',
   PreviewExportFrm in '..\PluginCommon\PreviewExportFrm.pas' {frmExport},
-  OOGSIImportFrm in 'OOGSIImportFrm.pas' {frmImport};
+  OOGSIImportFrm in 'OOGSIImportFrm.pas' {frmImport},
+  CommonUtils in '..\CommonUtils.pas';
 
 {$R *.res}
 

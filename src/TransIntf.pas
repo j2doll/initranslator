@@ -192,7 +192,7 @@ type
     // Value   - can be anything
     // 
     // Multiple calls do not have to use the same Section
-    function GetString(out Section:WideString; out Name:WideString; out Value:WideString):WordBool; stdcall;
+    function GetString(out Section:WideString; out Name:WideString; out Value:WideString):WordBool; safecall;
   end;
 
   // An item that can reside on the "Plugins" menu

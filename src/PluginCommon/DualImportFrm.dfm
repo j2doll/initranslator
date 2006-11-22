@@ -53,21 +53,21 @@ object frmImport: TfrmImport
     163)
   PixelsPerInch = 96
   TextHeight = 13
-  object lblOriginal: TLabel
+  object lblOriginal: TTntLabel
     Left = 8
     Top = 8
     Width = 57
     Height = 13
     Caption = '&Original file:'
   end
-  object lblTranslation: TLabel
+  object lblTranslation: TTntLabel
     Left = 8
     Top = 56
     Width = 74
     Height = 13
     Caption = '&Translation file:'
   end
-  object edFilename: TEdit
+  object edFilename: TTntEdit
     Left = 8
     Top = 24
     Width = 331
@@ -76,7 +76,7 @@ object frmImport: TfrmImport
     TabOrder = 0
     OnChange = CheckChange
   end
-  object btnBrowse: TButton
+  object btnBrowse: TTntButton
     Left = 346
     Top = 24
     Width = 21
@@ -86,7 +86,7 @@ object frmImport: TfrmImport
     TabOrder = 1
     OnClick = btnBrowseClick
   end
-  object btnOK: TButton
+  object btnOK: TTntButton
     Left = 202
     Top = 121
     Width = 75
@@ -98,7 +98,7 @@ object frmImport: TfrmImport
     ModalResult = 1
     TabOrder = 4
   end
-  object btnCancel: TButton
+  object btnCancel: TTntButton
     Left = 282
     Top = 121
     Width = 75
@@ -109,7 +109,7 @@ object frmImport: TfrmImport
     ModalResult = 2
     TabOrder = 5
   end
-  object edFilename2: TEdit
+  object edFilename2: TTntEdit
     Left = 8
     Top = 72
     Width = 331
@@ -118,7 +118,7 @@ object frmImport: TfrmImport
     TabOrder = 2
     OnChange = CheckChange
   end
-  object btnBrowse2: TButton
+  object btnBrowse2: TTntButton
     Left = 346
     Top = 72
     Width = 21
@@ -128,13 +128,15 @@ object frmImport: TfrmImport
     TabOrder = 3
     OnClick = btnBrowse2Click
   end
-  object OpenDialog1: TOpenDialog
+  object OpenDialog1: TTntOpenDialog
     InitialDir = '.'
+    Title = 'Select Original File'
     Left = 24
     Top = 112
   end
-  object OpenDialog2: TOpenDialog
+  object OpenDialog2: TTntOpenDialog
     InitialDir = '.'
+    Title = 'Select Translation File'
     Left = 88
     Top = 112
   end

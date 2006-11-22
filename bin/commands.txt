@@ -1,7 +1,7 @@
-OPENORIG "..\data\Wallpaper Sequencer\english.lng"
-OPENTRANS "..\data\Wallpaper Sequencer\Catalan.lng"
-OPENDICT  "..\dictionaries\en_se.dct"
+OPENORIG ".\languages\default.lng"
+OPENTRANS "languages\svenska.lng"
+OPENDICT  .\dictionaries\en_se.dct
 USEDICT
-SAVETRANS "..\data\Wallpaper Sequencer\Catalan2.lng"
+SAVETRANS ".\languages\svenska_new.lng"
 QUIT
 

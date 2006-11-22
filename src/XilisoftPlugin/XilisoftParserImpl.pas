@@ -35,7 +35,7 @@ type
     function Translate(const Value: WideString): WideString;
 
     { ILocalizable }
-    function GetString(out Section: WideString; out Name: WideString; out Value: WideString): WordBool; stdcall;
+    function GetString(out Section: WideString; out Name: WideString; out Value: WideString): WordBool; safecall;
   public
     constructor Create;
     destructor Destroy; override;
@@ -54,8 +54,7 @@ type
 implementation
 uses
   XilisoftParserCfgForm, XiliSoftParserConsts,
-  Controls,
-  Windows, SysUtils, Forms, IniFiles, DualImportFrm;
+  Controls, Windows, SysUtils, Forms, IniFiles, DualImportFrm;
 
 function GetLocaleInformation(Flag: Integer): string;
 var

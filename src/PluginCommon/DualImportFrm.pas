@@ -21,35 +21,38 @@ interface
 
 uses
   Windows, Messages, SysUtils, Classes, Graphics, Controls, Forms,
-  Dialogs, StdCtrls, TransIntf;
+  Dialogs, StdCtrls, TransIntf, TntForms, TntDialogs, TntStdCtrls;
 
 type
-  TfrmImport = class(TForm)
-    lblOriginal: TLabel;
-    edFilename: TEdit;
-    btnBrowse: TButton;
-    btnOK: TButton;
-    btnCancel: TButton;
-    OpenDialog1: TOpenDialog;
-    lblTranslation: TLabel;
-    edFilename2: TEdit;
-    btnBrowse2: TButton;
-    OpenDialog2: TOpenDialog;
+  TfrmImport = class(TTntForm, IInterface, ILocalizable)
+    lblOriginal: TTntLabel;
+    edFilename: TTntEdit;
+    btnBrowse: TTntButton;
+    btnOK: TTntButton;
+    btnCancel: TTntButton;
+    OpenDialog1: TTntOpenDialog;
+    lblTranslation: TTntLabel;
+    edFilename2: TTntEdit;
+    btnBrowse2: TTntButton;
+    OpenDialog2: TTntOpenDialog;
     procedure CheckChange(Sender: TObject);
     procedure btnBrowseClick(Sender: TObject);
     procedure btnBrowse2Click(Sender: TObject);
   private
     { Private declarations }
+    FCount: integer;
     FSecondIsOptional: boolean;
     FApplicationServices: IApplicationServices;
     procedure LoadSettings;
     procedure SaveSettings;
     function Translate(const Value: WideString): WideString;
+
   public
     { Public declarations }
     // SecondIsOptional parameter suggested by Chris Thornton
     class function Execute(var AOriginalFile, ATranslationFile: string; const ACaption, Filter, InitialDir, DefaultExt: string; const SecondIsOptional: Boolean = false): boolean; overload;
     class function Execute(const ApplicationServices: IApplicationServices; var AOriginalFile, ATranslationFile: string; const ACaption, Filter, InitialDir, DefaultExt: string; const SecondIsOptional: Boolean = false): boolean; overload;
+    function GetString(out Section: WideString; out Name: WideString; out Value: WideString): WordBool; safecall;
   end;
 
 implementation
@@ -210,4 +213,29 @@ begin
     Result := Value;
 end;
 
+function TfrmImport.GetString(out Section, Name, Value: WideString): WordBool;
+begin
+  Result := true;
+  case FCount of
+    0: Value := SOptional;
+    1: Value := self.Caption;
+    2: Value := lblOriginal.Caption;
+    3: Value := lblTranslation.Caption;
+    4: Value := btnBrowse.Caption;
+    5: Value := btnBrowse2.Caption;
+    6: Value := btnOK.Caption;
+    7: Value := btnCancel.Caption;
+    8: Value := OpenDialog1.Title;
+    9: Value := OpenDialog2.Title;
+  else
+    Result := false;
+    FCount := 0;
+  end;
+  if Result then
+    Inc(FCount);
+  Section := ClassName;
+  Name := Value;
+end;
+
 end.
+

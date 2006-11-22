@@ -23,7 +23,8 @@ uses
   PHPNukeImpl in 'PHPNukeImpl.pas',
   TransIntf in '..\TransIntf.pas',
   PreviewExportFrm in '..\PluginCommon\PreviewExportFrm.pas' {frmExport},
-  DualImportFrm in '..\PluginCommon\DualImportFrm.pas' {frmImport};
+  DualImportFrm in '..\PluginCommon\DualImportFrm.pas' {frmImport},
+  CommonUtils in '..\CommonUtils.pas';
 
 {$R *.res}
 function InstallPlugin(out Parser:IFileParser):HResult;stdcall;

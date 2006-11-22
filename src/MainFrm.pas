@@ -334,7 +334,7 @@ type
     TBXItem16: TSpTBXItem;
     TBXSeparatorItem8: TSpTBXSeparatorItem;
     mnuPlugins: TSpTBXSubmenuItem;
-    pbTranslated: TTntProgressBar;                 
+    pbTranslated: TTntProgressBar;
     mnuThemes: TSpTBXSubmenuItem;
     mnuThemesGroup: TSpTBXThemeGroupItem;
     acMakeConsistent: TTntAction;
@@ -492,7 +492,7 @@ type
       Down, Fuzzy: boolean; FindIn: TFindIn): TTntListItem;
     procedure UpdateStatus;
     function AddQuotes(const S: WideString): WideString;
-    function RemoveQuotes(const S: WideString): WideString;
+    function RemoveQuotes(const S: WideString; AForce: boolean = false): WideString;
     procedure CreateDict(ClearList: boolean);
     procedure LoadDictionary(const FileName: WideString);
     procedure SaveDictionary(const FileName: WideString);
@@ -579,7 +579,7 @@ type
     procedure UnRegisterNotify(const ANotify: INotify); safecall;
     function BeginUpdate: Integer; safecall;
     function EndUpdate: Integer; safecall;
-    function Translate(const Section, Name, Value: WideString): WideString; 
+    function Translate(const Section, Name, Value: WideString): WideString;
 {
     property Items:ITranslationItems read GetItems;
     property Orphans:ITranslationItems read GetOrphans;
@@ -762,7 +762,7 @@ begin
   if i > 0 then
   begin
     tmp := trim(Copy(ACommand, 1, i - 1));
-    tmp2 := ExpandUNCFileName(RemoveQuotes(trim(Copy(ACommand, i + 1, MaxInt))));
+    tmp2 := ExpandUNCFileName(RemoveQuotes(trim(Copy(ACommand, i + 1, MaxInt)), true));
   end
   else
   begin
@@ -844,7 +844,7 @@ begin
           if not ProcessCommand(S[i]) then
           begin
             Application.Terminate;
-            Close;
+            Halt(0); // Close is not fast enough
             Exit; // this will skip the ShowWindow below
           end;
       finally
@@ -852,8 +852,9 @@ begin
       end;
     finally
       FCommandProcessor := false;
-      lvTranslateStrings.Items.Count := FTranslateFile.Items.Count;
     end;
+    lvTranslateStrings.Items.Count := FTranslateFile.Items.Count;
+    ShowWindow(Application.Handle, SW_RESTORE);
     ShowWindow(Handle, SW_RESTORE);
     SendMessage(Handle, WM_SETREDRAW, 1, 0);
   end;
@@ -1220,7 +1221,15 @@ begin
       if S = '' then
         S := FTranslateFile.Items[i].Translation;
       FModified := false;
-      if FPrompt then
+      if FCommandProcessor then
+      begin
+        FResult := cDictUse;
+        if FDictionary[j].Translations.Count > 0 then
+          S := FDictionary[j].DefaultTranslation
+        else
+          Continue;
+      end
+      else if FPrompt then
         FResult := TfrmDictTranslationSelect.Edit(FDictionary[j], S, FModified, FPrompt)
       else if FDictionary[j].Translations.Count > 0 then
         S := FDictionary[j].DefaultTranslation
@@ -1247,7 +1256,8 @@ begin
       FTranslateFile.Items[i].Translated := S <> '';
     end;
   end;
-  InfoMsg(SDictTranslationCompleted, SInfoCaption);
+  if not FCommandProcessor then
+    InfoMsg(SDictTranslationCompleted, SInfoCaption);
 end;
 
 procedure TfrmMain.SetModified(const Value: boolean);
@@ -1268,7 +1278,7 @@ end;
 
 function TfrmMain.GetModified: boolean;
 begin
-  FModified := reTranslation.Modified or FModified or FTranslateFile.Items.Modified;
+  FModified := not FCommandProcessor and (reTranslation.Modified or FModified or FTranslateFile.Items.Modified);
   Result := FModified;
 end;
 
@@ -1330,10 +1340,10 @@ begin
     Result := S;
 end;
 
-function TfrmMain.RemoveQuotes(const S: WideString): WideString;
+function TfrmMain.RemoveQuotes(const S: WideString; AForce: boolean = false): WideString;
 begin
   Result := S;
-  if not acShowQuotes.Checked then
+  if not acShowQuotes.Checked and not AForce then
     Exit;
   if (Length(Result) > 0) then
   begin
@@ -2852,22 +2862,32 @@ begin
   try
     Options := Options + [ofOverwritePrompt];
     Title := _(ClassName, SSaveTranslationTemplate);
+    Filter := SFileFilter;
     if Execute then
     begin
-      DeleteFile(FileName); // make sure there are no redundant items in the file
-      GlobalLanguageFile.OnWriting := DoAllowWriting;
-      GlobalLanguageFile.OnWrite := DoWriteObject;
-      GlobalLanguageFile.OnWriteAdditional := DoSaveExtra;
+      WaitCursor;
+      try
+        RenameFile(FileName, FileName + '.bak');
+        DeleteFile(FileName); // make sure there are no redundant items in the file
+        GlobalLanguageFile.OnWriting := DoAllowWriting;
+        GlobalLanguageFile.OnWrite := DoWriteObject;
+        GlobalLanguageFile.OnWriteAdditional := DoSaveExtra;
       // Create the forms so we can access their properties
       // (I wonder if there is a more generic way to create all forms in an application?)
-      for i := Low(cTranslatableForms) to High(cTranslatableForms) do
-        AForms[i] := cTranslatableForms[i].Create(Application);
-      try
-        // this call iterates all the forms of the app and gets the translatable strings
-        GlobalLanguageFile.CreateTemplate(FileName, Application);
-      finally
         for i := Low(cTranslatableForms) to High(cTranslatableForms) do
-          AForms[i].Free;
+          AForms[i] := cTranslatableForms[i].Create(Application);
+        try
+        // this call iterates all the forms of the app and gets the translatable strings
+          GlobalLanguageFile.CreateTemplate(FileName, Application);
+        finally
+          for i := Low(cTranslatableForms) to High(cTranslatableForms) do
+            AForms[i].Free;
+        end;
+        DeleteFile(FileName + '.bak'); // remove backup
+      except
+        // something went wrong, restore old file
+        RenameFile(Filename + '.bak', Filename);
+        raise;
       end;
     end;
   finally

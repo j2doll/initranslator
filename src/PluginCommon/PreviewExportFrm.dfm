@@ -51,7 +51,7 @@ object frmExport: TfrmExport
     266)
   PixelsPerInch = 96
   TextHeight = 13
-  object lblFilename: TLabel
+  object lblFilename: TTntLabel
     Left = 12
     Top = 6
     Width = 46
@@ -59,14 +59,14 @@ object frmExport: TfrmExport
     Caption = '&Filename:'
     FocusControl = edFilename
   end
-  object lblPreview: TLabel
+  object lblPreview: TTntLabel
     Left = 12
     Top = 60
     Width = 91
     Height = 13
     Caption = '&Preview (editable):'
   end
-  object edFilename: TEdit
+  object edFilename: TTntEdit
     Left = 12
     Top = 24
     Width = 342
@@ -74,7 +74,7 @@ object frmExport: TfrmExport
     Anchors = [akLeft, akTop, akRight]
     TabOrder = 0
   end
-  object btnBrowse: TButton
+  object btnBrowse: TTntButton
     Left = 363
     Top = 24
     Width = 21
@@ -101,7 +101,7 @@ object frmExport: TfrmExport
     TabOrder = 2
     WordWrap = False
   end
-  object btnOK: TButton
+  object btnOK: TTntButton
     Left = 225
     Top = 239
     Width = 75
@@ -112,7 +112,7 @@ object frmExport: TfrmExport
     ModalResult = 1
     TabOrder = 3
   end
-  object btnCancel: TButton
+  object btnCancel: TTntButton
     Left = 305
     Top = 239
     Width = 75
@@ -123,7 +123,7 @@ object frmExport: TfrmExport
     ModalResult = 2
     TabOrder = 4
   end
-  object SaveDialog1: TSaveDialog
+  object SaveDialog1: TTntSaveDialog
     InitialDir = '.'
     Options = [ofOverwritePrompt, ofHideReadOnly, ofEnableSizing]
     Left = 58

@@ -19,13 +19,14 @@ unit CommonUtils;
 
 interface
 uses
-  SysUtils, Controls, Classes, TntClasses;
+  Windows, SysUtils, Controls, Classes, TntClasses;
 
 procedure InfoMsg(const AText, ACaption: WideString);
 procedure AboutMsg(const AText, ACaption: WideString);
 procedure ErrMsg(const AText, ACaption: WideString);
 function YesNo(const AText, ACaption: WideString): boolean;
 function YesNoCancel(const AText, ACaption: WideString): integer;
+function WideMessageBox(hWnd: HWND; lpText, lpCaption: PWideChar; uType: UINT): Integer;
 
 function GetCmdSwitchValue(const Switch: AnsiString; SwitchChars: TSysCharSet; var Value: AnsiString; IgnoreCase: boolean): boolean;
 function ScreenCursor(ACursor: TCursor): IInterface;
@@ -56,7 +57,7 @@ function IsCharPunct(const S: WideChar): boolean;
 
 implementation
 uses
-  Windows, Forms, Dialogs, Math, Registry, StrUtils,
+  Forms, Dialogs, Math, Registry, StrUtils,
   TntWindows, TntSysUtils, TntWideStrUtils;
 
 function MyWideDequotedStr(const S: WideString; Quote: WideChar): WideString;
@@ -135,7 +136,7 @@ begin
   if Win32PlatformIsUnicode then
     Result := MessageBoxW(hWnd, lpText, lpCaption, uType)
   else
-    Result := MessageBoxA(hWnd, PAnsiChar(lpText), PAnsiChar(lpCaption), uType);
+    Result := MessageBoxA(hWnd, PAnsiChar(string(lpText)), PAnsiChar(string(lpCaption)), uType);
 end;
 
 procedure InfoMsg(const AText, ACaption: WideString);

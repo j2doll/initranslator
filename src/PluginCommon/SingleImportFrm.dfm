@@ -53,14 +53,14 @@ object frmImport: TfrmImport
     106)
   PixelsPerInch = 96
   TextHeight = 13
-  object lblFilename: TLabel
+  object lblFilename: TTntLabel
     Left = 8
     Top = 8
     Width = 46
     Height = 13
     Caption = '&Filename:'
   end
-  object edFilename: TEdit
+  object edFilename: TTntEdit
     Left = 8
     Top = 24
     Width = 337
@@ -68,7 +68,7 @@ object frmImport: TfrmImport
     Anchors = [akLeft, akTop, akRight]
     TabOrder = 0
   end
-  object btnBrowse: TButton
+  object btnBrowse: TTntButton
     Left = 352
     Top = 24
     Width = 21
@@ -78,7 +78,7 @@ object frmImport: TfrmImport
     TabOrder = 1
     OnClick = btnBrowseClick
   end
-  object btnOK: TButton
+  object btnOK: TTntButton
     Left = 208
     Top = 64
     Width = 75
@@ -89,7 +89,7 @@ object frmImport: TfrmImport
     ModalResult = 1
     TabOrder = 2
   end
-  object btnCancel: TButton
+  object btnCancel: TTntButton
     Left = 288
     Top = 64
     Width = 75
@@ -100,7 +100,7 @@ object frmImport: TfrmImport
     ModalResult = 2
     TabOrder = 3
   end
-  object OpenDialog1: TOpenDialog
+  object OpenDialog1: TTntOpenDialog
     DefaultExt = 'dtd'
     Filter = 'MessenegerDTD files (*.dtd|*.dtd|All files (*.*)|*.*'
     InitialDir = '.'

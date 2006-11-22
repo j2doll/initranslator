@@ -22,13 +22,16 @@ uses
   Classes, Types, TntClasses, TransIntf;
 
 type
-  TMozillaDTDParser = class(TInterfacedObject, IUnknown, IFileParser)
+  TMozillaDTDParser = class(TInterfacedObject, IUnknown, IFileParser, ILocalizable)
   private
     FOldAppHandle: Cardinal;
+    FCount: integer;
+    FAppServices: IApplicationServices;
     FOrigFile, FTransFile: string;
     procedure LoadSettings;
     procedure SaveSettings;
     procedure BuildPreview(Items: ITranslationItems; Strings: TTntStrings);
+    function Translate(const Value:WideString):WideString;
   public
     constructor Create;
     destructor Destroy; override;
@@ -40,7 +43,10 @@ type
       const Orphans: ITranslationItems): HRESULT; safecall;
     function ImportItems(const Items: ITranslationItems;
       const Orphans: ITranslationItems): HRESULT; safecall;
-    procedure Init(const ApplicationServices:IApplicationServices); safecall;
+    procedure Init(const ApplicationServices: IApplicationServices); safecall;
+    function GetString(out Section: WideString; out Name: WideString;
+      out Value: WideString): WordBool; safecall;
+
   end;
 
 implementation
@@ -95,9 +101,9 @@ function TMozillaDTDParser.DisplayName(Capability: Integer): WideString;
 begin
   case Capability of
     CAP_IMPORT:
-      Result := cDTDImportTitle;
+      Result := Translate(cDTDImportTitle);
     CAP_EXPORT:
-      Result := cDTDExportTitle;
+      Result := Translate(cDTDExportTitle);
   else
     Result := '';
   end;
@@ -117,7 +123,7 @@ begin
     S := TTntStringlist.Create;
     try
       BuildPreview(Items, S);
-      if TfrmExport.Execute(FTransFile, cDTDExportTitle, cDTDFilter, '.', 'dtd', S) then
+      if TfrmExport.Execute(FTransFile, Translate(cDTDExportTitle), Translate(cDTDFilter), '.', 'dtd', S) then
       begin
         S.AnsiStrings.SaveToFile(FTransFile);
         Result := S_OK;
@@ -130,6 +136,25 @@ begin
   except
     Application.HandleException(self);
   end;
+end;
+
+function TMozillaDTDParser.GetString(out Section, Name,
+  Value: WideString): WordBool;
+begin
+  Result := true;
+  case FCount of
+    0: Value := cDTDFilter;
+    1: Value := cDTDImportTitle;
+    2: Value := cDTDExportTitle;
+  // 3: cSectionName = 'Mozilla Messenger';
+  else
+    Result := false;
+    FCount := 0;
+  end;
+  if Result then
+    Inc(FCount);
+  Section := ClassName;
+  Name := Value;
 end;
 
 function TMozillaDTDParser.ImportItems(const Items,
@@ -146,7 +171,7 @@ begin
     Orphans.Clear;
     TI := nil;
     LoadSettings;
-    if TfrmImport.Execute(FOrigFile, FTransFile, cDTDImportTitle, cDTDFilter, '.', 'dtd') then
+    if TfrmImport.Execute(FOrigFile, FTransFile, Translate(cDTDImportTitle), Translate(cDTDFilter), '.', 'dtd') then
     begin
       Items.Sort := stNone;
       S := TTntStringlist.Create;
@@ -212,8 +237,9 @@ begin
   end;
 end;
 
-procedure TMozillaDTDParser.Init(const ApplicationServices:IApplicationServices);
+procedure TMozillaDTDParser.Init(const ApplicationServices: IApplicationServices);
 begin
+  FAppServices := ApplicationServices;
   Application.Handle := ApplicationServices.AppHandle;
 end;
 
@@ -245,6 +271,14 @@ begin
   except
     Application.HandleException(Self);
   end;
+end;
+
+function TMozillaDTDParser.Translate(const Value: WideString): WideString;
+begin
+  if FAppServices <> nil then
+    Result := FAppServices.Translate(ClassName, Value, Value)
+  else
+    Result := Value;
 end;
 
 end.

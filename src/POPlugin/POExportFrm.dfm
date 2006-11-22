@@ -51,10 +51,10 @@ object frmPOExport: TfrmPOExport
   ShowHint = True
   DesignSize = (
     392
-    273)
+    266)
   PixelsPerInch = 96
   TextHeight = 13
-  object Label1: TLabel
+  object Label1: TTntLabel
     Left = 8
     Top = 8
     Width = 46
@@ -62,7 +62,7 @@ object frmPOExport: TfrmPOExport
     Caption = '&Filename:'
     FocusControl = edFilename
   end
-  object Label3: TLabel
+  object Label3: TTntLabel
     Left = 8
     Top = 54
     Width = 91
@@ -85,7 +85,7 @@ object frmPOExport: TfrmPOExport
     TabOrder = 2
     WordWrap = False
   end
-  object edFilename: TEdit
+  object edFilename: TTntEdit
     Left = 8
     Top = 24
     Width = 346
@@ -93,7 +93,7 @@ object frmPOExport: TfrmPOExport
     Anchors = [akLeft, akTop, akRight]
     TabOrder = 0
   end
-  object btnBrowse: TButton
+  object btnBrowse: TTntButton
     Left = 358
     Top = 24
     Width = 21
@@ -102,7 +102,7 @@ object frmPOExport: TfrmPOExport
     Anchors = [akTop, akRight]
     TabOrder = 1
   end
-  object btnOK: TButton
+  object btnOK: TTntButton
     Left = 221
     Top = 238
     Width = 75
@@ -113,7 +113,7 @@ object frmPOExport: TfrmPOExport
     ModalResult = 1
     TabOrder = 5
   end
-  object btnCancel: TButton
+  object btnCancel: TTntButton
     Left = 301
     Top = 238
     Width = 75
@@ -124,7 +124,7 @@ object frmPOExport: TfrmPOExport
     ModalResult = 2
     TabOrder = 6
   end
-  object chkCompileMO: TCheckBox
+  object chkCompileMO: TTntCheckBox
     Left = 8
     Top = 187
     Width = 97
@@ -134,7 +134,7 @@ object frmPOExport: TfrmPOExport
     TabOrder = 3
     OnClick = chkCompileMOClick
   end
-  object edMOCmdLine: TEdit
+  object edMOCmdLine: TTntEdit
     Left = 16
     Top = 209
     Width = 363
@@ -148,16 +148,16 @@ object frmPOExport: TfrmPOExport
     TabOrder = 4
     Text = 'msgfmt "%i" -o "%o"'
   end
-  object alPOExport: TActionList
+  object alPOExport: TTntActionList
     OnUpdate = alPOExportUpdate
     Left = 72
     Top = 88
-    object acSaveFile: TAction
+    object acSaveFile: TTntAction
       Caption = '...'
       OnExecute = acSaveFileExecute
     end
   end
-  object SaveDialog1: TSaveDialog
+  object SaveDialog1: TTntSaveDialog
     DefaultExt = 'po'
     Filter = 'PO Files|*.po|All files|*.*'
     Options = [ofOverwritePrompt, ofHideReadOnly, ofEnableSizing]

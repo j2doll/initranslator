@@ -21,26 +21,32 @@ interface
 
 uses
   Windows, Messages, SysUtils, Classes, Graphics, Controls, Forms,
-  Dialogs, StdCtrls, ComCtrls;
+  Dialogs, StdCtrls, ComCtrls, TransIntf, TntClasses, TntForms, TntDialogs, TntStdCtrls,
+  TntComCtrls;
 
 type
 
-  TfrmImport = class(TForm)
-    Label1: TLabel;
-    edFilename: TEdit;
-    btnBrowse: TButton;
-    btnOK: TButton;
-    btnCancel: TButton;
-    OpenDialog1: TOpenDialog;
-    edSkipLines: TEdit;
-    Label2: TLabel;
-    udSkipLines: TUpDown;
+  TfrmImport = class(TTntForm, IInterface, ILocalizable)
+    Label1: TTntLabel;
+    edFilename: TTntEdit;
+    btnBrowse: TTntButton;
+    btnOK: TTntButton;
+    btnCancel: TTntButton;
+    OpenDialog1: TTntOpenDialog;
+    edSkipLines: TTntEdit;
+    Label2: TTntLabel;
+    udSkipLines: TTntUpDown;
     procedure btnBrowseClick(Sender: TObject);
   private
     { Private declarations }
+    FCount:integer;
+    FAppServices:IApplicationServices;
+    function Translate(const Value:WideString):WideString;
   public
     { Public declarations }
-    class function Execute(var AFilename: string; var SkipLines:integer; const ACaption, Filter, InitialDir, DefaultExt: string): boolean;
+    class function Execute(var AFilename: string; var SkipLines: integer; const ACaption, Filter, InitialDir, DefaultExt: string): boolean;overload;
+    class function Execute(const ApplicationServices:IApplicationServices; var AFilename: string; var SkipLines: integer; const ACaption, Filter, InitialDir, DefaultExt: string): boolean;overload;
+    function GetString(out Section: WideString; out Name: WideString; out Value: WideString): WordBool; safecall;
   end;
 
 implementation
@@ -49,15 +55,38 @@ implementation
 
 { TfrmImport }
 
-class function TfrmImport.Execute(var AFilename: string; var SkipLines:integer; const ACaption, Filter, InitialDir, DefaultExt: string): boolean;
+class function TfrmImport.Execute(var AFilename: string; var SkipLines: integer;
+  const ACaption, Filter, InitialDir, DefaultExt: string): boolean;
+begin
+  Result := Execute(nil, AFilename, SkipLines, ACaption, Filter, InitialDir, DefaultExt);
+end;
+
+procedure TfrmImport.btnBrowseClick(Sender: TObject);
+begin
+  OpenDialog1.Filename := edFilename.Text;
+  if OpenDialog1.Execute then
+    edFilename.Text := OpenDialog1.Filename;
+end;
+
+class function TfrmImport.Execute(
+  const ApplicationServices: IApplicationServices; var AFilename: string;
+  var SkipLines: integer; const ACaption, Filter, InitialDir,
+  DefaultExt: string): boolean;
 var
   frmImport: TfrmImport;
 begin
   frmImport := self.Create(Application);
   with frmImport do
   try
-    Caption := ACaption;
-    OpenDialog1.Filter := Filter;
+    FAppServices := ApplicationServices;
+    Label1.Caption := Translate(Label1.Caption);
+    Label2.Caption := Translate(Label2.Caption);
+    btnBrowse.Caption := Translate(btnBrowse.Caption);
+    btnOK.Caption := Translate(btnOK.Caption);
+    btnCancel.Caption := Translate(btnCancel.Caption);
+    Caption := Translate(ACaption);
+    OpenDialog1.Title := Translate(OpenDialog1.Title);
+    OpenDialog1.Filter := Translate(Filter);
     OpenDialog1.InitialDir := InitialDir;
     OpenDialog1.DefaultExt := DefaultExt;
     edFilename.Text := AFilename;
@@ -73,11 +102,35 @@ begin
   end;
 end;
 
-procedure TfrmImport.btnBrowseClick(Sender: TObject);
+function TfrmImport.Translate(const Value: WideString): WideString;
 begin
-  OpenDialog1.Filename := edFilename.Text;
-  if OpenDialog1.Execute then
-    edFilename.Text := OpenDialog1.Filename;
+  if FAppServices <> nil then
+    Result := FAppServices.Translate(ClassName, Value, Value)
+  else
+    Result := Value;
+end;
+
+
+function TfrmImport.GetString(out Section, Name,
+  Value: WideString): WordBool;
+begin
+  Result := true;
+  case FCount of
+    0: Value := self.Caption;
+    1: Value := Label1.Caption;
+    2: Value := Label2.Caption;
+    3: Value := btnBrowse.Caption;
+    4: Value := btnOK.Caption;
+    5: Value := btnCancel.Caption;
+    6: Value := OpenDialog1.Title;
+  else
+    Result := false;
+    FCount := 0;
+  end;
+  if Result then
+    Inc(FCount);
+  Section := ClassName;
+  Name := Value;
 end;
 
 end.

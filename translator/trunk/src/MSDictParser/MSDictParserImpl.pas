@@ -23,8 +23,10 @@ uses
   Classes, SysUtils, Types, TransIntf, TntClasses;
 
 type
-  TMsDictParser = class(TInterfacedObject, IUnknown, IFileParser)
+  TMsDictParser = class(TInterfacedObject, IUnknown, IFileParser, ILocalizable)
   private
+    FCount: integer;
+    FAppServices: IApplicationServices;
     FAppHandle: Cardinal;
     FSkipLines: integer;
     { IFileParser }
@@ -33,14 +35,15 @@ type
     function DisplayName(Capability: Integer): WideString; safecall;
     function ExportItems(const Items: ITranslationItems; const Orphans: ITranslationItems): HRESULT; safecall;
     function ImportItems(const Items: ITranslationItems; const Orphans: ITranslationItems): HRESULT; safecall;
-    procedure Init(const ApplicationServices:IApplicationServices); safecall;
+    procedure Init(const ApplicationServices: IApplicationServices); safecall;
     function AddCopyright: boolean;
+    function Translate(const Value: WideString): WideString;
   protected
     FTransFile: string;
     procedure LoadSettings;
     procedure SaveSettings;
     procedure BuildPreview(Items: ITranslationItems; Strings: TTntStrings);
-
+    function GetString(out Section: WideString; out Name: WideString; out Value: WideString): WordBool; safecall;
   public
     constructor Create;
     destructor Destroy; override;
@@ -55,14 +58,16 @@ const
   cMsDictFilter = 'MS Glossary Files (*.csv)|*.csv|All files (*.*)|*.*';
   cMsDictImportTitle = 'Import from MS Glossary CSV file';
   cMsDictExportTitle = 'Export to MS Glossary CSV file';
-  cSectionName = 'MS Glossary';
   cCopyright = 'This glossary is intellectual property of Microsoft Corporation. Please refer to the complete copyright text in the README.TXT file included in this file.,,,,,,,';
+  cAddCopyright = 'Add Microsoft Copyright notice?';
+  cConfirm = 'Confirm';
+  cSectionName = 'MS Glossary';
 
 { TMsDictParser }
 
 function TMsDictParser.AddCopyright: boolean;
 begin
-  Result := MessageBox(GetFocus, 'Add Microsoft Copyright notice?', 'Confirm', MB_YESNO) = IDYES;
+  Result := WideMessageBox(0, PWideChar(Translate(cAddCopyright)), PWideChar(Translate(cConfirm)), MB_YESNO) = IDYES;
 end;
 
 procedure TMsDictParser.BuildPreview(Items: ITranslationItems; Strings: TTntStrings);
@@ -70,7 +75,7 @@ var i: integer;
 begin
   if AddCopyright then
   begin
-    Strings.Add(cCopyright);
+    Strings.Add(Translate(cCopyright));
     Strings.Add('');
   end;
   for i := 0 to Items.Count - 1 do
@@ -103,9 +108,9 @@ function TMsDictParser.DisplayName(Capability: Integer): WideString;
 begin
   case Capability of
     CAP_IMPORT:
-      Result := cMSDictImportTitle;
+      Result := Translate(cMSDictImportTitle);
     CAP_EXPORT:
-      Result := cMSDictExportTitle;
+      Result := Translate(cMSDictExportTitle);
   else
     Result := '';
   end;
@@ -126,7 +131,7 @@ begin
     S := TTntStringlist.Create;
     try
       BuildPreview(Items, S);
-      if TfrmExport.Execute(FTransFile, cMsDictExportTitle, cMsDictFilter, '.', 'csv', S) then
+      if TfrmExport.Execute(FTransFile, Translate(cMsDictExportTitle), Translate(cMsDictFilter), '.', 'csv', S) then
       begin
         S.AnsiStrings.SaveToFile(FTransFile);
         Result := S_OK;
@@ -144,6 +149,39 @@ end;
 function WideContainsText(const AText, ASubText: WideString): boolean;
 begin
   Result := Pos(WideUppercase(ASubText), WideUppercase(AText)) > 0;
+end;
+
+var
+  frmImport:TfrmImport = nil;
+
+function TMsDictParser.GetString(out Section, Name,
+  Value: WideString): WordBool;
+begin
+  Result := true;
+  case FCount of
+    0: Value := cMsDictFilter;
+    1: Value := cMsDictImportTitle;
+    2: Value := cMsDictExportTitle;
+    3: Value := cCopyright;
+    4: Value := cAddCopyright;
+    5: Value := cConfirm;
+  else
+    if frmImport = nil then
+      frmImport := TfrmImport.Create(Application);
+    Result := frmImport.GetString(Section, Name, Value);
+    if not Result then
+    begin
+      FreeAndNil(frmImport);
+      FCount := 0
+    end;
+  end;
+  if Result then
+    Inc(FCount);
+  if frmImport = nil then
+  begin
+    Section := ClassName;
+    Name := Value;
+  end;
 end;
 
 function TMsDictParser.ImportItems(const Items, Orphans: ITranslationItems): HRESULT;
@@ -224,7 +262,7 @@ var
     // NB! In some cases an item is split on several lines. This parser cannot handle those items. To import
     // such a file, you will have to first manually edit it (in an editor that supports Unicode, like WordPad),
     // removing the unwanted CRLF's.
-    
+
     Cmt := S;
     P := PWideChar(S);
     _End := P + Length(S);
@@ -266,7 +304,7 @@ begin
     Items.Clear;
     Orphans.Clear;
     LoadSettings;
-    if TfrmImport.Execute(FTransFile, FSkipLines, cMsDictImportTitle, cMsDictFilter, '.', 'csv') then
+    if TfrmImport.Execute(FTransFile, FSkipLines, Translate(cMsDictImportTitle), Translate(cMsDictFilter), '.', 'csv') then
     begin
       Items.Sort := stNone;
       if FSkipLines < 0 then
@@ -289,8 +327,9 @@ begin
   end;
 end;
 
-procedure TMsDictParser.Init(const ApplicationServices:IApplicationServices);
+procedure TMsDictParser.Init(const ApplicationServices: IApplicationServices);
 begin
+  FAppServices := ApplicationServices;
   Application.Handle := ApplicationServices.AppHandle;
 end;
 
@@ -322,6 +361,14 @@ begin
   except
     Application.HandleException(self);
   end;
+end;
+
+function TMsDictParser.Translate(const Value: WideString): WideString;
+begin
+  if FAppServices <> nil then
+    Result := FAppServices.Translate(ClassName, Value, Value)
+  else
+    Result := Value;
 end;
 
 end.

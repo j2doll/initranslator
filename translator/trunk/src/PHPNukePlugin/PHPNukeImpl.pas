@@ -23,50 +23,54 @@ uses
   Classes, Types, TransIntf;
 
 type
-  TPHPNukeParser = class(TInterfacedObject, IUnknown, IFileParser)
+  TPHPNukeParser = class(TInterfacedObject, IUnknown, IFileParser, ILocalizable)
   private
     FOldHandle: Cardinal;
+    FAppServices:IApplicationServices;
+    FCount:integer;
     FOrigFile, FTransFile: string;
     procedure LoadSettings;
     procedure SaveSettings;
+    function Translate(const Value: WideString): WideString;
   public
     constructor Create;
     destructor Destroy; override;
+
     function Capabilities: integer; safecall;
     function Configure(Capability: integer): HRESULT; safecall;
     function DisplayName(Capability: integer): WideString; safecall;
     function ExportItems(const Items, Orphans: ITranslationItems): HRESULT; safecall;
     function ImportItems(const Items, Orphans: ITranslationItems): HRESULT; safecall;
     procedure Init(const ApplicationServices: IApplicationServices); safecall;
+    function GetString(out Section, Name, Value: WideString): WordBool; safecall;
   end;
 
 implementation
 uses
   Windows, SysUtils, StrUtils, Controls, Forms,
-  IniFiles, TntClasses, PreviewExportFrm, DualImportFrm;
+  IniFiles, CommonUtils, TntClasses, PreviewExportFrm, DualImportFrm;
 
 const
   cPHPNukeFilter = 'PHP files (*.php)|*.php|All files (*.*)|*.*';
   cPHPNukeExportTitle = 'Export to phpNuke language file';
   cPHPNukeImportTitle = 'Import from phpNuke language file';
-  cSectionName = 'phpNuke';
   cAppTitle = 'phpNuke Parser';
+  cSectionName = 'phpNuke';
 var
   FFooter: TTntStringlist;
 
-procedure ErrMsg(const AText, ACaption: string);
+procedure ErrMsg(const AText, ACaption: WideString);
 begin
-  MessageBox(GetFocus, PChar(AText), PChar(ACaption), MB_OK or MB_ICONERROR);
+  WideMessageBox(GetFocus, PWideChar(AText), PWideChar(ACaption), MB_OK or MB_ICONERROR);
 end;
 
 procedure ExceptMsg(E: Exception);
-var ATitle, AFilename: string;
+var ATitle, AFilename: WideString;
 begin
   AFilename := GetModuleName(hInstance);
   ATitle := ChangeFileExt(ExtractFilename(AFilename), '');
-  MessageBox(GetActiveWindow, PChar(Format('Exception "%s" raised in %s:'#13#10#13#10'%s', [E.ClassName, AFilename, E.Message])),
-    PChar(Format('Error in %s', [ATitle])),
-    MB_OK or MB_ICONERROR or MB_TASKMODAL);
+  WideMessageBox(GetActiveWindow, PWideChar(WideString(Format('Exception "%s" raised in %s:'#13#10#13#10'%s', [E.ClassName, AFilename, E.Message]))),
+    PWideChar(WideString(Format('Error in %s', [ATitle]))), MB_OK or MB_ICONERROR or MB_TASKMODAL);
 end;
 
 { TPHPNukeParser }
@@ -98,9 +102,9 @@ function TPHPNukeParser.DisplayName(Capability: integer): WideString;
 begin
   case Capability of
     CAP_IMPORT:
-      Result := cPHPNukeImportTitle;
+      Result := Translate(cPHPNukeImportTitle);
     CAP_EXPORT:
-      Result := cPHPNukeExportTitle;
+      Result := Translate(cPHPNukeExportTitle);
   end;
 end;
 
@@ -146,7 +150,7 @@ begin
           S.Add(Format('DEFINE("%s",%s);', [Items[i].Name, DefaultStr(Items[i].Translation, Items[i].TransQuote)]));
       end;
       S.AddStrings(FFooter);
-      if TfrmExport.Execute(FTransFile, cPHPNukeExportTitle, cPHPNukeFilter, '.', 'php', S) then
+      if TfrmExport.Execute(FTransFile, Translate(cPHPNukeExportTitle), Translate(cPHPNukeFilter), '.', 'php', S) then
       begin
         S.AnsiStrings.SaveToFile(FTransFile);
         Result := S_OK;
@@ -158,8 +162,26 @@ begin
     end;
   except
     on E: Exception do
-      ErrMsg(E.Message, cAppTitle);
+      ErrMsg(E.Message, Translate(cAppTitle));
   end;
+end;
+
+function TPHPNukeParser.GetString(out Section, Name, Value: WideString): WordBool;
+begin
+  Result := true;
+  case FCount of
+    0: Value := cPHPNukeFilter;
+    1: Value := cPHPNukeExportTitle;
+    2: Value := cPHPNukeImportTitle;
+    3: Value := cAppTitle;
+  else
+    Result := false;
+    FCount := 0;
+  end;
+  if not Result then
+    Inc(FCount);
+  Section := ClassName;
+  Name := Value;
 end;
 
 function TPHPNukeParser.ImportItems(const Items, Orphans: ITranslationItems): HRESULT;
@@ -229,7 +251,7 @@ begin
     LoadSettings;
     //    Screen.Cursor := crHourGlass;
     try
-      if TfrmImport.Execute(FOrigFile, FTransFile, cPHPNukeImportTitle, cPHPNukeFilter, '.', 'php') then
+      if TfrmImport.Execute(FOrigFile, FTransFile, Translate(cPHPNukeImportTitle), Translate(cPHPNukeFilter), '.', 'php') then
       begin
         Items.Clear;
         Orphans.Clear;
@@ -294,6 +316,7 @@ end;
 procedure TPHPNukeParser.Init(const ApplicationServices: IApplicationServices);
 begin
   FOldHandle := Application.Handle;
+  FAppServices := ApplicationServices;
   Application.Handle := ApplicationServices.AppHandle;
 end;
 
@@ -327,6 +350,14 @@ begin
     on E: Exception do
       ErrMsg(E.Message, cAppTitle);
   end;
+end;
+
+function TPHPNukeParser.Translate(const Value: WideString): WideString;
+begin
+  if FAppServices <> nil then
+    Result := FAppServices.Translate(ClassName, Value, Value)
+  else
+    Result := Value;
 end;
 
 initialization

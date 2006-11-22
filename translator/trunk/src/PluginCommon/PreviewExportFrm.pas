@@ -21,38 +21,38 @@ interface
 
 uses
   Windows, Messages, SysUtils, Classes, Graphics, Controls, Forms,
-  Dialogs, StdCtrls, ComCtrls, TntClasses, TntComCtrls, TransIntf;
+  Dialogs, StdCtrls, ComCtrls, TntForms, TntClasses, TntComCtrls, TransIntf,
+  TntDialogs, TntStdCtrls;
 
 type
-  TfrmExport = class(TForm)
-    lblFilename: TLabel;
-    edFilename: TEdit;
-    btnBrowse: TButton;
+  TfrmExport = class(TTntForm, IInterface, ILocalizable)
+    lblFilename: TTntLabel;
+    edFilename: TTntEdit;
+    btnBrowse: TTntButton;
     rePreview: TTntRichEdit;
-    btnOK: TButton;
-    btnCancel: TButton;
-    lblPreview: TLabel;
-    SaveDialog1: TSaveDialog;
+    btnOK: TTntButton;
+    btnCancel: TTntButton;
+    lblPreview: TTntLabel;
+    SaveDialog1: TTntSaveDialog;
     procedure btnBrowseClick(Sender: TObject);
   private
     { Private declarations }
     FHasPrompted: boolean;
-    FApplicationServices:IApplicationServices;
+    FApplicationServices: IApplicationServices;
+    FCount: integer;
     function CheckFilename: boolean;
     function IsValidFilename: boolean;
     function OverwriteOK: boolean;
     procedure LoadSettings;
     procedure SaveSettings;
-    function Translate(const Value:WideString):WideString;
+    function Translate(const Value: WideString): WideString;
   public
     { Public declarations }
-    class function Execute(var FileName: string;
-      const ACaption, Filter, InitialDir, DefaultExt: string;
-      Preview: TTntStrings): boolean;overload;
-    class function Execute(const ApplicationServices:IApplicationServices;var FileName: string;
-      const ACaption, Filter, InitialDir, DefaultExt: string;
-      Preview: TTntStrings): boolean;overload;
-
+    class function Execute(var FileName: string; const ACaption, Filter, InitialDir, DefaultExt: string;
+      Preview: TTntStrings): boolean; overload;
+    class function Execute(const ApplicationServices: IApplicationServices; var FileName: string;
+      const ACaption, Filter, InitialDir, DefaultExt: string; Preview: TTntStrings): boolean; overload;
+    function GetString(out Section: WideString; out Name: WideString; out Value: WideString): WordBool; safecall;
   end;
 
 implementation
@@ -73,7 +73,7 @@ class function TfrmExport.Execute(var FileName: string;
   const ACaption, Filter, InitialDir, DefaultExt: string;
   Preview: TTntStrings): boolean;
 begin
-  Result := Execute(nil, Filename, ACaption, Filter, InitialDir, DefaultExt, Preview);  
+  Result := Execute(nil, Filename, ACaption, Filter, InitialDir, DefaultExt, Preview);
 end;
 
 procedure TfrmExport.btnBrowseClick(Sender: TObject);
@@ -93,7 +93,8 @@ begin
 end;
 
 procedure TfrmExport.LoadSettings;
-var M: TMemoryStream; FRect: TRect;
+var M: TMemoryStream;
+  FRect: TRect;
 begin
   try
     FRect := Rect(0, 0, 0, 0);
@@ -133,7 +134,8 @@ begin
 end;
 
 procedure TfrmExport.SaveSettings;
-var M: TMemoryStream; FRect: TRect;
+var M: TMemoryStream;
+  FRect: TRect;
 begin
   if WindowState = wsNormal then
   try
@@ -165,7 +167,7 @@ begin
   begin
     // try to create a new file: either it will fail because the file exists
     // or because the name is invalid
-    AHandle := CreateFile(PChar(edFilename.Text), 0, 0, nil, CREATE_NEW, 0, 0);
+    AHandle := CreateFile(PChar(string(edFilename.Text)), 0, 0, nil, CREATE_NEW, 0, 0);
     try
       ALastError := GetLastError;
       Result := (ALastError = ERROR_FILE_EXISTS) or (AHandle <> INVALID_HANDLE_VALUE);
@@ -232,6 +234,30 @@ begin
     Result := FApplicationServices.Translate(ClassName, Value, Value)
   else
     Result := Value;
+end;
+
+function TfrmExport.GetString(out Section, Name, Value: WideString): WordBool;
+begin
+  Result := true;
+  case FCount of
+    0: Value := SFmtErrIvalidFilename;
+    1: Value := SError;
+    2: Value := SFmtOverwriteOK;
+    3: Value := SConfirm;
+    4: Value := Self.Caption;
+    5: Value := lblFilename.Caption;
+    6: Value := lblPreview.Caption;
+    7: Value := btnBrowse.Caption;
+    8: Value := btnOK.Caption;
+    9: Value := btnCancel.Caption;  
+  else
+    Result := false;
+    FCount := 0;
+  end;
+  if Result then
+    Inc(FCount);
+  Section := ClassName;
+  Name := Value;
 end;
 
 end.

@@ -27,9 +27,11 @@ uses
 }
 
 type
-  TGSIParser = class(TInterfacedObject, IUnknown, IFileParser)
+  TGSIParser = class(TInterfacedObject, IUnknown, IFileParser, ILocalizable)
   private
     FOldHandle: LongWord;
+    FAppServices: IApplicationServices;
+    FCount: integer;
     FOrigFile, FTransFile: string;
     FOrigIsDual: boolean;
     FExportRect: TRect;
@@ -38,6 +40,7 @@ type
       const OrigFile, TransFile: string; OrigIsDual: boolean): boolean;
     procedure LoadSettings;
     procedure SaveSettings;
+    function Translate(const Value: WideString): WideString;
   public
     constructor Create;
     destructor Destroy; override;
@@ -48,21 +51,23 @@ type
 
     procedure Init(const ApplicationServices: IApplicationServices); safecall;
     function Capabilities: Integer; safecall;
+    function GetString(out Section, Name, Value: WideString): WordBool; safecall;
   end;
 
 implementation
 uses
-  Windows, Forms, IniFiles, TntSysUtils, PreviewExportFrm, OOGSIImportFrm;
+  Windows, Forms, IniFiles, TntSysUtils,
+  CommonUtils, PreviewExportFrm, OOGSIImportFrm;
 
 const
   cGSIFilter = 'OpenOffice GSI files (*.gsi)|*.gsi|All files (*.*)|*.*';
   cGSIExportTitle = 'Export to OpenOffice GSI language file';
   cGSIImportTitle = 'Import from OpenOffice GSI language file';
-  cSectionName = 'OpenOffice GSI';
   SImportError = 'There was an error importing, please check the files and try again';
   SError = 'OpenOffice GSI Parser Error';
   SFmtErrorMsg = '%s';
   cGSIPlaceHolder = #27;
+  cSectionName = 'OpenOffice GSI';
 
 function YesNo(const Text, Caption: string): boolean;
 begin
@@ -132,8 +137,8 @@ end;
 function TGSIParser.DisplayName(Capability: Integer): WideString;
 begin
   case Capability of
-    CAP_IMPORT: Result := cGSIImportTitle;
-    CAP_EXPORT: Result := cGSIExportTitle;
+    CAP_IMPORT: Result := Translate(cGSIImportTitle);
+    CAP_EXPORT: Result := Translate(cGSIExportTitle);
 //    CAP_CONFIGURE : Result := 'Configure';
   else
     Result := '';
@@ -141,7 +146,8 @@ begin
 end;
 
 procedure StrTokenize(const S: WideString; Delimiter: WideChar; List: TTNTStringlist; MinLength: integer = 1);
-var i, j: integer; tmp: string;
+var i, j: integer;
+  tmp: string;
 begin
   j := 1;
   for i := 1 to Length(S) do
@@ -189,6 +195,7 @@ var
       Result := '';
     end;
   end;
+
   procedure ParseRow(const Orig, Trans: WideString);
   var S: WideString;
   begin
@@ -262,7 +269,7 @@ begin
     S := TTntStringlist.Create;
     try
       BuildPreview(Items, S);
-      if TfrmExport.Execute(FOrigFile, cGSIExportTitle, cGSIFilter, '.', 'gsi', S) then
+      if TfrmExport.Execute(FOrigFile, Translate(cGSIExportTitle), Translate(cGSIFilter), '.', 'gsi', S) then
       begin
       // GSI files are always encodeds as UTF-8 but without BOM
         S.AnsiStrings.SaveToFileEx(FOrigFile, CP_UTF8);
@@ -282,7 +289,7 @@ begin
   try
     Result := S_FALSE;
     LoadSettings;
-    if TfrmImport.Execute(FOrigFile, FTransFile, FOrigIsDual, cGSIImportTitle, cGSIFilter, '.', 'gsi') then
+    if TfrmImport.Execute(FOrigFile, FTransFile, FOrigIsDual, Translate(cGSIImportTitle), Translate(cGSIFilter), '.', 'gsi') then
     begin
       if DoImport(Items, Orphans, FOrigFile, FTransFile, FOrigIsDual) then
       begin
@@ -290,7 +297,7 @@ begin
         Result := S_OK;
       end
       else
-        Application.MessageBox(PChar(SImportError), PChar(SError), MB_OK or MB_ICONERROR);
+        WideMessageBox(0, PWideChar(Translate(SImportError)), PWideChar(Translate(SError)), MB_OK or MB_ICONERROR);
     end;
   except
     Application.HandleException(Self);
@@ -299,6 +306,7 @@ end;
 
 procedure TGSIParser.Init(const ApplicationServices: IApplicationServices);
 begin
+  FAppServices := ApplicationServices;
   Application.Handle := ApplicationServices.AppHandle;
 end;
 
@@ -356,6 +364,32 @@ begin
   end;
 end;
 
+function TGSIParser.GetString(out Section, Name, Value: WideString): WordBool;
+begin
+  Result := true;
+  case FCount of
+    0: Value := cGSIFilter;
+    1: Value := cGSIExportTitle;
+    2: Value := cGSIImportTitle;
+    3: Value := SImportError;
+    4: Value := SError;
+  else
+    Result := false;
+    FCount := 0;
+  end;
+  if Result then
+    Inc(FCount);
+  Section := ClassName;
+  Name := Value;
+end;
+
+function TGSIParser.Translate(const Value: WideString): WideString;
+begin
+  if FAppServices <> nil then
+    Result := FAppServices.Translate(ClassName, Value, Value)
+  else
+    Result := Value;
+end;
 
 end.
 

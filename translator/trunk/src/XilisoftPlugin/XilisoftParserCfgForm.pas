@@ -19,10 +19,10 @@ interface
 
 uses
   Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
-  Dialogs, StdCtrls, TntStdCtrls, TransIntf;
+  Dialogs, StdCtrls, TntForms, TntStdCtrls, TransIntf;
 
 type
-  TXilisoftCfgForm = class(TForm)
+  TXilisoftCfgForm = class(TTntForm)
     TCB1: TTntCheckBox;
     TntButton1: TTntButton;
     procedure TntButton1Click(Sender: TObject);

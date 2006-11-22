@@ -23,22 +23,23 @@ interface
 
 uses
   Windows, Messages, SysUtils, Classes, Graphics, Controls, Forms,
-  Dialogs, StdCtrls, ComCtrls, ActnList, TntClasses, TntComCtrls;
+  Dialogs, StdCtrls, ComCtrls, ActnList, TntForms, TntClasses, TntComCtrls,
+  TntDialogs, TntActnList, TntStdCtrls;
 
 type
-  TfrmPOExport = class(TForm)
-    Label1: TLabel;
-    edFilename: TEdit;
-    btnBrowse: TButton;
-    btnOK: TButton;
-    btnCancel: TButton;
+  TfrmPOExport = class(TTntForm)
+    Label1: TTntLabel;
+    edFilename: TTntEdit;
+    btnBrowse: TTntButton;
+    btnOK: TTntButton;
+    btnCancel: TTntButton;
     rePreview: TTntRichEdit;
-    Label3: TLabel;
-    alPOExport: TActionList;
-    acSaveFile: TAction;
-    SaveDialog1: TSaveDialog;
-    chkCompileMO: TCheckBox;
-    edMOCmdLine: TEdit;
+    Label3: TTntLabel;
+    alPOExport: TTntActionList;
+    acSaveFile: TTntAction;
+    SaveDialog1: TTntSaveDialog;
+    chkCompileMO: TTntCheckBox;
+    edMOCmdLine: TTntEdit;
     procedure acSaveFileExecute(Sender: TObject);
     procedure alPOExportUpdate(Action: TBasicAction; var Handled: Boolean);
     procedure chkCompileMOClick(Sender: TObject);

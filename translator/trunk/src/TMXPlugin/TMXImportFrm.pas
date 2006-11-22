@@ -21,16 +21,16 @@ interface
 
 uses
   Windows, Messages, SysUtils, Classes, Graphics, Controls, Forms,
-  Dialogs, StdCtrls, TntStdCtrls;
+  Dialogs, StdCtrls, TntForms, TntStdCtrls, TntDialogs;
 
 type
-  TfrmImport = class(TForm)
+  TfrmImport = class(TTntForm)
     Label1: TTntLabel;
     edFilename: TTntEdit;
     btnBrowse: TTntButton;
     btnOK: TTntButton;
     btnCancel: TTntButton;
-    OpenDialog1: TOpenDialog;
+    OpenDialog1: TTntOpenDialog;
     Label2: TTntLabel;
     Label3: TTntLabel;
     cbOrigLang: TTntComboBox;

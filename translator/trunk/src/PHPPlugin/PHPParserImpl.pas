@@ -28,17 +28,19 @@ RESTRICTIONS:
   * does not do any character escaping
 }
 
-
 type
-  TPHPParser = class(TInterfacedObject, IUnknown, IFileParser)
+  TPHPParser = class(TInterfacedObject, IUnknown, IFileParser, ILocalizable)
   private
     FOldHandle: LongWord;
+    FCount: integer;
+    FAppServices: IApplicationServices;
     FOrigFile, FTransFile: string;
     FExportRect: TRect;
     procedure BuildPreview(const Items: ITranslationItems; Strings: TTntStrings);
     function DoPHPImport(const Items, Orphans: ITranslationItems; const OrigFile, TransFile: string): boolean;
     procedure LoadSettings;
     procedure SaveSettings;
+    function Translate(const Value: WideString): WideString;
   public
     constructor Create;
     destructor Destroy; override;
@@ -48,18 +50,20 @@ type
     function ImportItems(const Items, Orphans: ITranslationItems): HRESULT; safecall;
     procedure Init(const ApplicationServices: IApplicationServices); safecall;
     function Capabilities: Integer; safecall;
+    function GetString(out Section, Name, Value: WideString): WordBool; safecall;
   end;
 
 implementation
 uses
-  Windows, Forms, IniFiles, PreviewExportFrm, DualImportFrm;
+  Windows, Forms, IniFiles, CommonUtils, PreviewExportFrm, DualImportFrm;
+
 const
   cPHPFilter = 'PHP files (*.php)|*.php;*.php3|All files (*.*)|*.*';
   cPHPExportTitle = 'Export to PHP language file';
   cPHPImportTitle = 'Import from PHP language file';
-  cSectionName = 'php';
   SImportError = 'There was an error importing, please check the files and try again';
   SError = 'PHP Parser Error';
+  cSectionName = 'php';
 
 function YesNo(const Text, Caption: string): boolean;
 begin
@@ -119,8 +123,8 @@ end;
 function TPHPParser.DisplayName(Capability: Integer): WideString;
 begin
   case Capability of
-    CAP_IMPORT: Result := cPHPImportTitle;
-    CAP_EXPORT: Result := cPHPExportTitle;
+    CAP_IMPORT: Result := Translate(cPHPImportTitle);
+    CAP_EXPORT: Result := Translate(cPHPExportTitle);
 //    CAP_CONFIGURE : Result := 'Configure';
   else
     Result := '';
@@ -133,6 +137,7 @@ var
   S: TTntStringList;
   i, j: integer;
   FOldSort: TTranslateSortType;
+
   function ParseRow(const S: string; AIndex: integer; IsTranslation: boolean): boolean;
   type
     TParseState = (stNone, stDollar, stEqual, stFirstQuote, stLastQuote, stSemi);
@@ -209,7 +214,8 @@ begin
     S := TTntStringlist.Create;
     try
       S.LoadFromFile(OrigFile);
-      if not AnsiSameText(Copy(S.Text, 1, Length('<?php')), '<?php') then Exit;
+      if not AnsiSameText(Copy(S.Text, 1, Length('<?php')), '<?php') then
+        Exit;
       for i := 0 to S.Count - 1 do
         if Pos('$', S[i]) = 1 then
         begin
@@ -218,7 +224,8 @@ begin
         end;
       S.LoadFromFile(TransFile);
       Items.Sort := stSection;
-      if not AnsiSameText(Copy(S.Text, 1, Length('<?php')), '<?php') then Exit;
+      if not AnsiSameText(Copy(S.Text, 1, Length('<?php')), '<?php') then
+        Exit;
       for i := 0 to S.Count - 1 do
       begin
         if Pos('$', S[i]) = 1 then
@@ -243,7 +250,7 @@ begin
     S := TTntStringlist.Create;
     try
       BuildPreview(Items, S);
-      if TfrmExport.Execute(FTransFile, cPHPExportTitle, cPHPFilter, '.', 'php', S) then
+      if TfrmExport.Execute(FTransFile, Translate(cPHPExportTitle), Translate(cPHPFilter), '.', 'php', S) then
       begin
         S.AnsiStrings.SaveToFile(FTransFile);
         SaveSettings;
@@ -262,7 +269,7 @@ begin
   try
     Result := S_FALSE;
     LoadSettings;
-    if TfrmImport.Execute(FOrigFile, FTransFile, cPHPImportTitle, cPHPFilter, '.', 'php') then
+    if TfrmImport.Execute(FAppServices, FOrigFile, FTransFile, Translate(cPHPImportTitle), Translate(cPHPFilter), '.', 'php') then
     begin
       if DoPHPImport(Items, Orphans, FOrigFile, FTransFile) then
       begin
@@ -270,7 +277,7 @@ begin
         Result := S_OK;
       end
       else
-        Application.MessageBox(PChar(SImportError), PChar(SError), MB_OK or MB_ICONERROR);
+        WideMessageBox(GetActiveWindow, PWideChar(Translate(SImportError)), PWideChar(Translate(SError)), MB_OK or MB_ICONERROR);
     end;
   except
     Application.HandleException(Self);
@@ -279,6 +286,7 @@ end;
 
 procedure TPHPParser.Init(const ApplicationServices: IApplicationServices);
 begin
+  FAppServices := ApplicationServices;
   Application.Handle := ApplicationServices.AppHandle;
 end;
 
@@ -330,6 +338,53 @@ begin
   except
     Application.HandleException(Self);
   end;
+end;
+
+var
+  frmImport: TFrmImport = nil;
+  frmExport: TFrmExport = nil;
+
+function TPHPParser.GetString(out Section, Name, Value: WideString): WordBool;
+begin
+  Result := true;
+  case FCount of
+    0: Value := cPHPFilter;
+    1: Value := cPHPExportTitle;
+    2: Value := cPHPImportTitle;
+    3: Value := SImportError;
+    4: Value := SError;
+  else
+    if frmImport = nil then
+      frmImport := TfrmImport.Create(Application);
+    Result := frmImport.GetString(Section, Name, Value);
+    if not Result then
+    begin
+      FreeAndNil(frmImport);
+      if frmExport = nil then
+        frmExport := TfrmExport.Create(Application);
+      Result := frmExport.GetString(Section, Name, Value);
+      if not Result then
+      begin
+        FreeAndNil(frmExport);
+        FCount := 0;
+      end;
+    end;
+  end;
+  if Result then
+    Inc(FCount);
+  if (frmImport = nil) and (frmExport = nil) then
+  begin
+    Section := ClassName;
+    Name := Value;
+  end;
+end;
+
+function TPHPParser.Translate(const Value: WideString): WideString;
+begin
+  if FAppServices <> nil then
+    Result := FAppServices.Translate(ClassName, Value, Value)
+  else
+    Result := Value;
 end;
 
 end.

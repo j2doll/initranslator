@@ -49,7 +49,7 @@ object frmImport: TfrmImport
   Position = poScreenCenter
   DesignSize = (
     384
-    201)
+    194)
   PixelsPerInch = 96
   TextHeight = 13
   object Label1: TTntLabel
@@ -130,7 +130,7 @@ object frmImport: TfrmImport
     ModalResult = 2
     TabOrder = 3
   end
-  object OpenDialog1: TOpenDialog
+  object OpenDialog1: TTntOpenDialog
     DefaultExt = 'dtd'
     Filter = 'MessenegerDTD files (*.dtd|*.dtd|All files (*.*)|*.*'
     InitialDir = '.'

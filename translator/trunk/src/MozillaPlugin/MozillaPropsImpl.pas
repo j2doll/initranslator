@@ -21,25 +21,29 @@ interface
 uses
   SysUtils, Classes, Types, TntClasses, TransIntf;
 type
-  TMozillaPropsParser = class(TInterfacedObject, IUnknown, IFileParser)
+  TMozillaPropsParser = class(TInterfacedObject, IUnknown, IFileParser, ILocalizable)
   private
     FOldAppHandle: Cardinal;
+    FCount: integer;
+    FAppServices: IApplicationServices;
     FOrigFile, FTransFile: string;
-    FExportRect:TRect;
+    FExportRect: TRect;
     procedure LoadSettings;
     procedure SaveSettings;
-    procedure BuildPreview(Items:ITranslationItems; Strings:TTntStrings);
+    procedure BuildPreview(Items: ITranslationItems; Strings: TTntStrings);
+    function Translate(const Value: WideString): WideString;
   public
     constructor Create;
     destructor Destroy; override;
-    function Capabilities: Integer;safecall;
-    function Configure(Capability: Integer): HRESULT;safecall;
-    function DisplayName(Capability: Integer): WideString;safecall;
+    function Capabilities: Integer; safecall;
+    function Configure(Capability: Integer): HRESULT; safecall;
+    function DisplayName(Capability: Integer): WideString; safecall;
     function ExportItems(const Items: ITranslationItems;
-      const Orphans: ITranslationItems): HRESULT;safecall;
+      const Orphans: ITranslationItems): HRESULT; safecall;
     function ImportItems(const Items: ITranslationItems;
-      const Orphans: ITranslationItems): HRESULT;safecall;
-    procedure Init(const ApplicationServices:IApplicationServices);safecall;
+      const Orphans: ITranslationItems): HRESULT; safecall;
+    procedure Init(const ApplicationServices: IApplicationServices); safecall;
+    function GetString(out Section: WideString; out Name: WideString; out Value: WideString): WordBool; safecall;
   end;
 
 implementation
@@ -56,15 +60,15 @@ const
 
 procedure TMozillaPropsParser.BuildPreview(Items: ITranslationItems;
   Strings: TTntStrings);
-var i:integer;
+var i: integer;
 begin
   for i := 0 to Items.Count - 1 do
-  with Items[i] do
-  begin
-    if TransComments <> '' then
-      Strings.Add(TransComments);
-    Strings.Add(Format('%s=%s',[Name, Translation]));
-  end;
+    with Items[i] do
+    begin
+      if TransComments <> '' then
+        Strings.Add(TransComments);
+      Strings.Add(Format('%s=%s', [Name, Translation]));
+    end;
 end;
 
 function TMozillaPropsParser.Capabilities: Integer;
@@ -93,9 +97,9 @@ function TMozillaPropsParser.DisplayName(Capability: Integer): WideString;
 begin
   case Capability of
     CAP_EXPORT:
-      Result := cPropsExportTitle;
+      Result := Translate(cPropsExportTitle);
     CAP_IMPORT:
-      Result := cPropsImportTitle;
+      Result := Translate(cPropsImportTitle);
   else
     Result := '';
   end;
@@ -105,7 +109,7 @@ function TMozillaPropsParser.ExportItems(const Items,
   Orphans: ITranslationItems): HRESULT;
 var
   S: TTntStringlist;
-  FOldSort:TTranslateSortType;
+  FOldSort: TTranslateSortType;
 begin
   Result := S_FALSE;
   try
@@ -115,7 +119,7 @@ begin
     try
       Items.Sort := stIndex;
       BuildPreview(Items, S);
-      if TfrmExport.Execute(FTransFile, cPropsExportTitle, cPropsFilter, '.', 'properties', S) then
+      if TfrmExport.Execute(FTransFile, Translate(cPropsExportTitle), Translate(cPropsFilter), '.', 'properties', S) then
       begin
         S.AnsiStrings.SaveToFile(FTransFile);
         Result := S_OK;
@@ -130,18 +134,35 @@ begin
   end;
 end;
 
-function TMozillaPropsParser.ImportItems(const Items,
-  Orphans: ITranslationItems): HRESULT;
+function TMozillaPropsParser.GetString(out Section, Name,
+  Value: WideString): WordBool;
+begin
+  Result := true;
+  case FCount of
+    0: Value := cPropsFilter;
+    1: Value := cPropsImportTitle;
+    2: Value := cPropsExportTitle;
+  else
+    Result := false;
+    FCount := 0;
+  end;
+  if Result then
+    Inc(FCount);
+  Section := ClassName;
+  Name := Value;
+end;
+
+function TMozillaPropsParser.ImportItems(const Items, Orphans: ITranslationItems): HRESULT;
 var
   S: TTntStringlist;
   i, j: integer;
   TI: ITranslationItem;
-  tmp, cmt:WideString;
+  tmp, cmt: WideString;
 begin
   Result := S_FALSE;
   try
     LoadSettings;
-    if TfrmImport.Execute(FOrigFile, FTransFile, cPropsImportTitle, cPropsFilter, '.', 'properties') then
+    if TfrmImport.Execute(FOrigFile, FTransFile, Translate(cPropsImportTitle), Translate(cPropsFilter), '.', 'properties') then
     begin
       TI := nil;
       S := TTntStringlist.Create;
@@ -156,7 +177,7 @@ begin
             TI := Items.Add;
           if Pos('#', S[i]) = 1 then
             TI.OrigComments := TI.OrigComments + #13#10 + S[i]
-          else if Pos('=',S[i]) > 0 then
+          else if Pos('=', S[i]) > 0 then
           begin
             TI.Section := cSectionName;
             TI.Name := trim(Copy(S[i], 1, Pos('=', S[i]) - 1));
@@ -172,7 +193,7 @@ begin
         begin
           if Pos('#', S[i]) = 1 then
             cmt := cmt + #13#10 + S[i]
-          else if Pos('=',S[i]) > 0 then
+          else if Pos('=', S[i]) > 0 then
           begin
             tmp := trim(Copy(S[i], 1, Pos('=', S[i]) - 1));
             j := Items.IndexOf(cSectionName, tmp);
@@ -197,8 +218,9 @@ begin
   end;
 end;
 
-procedure TMozillaPropsParser.Init(const ApplicationServices:IApplicationServices);
+procedure TMozillaPropsParser.Init(const ApplicationServices: IApplicationServices);
 begin
+  FAppServices := ApplicationServices;
   Application.Handle := ApplicationServices.AppHandle;
 end;
 
@@ -244,6 +266,14 @@ begin
   end;
 end;
 
-end.
+function TMozillaPropsParser.Translate(
+  const Value: WideString): WideString;
+begin
+  if FAppServices <> nil then
+    Result := FAppServices.Translate(ClassName, Value, Value)
+  else
+    Result := Value;
+end;
 
+end.
 

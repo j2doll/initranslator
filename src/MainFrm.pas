@@ -3170,6 +3170,7 @@ begin
             not WideSameText(FTrans, FTranslateFile.Items[j].Translation) then
           begin
             FTranslateFile.Items[j].Translation := FTrans;
+            FTranslateFile.Items[j].Translated := true;
             Modified := true;
           end;
         end;
@@ -3743,7 +3744,7 @@ var
 begin
 
   i := lvTranslateStrings.ItemIndex;
-  lvTranslateStrings.Items.BeginUpdate;
+//  lvTranslateStrings.Items.BeginUpdate;
   try
     T := TExternalToolItem((Sender as TTBCustomItem).Tag);
     AItem := SelectedItem;
@@ -3752,7 +3753,7 @@ begin
     lvTranslateStrings.Invalidate;
   finally
 
-    lvTranslateStrings.Items.EndUpdate;
+//    lvTranslateStrings.Items.EndUpdate;
     if AItem <> nil then
       SelectedItem := AItem
     else

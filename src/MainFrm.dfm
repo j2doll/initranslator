@@ -1408,6 +1408,7 @@ object frmMain: TfrmMain
     object acMakeConsistent: TTntAction
       Category = 'Actions'
       Caption = 'Make all translations consistent'
+      ShortCut = 120
       OnExecute = acMakeConsistentExecute
     end
   end

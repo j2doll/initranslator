@@ -2378,7 +2378,11 @@ begin
   FreeAndNil(FExternalToolItems);
   for i := 0 to Length(FFileMonitors) - 1 do
     if FFileMonitors[i] <> nil then
+    begin
+      FFileMonitors[i].FreeOnTerminate := false;
       FFileMonitors[i].Terminate;
+      FFileMonitors[i].Free;
+    end;
   FApplicationServices := nil;
 end;
 

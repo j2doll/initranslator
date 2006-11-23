@@ -5,7 +5,7 @@ uses
   Classes, SysUtils, TransIntf, MainFrm;
 
 type
-  TApplicationServices = class(TObject, IInterface, IApplicationServices)
+  TApplicationServices = class(TInterfacedObject, IInterface, IApplicationServices)
   private
     FForm: TfrmMain;
   public
@@ -13,8 +13,7 @@ type
     function BeginUpdate: Integer; safecall;
     function EndUpdate: Integer; safecall;
     function GetAppHandle: Cardinal;
-    function GetAppOption(const Section: WideString;
-      const Name: WideString; const Default: WideString): WideString;
+    function GetAppOption(const Section: WideString; const Name: WideString; const Default: WideString): WideString;
       safecall;
     function GetDictionaryItems: IDictionaryItems;
     function GetFooter: WideString;
@@ -29,19 +28,11 @@ type
     function Translate(const Section, Name, Value: WideString): WideString; safecall;
     procedure UnRegisterNotify(const ANotify: INotify); safecall;
 
-    function _Release: Integer; stdcall;
-    function QueryInterface(const IID: TGUID; out Obj): HRESULT; stdcall;
-    function _AddRef: Integer; stdcall;
   end;
 
 implementation
 
 { TApplicationServices }
-
-function TApplicationServices._Release: Integer;
-begin
-  Result := -1;
-end;
 
 function TApplicationServices.BeginUpdate: Integer;
 begin
@@ -126,18 +117,5 @@ begin
   FForm.UnRegisterNotify(ANotify);
 end;
 
-function TApplicationServices._AddRef: Integer;
-begin
-  Result := -1;
-end;
-
-function TApplicationServices.QueryInterface(const IID: TGUID;
-  out Obj): HRESULT;
-begin
-  if GetInterface(IID, Obj) then
-    Result := S_OK
-  else
-    Result := E_NOINTERFACE
-end;
 
 end.

@@ -435,18 +435,6 @@ begin
     Application.HandleException(Sender);
 end;
 
-procedure SaveAndFreeOptions;
-begin
-  if FAppOptions <> nil then
-  try
-    FAppOptions.SaveToFile(GetUserAppOptionsFile);
-  except
-    on E: Exception do
-      HandleFileCreateException(FAppOptions, E, GetUserAppOptionsFile);
-  end;
-  FreeAndNil(FAppOptions);
-end;
-
 function PidlFree(var IdList: PItemIdList): Boolean;
 var
   Malloc: IMalloc;
@@ -620,6 +608,18 @@ begin
   finally
     S.Free;
   end;
+end;
+
+procedure SaveAndFreeOptions;
+begin
+  if FAppOptions <> nil then
+  try
+    FAppOptions.SaveToFile(GetUserAppOptionsFile);
+  except
+    on E: Exception do
+      HandleFileCreateException(FAppOptions, E, GetUserAppOptionsFile);
+  end;
+  FreeAndNil(FAppOptions);
 end;
 
 initialization

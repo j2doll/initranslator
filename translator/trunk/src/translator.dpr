@@ -18,9 +18,11 @@
 program translator;
 {%File '..\Changelog.txt'}
 
-// disable this define if you don't have JCL installed or want to use another exception handler:
 {$I TRANSLATOR.INC}
 uses
+{$IFDEF USE_FASTMM4}
+  FastMM4 in 'FastMM4.pas',
+{$ENDIF}
   Forms,
   AppConsts in 'AppConsts.pas',
   AppOptions in 'AppOptions.pas',
@@ -36,10 +38,8 @@ uses
   CommentsFrm in 'CommentsFrm.pas' {frmComments},
   EncodingDlgs in 'EncodingDlgs.pas' {frmEncoding},
   EditItemFrm in 'EditItemFrm.pas' {frmEditItem: TTntForm},
-{$IFDEF USEJCLDEBUGHANDLER}
   ExceptDlg in 'ExceptDlg.pas' {ExceptionDialog},
   ExceptDlgMail in 'ExceptDlgMail.pas' {ExceptionDialogMail},
-{$ENDIF USEJCLDEBUGHANDLER}
   ExtToolsFrm in 'ExtToolsFrm.pas' {frmTools},
   FindReplaceFrm in 'FindReplaceFrm.pas' {frmFindReplace},
   ImportExportFrm in 'ImportExportFrm.pas' {frmImportExport},

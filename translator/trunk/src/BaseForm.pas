@@ -68,7 +68,6 @@ function TfrmBase.CloseQuery: Boolean;
 begin
   SaveFormPos;
   Result := inherited CloseQuery;
-  ;
 end;
 
 procedure TfrmBase.LoadFormPos;

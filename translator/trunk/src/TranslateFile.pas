@@ -186,8 +186,9 @@ function TTranslationItems.Add(const Item: ITranslationItem): integer;
 begin
   Item.Index := Count;
   Item.Owner := self;
-  Item._AddRef;
-  Result := FItems.Add(Pointer(Item));
+//  Item._AddRef;
+  Result := FItems.Add(nil);
+  ITranslationItem(FItems.List[Result]) := Item;
   FSort := stNone;
 end;
 
@@ -509,7 +510,9 @@ end;
 
 destructor TTranslateFiles.Destroy;
 begin
+  FItems.Clear;
   FItems := nil;
+  FOrphans.Clear;
   FOrphans := nil;
   inherited;
 end;

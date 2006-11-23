@@ -126,7 +126,10 @@ end;
 
 destructor TExternalToolItems.Destroy;
 begin
-//  ReleasePlugins;
+  ReleasePlugins;
+  FreeAndNil(FItems);
+  FreeAndNil(FLibHandles);
+  FreeAndNil(FImages);
   inherited Destroy;
 end;
 
@@ -222,14 +225,11 @@ begin
   if FItems <> nil then
     for i := FItems.Count - 1 downto 0 do
       TExternalToolItem(FItems[i]).Free;
-  FreeAndNil(FItems);
 
   if FLibHandles <> nil then
     for i := FLibHandles.Count - 1 downto 0 do
       if FLibHandles[i] <> nil then
         FreeLibrary(Cardinal(FLibHandles[i]));
-  FreeAndNil(FLibHandles);
-  FreeAndNil(FImages);
 end;
 
 end.

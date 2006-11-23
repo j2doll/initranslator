@@ -326,8 +326,9 @@ end;
 
 destructor TAppLanguage.Destroy;
 begin
-  FSkipList.Free;
-  FClassSkipList.Free;
+  FreeAndNil(FSkipList);
+  FreeAndNil(FClassSkipList);
+  FreeAndNil(FLangFile);
   inherited;
 end;
 
@@ -418,66 +419,71 @@ begin
   if not InClassSkipList(AnObject.ClassType) and DoReading(AnObject, '') then
   begin
     Count := GetPropList(AnObject, PropList);
-    for j := 0 to Count - 1 do
-    begin
-      PropInfo := PropList[j];
-      PropName := UpperCase(PropInfo^.Name);
-      try
-        if InSkiplist(PropName) or not DoReading(AnObject, PropName) then
-          Continue;
-        case PropInfo^.PropType^.Kind of
-          tkString, tkLString, tkWString:
-            begin
-              AValue := GetWideStrProp(AnObject, PropName);
-              if (AValue <> '') and (IsWriteProp(PropInfo)) then
+    try
+      for j := 0 to Count - 1 do
+      begin
+        PropInfo := PropList[j];
+        PropName := UpperCase(PropInfo^.Name);
+        try
+          if InSkiplist(PropName) or not DoReading(AnObject, PropName) then
+            Continue;
+          case PropInfo^.PropType^.Kind of
+            tkString, tkLString, tkWString:
               begin
-                ANewValue := EncodeStrings(AValue);
-                DoReadObject(AnObject, PropName, Section, ANewValue);
-                if not WideSameStr(ANewValue, EncodeStrings(AValue)) then
+                AValue := GetWideStrProp(AnObject, PropName);
+                if (AValue <> '') and (IsWriteProp(PropInfo)) then
                 begin
-                  ppi := GetPropInfo(AnObject, PropName);
-                  if ppi = nil then
-                    raise Exception.CreateFmt(SPropNotFoundFmt, [PropName]);
-                  SetWideStrProp(AnObject, ppi, DecodeStrings(ANewValue));
+                  ANewValue := EncodeStrings(AValue);
+                  DoReadObject(AnObject, PropName, Section, ANewValue);
+                  if not WideSameStr(ANewValue, EncodeStrings(AValue)) then
+                  begin
+                    ppi := GetPropInfo(AnObject, PropName);
+                    if ppi = nil then
+                      raise Exception.CreateFmt(SPropNotFoundFmt, [PropName]);
+                    SetWideStrProp(AnObject, ppi, DecodeStrings(ANewValue));
+                  end;
                 end;
               end;
-            end;
-          tkClass:
-            begin
-              sl := GetObjectProp(AnObject, PropName);
-              if (sl = nil) then
-                Continue;
+            tkClass:
+              begin
+                sl := GetObjectProp(AnObject, PropName);
+                if (sl = nil) then
+                  Continue;
              // Check for TStrings translation
-              if sl is TStrings then
-              begin
-                AValue := EncodeStrings(TStrings(sl).Text);
-                if AValue <> '' then
+                if sl is TStrings then
                 begin
-                  ANewValue := AValue;
-                  DoReadObject(AnObject, PropName, Section, ANewValue);
-                  if not WideSameStr(ANewValue, AValue) then
-                    TStrings(sl).Text := DecodeStrings(ANewValue); // NB! This will loose any data in Objects[] !
+                  AValue := EncodeStrings(TStrings(sl).Text);
+                  if AValue <> '' then
+                  begin
+                    ANewValue := AValue;
+                    DoReadObject(AnObject, PropName, Section, ANewValue);
+                    if not WideSameStr(ANewValue, AValue) then
+                      TStrings(sl).Text := DecodeStrings(ANewValue); // NB! This will loose any data in Objects[] !
+                  end
                 end
-              end
-              else if sl is TTntStrings then
-              begin
-                AValue := EncodeStrings(TTntStrings(sl).Text);
-                if AValue <> '' then
+                else if sl is TTntStrings then
                 begin
-                  ANewValue := AValue;
-                  DoReadObject(AnObject, PropName, Section, ANewValue);
-                  if not WideSameStr(ANewValue, AValue) then
-                    TTntStrings(sl).Text := DecodeStrings(ANewValue); // NB! This will loose any data in Objects[] !
+                  AValue := EncodeStrings(TTntStrings(sl).Text);
+                  if AValue <> '' then
+                  begin
+                    ANewValue := AValue;
+                    DoReadObject(AnObject, PropName, Section, ANewValue);
+                    if not WideSameStr(ANewValue, AValue) then
+                      TTntStrings(sl).Text := DecodeStrings(ANewValue); // NB! This will loose any data in Objects[] !
+                  end
                 end
-              end
-              else if sl is TCollection then
-                for i := 0 to TCollection(sl).Count - 1 do
-                  TranslateObject(TCollection(sl).Items[i], Section);
-            end;
-        end; // case
-      except
+                else if sl is TCollection then
+                  for i := 0 to TCollection(sl).Count - 1 do
+                    TranslateObject(TCollection(sl).Items[i], Section);
+              end;
+          end; // case
+        except
       //
+        end;
       end;
+    finally
+      if Count > 0 then
+        FreeMem(PropList);
     end;
   end;
   if AnObject is TComponent then
@@ -523,3 +529,4 @@ begin
 end;
 
 end.
+

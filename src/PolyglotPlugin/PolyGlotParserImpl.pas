@@ -104,7 +104,8 @@ end;
 
 destructor TPolyGlotParser.Destroy;
 begin
-  Application.Handle := FOldAppHandle;
+  if FOldAppHandle <> 0 then
+    Application.Handle := FOldAppHandle;
   inherited;
 end;
 

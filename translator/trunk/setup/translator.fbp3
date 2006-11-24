@@ -74,7 +74,7 @@ NEWS_NOTIFY
             <Property name="SuppressStatusMessages" type="Boolean">False</Property>
             <Property name="TimeOut" type="Integer">0</Property>
             <Object Class="TPersistParam" XMLID="{517045E7-48E7-41A4-8E5B-3373C18374C5}"><Property MultiValue="0" name="Caption" type="String">R&amp;amp;oot path:</Property>
-              <Property MultiValue="0" name="DefaultValue" type="String">C:\Program\Borland\Projects\Private\initranslator</Property>
+              <Property MultiValue="0" name="DefaultValue" type="String">%ProgramFiles%\Borland\Projects\Private\initranslator</Property>
               <Property name="InUse" type="Boolean">True</Property>
               <Property name="List" type="TStrings"><![CDATA[]]>
                 </Property>
@@ -84,14 +84,14 @@ NEWS_NOTIFY
               <Property MultiValue="0" name="Value" type="String">C:\Program\Borland\Projects\Private\initranslator</Property>
               </Object>
             <Object Class="TPersistParam" XMLID="{103737ED-2ADC-40F7-BFF5-49B1F32368BF}"><Property MultiValue="0" name="Caption" type="String">Delphi AddOns folder:</Property>
-              <Property MultiValue="0" name="DefaultValue" type="String">C:\Program Files\Borland\AddOns</Property>
+              <Property MultiValue="0" name="DefaultValue" type="String">%ProgramFiles%\Borland\AddOns</Property>
               <Property name="InUse" type="Boolean">True</Property>
               <Property name="List" type="TStrings"><![CDATA[]]>
                 </Property>
               <Property MultiValue="0" name="Name" type="String">ADDONS</Property>
               <Property name="ParamType" type="TParamType">ptSelectFolder</Property>
               <Property name="SelectAll" type="Boolean">False</Property>
-              <Property MultiValue="0" name="Value" type="String"></Property>
+              <Property MultiValue="0" name="Value" type="String">C:\Program Files\Borland\AddOns</Property>
               </Object>
             <Object Class="TPersistParam" XMLID="{DFEE600A-4E9B-4319-8845-45CDC241BDE7}"><Property MultiValue="0" name="Caption" type="String">M&amp;amp;ajor:</Property>
               <Property MultiValue="0" name="DefaultValue" type="String">1</Property>
@@ -124,14 +124,14 @@ NEWS_NOTIFY
               <Property MultiValue="0" name="Value" type="String">0</Property>
               </Object>
             <Object Class="TPersistParam" XMLID="{61C26F12-53A5-41FA-8F60-F567944EDE65}"><Property MultiValue="0" name="Caption" type="String">&amp;amp;Build:</Property>
-              <Property MultiValue="0" name="DefaultValue" type="String">36</Property>
+              <Property MultiValue="0" name="DefaultValue" type="String">38</Property>
               <Property name="InUse" type="Boolean">True</Property>
               <Property name="List" type="TStrings"><![CDATA[]]>
                 </Property>
               <Property MultiValue="0" name="Name" type="String">VERSION_BUILD</Property>
               <Property name="ParamType" type="TParamType">ptText</Property>
               <Property name="SelectAll" type="Boolean">False</Property>
-              <Property MultiValue="0" name="Value" type="String">36</Property>
+              <Property MultiValue="0" name="Value" type="String">38</Property>
               </Object>
             <Object Class="TPersistParam" XMLID="{BCB92261-E11A-4E81-857C-D74026547648}"><Property MultiValue="0" name="Caption" type="String">Check out from subversion</Property>
               <Property MultiValue="0" name="DefaultValue" type="String">false</Property>
@@ -312,7 +312,7 @@ SRCPATH = ROOTPATH &amp; "src\"
                   <Property name="AutoIncBuild" type="WordBool">False</Property>
                   <Property name="AutoUpdateFileVersion" type="Boolean">True</Property>
                   <Property name="BuildAll" type="WordBool">True</Property>
-                  <Property name="BuildVersion" type="Integer">36</Property>
+                  <Property name="BuildVersion" type="Integer">38</Property>
                   <Property name="CodePage" type="Integer">1252</Property>
                   <Property name="CompilerVersion" type="Integer">4</Property>
                   <Property MultiValue="0" name="Description" type="String">IniTranslator</Property>
@@ -351,13 +351,13 @@ SRCPATH = ROOTPATH &amp; "src\"
                   <Property name="UseVersionFromDOF" type="Boolean">False</Property>
                   <Property MultiValue="1" name="VersionInfoKeys" type="WideString"><![CDATA[CompanyName=Peter Thörnqvist
 FileDescription=Ini Language Translator
-FileVersion=1.9.0.36
+FileVersion=1.9.0.38
 InternalName=translator.exe
 LegalCopyright=Copyright (c) 2003-2006 by Peter Thörnqvist; all rights reserved
 LegalTrademarks=
 OriginalFilename=translator.exe
 ProductName=Ini Translator
-ProductVersion=1.9.0.36
+ProductVersion=1.9.0.38
 Webpage=http://initranslator.sourceforge.net
 License=Mozilla Public License 1.1
 Comments=Latest version at http://initranslator.sourceforge.net

@@ -1,5 +1,35 @@
 Ini Translator Changelog
 ========================
+2006-11-25:
+- Added project files for BDS 2006
+- Built succesfully with BDS 2006
+
+2006-11-24:
+- updated version to 1.9.0.38
+
+2006-11-23:
+- Several memory leaks detected and removed using FastMM
+
+2006-11-22:
+Common:
+- Don't lock listview while toolitem plugin is active
+- renamed the common import/export dialog classes so they are unique
+- Updated copyright notice in dof files
+- Updated lng files with new strings
+- example commands.txt now points to valid filenames (standard install)
+- Default.lng file updated with strings from plugins
+- Implemented ILocalizable on most plugins (work in progress)
+MainFrm:
+- When command processor is running, don't display any dialogs
+PluginCommon:
+- Standard import/export dialogs now implement ILocalizable
+- Controls changed to Tnt
+TransIntf:
+- ILocalizable.GetString declared as safecall (was stdcall)
+
+2006-11-20:
+- Updated russian.lng to 1.9.0.37 from Alexander Korneinko
+
 2006-11-18:
 - For some strange reason, some parameters where declared as string when they should have been WideString. This messed up the display in the menu/toolbar control
 

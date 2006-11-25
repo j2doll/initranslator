@@ -75,6 +75,7 @@ location or it won't work. very well
             <Property name="PromptWordWrap" type="Boolean">False</Property>
             <Property name="RetryPauseInterval" type="Cardinal">1000</Property>
             <Property name="SortOrder" type="TStrings"><![CDATA[ROOTPATH
+ADDONS
 VERSION_MAJOR
 VERSION_MINOR
 VERSION_RELEASE
@@ -93,7 +94,16 @@ NEWS_NOTIFY
               <Property name="List" type="TStrings"><![CDATA[]]>
                 </Property>
               <Property MultiValue="0" name="Name" type="string">ROOTPATH</Property>
-              <Property name="ParamType" type="TParamType">ptText</Property>
+              <Property name="ParamType" type="TParamType">ptSelectFolder</Property>
+              <Property name="SelectAll" type="Boolean">False</Property>
+              </Object>
+            <Object Class="TPersistParam" XMLID="{17FB2889-B659-4E08-84A2-CCA5E6BBCF51}"><Property MultiValue="0" name="Caption" type="string">3rd party components folder:</Property>
+              <Property MultiValue="0" name="DefaultValue" type="string">%ProgramFiles%\Borland\AddOns</Property>
+              <Property name="InUse" type="Boolean">True</Property>
+              <Property name="List" type="TStrings"><![CDATA[]]>
+                </Property>
+              <Property MultiValue="0" name="Name" type="string">ADDONS</Property>
+              <Property name="ParamType" type="TParamType">ptSelectFolder</Property>
               <Property name="SelectAll" type="Boolean">False</Property>
               </Object>
             <Object Class="TPersistParam" XMLID="{DFEE600A-4E9B-4319-8845-45CDC241BDE7}"><Property MultiValue="0" name="Caption" type="string">M&amp;amp;ajor:</Property>

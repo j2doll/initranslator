@@ -63,6 +63,8 @@ begin
     with TTntListItem(Item) do
     begin
       Caption := IntToStr(FItems[Index].Index);
+      SubItems.Add(FItems[Index].Section);
+      SubItems.Add(FItems[Index].Name);
       SubItems.Add(FItems[Index].Original);
       SubItems.Add(FItems[Index].Translation);
       SubItems.Add(FItems[Index].OrigComments);

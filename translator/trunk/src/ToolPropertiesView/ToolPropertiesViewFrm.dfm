@@ -16,7 +16,7 @@ object frmToolPropertiesView: TfrmToolPropertiesView
   TextHeight = 13
   object TntStatusBar1: TTntStatusBar
     Left = 0
-    Top = 468
+    Top = 461
     Width = 691
     Height = 19
     Panels = <
@@ -28,13 +28,21 @@ object frmToolPropertiesView: TfrmToolPropertiesView
     Left = 0
     Top = 0
     Width = 691
-    Height = 468
+    Height = 461
     Align = alClient
     BevelKind = bkFlat
     BorderStyle = bsNone
     Columns = <
       item
         Caption = 'Index'
+      end
+      item
+        Caption = 'Section'
+        Width = 100
+      end
+      item
+        Caption = 'Name'
+        Width = 100
       end
       item
         Caption = 'Original'

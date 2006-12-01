@@ -1,5 +1,16 @@
 Ini Translator Changelog
 ========================
+2006-12-01:
+FoxitPlugin:
+- save the *original* file as the template: this way any items missing in the translation will automatically be added without any problems
+- add all items in the translation file that are missing from the original to the Orphans list
+
+2006-11-30:
+ToolProperties:
+- Now displays section and name
+FoxitPlugin:
+- New plugin for Foxit PDF Reader (http://www.foxitsoftware.com/)
+
 2006-11-25:
 - Added project files for BDS 2006
 - Built succesfully with BDS 2006

@@ -14,7 +14,7 @@
    WITHOUT WARRANTY OF ANY KIND, either express or implied. See the License for
    the specific language governing rights and limitations under the License.
 }
-// $Id: TMXParserImpl.pas 132 2006-11-22 15:18:34Z peter3 $
+// $Id$
 
 unit TMXParserImpl;
 

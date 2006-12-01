@@ -206,6 +206,7 @@ var
           TI := Items.Add;
           TI.Section := ItemName;
           TI.Original := NodeList[i].attributes.getNamedItem('text').nodeValue;
+          NodeList[i].attributes.getNamedItem('text').nodeValue := Format(cReplaceID, [TI.Index]);
           TI.Name := GetName(NodeList[i]);
         end;
 
@@ -224,7 +225,15 @@ var
           begin
             TI.Translation := NodeList[i].attributes.getNamedItem('text').nodeValue;
             TI.Translated := TI.Translation <> '';
-            NodeList[i].attributes.getNamedItem('text').nodeValue := Format(cReplaceID, [TI.Index]);
+            // NodeList[i].attributes.getNamedItem('text').nodeValue := Format(cReplaceID, [TI.Index]);
+          end
+          else // not found in original, so can be an orphan
+          begin
+            TI := Orphans.Add;
+            TI.Section := ItemName;
+            TI.Original := NodeList[i].attributes.getNamedItem('text').nodeValue;
+            TI.Translation := TI.Original;
+            TI.Name := GetName(NodeList[i]);
           end;
         end;
   end;
@@ -248,6 +257,7 @@ begin
           ImportOriginalItem(cDialogItem);
           ImportOriginalItem(cStringItem);
         end;
+        FXMLImport.SaveToXML(XML); // save the imported *original* data in a string - this will automatically adjust the translation so new items are added and old items are discarded
         FXMLImport.LoadFromFile(FTransFile);
         if FXMLImport.DocumentElement <> nil then
         begin
@@ -255,7 +265,6 @@ begin
           ImportTranslationItem(cMenuItem);
           ImportTranslationItem(cDialogItem);
           ImportTranslationItem(cStringItem);
-          FXMLImport.SaveToXML(XML); // save the imported data in a string
         end;
         SaveSettings;
         Items.Modified := false;

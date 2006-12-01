@@ -542,11 +542,14 @@ begin
           end;
         feUnicode:
           S.LoadFromFile(Filename);
-      end
+      end;
+      Result := Encoding;
     end
     else
+    begin
       S.LoadFromFile(Filename);
-    Result := FileCharSetToEncoding(S.LastFileCharSet);
+      Result := FileCharSetToEncoding(S.LastFileCharSet);
+    end;
     for i := 0 to S.Count - 1 do
     begin
       if WideTextPos(CommentChar, S[i]) = 1 then
@@ -602,11 +605,14 @@ begin
           S.AnsiStrings.LoadFromFileEx(Filename, CP_UTF8);
         feUnicode:
           S.LoadFromFile(Filename);
-      end
+      end;
+      Result := Encoding;
     end
     else
+    begin
       S.LoadFromFile(Filename);
-    Result := FileCharSetToEncoding(S.LastFileCharSet);
+      Result := FileCharSetToEncoding(S.LastFileCharSet);
+    end;
     for i := 0 to S.Count - 1 do
     begin
       if WideTextPos(CommentChar, S[i]) = 1 then

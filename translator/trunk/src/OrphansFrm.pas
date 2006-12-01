@@ -120,7 +120,7 @@ procedure TfrmOrphans.lvOrphanedChange(Sender: TObject; Item: TListItem;
   Change: TItemChange);
 begin
   if (lvOrphaned.Selected <> nil) then
-    lblSection.Caption := '[' + FOrphans.Items[lvOrphaned.Selected.Index].Section + ']'
+    lblSection.Caption := '[' + FOrphans.Items[lvOrphaned.Selected.Index].Section + '] ' + FOrphans.Items[lvOrphaned.Selected.Index].Name 
   else
     lblSection.Caption := '[]';
 end;

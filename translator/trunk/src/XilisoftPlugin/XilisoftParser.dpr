@@ -14,7 +14,7 @@
    the specific language governing rights and limitations under the License.
 }
 
-// $Id: $
+// $Id$
 library XilisoftParser;
 
 uses

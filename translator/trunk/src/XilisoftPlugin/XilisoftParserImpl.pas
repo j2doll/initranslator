@@ -3,6 +3,7 @@
   Copyright © 2006 by Alexander Kornienko; all rights reserved
 
   Developer(s):
+    Korney San - karo att users dott sourceforge dott net
 
   Status:
    The contents of this file are subject to the Mozilla Public License Version
@@ -13,7 +14,7 @@
    WITHOUT WARRANTY OF ANY KIND, either express or implied. See the License for
    the specific language governing rights and limitations under the License.
 }
-// $Id: $
+// $Id$
 unit XilisoftParserImpl;
 
 interface

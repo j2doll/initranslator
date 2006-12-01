@@ -2,6 +2,7 @@
   Copyright © 2006 by Alexander Kornienko; all rights reserved
 
   Developer(s):
+    Korney San - karo att users dott sourceforge dott net
 
   Status:
    The contents of this file are subject to the Mozilla Public License Version

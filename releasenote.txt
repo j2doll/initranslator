@@ -5,6 +5,31 @@ Ini Translator is a small Windows tool to simplify the translation of ini style 
 
 The program and the sources are hosted at sourceforge and are released subject to the MPL 1.1 license.
 
+New in version 1.9.0.40:
+- New MsTermBuild application to convert MS Terminology Translations to IniTranslator dictionaries
+- New Foxit PDF Reader plugin
+- New XLIFF plugin
+- New XiliSoft plugin (Alexander Kornienko)
+- New tool plugin to view all properties of the items
+- Now displays warning when saving translation and there are orphaned items
+- Orphan form now shows section and name in caption
+- Orphaned items can now be saved to a file and merged into the main items
+- Support for localizing plugins
+- Changed the way fonts are specified so we can use the MS Shell Dlg substituions
+- Better support for themed XP
+- Header and Footers can now be added when saving files
+- Dictionaries can have more than one translation. One of the translations can be marked as the default one
+- Dictionary now removes empty translations automatically when loading and merging etc
+- When using dictionary to translate, uses dialog similar to when spell checking
+- New "Make translations consistent" command
+- You can now specify the default encoding for new files
+- Bug fixed: Several memory leaks detected and removed using FastMM
+- Bug fixed: text rendering problem in External Tools fixed
+- Bug fixed: clicking the "Test" button in the Exernal Tools form generated an AV when the command was empty
+- Updated language files, themes and documentation
+- Only full install from now on
+
+
 New in version 1.9.0.13:
 - New icon from Michael Kogan (photonx)
 - Detecting, saving and restoring encoding settings should now work correctly

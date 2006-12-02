@@ -156,7 +156,7 @@ TransIntf:
 - After reading up on XLIFF, I've made some changes:
 -- Don't need to specify language in (XLIFFImportFrm not needed anymore, use default SingleImportFrm)
 -- Even if either source or target (or both!) are missing, an item is created for each "trans-unit" node
--- MSXML 4,.0 has a bug that prevents it from working correctly with this implementation (getElementsByTagName is faulty)
+-- MSXML 4.0 has a bug that prevents it from working correctly with this implementation (getElementsByTagName is faulty)
 
 2006-08-01:
 - Started implementation of XLIFF parser

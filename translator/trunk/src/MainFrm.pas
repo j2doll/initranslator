@@ -477,6 +477,7 @@ type
     // returns true if it's OK to continue
     function CheckModified: boolean;
     function CheckDictModified: boolean;
+    function CheckOrphans: boolean;
     procedure LoadSettings(FirstLoad: boolean);
     procedure SaveSettings;
     procedure LoadTranslate;
@@ -533,7 +534,6 @@ type
     procedure DoFindReplace(Sender: TObject);
     procedure DoFindReplaceAll(Sender: TObject);
     procedure CreateDialogs;
-    procedure FixXPPanelBug;
     procedure AddMRUFiles(const OriginalFileName, TranslationFilename: WideString);
     procedure OpenMRUFiles(const FileName: WideString);
     function MRUFilesExists(const FileName: WideString): boolean;
@@ -984,6 +984,8 @@ function TfrmMain.SaveTranslation(const FileName: WideString; Encoding: TEncodin
 var
   i: integer;
 begin
+  Result := false;
+  if not CheckOrphans then Exit;
   i := lvTranslateStrings.ItemIndex;
   if FileName = '' then
   begin
@@ -1672,6 +1674,8 @@ begin
   ini.WriteString(ClassName, EncodeStrings(SSelectLanguageFile), EncodeStrings(SSelectLanguageFile));
   ini.WriteString(ClassName, EncodeStrings(SSelectHelpFile), EncodeStrings(SSelectHelpFile));
   ini.WriteString(ClassName, EncodeStrings(SFmtSaveItemsNoName), EncodeStrings(SFmtSaveItemsNoName));
+  ini.WriteString(ClassName, EncodeStrings(SConfirmRemoveOrphans), EncodeStrings(SConfirmRemoveOrphans));
+
 
   for i := 0 to alMain.ActionCount - 1 do
   begin
@@ -2034,24 +2038,14 @@ begin
     Modified := false;
 end;
 
-{$IFDEF VER150}
-
-procedure TfrmMain.FixXPPanelBug;
-var
-  i: integer;
+function TfrmMain.CheckOrphans: boolean;
 begin
-  // there's an annoying bug in Delphi 7 when running under XP:
-  // if TPanel.ParentBackground isn't explicitly set false,  the panel will be transparent...
-  for i := 0 to ComponentCount - 1 do
-    if Components[i] is TCustomPanel then
-      TCustomPanel(Components[i]).ParentBackground := false;
+  if FTranslateFile.Orphans.Count > 0 then
+    Result := YesNo(_(ClassName, SConfirmRemoveOrphans),
+      _(ClassName, SConfirmDelete))
+  else
+    Result := true;
 end;
-{$ELSE}
-
-procedure TfrmMain.FixXPPanelBug;
-begin
-end;
-{$ENDIF}
 
 procedure TfrmMain.AddMRUFiles(const OriginalFileName, TranslationFilename: WideString);
 begin
@@ -2309,7 +2303,6 @@ begin
   FApplicationServices := TApplicationServices.Create(self);
   GlobalApplicationServicesFunc := @InternalApplicationServicesFunc;
   ClearBookmarks;
-  FixXPPanelBug;
 
   GlobalLanguageFile.OnRead := DoReadObject;
   GlobalLanguageFile.SkipProperty('Name');
@@ -3354,7 +3347,7 @@ procedure TfrmMain.acViewOrphansExecute(Sender: TObject);
 begin
 //  lvTranslateStrings.Items.BeginUpdate;
   try
-    TfrmOrphans.Edit(FTranslateFile.Items, FTranslateFile.Orphans);
+    TfrmOrphans.Edit(FTranslateFile.Items, FTranslateFile.Orphans, (FCapabilitesSupported = 0) or (FCapabilitesSupported and CAP_ITEM_INSERT = CAP_ITEM_INSERT));
     lvTranslateStrings.Items.Count := FTranslateFile.Items.Count;
   finally
 //    lvTranslateStrings.Items.EndUpdate;
@@ -3373,7 +3366,7 @@ begin
     Exit;
   SaveEditChanges;
   //  (FTranslateFile.Items as ITranslationItems)._AddRef;
-  if not CheckModified then
+  if not CheckModified  then
     Exit;
   SelectedListItem := nil;
   ScrollToTop;
@@ -4369,6 +4362,7 @@ function TfrmMain.Translate(const Section, Name, Value: WideString): WideString;
 begin
   Result := GlobalLanguageFile.Translate(Section, Name, Value);
 end;
+
 
 end.
 

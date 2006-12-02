@@ -30,6 +30,8 @@
           <Property name="SuppressStatusMessages" type="Boolean">False</Property>
           <Object Class="TCommentAction" XMLID="{8FD1DB5C-EC8F-495A-89D0-3EB984FF4D3C}"><Property MultiValue="1" name="ActionComment" type="string"><![CDATA[This script checks out the latest sources of IniTranslator from the VCS archive on SF, builds all the deliverables, uploads the files to the project web space, notifies various newsgroups about the new release and finally deletes the files and folders it created.
 
+Optionally, it can build the deliverables from an existing folder. In this case, no check-out is done and no directories are created or deleted
+
 
 Beware:
 Make sure the root path to SVN is short! By default, your local temp folder is used, but Subversion (or the FB action) seems to have problems with long filenames and long paths, so try to either keep the path down or use an entirely different path for the build
@@ -134,7 +136,7 @@ NEWS_NOTIFY
               <Property name="SelectAll" type="Boolean">False</Property>
               </Object>
             <Object Class="TPersistParam" XMLID="{61C26F12-53A5-41FA-8F60-F567944EDE65}"><Property MultiValue="0" name="Caption" type="string">&amp;amp;Build:</Property>
-              <Property MultiValue="0" name="DefaultValue" type="string">37</Property>
+              <Property MultiValue="0" name="DefaultValue" type="string">39</Property>
               <Property name="InUse" type="Boolean">True</Property>
               <Property name="List" type="TStrings"><![CDATA[]]>
                 </Property>

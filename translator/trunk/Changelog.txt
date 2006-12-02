@@ -1,5 +1,11 @@
 Ini Translator Changelog
 ========================
+2006-12-02:
+Translator:
+- Now displays warning when saving translation and there are orphaned items
+- updated version to 1.9.0.39
+- Merge command in Orphans list only active if the current plugin supports it (or if there is no active plugin)
+
 2006-12-01:
 Translator:
 - Orphans form now shows section and name in caption

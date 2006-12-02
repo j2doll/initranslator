@@ -107,6 +107,7 @@ resourcestring
   SSelectLanguageFile = 'Select a language file';
   SSelectHelpFile = 'Select a help file';
   SFmtSaveItemsNoName = 'Some items (%d) could not be saved as they had no Original value';
+  SConfirmRemoveOrphans = 'Saving the translation file now will remove any orphaned items. Continue anyway?';
 
 const
   SLngExt = 'lng';

@@ -31,7 +31,7 @@ procedure TBMRUSaveToReg(MRU: TTBXMRUList; RootKey: Cardinal; const Path: WideSt
 // "Fuzzy" in this context just means "remove all white space and control characters before comparing SubStr and Str"
 function DetectEncoding(const FileName: WideString): TEncoding;
 function GetAppVersion: WideString;
-function GetCurrentYear:Integer;
+function GetCurrentYear: Integer;
 
 // TODO: add JvCreateProcess from JVCL to add support for capturing output?
 
@@ -44,7 +44,7 @@ function BinarySearch(AList: TList; L, R: integer; CompareItem: Pointer; Compare
 
 function GlobalLanguageFile: TAppLanguage;
 function GlobalAppOptions: TAppOptions;
-function GlobalApplicationServices:IApplicationServices;
+function GlobalApplicationServices: IApplicationServices;
 
 function GetUserAppDataFolder(const Default: WideString): WideString;
 function GetUserShortcutFile: WideString;
@@ -62,21 +62,23 @@ function ValueFromIndex(S: TTntStrings; i: integer): WideString; overload;
 function ValueFromIndex(S: TStrings; i: integer): AnsiString; overload;
 function strtok(Search, Delim: WideString): WideString;
 
-procedure SetXPComboStyle(AControl:TControl);
-function GetPluginsFolder:WideString;
+//procedure SetXPComboStyle(AControl: TControl);
+procedure FixXPStyles(AControl: TWinControl);
 
-function GetClipboardString(const Section, Name, Value: WideString):WideString;
-function ParseClipboardString(const Str:WideString; out Section, Name, Value:WideString):boolean;
+function GetPluginsFolder: WideString;
+
+function GetClipboardString(const Section, Name, Value: WideString): WideString;
+function ParseClipboardString(const Str: WideString; out Section, Name, Value: WideString): boolean;
 
 type
-  TApplicationServicesFunc = function:IApplicationServices;
+  TApplicationServicesFunc = function: IApplicationServices;
 
 var
-  GlobalApplicationServicesFunc:TApplicationServicesFunc = nil;
+  GlobalApplicationServicesFunc: TApplicationServicesFunc = nil;
 
 implementation
 uses
-  Windows, Forms, Dialogs, Math, Registry, StdCtrls,
+  Windows, Forms, Dialogs, Math, Registry, StdCtrls, ExtCtrls, TypInfo,
   WideIniFiles, Menus, Consts, ShFolder,
   CommonUtils, ShlObj, ActiveX, TbxUxThemes,
   TntWindows, TntSysUtils, TntWideStrUtils;
@@ -108,7 +110,6 @@ begin
   end;
 end;
 
-
 function FileCharSetToEncoding(CharSet: TTntStreamCharSet): TEncoding;
 begin
   case CharSet of
@@ -134,7 +135,7 @@ begin
   Result := FAppOptions;
 end;
 
-function GlobalApplicationServices:IApplicationServices;
+function GlobalApplicationServices: IApplicationServices;
 begin
   if Assigned(GlobalApplicationServicesFunc) then
     Result := GlobalApplicationServicesFunc
@@ -145,7 +146,7 @@ end;
 function SHGetFolderPathW2(hwnd: HWND; csidl: Integer; hToken: THandle; dwFlags: DWord; pszPath: PWideChar): HRESULT; stdcall; external 'SHFolder.dll' name 'SHGetFolderPathW';
 
 function WideSHGetFolderPath(hwnd: HWND; csidl: Integer; hToken: THandle; dwFlags: DWord; pszPath: PWideChar): HRESULT;
-var AnsiBuff:AnsiString;
+var AnsiBuff: AnsiString;
 begin
   if Win32PlatformIsUnicode then
     Result := SHGetFolderPathW2(hwnd, csidl, hToken, dwFlags, pszPath)
@@ -156,9 +157,8 @@ begin
     AnsiBuff := AnsiString(PAnsiChar(AnsiBuff));
     // pszPath :=
     WStrPLCopy(pszPath, AnsiBuff, Length(AnsiBuff));
-   end;
+  end;
 end;
-
 
 function GetUserAppDataFolder(const Default: WideString): WideString;
 begin
@@ -193,7 +193,6 @@ begin
   WideForceDirectories(Result);
   Result := WideIncludeTrailingPathDelimiter(Result) + 'translator.ini';
 end;
-
 
 function _(const ASection, AMsg: WideString): WideString;
 begin
@@ -313,15 +312,15 @@ begin
         ini.WriteString(cIniMRUKey, MRU.Prefix + IntToStr(i), MRU.Items[i - 1])
       else
         ini.DeleteKey(cIniMRUKey, MRU.Prefix + IntToStr(i));
-        ini.UpdateFile;
+      ini.UpdateFile;
     end;
   finally
     ini.Free;
   end;
 end;
 
-function GetCurrentYear:Integer;
-var Y, M, D:Word;
+function GetCurrentYear: Integer;
+var Y, M, D: Word;
 begin
   DecodeDate(Date, Y, M, D);
   Result := Y;
@@ -549,8 +548,8 @@ end;
 type
   TAccessComboBox = class(TCustomComboBox);
 
-procedure SetXPComboStyle(AControl:TControl);
-var i:integer;
+procedure SetXPComboStyle(AControl: TControl);
+var i: integer;
 begin
   if (AControl is TWinControl) then
     for i := 0 to TWinControl(AControl).ControlCount - 1 do
@@ -567,13 +566,36 @@ begin
     end;
 end;
 
-function GetPluginsFolder:WideString;
+procedure FixXPStyles(AControl: TWInControl);
+var
+  i: integer;
+  WC: TWinControl;
+begin
+  if (AControl is TWinControl) then
+  begin
+    WC := TWinControl(AControl);
+    for i := 0 to WC.ControlCount - 1 do
+    begin
+      if WC.Controls[i] is TCustomComboBox then
+      begin
+        if IsAppThemed {Win32PlatformIsXP} then
+          TAccessComboBox(TWinControl(AControl).Controls[i]).BevelKind := bkNone
+        else
+          TAccessComboBox(TWinControl(AControl).Controls[i]).BevelKind := bkFlat;
+      end
+      else if WC.Components[i] is TCustomPanel then
+        SetOrdProp(WC.Components[i], 'ParentBackground', Ord(false));
+    end;
+  end;
+end;
+
+function GetPluginsFolder: WideString;
 begin
   Result := WideIncludeTrailingPathDelimiter(WideExtractFilePath(Application.ExeName)) + 'plugins';
 end;
 
-function GetClipboardString(const Section, Name, Value: WideString):WideString;
-var S:TTntStringlist;
+function GetClipboardString(const Section, Name, Value: WideString): WideString;
+var S: TTntStringlist;
 begin
   S := TTntStringlist.Create;
   try
@@ -586,8 +608,8 @@ begin
   end;
 end;
 
-function ParseClipboardString(const Str:WideString; out Section, Name, Value:WideString):boolean;
-var S:TTntStringlist;
+function ParseClipboardString(const Str: WideString; out Section, Name, Value: WideString): boolean;
+var S: TTntStringlist;
 begin
   S := TTntStringlist.Create;
   try

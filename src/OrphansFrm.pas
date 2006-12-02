@@ -63,7 +63,7 @@ type
     { Private declarations }
   public
     { Public declarations }
-    class function Edit(const Items, Orphans: ITranslationItems): boolean;
+    class function Edit(const Items, Orphans: ITranslationItems; CanMerge:boolean): boolean;
   end;
 
 implementation
@@ -72,7 +72,7 @@ uses
 
 {$R *.dfm}
 
-class function TfrmOrphans.Edit(const Items, Orphans: ITranslationItems): boolean;
+class function TfrmOrphans.Edit(const Items, Orphans: ITranslationItems; CanMerge:boolean): boolean;
 var
   frmOrphans: TfrmOrphans;
 begin
@@ -81,6 +81,7 @@ begin
     frmOrphans.FItems := Items;
     frmOrphans.FOrphans := Orphans;
     frmOrphans.lvOrphaned.Items.Count := Orphans.Count;
+    frmOrphans.acMerge.Enabled := CanMerge;
     Result := frmOrphans.ShowModal = mrOK;
   finally
     frmOrphans.Free;

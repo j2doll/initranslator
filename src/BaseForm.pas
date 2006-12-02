@@ -61,7 +61,7 @@ begin
   end;
   GlobalLanguageFile.TranslateObject(Self, ClassName);
   LoadFormPos;
-  SetXPComboStyle(Self);
+  FixXPStyles(self);
 end;
 
 function TfrmBase.CloseQuery: Boolean;

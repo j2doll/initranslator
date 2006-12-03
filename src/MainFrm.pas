@@ -3039,7 +3039,7 @@ procedure TfrmMain.lvTranslateStringsInfoTip(Sender: TObject;
 var
   P: TPoint;
   AInfoTip: WideString;
-  AItem:ITranlsationItem;
+  AItem:ITranslationItem;
 begin
   InfoTip := '';
   AInfoTip := '';

@@ -136,7 +136,7 @@ NEWS_NOTIFY
               <Property name="SelectAll" type="Boolean">False</Property>
               </Object>
             <Object Class="TPersistParam" XMLID="{61C26F12-53A5-41FA-8F60-F567944EDE65}"><Property MultiValue="0" name="Caption" type="string">&amp;amp;Build:</Property>
-              <Property MultiValue="0" name="DefaultValue" type="string">39</Property>
+              <Property MultiValue="0" name="DefaultValue" type="string">40</Property>
               <Property name="InUse" type="Boolean">True</Property>
               <Property name="List" type="TStrings"><![CDATA[]]>
                 </Property>
@@ -347,7 +347,7 @@ SRCPATH = ROOTPATH &amp; "src\"
                   <Property name="AutoIncBuild" type="WordBool">False</Property>
                   <Property name="AutoUpdateFileVersion" type="Boolean">True</Property>
                   <Property name="BuildAll" type="WordBool">True</Property>
-                  <Property name="BuildVersion" type="Integer">38</Property>
+                  <Property name="BuildVersion" type="Integer">40</Property>
                   <Property name="CodePage" type="Integer">1252</Property>
                   <Property name="CompilerVersion" type="Integer">4</Property>
                   <Property name="DebugVersionNumbers" type="Boolean">False</Property>
@@ -393,13 +393,13 @@ SRCPATH = ROOTPATH &amp; "src\"
                   <Property name="UseVersionFromDOF" type="Boolean">False</Property>
                   <Property MultiValue="1" name="VersionInfoKeys" type="WideString"><![CDATA[CompanyName=Peter Thörnqvist
 FileDescription=Ini Language Translator
-FileVersion=1.9.0.38
+FileVersion=1.9.0.40
 InternalName=translator.exe
 LegalCopyright=Copyright (c) 2003-2006 by Peter Thörnqvist; all rights reserved
 LegalTrademarks=
 OriginalFilename=translator.exe
 ProductName=Ini Translator
-ProductVersion=1.9.0.38
+ProductVersion=1.9.0.40
 Webpage=http://initranslator.sourceforge.net
 License=Mozilla Public License 1.1
 Comments=Latest version at http://initranslator.sourceforge.net
@@ -485,7 +485,7 @@ Action.SetVersionInfoKey("ProductVersion",Action.GetVersionInfoKey("FileVersion"
                   <Property name="AutoIncBuild" type="WordBool">False</Property>
                   <Property name="AutoUpdateFileVersion" type="Boolean">True</Property>
                   <Property name="BuildAll" type="WordBool">True</Property>
-                  <Property name="BuildVersion" type="Integer">37</Property>
+                  <Property name="BuildVersion" type="Integer">40</Property>
                   <Property name="CodePage" type="Integer">1252</Property>
                   <Property name="CompilerVersion" type="Integer">4</Property>
                   <Property name="DebugVersionNumbers" type="Boolean">False</Property>
@@ -531,13 +531,13 @@ Action.SetVersionInfoKey("ProductVersion",Action.GetVersionInfoKey("FileVersion"
                   <Property name="UseVersionFromDOF" type="Boolean">False</Property>
                   <Property MultiValue="1" name="VersionInfoKeys" type="WideString"><![CDATA[CompanyName=Peter Thörnqvist
 FileDescription=MsDictBuild
-FileVersion=1.9.0.37
+FileVersion=1.9.0.40
 InternalName=MsDictBuild.exe
 LegalCopyright=Copyright (c) 2003-2004 by Peter Thörnqvist; all rights reserved
 LegalTrademarks=
 OriginalFilename=MsDictBuild.exe
 ProductName=MsDictBuild
-ProductVersion=1.9.0.37
+ProductVersion=1.9.0.40
 Webpage=http://initranslator.sourceforge.net
 License=Mozilla Public License 1.1
 Comments=Latest version at http://initranslator.sourceforge.net
@@ -622,7 +622,7 @@ Action.SetVersionInfoKey("ProductVersion",Action.GetVersionInfoKey("FileVersion"
                   <Property name="AutoIncBuild" type="WordBool">False</Property>
                   <Property name="AutoUpdateFileVersion" type="Boolean">True</Property>
                   <Property name="BuildAll" type="WordBool">True</Property>
-                  <Property name="BuildVersion" type="Integer">37</Property>
+                  <Property name="BuildVersion" type="Integer">40</Property>
                   <Property name="CodePage" type="Integer">1252</Property>
                   <Property name="CompilerVersion" type="Integer">4</Property>
                   <Property name="DebugVersionNumbers" type="Boolean">False</Property>
@@ -668,13 +668,13 @@ Action.SetVersionInfoKey("ProductVersion",Action.GetVersionInfoKey("FileVersion"
                   <Property name="UseVersionFromDOF" type="Boolean">False</Property>
                   <Property MultiValue="1" name="VersionInfoKeys" type="WideString"><![CDATA[CompanyName=Peter Thörnqvist
 FileDescription=MsTermBuild
-FileVersion=1.9.0.37
+FileVersion=1.9.0.40
 InternalName=MsTermBuild.exe
 LegalCopyright=Copyright (c) 2003-2006 by Peter Thörnqvist; all rights reserved
 LegalTrademarks=
 OriginalFilename=MsTermBuild.exe
 ProductName=MsTermBuild
-ProductVersion=1.9.0.37
+ProductVersion=1.9.0.40
 Webpage=http://initranslator.sourceforge.net
 License=Mozilla Public License 1.1
 Comments=Latest version at http://initranslator.sourceforge.net
@@ -775,7 +775,7 @@ Action.SetVersionInfoKey("ProductVersion",Action.GetVersionInfoKey("FileVersion"
                   <Property name="AutoIncBuild" type="WordBool">False</Property>
                   <Property name="AutoUpdateFileVersion" type="Boolean">True</Property>
                   <Property name="BuildAll" type="WordBool">True</Property>
-                  <Property name="BuildVersion" type="Integer">37</Property>
+                  <Property name="BuildVersion" type="Integer">40</Property>
                   <Property name="CodePage" type="Integer">1252</Property>
                   <Property name="CompilerVersion" type="Integer">4</Property>
                   <Property name="DebugVersionNumbers" type="Boolean">False</Property>
@@ -821,13 +821,13 @@ Action.SetVersionInfoKey("ProductVersion",Action.GetVersionInfoKey("FileVersion"
                   <Property name="UseVersionFromDOF" type="Boolean">False</Property>
                   <Property MultiValue="1" name="VersionInfoKeys" type="WideString"><![CDATA[CompanyName=IniTranslator
 FileDescription=Foxit Plugin for IniTranslator
-FileVersion=1.9.0.37
+FileVersion=1.9.0.40
 InternalName=FoxitParser.dll
 LegalCopyright=Copyright (c) 2006 by Peter Thörnqvist; all rights reserved
 LegalTrademarks=
 OriginalFilename=FoxitParser.dll
 ProductName=Foxit Plugin for IniTranslator
-ProductVersion=1.9.0.37
+ProductVersion=1.9.0.40
 Comments=Latest version at http://initranslator.sourceforge.net
 CompileDate=den 25 november 2006 16:58
 ]]>
@@ -911,7 +911,7 @@ Action.SetVersionInfoKey("ProductVersion",Action.GetVersionInfoKey("FileVersion"
                   <Property name="AutoIncBuild" type="WordBool">False</Property>
                   <Property name="AutoUpdateFileVersion" type="Boolean">True</Property>
                   <Property name="BuildAll" type="WordBool">True</Property>
-                  <Property name="BuildVersion" type="Integer">37</Property>
+                  <Property name="BuildVersion" type="Integer">40</Property>
                   <Property name="CodePage" type="Integer">1252</Property>
                   <Property name="CompilerVersion" type="Integer">4</Property>
                   <Property name="DebugVersionNumbers" type="Boolean">False</Property>
@@ -957,13 +957,13 @@ Action.SetVersionInfoKey("ProductVersion",Action.GetVersionInfoKey("FileVersion"
                   <Property name="UseVersionFromDOF" type="Boolean">False</Property>
                   <Property MultiValue="1" name="VersionInfoKeys" type="WideString"><![CDATA[CompanyName=IniTranslator
 FileDescription=PHP Plugin for IniTranslator
-FileVersion=1.9.0.37
+FileVersion=1.9.0.40
 InternalName=PHPParser.dll
 LegalCopyright=Copyright (c) 2003-2004 by Peter Thornqvist; all rights reserved
 LegalTrademarks=
 OriginalFilename=PHPParser.dll
 ProductName=PHP Plugin for IniTranslator
-ProductVersion=1.9.0.37
+ProductVersion=1.9.0.40
 Comments=Latest version at http://initranslator.sourceforge.net
 ]]>
                     </Property>
@@ -1046,7 +1046,7 @@ Action.SetVersionInfoKey("ProductVersion",Action.GetVersionInfoKey("FileVersion"
                   <Property name="AutoIncBuild" type="WordBool">False</Property>
                   <Property name="AutoUpdateFileVersion" type="Boolean">True</Property>
                   <Property name="BuildAll" type="WordBool">True</Property>
-                  <Property name="BuildVersion" type="Integer">37</Property>
+                  <Property name="BuildVersion" type="Integer">40</Property>
                   <Property name="CodePage" type="Integer">1252</Property>
                   <Property name="CompilerVersion" type="Integer">4</Property>
                   <Property name="DebugVersionNumbers" type="Boolean">False</Property>
@@ -1092,13 +1092,13 @@ Action.SetVersionInfoKey("ProductVersion",Action.GetVersionInfoKey("FileVersion"
                   <Property name="UseVersionFromDOF" type="Boolean">False</Property>
                   <Property MultiValue="1" name="VersionInfoKeys" type="WideString"><![CDATA[CompanyName=IniTranslator
 FileDescription=IB Forums Plugin for IniTranslator
-FileVersion=1.9.0.37
+FileVersion=1.9.0.40
 InternalName=IBForumsParser.dll
 LegalCopyright=Copyright (c) 2003-2004 by Peter Thornqvist; all rights reserved
 LegalTrademarks=
 OriginalFilename=IBForumsParser.dll
 ProductName=IB Forums Plugin for IniTranslator
-ProductVersion=1.9.0.37
+ProductVersion=1.9.0.40
 Comments=Latest version at http://initranslator.sourceforge.net
 ]]>
                     </Property>
@@ -1181,7 +1181,7 @@ Action.SetVersionInfoKey("ProductVersion",Action.GetVersionInfoKey("FileVersion"
                   <Property name="AutoIncBuild" type="WordBool">False</Property>
                   <Property name="AutoUpdateFileVersion" type="Boolean">True</Property>
                   <Property name="BuildAll" type="WordBool">True</Property>
-                  <Property name="BuildVersion" type="Integer">37</Property>
+                  <Property name="BuildVersion" type="Integer">40</Property>
                   <Property name="CodePage" type="Integer">1252</Property>
                   <Property name="CompilerVersion" type="Integer">4</Property>
                   <Property name="DebugVersionNumbers" type="Boolean">False</Property>
@@ -1227,13 +1227,13 @@ Action.SetVersionInfoKey("ProductVersion",Action.GetVersionInfoKey("FileVersion"
                   <Property name="UseVersionFromDOF" type="Boolean">False</Property>
                   <Property MultiValue="1" name="VersionInfoKeys" type="WideString"><![CDATA[CompanyName=IniTranslator
 FileDescription=Mozilla DTD Plugin for IniTranslator
-FileVersion=1.9.0.37
+FileVersion=1.9.0.40
 InternalName=MozillaDTDParser.dll
 LegalCopyright=Copyright (c) 2003-2004 by Peter Thornqvist; all rights reserved
 LegalTrademarks=
 OriginalFilename=MozillaDTDParser.dll
 ProductName=Mozilla DTD Plugin for IniTranslator
-ProductVersion=1.9.0.37
+ProductVersion=1.9.0.40
 Comments=Latest version at http://initranslator.sourceforge.net
 ]]>
                     </Property>
@@ -1316,7 +1316,7 @@ Action.SetVersionInfoKey("ProductVersion",Action.GetVersionInfoKey("FileVersion"
                   <Property name="AutoIncBuild" type="WordBool">False</Property>
                   <Property name="AutoUpdateFileVersion" type="Boolean">True</Property>
                   <Property name="BuildAll" type="WordBool">True</Property>
-                  <Property name="BuildVersion" type="Integer">37</Property>
+                  <Property name="BuildVersion" type="Integer">40</Property>
                   <Property name="CodePage" type="Integer">1252</Property>
                   <Property name="CompilerVersion" type="Integer">4</Property>
                   <Property name="DebugVersionNumbers" type="Boolean">False</Property>
@@ -1362,13 +1362,13 @@ Action.SetVersionInfoKey("ProductVersion",Action.GetVersionInfoKey("FileVersion"
                   <Property name="UseVersionFromDOF" type="Boolean">False</Property>
                   <Property MultiValue="1" name="VersionInfoKeys" type="WideString"><![CDATA[CompanyName=IniTranslator
 FileDescription=Mozilla Properties Plugin for IniTranslator
-FileVersion=1.9.0.37
+FileVersion=1.9.0.40
 InternalName=MozillaPropsParser.dll
 LegalCopyright=Copyright (c) 2003-2004 by Peter Thornqvist; all rights reserved
 LegalTrademarks=
 OriginalFilename=MozillaPropsParser.dll
 ProductName=Mozilla Properties Plugin for IniTranslator
-ProductVersion=1.9.0.37
+ProductVersion=1.9.0.40
 Comments=Latest version at http://initranslator.sourceforge.net
 ]]>
                     </Property>
@@ -1451,7 +1451,7 @@ Action.SetVersionInfoKey("ProductVersion",Action.GetVersionInfoKey("FileVersion"
                   <Property name="AutoIncBuild" type="WordBool">False</Property>
                   <Property name="AutoUpdateFileVersion" type="Boolean">True</Property>
                   <Property name="BuildAll" type="WordBool">True</Property>
-                  <Property name="BuildVersion" type="Integer">37</Property>
+                  <Property name="BuildVersion" type="Integer">40</Property>
                   <Property name="CodePage" type="Integer">1252</Property>
                   <Property name="CompilerVersion" type="Integer">4</Property>
                   <Property name="DebugVersionNumbers" type="Boolean">False</Property>
@@ -1497,13 +1497,13 @@ Action.SetVersionInfoKey("ProductVersion",Action.GetVersionInfoKey("FileVersion"
                   <Property name="UseVersionFromDOF" type="Boolean">False</Property>
                   <Property MultiValue="1" name="VersionInfoKeys" type="WideString"><![CDATA[CompanyName=IniTranslator
 FileDescription=Oleg Translator Plugin for IniTranslator
-FileVersion=1.9.0.37
+FileVersion=1.9.0.40
 InternalName=OlegParser.dll
 LegalCopyright=Copyright (c) 2003-2004 by Peter Thornqvist; all rights reserved
 LegalTrademarks=
 OriginalFilename=OlegParser.dll
 ProductName=Oleg Translator Plugin for IniTranslator
-ProductVersion=1.9.0.37
+ProductVersion=1.9.0.40
 Comments=Latest version at http://initranslator.sourceforge.net
 ]]>
                     </Property>
@@ -1586,7 +1586,7 @@ Action.SetVersionInfoKey("ProductVersion",Action.GetVersionInfoKey("FileVersion"
                   <Property name="AutoIncBuild" type="WordBool">False</Property>
                   <Property name="AutoUpdateFileVersion" type="Boolean">True</Property>
                   <Property name="BuildAll" type="WordBool">True</Property>
-                  <Property name="BuildVersion" type="Integer">37</Property>
+                  <Property name="BuildVersion" type="Integer">40</Property>
                   <Property name="CodePage" type="Integer">1252</Property>
                   <Property name="CompilerVersion" type="Integer">4</Property>
                   <Property name="DebugVersionNumbers" type="Boolean">False</Property>
@@ -1632,13 +1632,13 @@ Action.SetVersionInfoKey("ProductVersion",Action.GetVersionInfoKey("FileVersion"
                   <Property name="UseVersionFromDOF" type="Boolean">False</Property>
                   <Property MultiValue="1" name="VersionInfoKeys" type="WideString"><![CDATA[CompanyName=IniTranslator
 FileDescription=phpNuke Plugin for IniTranslator
-FileVersion=1.9.0.37
+FileVersion=1.9.0.40
 InternalName=phpNukeParser.dll
 LegalCopyright=Copyright (c) 2003-2004 by Peter Thornqvist; all rights reserved
 LegalTrademarks=
 OriginalFilename=phpNukeParser.dll
 ProductName=phpNuke Plugin for IniTranslator
-ProductVersion=1.9.0.37
+ProductVersion=1.9.0.40
 Comments=Latest version at http://initranslator.sourceforge.net
 ]]>
                     </Property>
@@ -1721,7 +1721,7 @@ Action.SetVersionInfoKey("ProductVersion",Action.GetVersionInfoKey("FileVersion"
                   <Property name="AutoIncBuild" type="WordBool">False</Property>
                   <Property name="AutoUpdateFileVersion" type="Boolean">True</Property>
                   <Property name="BuildAll" type="WordBool">True</Property>
-                  <Property name="BuildVersion" type="Integer">37</Property>
+                  <Property name="BuildVersion" type="Integer">40</Property>
                   <Property name="CodePage" type="Integer">1252</Property>
                   <Property name="CompilerVersion" type="Integer">4</Property>
                   <Property name="DebugVersionNumbers" type="Boolean">False</Property>
@@ -1767,13 +1767,13 @@ Action.SetVersionInfoKey("ProductVersion",Action.GetVersionInfoKey("FileVersion"
                   <Property name="UseVersionFromDOF" type="Boolean">False</Property>
                   <Property MultiValue="1" name="VersionInfoKeys" type="WideString"><![CDATA[CompanyName=IniTranslator
 FileDescription=PO Plugin for IniTranslator
-FileVersion=1.9.0.37
+FileVersion=1.9.0.40
 InternalName=POParser.dll
 LegalCopyright=Copyright (c) 2003-2004 by Peter Thornqvist; all rights reserved
 LegalTrademarks=
 OriginalFilename=POParser.dll
 ProductName=PO Plugin for IniTranslator
-ProductVersion=1.9.0.37
+ProductVersion=1.9.0.40
 Comments=Latest version at http://initranslator.sourceforge.net
 ]]>
                     </Property>
@@ -1856,7 +1856,7 @@ Action.SetVersionInfoKey("ProductVersion",Action.GetVersionInfoKey("FileVersion"
                   <Property name="AutoIncBuild" type="WordBool">False</Property>
                   <Property name="AutoUpdateFileVersion" type="Boolean">True</Property>
                   <Property name="BuildAll" type="WordBool">True</Property>
-                  <Property name="BuildVersion" type="Integer">37</Property>
+                  <Property name="BuildVersion" type="Integer">40</Property>
                   <Property name="CodePage" type="Integer">1252</Property>
                   <Property name="CompilerVersion" type="Integer">4</Property>
                   <Property name="DebugVersionNumbers" type="Boolean">False</Property>
@@ -1902,13 +1902,13 @@ Action.SetVersionInfoKey("ProductVersion",Action.GetVersionInfoKey("FileVersion"
                   <Property name="UseVersionFromDOF" type="Boolean">False</Property>
                   <Property MultiValue="1" name="VersionInfoKeys" type="WideString"><![CDATA[CompanyName=IniTranslator
 FileDescription=SciTE Plugin for IniTranslator
-FileVersion=1.9.0.37
+FileVersion=1.9.0.40
 InternalName=SciTEParser.dll
 LegalCopyright=Copyright (c) 2003-2004 by Peter Thornqvist; all rights reserved
 LegalTrademarks=
 OriginalFilename=SciTEParser.dll
 ProductName=SciTE Plugin for IniTranslator
-ProductVersion=1.9.0.37
+ProductVersion=1.9.0.40
 Comments=Latest version at http://initranslator.sourceforge.net
 ]]>
                     </Property>
@@ -1991,7 +1991,7 @@ Action.SetVersionInfoKey("ProductVersion",Action.GetVersionInfoKey("FileVersion"
                   <Property name="AutoIncBuild" type="WordBool">False</Property>
                   <Property name="AutoUpdateFileVersion" type="Boolean">True</Property>
                   <Property name="BuildAll" type="WordBool">True</Property>
-                  <Property name="BuildVersion" type="Integer">37</Property>
+                  <Property name="BuildVersion" type="Integer">40</Property>
                   <Property name="CodePage" type="Integer">1252</Property>
                   <Property name="CompilerVersion" type="Integer">4</Property>
                   <Property name="DebugVersionNumbers" type="Boolean">False</Property>
@@ -2037,13 +2037,13 @@ Action.SetVersionInfoKey("ProductVersion",Action.GetVersionInfoKey("FileVersion"
                   <Property name="UseVersionFromDOF" type="Boolean">False</Property>
                   <Property MultiValue="1" name="VersionInfoKeys" type="WideString"><![CDATA[CompanyName=IniTranslator
 FileDescription=TMX Plugin for IniTranslator
-FileVersion=1.9.0.37
+FileVersion=1.9.0.40
 InternalName=TMXParser.dll
 LegalCopyright=Copyright (c) 2006 by Peter Thörnqvist; all rights reserved
 LegalTrademarks=
 OriginalFilename=TMXParser.dll
 ProductName=TMX Plugin for IniTranslator
-ProductVersion=1.9.0.37
+ProductVersion=1.9.0.40
 Comments=Latest version at http://initranslator.sourceforge.net
 ]]>
                     </Property>
@@ -2126,7 +2126,7 @@ Action.SetVersionInfoKey("ProductVersion",Action.GetVersionInfoKey("FileVersion"
                   <Property name="AutoIncBuild" type="WordBool">False</Property>
                   <Property name="AutoUpdateFileVersion" type="Boolean">True</Property>
                   <Property name="BuildAll" type="WordBool">True</Property>
-                  <Property name="BuildVersion" type="Integer">37</Property>
+                  <Property name="BuildVersion" type="Integer">40</Property>
                   <Property name="CodePage" type="Integer">1252</Property>
                   <Property name="CompilerVersion" type="Integer">4</Property>
                   <Property name="DebugVersionNumbers" type="Boolean">False</Property>
@@ -2172,13 +2172,13 @@ Action.SetVersionInfoKey("ProductVersion",Action.GetVersionInfoKey("FileVersion"
                   <Property name="UseVersionFromDOF" type="Boolean">False</Property>
                   <Property MultiValue="1" name="VersionInfoKeys" type="WideString"><![CDATA[CompanyName=IniTranslator
 FileDescription=XiliSoft Plugin for IniTranslator
-FileVersion=1.9.0.37
+FileVersion=1.9.0.40
 InternalName=XiliSoftParser.dll
 LegalCopyright=Copyright (c) 2006 by Alexander Kornienko; all rights reserved
 LegalTrademarks=
 OriginalFilename=XiliSoftParser.DLL
 ProductName=XiliSoft Plugin for IniTranslator
-ProductVersion=1.9.0.37
+ProductVersion=1.9.0.40
 Comments=Latest version at http://initranslator.sourceforge.net
 ]]>
                     </Property>
@@ -2261,7 +2261,7 @@ Action.SetVersionInfoKey("ProductVersion",Action.GetVersionInfoKey("FileVersion"
                   <Property name="AutoIncBuild" type="WordBool">False</Property>
                   <Property name="AutoUpdateFileVersion" type="Boolean">True</Property>
                   <Property name="BuildAll" type="WordBool">True</Property>
-                  <Property name="BuildVersion" type="Integer">37</Property>
+                  <Property name="BuildVersion" type="Integer">40</Property>
                   <Property name="CodePage" type="Integer">1252</Property>
                   <Property name="CompilerVersion" type="Integer">4</Property>
                   <Property name="DebugVersionNumbers" type="Boolean">False</Property>
@@ -2307,13 +2307,13 @@ Action.SetVersionInfoKey("ProductVersion",Action.GetVersionInfoKey("FileVersion"
                   <Property name="UseVersionFromDOF" type="Boolean">False</Property>
                   <Property MultiValue="1" name="VersionInfoKeys" type="WideString"><![CDATA[CompanyName=IniTranslator
 FileDescription=XLIFF Plugin for IniTranslator
-FileVersion=1.9.0.37
+FileVersion=1.9.0.40
 InternalName=XLIFFPlugin.dll
 LegalCopyright=Copyright (c) 2006 by Peter Thörnqvist; all rights reserved
 LegalTrademarks=
 OriginalFilename=XLIFFPlugin.dll
 ProductName=XLIFF Plugin for IniTranslator
-ProductVersion=1.9.0.37
+ProductVersion=1.9.0.40
 Comments=Latest version at http://initranslator.sourceforge.net
 ]]>
                     </Property>
@@ -2412,7 +2412,7 @@ Action.SetVersionInfoKey("ProductVersion",Action.GetVersionInfoKey("FileVersion"
                   <Property name="AutoIncBuild" type="WordBool">False</Property>
                   <Property name="AutoUpdateFileVersion" type="Boolean">True</Property>
                   <Property name="BuildAll" type="WordBool">True</Property>
-                  <Property name="BuildVersion" type="Integer">37</Property>
+                  <Property name="BuildVersion" type="Integer">40</Property>
                   <Property name="CodePage" type="Integer">1252</Property>
                   <Property name="CompilerVersion" type="Integer">4</Property>
                   <Property name="DebugVersionNumbers" type="Boolean">False</Property>
@@ -2458,13 +2458,13 @@ Action.SetVersionInfoKey("ProductVersion",Action.GetVersionInfoKey("FileVersion"
                   <Property name="UseVersionFromDOF" type="Boolean">False</Property>
                   <Property MultiValue="1" name="VersionInfoKeys" type="WideString"><![CDATA[CompanyName=IniTranslator
 FileDescription=ListView Plugin for IniTranslator
-FileVersion=1.9.0.37
+FileVersion=1.9.0.40
 InternalName=ToolListEdit.dll
 LegalCopyright=Copyright (c) 2003-2006 by Peter Thornqvist; all rights reserved
 LegalTrademarks=
 OriginalFilename=ToolListEdit.dll
 ProductName=ListView Plugin for IniTranslator
-ProductVersion=1.9.0.37
+ProductVersion=1.9.0.40
 Comments=Latest version at http://initranslator.sourceforge.net
 ]]>
                     </Property>
@@ -2547,7 +2547,7 @@ Action.SetVersionInfoKey("ProductVersion",Action.GetVersionInfoKey("FileVersion"
                   <Property name="AutoIncBuild" type="WordBool">False</Property>
                   <Property name="AutoUpdateFileVersion" type="Boolean">True</Property>
                   <Property name="BuildAll" type="WordBool">True</Property>
-                  <Property name="BuildVersion" type="Integer">37</Property>
+                  <Property name="BuildVersion" type="Integer">40</Property>
                   <Property name="CodePage" type="Integer">1252</Property>
                   <Property name="CompilerVersion" type="Integer">4</Property>
                   <Property name="DebugVersionNumbers" type="Boolean">False</Property>
@@ -2593,13 +2593,13 @@ Action.SetVersionInfoKey("ProductVersion",Action.GetVersionInfoKey("FileVersion"
                   <Property name="UseVersionFromDOF" type="Boolean">False</Property>
                   <Property MultiValue="1" name="VersionInfoKeys" type="WideString"><![CDATA[CompanyName=IniTranslator
 FileDescription=Tool Property Viewer Plugin for IniTranslator
-FileVersion=1.9.0.37
+FileVersion=1.9.0.40
 InternalName=ToolPropertiesView.dll
 LegalCopyright=Copyright (c) 2006 by Peter Thörnqvist; all rights reserved
 LegalTrademarks=
 OriginalFilename=ToolPropertiesView.dll
 ProductName=Tool Property Viewer Plugin for IniTranslator
-ProductVersion=1.9.0.37
+ProductVersion=1.9.0.40
 Commments=Latest version available at http://initranslator.sourceforge.net
 ]]>
                     </Property>
@@ -2682,7 +2682,7 @@ Action.SetVersionInfoKey("ProductVersion",Action.GetVersionInfoKey("FileVersion"
                   <Property name="AutoIncBuild" type="WordBool">False</Property>
                   <Property name="AutoUpdateFileVersion" type="Boolean">True</Property>
                   <Property name="BuildAll" type="WordBool">True</Property>
-                  <Property name="BuildVersion" type="Integer">37</Property>
+                  <Property name="BuildVersion" type="Integer">40</Property>
                   <Property name="CodePage" type="Integer">1252</Property>
                   <Property name="CompilerVersion" type="Integer">4</Property>
                   <Property name="DebugVersionNumbers" type="Boolean">False</Property>
@@ -2728,13 +2728,13 @@ Action.SetVersionInfoKey("ProductVersion",Action.GetVersionInfoKey("FileVersion"
                   <Property name="UseVersionFromDOF" type="Boolean">False</Property>
                   <Property MultiValue="1" name="VersionInfoKeys" type="WideString"><![CDATA[CompanyName=IniTranslator
 FileDescription=TreeView Plugin for IniTranslator
-FileVersion=1.9.0.37
+FileVersion=1.9.0.40
 InternalName=ToolTreeview.dll
 LegalCopyright=Copyright (c) 2003-2006 by Peter Thornqvist; all rights reserved
 LegalTrademarks=
 OriginalFilename=ToolTreeView.dll
 ProductName=TreeView Plugin for IniTranslator
-ProductVersion=1.9.0.37
+ProductVersion=1.9.0.40
 Comments=Latest version at http://initranslator.sourceforge.net
 ]]>
                     </Property>

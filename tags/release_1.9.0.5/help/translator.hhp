@@ -1,0 +1,46 @@
+[OPTIONS]
+Binary Index=No
+Compatibility=1.1 or later
+Compiled file=translator.chm
+Contents file=toc.hhc
+Default Window=main
+Default topic=Introduction.html
+Display compile progress=Yes
+Full-text search=Yes
+Index file=Index.hhk
+Language=0x409 Engelska (USA)
+Title=Ini Translator Help
+
+[WINDOWS]
+main="Ini Translator Help","toc.hhc","Index.hhk","Introduction.html",,,,,,0x23520,,0x3006,,,,,,,,0
+
+
+[FILES]
+Index.html
+Introduction.html
+Editing Items.html
+Moving around.html
+Opening and Saving Files.html
+Icons in the ListView.html
+Bookmarks.html
+Spelling.html
+Trim.html
+Comments dialog.html
+Dictionaries.html
+Searching and Replacing.html
+Appendix A.html
+Appendix B.html
+Appendix C.html
+Appendix D.html
+Command-line interface.html
+Known issues.html
+Preferences dialog.html
+..\MPL-1.1.html
+Contact.html
+Working with PO Files.html
+Configure Keyboard Dialog.html
+External Tools.html
+Configure Suspicious Translations.html
+
+[INFOTYPES]
+

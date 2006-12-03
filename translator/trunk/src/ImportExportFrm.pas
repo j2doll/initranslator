@@ -62,7 +62,7 @@ type
 
 implementation
 uses
-  AppConsts, AppUtils, TntClasses, TntWindows, TntSysUtils;
+  AppConsts, AppUtils, CommonUtils, TntClasses, TntWindows, TntSysUtils;
 
 {$R *.dfm}
 var
@@ -269,6 +269,7 @@ begin
       Close;
       Exit;
     end;
+  WaitCursor;
   if Parser.ImportItems(FItems, FOrphans) <> S_OK then
     ModalResult := mrNone;
 end;
@@ -286,6 +287,7 @@ begin
       Close;
       Exit;
     end;
+  WaitCursor;
   if Parser.ExportItems(FItems, FOrphans) <> S_OK then
     ModalResult := mrNone;
 end;

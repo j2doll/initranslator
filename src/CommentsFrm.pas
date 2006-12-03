@@ -25,7 +25,7 @@ uses
   Controls, Forms, Dialogs, StdCtrls, ComCtrls, ExtCtrls,
   Menus, StdActns, ActnList, Buttons,
   BaseForm, TranslateFile, TransIntf,
-  TntComCtrls, TntButtons, TntStdCtrls, TntExtCtrls, TntMenus,
+  TntClasses, TntComCtrls, TntButtons, TntStdCtrls, TntExtCtrls, TntMenus,
   TntStdActns, TntActnList, TB2Item, TBX, SpTBXItem;
 
 type
@@ -67,7 +67,7 @@ type
     { Private declarations }
   public
     { Public declarations }
-    procedure SetComments(const Item: ITranslationItem; CommentChar: WideChar);
+    procedure SetComments(const Item: ITranslationItem; CommentChars: TTntStrings);
     property Pinned: boolean read GetPinned write SetPinned;
     property OnCommentModified: TCommentModifiedEvent read FOnCommentModified write SetOnCommentModified;
   end;
@@ -90,7 +90,7 @@ begin
   reOriginal.Height := H div 2;
 end;
 
-procedure TfrmComments.SetComments(const Item: ITranslationItem; CommentChar: WideChar);
+procedure TfrmComments.SetComments(const Item: ITranslationItem; CommentChars: TTntStrings);
 var i: integer;
 begin
   if Item = nil then
@@ -100,15 +100,15 @@ begin
   end
   else
   begin
-    reOriginal.Text := trim(Item.OrigComments);
-    for i := 0 to reOriginal.Lines.Count - 1 do
-      if Copy(reOriginal.Lines[i], 1, 1) = CommentChar then
-        reOriginal.Lines[i] := trim(Copy(reOriginal.Lines[i], 2, MaxInt));
+    reOriginal.Text := Item.OrigComments;
+//    for i := 0 to reOriginal.Lines.Count - 1 do
+//      if Copy(reOriginal.Lines[i], 1, 1) = CommentChar then
+//        reOriginal.Lines[i] := trim(Copy(reOriginal.Lines[i], 2, MaxInt));
     reTranslation.OnChange := nil;
-    reTranslation.Text := trim(Item.TransComments);
-    for i := 0 to reTranslation.Lines.Count - 1 do
-      if Copy(reTranslation.Lines[i], 1, 1) = CommentChar then
-        reTranslation.Lines[i] := trim(Copy(reTranslation.Lines[i], 2, MaxInt));
+    reTranslation.Text := Item.TransComments;
+//    for i := 0 to reTranslation.Lines.Count - 1 do
+//      if Copy(reTranslation.Lines[i], 1, 1) = CommentChar then
+//        reTranslation.Lines[i] := trim(Copy(reTranslation.Lines[i], 2, MaxInt));
     reTranslation.Modified := false;
     reTranslation.OnChange := reTranslationChange;
   end;

@@ -449,10 +449,9 @@ type
     FFindReplace: TFindReplace;
     FTranslateFile: TTranslateFiles;
     FLastFindText, FLastFolder: WideString;
-    FModified: boolean;
+    FCommandProcessor, FModified, FIsImport: boolean;
 
     FDictionary: TDictionaryItems;
-    FCommandProcessor: boolean;
     FFileMonitors: array of TFileMonitorThread;
     FBookmarks: array[0..9] of integer;
     FImportIndex, FCapabilitesSupported: integer;
@@ -476,6 +475,7 @@ type
 
     // returns true if it's OK to continue
     function CheckModified: boolean;
+    function DoExport: boolean;
     function CheckDictModified: boolean;
     function CheckOrphans: boolean;
     procedure LoadSettings(FirstLoad: boolean);
@@ -908,6 +908,7 @@ begin
   if WideFileExists(Filename) and not FCommandProcessor then
   begin
     FCapabilitesSupported := 0;
+    FIsImport := false;
 //    AddMRUFiles(FileName, GlobalAppOptions.TranslationFile);
   end;
 
@@ -957,6 +958,7 @@ begin
   AddMRUFiles(GlobalAppOptions.OriginalFile, FileName);
 
   Result := FTranslateFile.LoadTranslation(FileName, Encoding);
+  FIsImport := false;
   NotifyChanged(NOTIFY_ITEM_FILE_OPEN, Ord(true), Integer(PWideChar(Filename)));
   GlobalAppOptions.TransEncoding := Ord(Result);
   StartMonitor(FFileMonitors[cTransMonitor], FileName);
@@ -985,15 +987,19 @@ var
   i: integer;
 begin
   Result := false;
-  if not CheckOrphans then Exit;
-  i := lvTranslateStrings.ItemIndex;
+  if not CheckOrphans then
+    Exit;
+
   if FileName = '' then
   begin
     Result := SaveTranslationAs(FileName, Encoding);
     Exit;
   end;
+  if DoExport then
+    Exit;
 
   WaitCursor;
+  i := lvTranslateStrings.ItemIndex;
 
   if not NotifyChanging(NOTIFY_ITEM_FILE_SAVE, Ord(true), Integer(PWideChar(Filename))) then
   begin
@@ -1039,6 +1045,8 @@ end;
 function TfrmMain.SaveTranslationAs(const FileName: WideString; Encoding: TEncoding): boolean;
 begin
   Result := false;
+  if DoExport then
+    Exit;
   SaveTransDlg.FileName := GetFilename(Filename);
   SaveTransDlg.FilterIndex := GlobalAppOptions.FilterIndex;
   SaveTransDlg.EncodingIndex := Ord(Encoding);
@@ -1060,19 +1068,19 @@ function TfrmMain.SaveOriginal(const FileName: WideString; Encoding: TEncoding;
 var
   i: integer;
 begin
-  i := lvTranslateStrings.ItemIndex;
+  Result := false;
   if FileName = '' then
   begin
     Result := SaveOrigAs(FileName, Encoding);
     Exit;
   end;
+  if DoExport then
+    Exit;
+  i := lvTranslateStrings.ItemIndex;
 
   WaitCursor;
   if not NotifyChanging(NOTIFY_ITEM_FILE_SAVE, Ord(false), Integer(PWideChar(Filename))) then
-  begin
-    Result := false;
     Exit;
-  end;
 
   // stop the monitor thread
   StopMonitor(FFileMonitors[cTransMonitor]);
@@ -1113,6 +1121,8 @@ end;
 function TfrmMain.SaveOrigAs(const FileName: WideString; Encoding: TEncoding): boolean;
 begin
   Result := false;
+  if DoExport then
+    Exit;
   SaveOrigDlg.FileName := GetFilename(Filename);
   SaveOrigDlg.EncodingIndex := Ord(Encoding);
   SaveOrigDlg.FilterIndex := GlobalAppOptions.FilterIndex;
@@ -1397,6 +1407,14 @@ var
       end;
     end;
   end;
+
+  function SafeDiv(Nominator, Denominator: integer): Extended;
+  begin
+    if (Nominator = 0) or (Denominator = 0) then
+      Result := 0
+    else
+      Result := Nominator / Denominator;
+  end;
 begin
   if Modified then
     StatusBar1.Panels[0].Caption := '  ' + _(ClassName, SModified)
@@ -1427,11 +1445,14 @@ begin
   if acDictInvert.Checked then
     StatusBar1.Panels[4].Caption := StatusBar1.Panels[4].Caption + WideFormat(' (%s)', [_(ClassName,
         SDictInverted)]);
+  StatusBar1.Panels[5].Caption := WideFormat(_(ClassName, '  %d | %d | %d | %f%%'),
+    [FTranslateFile.Items.Count, FTranslateFile.Items.TranslatedCount, FTranslateFile.Items.Count - FTranslateFile.Items.TranslatedCount, SafeDiv(FTranslateFile.Items.TranslatedCount, FTranslateFile.Items.Count) * 100]);
   pbTranslated.Max := FTranslateFile.Items.Count;
   pbTranslated.Position := FTranslateFile.Items.TranslatedCount;
   pbTranslated.Hint := '  ' + WideFormat(_(ClassName, SFmtCountOfCountTranslated), [FTranslateFile.Items.TranslatedCount,
     FTranslateFile.Items.Count]);
-  StatusBar1.Panels[5].Caption := pbTranslated.Hint;
+  // StatusBar1.Panels[6].Caption := ''; this is the progress bar
+  StatusBar1.Panels[7].Caption := WideFormat(_(ClassName, SFmtOrphansCount), [FTranslateFile.Orphans.Count]);
   for i := 0 to StatusBar1.Panels.Count - 1 do
     StatusBar1.Panels[i].Hint := StatusBar1.Panels[i].Caption;
 
@@ -1675,6 +1696,8 @@ begin
   ini.WriteString(ClassName, EncodeStrings(SSelectHelpFile), EncodeStrings(SSelectHelpFile));
   ini.WriteString(ClassName, EncodeStrings(SFmtSaveItemsNoName), EncodeStrings(SFmtSaveItemsNoName));
   ini.WriteString(ClassName, EncodeStrings(SConfirmRemoveOrphans), EncodeStrings(SConfirmRemoveOrphans));
+  ini.WriteString(ClassName, EncodeStrings(SFmtOrphansCount), EncodeStrings(SFmtOrphansCount));
+  ini.WriteString(ClassName, EncodeStrings(SImportedPromptToExport), EncodeStrings(SImportedPromptToExport));
 
 
   for i := 0 to alMain.ActionCount - 1 do
@@ -1983,7 +2006,7 @@ begin
     DefaultExt := _(ClassName, SLngExt);
     Filter := _(ClassName, SFileFilter);
     InitialDir := '.';
-    Options := [ofOverwritePrompt, ofHideReadOnly, ofEnableSizing];
+    Options := [ofOverwritePrompt, ofEnableSizing];
     Title := _(ClassName, SSaveTransTitle);
     Encodings.Add(_(ClassName, SANSI));
     Encodings.Add(_(ClassName, SUTF8));
@@ -1995,11 +2018,21 @@ begin
     DefaultExt := _(ClassName, SLngExt);
     Filter := _(ClassName, SFileFilter);
     InitialDir := '.';
-    Options := [ofOverwritePrompt, ofHideReadOnly, ofEnableSizing];
+    Options := [ofOverwritePrompt, ofEnableSizing];
     Title := _(ClassName, SSaveOrigTitle);
     Encodings.Add(_(ClassName, SANSI));
     Encodings.Add(_(ClassName, SUTF8));
     Encodings.Add(_(ClassName, SUnicode));
+  end;
+end;
+
+function TfrmMain.DoExport: boolean;
+begin
+  Result := false;
+  if FIsImport and YesNo(_(ClassName, SImportedPromptToExport), _(ClassName, SConfirmCaption)) then
+  begin
+    acExport.Execute;
+    Result := true;
   end;
 end;
 
@@ -2011,7 +2044,8 @@ begin
     case YesNoCancel(_(ClassName, SSavePrompt), _(ClassName, SConfirmCaption)) of
       IDYES:
         Result := SaveTranslation(GlobalAppOptions.TranslationFile, TEncoding(GlobalAppOptions.TransEncoding));
-      IDNO: Result := true; // do nothing
+      IDNO:
+        Result := true; // do nothing
       IDCANCEL:
         Result := false;
     end;
@@ -2485,8 +2519,8 @@ begin
     GlobalAppOptions.FilterIndex := OpenOrigDlg.FilterIndex;
     Modified := false;
     LoadTranslation(OpenTransDlg.FileName, TEncoding(OpenTransDlg.EncodingIndex));
+    FIsImport := false;
     // jump directly to first untranslated item (if available)
-    acNextUntranslated.Execute;
   end
   else if not CalledByOrig then
     Exit
@@ -3366,7 +3400,7 @@ begin
     Exit;
   SaveEditChanges;
   //  (FTranslateFile.Items as ITranslationItems)._AddRef;
-  if not CheckModified  then
+  if not CheckModified then
     Exit;
   SelectedListItem := nil;
   ScrollToTop;
@@ -3376,12 +3410,13 @@ begin
   if TfrmImportExport.Edit(FTranslateFile.Items, FTranslateFile.Orphans,
     GetPluginsFolder, true, FImportIndex, FCapabilitesSupported) then
   begin
+    FIsImport := true;
     // make sure the "Save As" dialog is shown on Ctrl+S to prevent inadverent saving to wrong file
     StopMonitor(FFileMonitors[cOrigMonitor]);
     StopMonitor(FFileMonitors[cTransMonitor]);
     //    StopMonitor(FFileMonitors[cDictMonitor]);
     GlobalAppOptions.TranslationFile := '';
-    GlobalAppOptions.OriginalFIle := '';
+    GlobalAppOptions.OriginalFile := '';
     acRestoreSort.Execute;
     Modified := true;
     NotifyChanged(NOTIFY_ITEM_IMPORT, 0, 0);

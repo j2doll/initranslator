@@ -1,8 +1,8 @@
 object frmMain: TfrmMain
   Left = 379
   Top = 181
-  Width = 651
-  Height = 550
+  Width = 573
+  Height = 455
   Action = acAbout
   ActiveControl = reTranslation
   Caption = 'Ini Translator'
@@ -23,36 +23,53 @@ object frmMain: TfrmMain
   TextHeight = 13
   object StatusBar1: TTBXStatusBar
     Left = 0
-    Top = 497
-    Width = 643
+    Top = 402
+    Width = 565
     Height = 19
     Panels = <
       item
         Size = 100
         Tag = 0
+        TextTruncation = twEndEllipsis
       end
       item
+        Size = 110
+        Tag = 0
+        TextTruncation = twEndEllipsis
+      end
+      item
+        Size = 110
+        Tag = 0
+        TextTruncation = twEndEllipsis
+      end
+      item
+        Size = 110
+        Tag = 0
+        TextTruncation = twEndEllipsis
+      end
+      item
+        Size = 110
+        Tag = 0
+        TextTruncation = twEndEllipsis
+      end
+      item
+        Framed = False
         Size = 150
         Tag = 0
+        TextTruncation = twEndEllipsis
       end
       item
-        Size = 150
-        Tag = 0
-      end
-      item
-        Size = 150
-        Tag = 0
-      end
-      item
-        Size = 120
-        Tag = 0
-      end
-      item
-        Alignment = taRightJustify
+        Alignment = taCenter
         Control = pbTranslated
         Framed = False
-        Size = 200
+        Size = 100
         StretchPriority = 1
+        Tag = 0
+      end
+      item
+        Alignment = taCenter
+        Framed = False
+        Size = 75
         Tag = 0
         TextTruncation = twEndEllipsis
       end
@@ -78,7 +95,7 @@ object frmMain: TfrmMain
   object TopDock: TSpTBXDock
     Left = 0
     Top = 0
-    Width = 643
+    Width = 565
     Height = 49
     FixAlign = True
     object tbMenu: TSpTBXToolbar
@@ -672,36 +689,36 @@ object frmMain: TfrmMain
     Left = 0
     Top = 49
     Width = 9
-    Height = 439
+    Height = 344
     Position = dpLeft
   end
   object TBDock2: TSpTBXDock
-    Left = 634
+    Left = 556
     Top = 49
     Width = 9
-    Height = 439
+    Height = 344
     Position = dpRight
   end
   object TBDock3: TSpTBXDock
     Left = 0
-    Top = 488
-    Width = 643
+    Top = 393
+    Width = 565
     Height = 9
     Position = dpBottom
   end
   object pnlBack: TTntPanel
     Left = 9
     Top = 49
-    Width = 625
-    Height = 439
+    Width = 547
+    Height = 344
     Align = alClient
     BevelOuter = bvNone
     BorderWidth = 4
     TabOrder = 5
     object splitHorz: TSplitter
       Left = 4
-      Top = 239
-      Width = 617
+      Top = 144
+      Width = 539
       Height = 5
       Cursor = crVSplit
       Align = alBottom
@@ -711,8 +728,8 @@ object frmMain: TfrmMain
     end
     object pnlBottom: TTntPanel
       Left = 4
-      Top = 244
-      Width = 617
+      Top = 149
+      Width = 539
       Height = 191
       Align = alBottom
       BevelOuter = bvNone
@@ -722,7 +739,7 @@ object frmMain: TfrmMain
       object pnlTrans: TTntPanel
         Left = 1
         Top = 97
-        Width = 615
+        Width = 537
         Height = 23
         Align = alTop
         Alignment = taLeftJustify
@@ -742,7 +759,7 @@ object frmMain: TfrmMain
       object reTranslation: TTntRichEdit
         Left = 1
         Top = 120
-        Width = 615
+        Width = 537
         Height = 70
         Align = alClient
         BevelInner = bvNone
@@ -762,7 +779,7 @@ object frmMain: TfrmMain
       object pnlOrig: TTntPanel
         Left = 1
         Top = 1
-        Width = 615
+        Width = 537
         Height = 23
         Align = alTop
         Alignment = taLeftJustify
@@ -783,7 +800,7 @@ object frmMain: TfrmMain
       object reOriginal: TTntRichEdit
         Left = 1
         Top = 24
-        Width = 615
+        Width = 537
         Height = 73
         Align = alTop
         BevelInner = bvNone
@@ -802,8 +819,8 @@ object frmMain: TfrmMain
     object lvTranslateStrings: TTntListView
       Left = 4
       Top = 45
-      Width = 617
-      Height = 194
+      Width = 539
+      Height = 99
       Align = alClient
       BevelInner = bvNone
       BevelOuter = bvRaised
@@ -846,7 +863,7 @@ object frmMain: TfrmMain
     object pnlKeyBack: TTntPanel
       Left = 4
       Top = 4
-      Width = 617
+      Width = 539
       Height = 41
       Align = alTop
       BevelOuter = bvNone
@@ -856,7 +873,7 @@ object frmMain: TfrmMain
       object pnlKeyDetails: TTntPanel
         Left = 2
         Top = 2
-        Width = 613
+        Width = 535
         Height = 37
         Align = alClient
         Alignment = taLeftJustify
@@ -874,12 +891,11 @@ object frmMain: TfrmMain
         object lblViewDetails: TLabel
           Left = 4
           Top = 4
-          Width = 605
+          Width = 527
           Height = 29
           Align = alClient
           AutoSize = False
           ParentShowHint = False
-          ShowAccelChar = False
           ShowHint = True
           Layout = tlCenter
           WordWrap = True

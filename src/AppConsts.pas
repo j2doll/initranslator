@@ -108,6 +108,8 @@ resourcestring
   SSelectHelpFile = 'Select a help file';
   SFmtSaveItemsNoName = 'Some items (%d) could not be saved as they had no Original value';
   SConfirmRemoveOrphans = 'Saving the translation file now will remove any orphaned items. Continue anyway?';
+  SFmtOrphansCount = '%d orphan(s)';
+  SImportedPromptToExport = 'The current items seems to have been imported. Do you want to export them instead?';
 
 const
   SLngExt = 'lng';

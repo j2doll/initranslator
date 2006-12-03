@@ -23,7 +23,7 @@ unit TranslateFile;
 
 interface
 uses
-  Classes, SysUtils, AppConsts, AppUtils, TransIntf, TNTSysUtils;
+  Classes, SysUtils, AppConsts, AppUtils, TransIntf, TntClasses, TntSysUtils;
 
 type
   TTranslationItems = class;
@@ -135,12 +135,12 @@ type
   private
     FItems: ITranslationItems;
     FOrphans: ITranslationItems;
-    FCommentChar: WideChar;
     FEndSection: WideChar;
     FStartSection: WideChar;
     FSeparatorChar: WideChar;
     FHeader: WideString;
     FFooter: WideString;
+    FCommentChars: TTntStrings;
   public
     constructor Create;
     destructor Destroy; override;
@@ -158,13 +158,13 @@ type
     // various delimiters used to parse the file (should probably not be changed)
     property StartSection: WideChar read FStartSection write FStartSection default '[';
     property EndSection: WideChar read FEndSection write FEndSection default ']';
-    property CommentChar: WideChar read FCommentChar write FCommentChar default ';';
     property SeparatorChar: WideChar read FSeparatorChar write FSeparatorChar default '=';
+    property CommentChars: TTntStrings read FCommentChars;
   end;
 
 implementation
 uses
-  Windows, TntSystem, TntClasses;
+  Windows, TntSystem;
 
 function trimQuotes(const S: WideString; Quote: WideChar): WideString;
 begin
@@ -500,12 +500,15 @@ end;
 constructor TTranslateFiles.Create;
 begin
   inherited Create;
+  FCommentChars := TTntStringlist.Create;
   FItems := TTranslationItems.Create;
   FOrphans := TTranslationItems.Create;
   StartSection := '[';
   EndSection := ']';
   SeparatorChar := '=';
-  CommentChar := ';';
+  FCommentChars.Add(';');
+  FCommentChars.Add('//');
+  FCommentChars.Add('#');
 end;
 
 destructor TTranslateFiles.Destroy;
@@ -515,6 +518,18 @@ begin
   FOrphans.Clear;
   FOrphans := nil;
   inherited;
+end;
+
+function InStringList(List: TTntStrings; const Value: WideString): boolean;
+var i: integer;
+begin
+  for i := 0 to List.Count - 1 do
+    if WideTextPos(List[i], Value) = 1 then
+    begin
+      Result := true;
+      Exit;
+    end;
+  Result := false;
 end;
 
 function TTranslateFiles.LoadOriginal(const Filename: WideString; Encoding: TEncoding): TEncoding;
@@ -552,11 +567,11 @@ begin
     end;
     for i := 0 to S.Count - 1 do
     begin
-      if WideTextPos(CommentChar, S[i]) = 1 then
+      if InStringList(CommentChars, S[i]) then
         FComments.Add(S[i])
-      else if (WideTextPos(StartSection, S[i]) = 1) and (WideTextPos(EndSection, S[i]) = Length(S[i])) and (WideTextPos(SeparatorChar, S[i]) = 0) then
+      else if (WideTextPos(StartSection, S[i]) = 1) and (WideTextPos(EndSection, S[i]) = Length(S[i])) then
         ASection := Copy(S[i], 2, Length(S[i]) - 2)
-      else
+      else if (WideTextPos(SeparatorChar, S[i]) > 1) then
       begin
         j := WideTextPos(SeparatorChar, S[i]);
         if j > 1 then
@@ -570,7 +585,9 @@ begin
             FComments.Clear;
           end;
         end;
-      end;
+      end
+      else
+        FComments.Add(S[i]);
     end;
   finally
     S.Free;
@@ -615,7 +632,7 @@ begin
     end;
     for i := 0 to S.Count - 1 do
     begin
-      if WideTextPos(CommentChar, S[i]) = 1 then
+      if InStringList(CommentChars, S[i]) then
         FComments.Add(S[i])
       else if (WideTextPos(StartSection, S[i]) = 1) and (WideTextPos(EndSection, S[i]) = Length(S[i]))
         and (WideTextPos(SeparatorChar, S[i]) = 0) then
@@ -638,6 +655,8 @@ begin
           begin
             FItem := FOrphans.Add;
             FItem.Section := ASection;
+            FItem.Name := Copy(S[i], 1, j - 1);
+
             FItem.Original := Copy(S[i], 1, j - 1);
             FItem.Translation := Copy(S[i], j + 1, MaxInt);
             // normal behavior is to regard empty translations as untranslated
@@ -656,16 +675,9 @@ begin
 end;
 
 procedure FixAndAddComments(S: TTntStringlist; const Comments: WideString);
-var tmp: WideString;
 begin
-  if trim(Comments) <> '' then
-  begin
-    S.Add('');
-    tmp := trim(Comments);
-    if tmp[1] <> ';' then
-      tmp := '; ' + tmp;
-    S.Add(tmp);
-  end;
+  if Comments <> '' then
+    S.Add(Comments);
 end;
 
 procedure TTranslateFiles.SaveOriginal(const Filename: WideString; Encoding: TEncoding);
@@ -947,3 +959,4 @@ begin
 end;
 
 end.
+

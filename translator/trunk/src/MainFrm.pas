@@ -2424,12 +2424,12 @@ begin
       reTranslation.Modified := false;
       if frmComments <> nil then
       begin
-        frmComments.SetComments(FTranslateFile.Items[Item.Index], FTranslateFile.CommentChar);
+        frmComments.SetComments(FTranslateFile.Items[Item.Index], FTranslateFile.CommentChars);
         frmComments.OnCommentModified := DoCommentModified;
       end;
     end
   else if frmComments <> nil then
-    frmComments.SetComments(nil, FTranslateFile.CommentChar);
+    frmComments.SetComments(nil, FTranslateFile.CommentChars);
   UpdateStatus;
 end;
 
@@ -3039,36 +3039,38 @@ procedure TfrmMain.lvTranslateStringsInfoTip(Sender: TObject;
 var
   P: TPoint;
   AInfoTip: WideString;
+  AItem:ITranlsationItem;
 begin
   InfoTip := '';
   AInfoTip := '';
   if Item <> nil then
   begin
     GetCursorPos(P);
+    AItem := FTranslateFile.Items[Item.Index];
     if PtInRect(Rect(Left, Top, Left + Width div 2, Height), P) then
     begin
-      if trim(FTranslateFile.Items[Item.Index].OrigComments) <> '' then
-        AInfoTip := _(ClassName, SOriginal) + ':'#13#10 + trim(FTranslateFile.Items[Item.Index].OrigComments)
+      if trim(AItem.OrigComments) <> '' then
+        AInfoTip := _(ClassName, SOriginal) + ':'#13#10 + trim(AItem.OrigComments)
       else
-        AInfoTip := FTranslateFile.Items[Item.Index].Original;
+        AInfoTip := AItem.Original;
     end
     else if PtInRect(Rect(Left + Width div 2, Top, Left + Width, Height), P) then
     begin
-      if trim(FTranslateFile.Items[Item.Index].TransComments) <> '' then
-        AInfoTip := _(ClassName, STranslation) + ':'#13#10 + trim(FTranslateFile.Items[Item.Index].TransComments)
+      if trim(AItem.TransComments) <> '' then
+        AInfoTip := _(ClassName, STranslation) + ':'#13#10 + trim(AItem.TransComments)
       else
-        AInfoTip := FTranslateFile.Items[Item.Index].Translation;
+        AInfoTip := AItem.Translation;
     end
     else
     begin
-      if trim(FTranslateFile.Items[Item.Index].OrigComments) <> '' then
-        AInfoTip := _(ClassName, SOriginal) + ':'#13#10 + trim(FTranslateFile.Items[Item.Index].OrigComments) +
+      if trim(AItem.OrigComments) <> '' then
+        AInfoTip := _(ClassName, SOriginal) + ':'#13#10 + trim(AItem.OrigComments) +
           #13#10#13#10;
-      if trim(FTranslateFile.Items[Item.Index].TransComments) <> '' then
+      if trim(AItem.TransComments) <> '' then
         AInfoTip := _(ClassName, STranslation) + ':'#13#10 +
-          trim(FTranslateFile.Items[Item.Index].TransComments);
+          trim(AItem.TransComments);
       if AInfoTip = '' then
-        AInfoTip := FTranslateFile.Items[Item.Index].Original + ' - ' + FTranslateFile.Items[Item.Index].Translation;
+        AInfoTip := AItem.Original + ' - ' + AItem.Translation;
     end;
   end;
   InfoTip := AInfoTip;
@@ -3452,7 +3454,7 @@ end;
 procedure TfrmMain.DoCommentModified(Sender: TObject;
   const AText: WideString);
 
-  function MakeComment(const S: WideString): WideString;
+{  function MakeComment(const S: WideString): WideString;
   var
     CChar: WideChar;
   begin
@@ -3461,10 +3463,11 @@ procedure TfrmMain.DoCommentModified(Sender: TObject;
     while (Length(Result) > 0) and (Result[Length(Result)] = CChar) do
       SetLength(Result, Length(Result) - 1);
   end;
+  }
 begin
   if SelectedListItem <> nil then
     with SelectedListItem do
-      FTranslateFile.Items[Index].TransComments := MakeComment(AText);
+      FTranslateFile.Items[Index].TransComments := AText;
 end;
 
 procedure TfrmMain.UpdateColumn(Index: integer; const AFileName: WideString);

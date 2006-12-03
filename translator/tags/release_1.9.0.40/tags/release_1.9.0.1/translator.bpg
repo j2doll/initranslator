@@ -1,0 +1,58 @@
+#------------------------------------------------------------------------------
+VERSION = BWS.01
+#------------------------------------------------------------------------------
+!ifndef ROOT
+ROOT = $(MAKEDIR)\..
+!endif
+#------------------------------------------------------------------------------
+MAKE = $(ROOT)\bin\make.exe -$(MAKEFLAGS) -f$**
+DCC = $(ROOT)\bin\dcc32.exe $**
+BRCC = $(ROOT)\bin\brcc32.exe $**
+#------------------------------------------------------------------------------
+PROJECTS = ConsoleTest.exe POParser.dll PHPParser.dll PHPNukeParser.dll \
+  MozillaDTDParser.dll MozillaPropsParser.dll IBForumsParser.dll SciTEParser.dll \
+  OOGSIParser.dll OlegParser.dll MSDictParser.dll MSDictBuild.exe translator.exe
+#------------------------------------------------------------------------------
+default: $(PROJECTS)
+#------------------------------------------------------------------------------
+
+translator.exe: src\translator.dpr
+  $(DCC)
+
+POParser.dll: src\POPlugin\POParser.dpr
+  $(DCC)
+
+PHPParser.dll: src\PHPPlugin\PHPParser.dpr
+  $(DCC)
+
+PHPNukeParser.dll: src\PHPNukePlugin\PHPNukeParser.dpr
+  $(DCC)
+
+MozillaDTDParser.dll: src\MozillaPlugin\MozillaDTDParser.dpr
+  $(DCC)
+
+MozillaPropsParser.dll: src\MozillaPlugin\MozillaPropsParser.dpr
+  $(DCC)
+
+IBForumsParser.dll: src\IBForumsPlugin\IBForumsParser.dpr
+  $(DCC)
+
+SciTEParser.dll: src\SciTEPlugin\SciTEParser.dpr
+  $(DCC)
+
+OOGSIParser.dll: src\OpenOfficeGSIPlugin\OOGSIParser.dpr
+  $(DCC)
+
+ConsoleTest.exe: dunit\ConsoleTest.dpr
+  $(DCC)
+
+OlegParser.dll: src\OlegPlugin\OlegParser.dpr
+  $(DCC)
+
+MSDictParser.dll: src\MSDictParser\MSDictParser.dpr
+  $(DCC)
+
+MSDictBuild.exe: src\MsDictBuild\MSDictBuild.dpr
+  $(DCC)
+
+

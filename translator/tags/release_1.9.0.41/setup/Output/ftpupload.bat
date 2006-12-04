@@ -1,2 +1,0 @@
-ftp -s:ftpupload.txt
-

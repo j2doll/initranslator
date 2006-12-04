@@ -43,8 +43,8 @@ type
     Copy1: TSpTBXItem;
     acCopy: TTntAction;
     TntPanel1: TTntPanel;
-    TntButton1: TTntButton;
-    TntButton2: TTntButton;
+    btnSave: TTntButton;
+    btnMerge: TTntButton;
     acSave: TTntAction;
     acMerge: TTntAction;
     procedure lvOrphanedResize(Sender: TObject);
@@ -58,12 +58,13 @@ type
     procedure acSaveExecute(Sender: TObject);
   private
     FItems, FOrphans: ITranslationItems;
+    FOnMerge:TNotifyEvent;
     procedure SaveToFile(const FileName: WideString);
     procedure ShowError(Count:integer);
     { Private declarations }
   public
     { Public declarations }
-    class function Edit(const Items, Orphans: ITranslationItems; CanMerge:boolean): boolean;
+    class function Edit(const Items, Orphans: ITranslationItems; CanMerge:boolean; OnMerge:TNotifyEvent): boolean;
   end;
 
 implementation
@@ -72,7 +73,7 @@ uses
 
 {$R *.dfm}
 
-class function TfrmOrphans.Edit(const Items, Orphans: ITranslationItems; CanMerge:boolean): boolean;
+class function TfrmOrphans.Edit(const Items, Orphans: ITranslationItems; CanMerge:boolean; OnMerge:TNotifyEvent): boolean;
 var
   frmOrphans: TfrmOrphans;
 begin
@@ -80,8 +81,10 @@ begin
   try
     frmOrphans.FItems := Items;
     frmOrphans.FOrphans := Orphans;
+    frmOrphans.FOnMerge := OnMerge;
     frmOrphans.lvOrphaned.Items.Count := Orphans.Count;
-    frmOrphans.acMerge.Enabled := CanMerge;
+    frmOrphans.acSave.Enabled := Orphans.Count > 0;
+    frmOrphans.acMerge.Enabled := Assigned(OnMerge) and CanMerge and (Orphans.Count > 0);
     Result := frmOrphans.ShowModal = mrOK;
   finally
     frmOrphans.Free;
@@ -155,13 +158,16 @@ begin
 end;
 
 procedure TfrmOrphans.acMergeExecute(Sender: TObject);
-var i: integer;
 begin
-  for i := 0 to FOrphans.Count - 1 do
-    FItems.Add(FOrphans[i]);
-  FOrphans.Clear;
-  lvOrphaned.Items.Count := 0;
-  lvOrphaned.Invalidate;
+  if Assigned(FOnMerge) then
+  begin
+    FOnMerge(self);
+    lvOrphaned.Items.Count := FOrphans.Count;
+    lvOrphaned.Invalidate;
+  end;
+  acMerge.Enabled := (FOrphans.Count > 0);
+  acSave.Enabled := acMerge.Enabled;
+  lvOrphanedChange(nil, nil, ctState);
 end;
 
 procedure TfrmOrphans.lvOrphanedData(Sender: TObject; Item: TListItem);

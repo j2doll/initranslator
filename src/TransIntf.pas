@@ -173,13 +173,13 @@ type
     // return S_OK if the index is valid
     function FileParser(Index: Integer; out FileParser: IFileParsers): HResult; safecall;
   end;
-  
+
   // Plugins that support localizing should implement this interface.
   // When the user wants to create a new translation template,
   // IniTranslator searches the plugins for implementors of this interface
   // and repeatedly calls GetString to get all the untranslated strings
   ILocalizable = interface(IInterface)
-  ['{E10D0143-B334-4CCE-898A-F25384D79C6E}']
+    ['{E10D0143-B334-4CCE-898A-F25384D79C6E}']
     // Fill out the out params and return true for each translatable string in your plugin.
     // Return false when you have no more strings to translate.
     // The out params are not used when the method returns false
@@ -190,9 +190,9 @@ type
     // Section - should be unique to your plugin/company/application unless you are sure your strings are "common"
     // Name    - must be unique within a Section, cannot contain the equal sign "=" or start with semi-colon ";"
     // Value   - can be anything
-    // 
+    //
     // Multiple calls do not have to use the same Section
-    function GetString(out Section:WideString; out Name:WideString; out Value:WideString):WordBool; safecall;
+    function GetString(out Section: WideString; out Name: WideString; out Value: WideString): WordBool; safecall;
   end;
 
   // An item that can reside on the "Plugins" menu
@@ -300,3 +300,4 @@ const
 implementation
 
 end.
+

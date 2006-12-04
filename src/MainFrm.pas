@@ -564,6 +564,7 @@ type
     procedure MakeTranslationsConsistent;
     function SelectOriginal(ShowDialog, ShowTransDialog: boolean): boolean;
     function SelectTranslation(ShowDialog, CalledByOrig: boolean): boolean;
+    procedure DoMergeOrphans(Sender: TObject);
   public
     function GetItems: ITranslationItems;
     function GetOrphans: ITranslationItems;
@@ -1698,7 +1699,6 @@ begin
   ini.WriteString(ClassName, EncodeStrings(SConfirmRemoveOrphans), EncodeStrings(SConfirmRemoveOrphans));
   ini.WriteString(ClassName, EncodeStrings(SFmtOrphansCount), EncodeStrings(SFmtOrphansCount));
   ini.WriteString(ClassName, EncodeStrings(SImportedPromptToExport), EncodeStrings(SImportedPromptToExport));
-
 
   for i := 0 to alMain.ActionCount - 1 do
   begin
@@ -2870,8 +2870,7 @@ begin
     lvTranslateStrings.Items.Count := FTranslateFile.Items.Count;
     lvTranslateStrings.Invalidate;
     if j < FTranslateFile.Items.Count then
-      SelectedListItem :=
-        lvTranslateStrings.Items[j];
+      SelectedListItem := lvTranslateStrings.Items[j];
   end;
   GlobalAppOptions.TranslationFile := '';
   GlobalAppOptions.TransEncoding := GlobalAppOptions.DefaultTransEncoding;
@@ -3039,7 +3038,7 @@ procedure TfrmMain.lvTranslateStringsInfoTip(Sender: TObject;
 var
   P: TPoint;
   AInfoTip: WideString;
-  AItem:ITranslationItem;
+  AItem: ITranslationItem;
 begin
   InfoTip := '';
   AInfoTip := '';
@@ -3383,7 +3382,7 @@ procedure TfrmMain.acViewOrphansExecute(Sender: TObject);
 begin
 //  lvTranslateStrings.Items.BeginUpdate;
   try
-    TfrmOrphans.Edit(FTranslateFile.Items, FTranslateFile.Orphans, (FCapabilitesSupported = 0) or (FCapabilitesSupported and CAP_ITEM_INSERT = CAP_ITEM_INSERT));
+    TfrmOrphans.Edit(FTranslateFile.Items, FTranslateFile.Orphans, (FCapabilitesSupported = 0) or (FCapabilitesSupported and CAP_ITEM_INSERT = CAP_ITEM_INSERT), DoMergeOrphans);
     lvTranslateStrings.Items.Count := FTranslateFile.Items.Count;
   finally
 //    lvTranslateStrings.Items.EndUpdate;
@@ -3978,7 +3977,7 @@ begin
     i := 0;
     while i <= AIndex do
     begin
-    // find first item with same section name
+      // find first item with same section name
       if WideSameText(FTranslateFile.Items[i].Section, AItem.Section) then
       begin
         while i <= AIndex do
@@ -4019,12 +4018,24 @@ begin
 end;
 
 procedure TfrmMain.DeleteItem(Index: integer);
+var
+  i:integer;
+  FOldSort: TTranslateSortType;
 begin
   if (Index >= 0) and (Index < FTranslateFile.Items.Count) then
   begin
     if not NotifyChanging(NOTIFY_ITEM_DEL_ITEM, Index, 0) then
       Exit;
     FTranslateFile.Items.Delete(Index);
+    FTranslateFile.Items.Modified := true;
+    FOldSort := FTranslateFile.Items.Sort;
+    try
+      FTranslateFile.Items.Sort := stIndex;
+      for i := 0 to FTranslateFile.Items.Count - 1 do
+        FTranslateFile.Items[i].Index := i;
+    finally
+      FTranslateFile.Items.Sort := FOldSort;
+    end;
     NotifyChanged(NOTIFY_ITEM_DEL_ITEM, Index, 0);
   end;
 end;
@@ -4401,6 +4412,27 @@ begin
   Result := GlobalLanguageFile.Translate(Section, Name, Value);
 end;
 
+procedure TfrmMain.DoMergeOrphans(Sender: TObject);
+var
+  i: integer;
+  AItem: ITranslationItem;
+  FOldSort: TTranslateSortType;
+begin
+  AItem := SelectedItem;
+  FOldSort := FTranslateFile.Items.Sort;
+  lvTranslateStrings.Items.BeginUpdate;
+  try
+    FTranslateFile.Items.Sort := stIndex;
+    for i := 0 to FTranslateFile.Orphans.Count - 1 do
+      AddItem(FTranslateFile.Orphans[i]);
+    FTranslateFile.Orphans.Clear;
+    lvTranslateStrings.Items.Count := FTranslateFile.Items.Count;
+  finally
+    FTranslateFile.Items.Sort := FOldSort;
+    lvTranslateStrings.Items.EndUpdate;
+    SelectedItem := AItem;
+  end;
+end;
 
 end.
 

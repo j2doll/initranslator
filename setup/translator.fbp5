@@ -86,6 +86,7 @@ VCSCHECKOUT
 DELETE_FOLDER
 FTP_UPLOAD
 NEWS_NOTIFY
+CREATETAG
 ]]>
               </Property>
             <Property name="SuppressStatusMessages" type="Boolean">False</Property>
@@ -99,7 +100,7 @@ NEWS_NOTIFY
               <Property name="ParamType" type="TParamType">ptSelectFolder</Property>
               <Property name="SelectAll" type="Boolean">False</Property>
               </Object>
-            <Object Class="TPersistParam" XMLID="{17FB2889-B659-4E08-84A2-CCA5E6BBCF51}"><Property MultiValue="0" name="Caption" type="string">3rd party components folder:</Property>
+            <Object Class="TPersistParam" XMLID="{17FB2889-B659-4E08-84A2-CCA5E6BBCF51}"><Property MultiValue="0" name="Caption" type="string">&amp;amp;3rd party components root folder:</Property>
               <Property MultiValue="0" name="DefaultValue" type="string">%ProgramFiles%\Borland\AddOns</Property>
               <Property name="InUse" type="Boolean">True</Property>
               <Property name="List" type="TStrings"><![CDATA[]]>
@@ -144,7 +145,7 @@ NEWS_NOTIFY
               <Property name="ParamType" type="TParamType">ptText</Property>
               <Property name="SelectAll" type="Boolean">False</Property>
               </Object>
-            <Object Class="TPersistParam" XMLID="{BCB92261-E11A-4E81-857C-D74026547648}"><Property MultiValue="0" name="Caption" type="string">Check out from subversion</Property>
+            <Object Class="TPersistParam" XMLID="{BCB92261-E11A-4E81-857C-D74026547648}"><Property MultiValue="0" name="Caption" type="string">&amp;amp;Check out from subversion</Property>
               <Property MultiValue="0" name="DefaultValue" type="string">false</Property>
               <Property name="InUse" type="Boolean">True</Property>
               <Property name="List" type="TStrings"><![CDATA[]]>
@@ -153,7 +154,7 @@ NEWS_NOTIFY
               <Property name="ParamType" type="TParamType">ptBoolean</Property>
               <Property name="SelectAll" type="Boolean">False</Property>
               </Object>
-            <Object Class="TPersistParam" XMLID="{95C8E5D6-1E86-4C4D-A304-782685C2FCB3}"><Property MultiValue="0" name="Caption" type="string">Delete check-out folder when done</Property>
+            <Object Class="TPersistParam" XMLID="{95C8E5D6-1E86-4C4D-A304-782685C2FCB3}"><Property MultiValue="0" name="Caption" type="string">&amp;amp;Delete check-out folder when done</Property>
               <Property MultiValue="0" name="DefaultValue" type="string">false</Property>
               <Property name="InUse" type="Boolean">True</Property>
               <Property name="List" type="TStrings"><![CDATA[]]>
@@ -180,6 +181,36 @@ NEWS_NOTIFY
               <Property name="ParamType" type="TParamType">ptBoolean</Property>
               <Property name="SelectAll" type="Boolean">False</Property>
               </Object>
+            <Object Class="TPersistParam" XMLID="{32EB6318-920B-411A-86ED-6B385A213A74}"><Property MultiValue="0" name="Caption" type="string">Create subversion &amp;amp;tag</Property>
+              <Property MultiValue="0" name="DefaultValue" type="string">false</Property>
+              <Property name="InUse" type="Boolean">True</Property>
+              <Property name="List" type="TStrings"><![CDATA[]]>
+                </Property>
+              <Property MultiValue="0" name="Name" type="string">CREATETAG</Property>
+              <Property name="ParamType" type="TParamType">ptBoolean</Property>
+              <Property name="SelectAll" type="Boolean">False</Property>
+              </Object>
+            </Object>
+          <Object Class="TDateTimeAction" XMLID="{5E21D46F-05E4-4CDB-8395-A88FC89031B0}"><Property MultiValue="0" name="ActionComment" type="string"></Property>
+            <Property name="ActionTextColor" type="Cardinal">0</Property>
+            <Property MultiValue="0" name="ActionTypeID" type="string"></Property>
+            <Property MultiValue="0" name="DateFormat" type="string">yyyy-mm-dd</Property>
+            <Property MultiValue="0" name="Description" type="string">Get Todays Date</Property>
+            <Property name="Enabled" type="WordBool">True</Property>
+            <Property name="ExpandActionLogTitle" type="Boolean">True</Property>
+            <Property MultiValue="0" name="FBVariable" type="string">CURRENTDATE</Property>
+            <Property name="ForceSeparators" type="Boolean">True</Property>
+            <Property name="IgnoreFailure" type="WordBool">False</Property>
+            <Property name="IsAction" type="Boolean">True</Property>
+            <Property name="IsBreakPoint" type="WordBool">False</Property>
+            <Property MultiValue="0" name="LogToVariable" type="string"></Property>
+            <Property name="MaxRetryAttempts" type="Cardinal">0</Property>
+            <Property name="NodeCollapsed" type="Boolean">False</Property>
+            <Property name="PauseInterval" type="Cardinal">0</Property>
+            <Property name="RetryPauseInterval" type="Cardinal">1000</Property>
+            <Property name="SuppressStatusMessages" type="Boolean">False</Property>
+            <Property name="TheDate" type="TDateTime">39055.6535620023</Property>
+            <Property name="UseNow" type="Boolean">True</Property>
             </Object>
           <Object Class="TFBScriptAction" XMLID="{71A52E66-12F5-442F-A25F-092DC75BC9DE}"><Property MultiValue="0" name="ActionComment" type="string"></Property>
             <Property name="ActionTextColor" type="Cardinal">0</Property>
@@ -267,6 +298,52 @@ SRCPATH = ROOTPATH &amp; "src\"
             <Property name="PauseInterval" type="Cardinal">0</Property>
             <Property name="RetryPauseInterval" type="Cardinal">1000</Property>
             <Property name="SuppressStatusMessages" type="Boolean">False</Property>
+            <Object Class="TFBSubversionCopy" XMLID="{F13B4721-1A84-4257-8A47-F3B9A8CF8E43}"><Property MultiValue="0" name="ActionComment" type="string"></Property>
+              <Property name="ActionTextColor" type="Cardinal">0</Property>
+              <Property MultiValue="0" name="ActionTypeID" type="string"></Property>
+              <Property MultiValue="0" name="ArgsFile" type="string"></Property>
+              <Property MultiValue="0" name="Comment" type="string"></Property>
+              <Property MultiValue="0" name="ConfigDir" type="string"></Property>
+              <Property MultiValue="0" name="Destination" type="string">https://initranslator.svn.sourceforge.net/svnroot/initranslator/translator/tags/release_%VERSION_MAJOR%.%VERSION_MINOR%.%VERSION_RELEASE%.%VERSION_BUILD%</Property>
+              <Property MultiValue="0" name="EditorCommand" type="string"></Property>
+              <Property name="Enabled" type="WordBool">True</Property>
+              <Property name="EnableTimeout" type="Boolean">False</Property>
+              <Property MultiValue="0" name="Encoding" type="string"></Property>
+              <Property name="ExpandActionLogTitle" type="Boolean">True</Property>
+              <Property MultiValue="0" name="ExtraCmdLineParamsAtEnd" type="string"></Property>
+              <Property MultiValue="0" name="ExtraCmdLineParamsAtStart" type="string"></Property>
+              <Property name="ForceLog" type="Boolean">False</Property>
+              <Property name="IgnoreFailure" type="WordBool">False</Property>
+              <Property MultiValue="0" name="ImpersonateToken" type="string"></Property>
+              <Property name="ImpersonateUser" type="Boolean">False</Property>
+              <Property MultiValue="0" name="ImpersonateUserName" type="string"></Property>
+              <Property name="IsAction" type="Boolean">True</Property>
+              <Property name="IsBreakPoint" type="WordBool">False</Property>
+              <Property MultiValue="0" name="LogToVariable" type="string"></Property>
+              <Property name="MaxRetryAttempts" type="Cardinal">0</Property>
+              <Property name="NoAuthCache" type="Boolean">False</Property>
+              <Property name="NodeCollapsed" type="Boolean">False</Property>
+              <Property name="NonInteractive" type="Boolean">True</Property>
+              <Property MultiValue="0" name="Password" type="string"></Property>
+              <Property MultiValue="0" name="Path" type="string"></Property>
+              <Property name="PauseInterval" type="Cardinal">0</Property>
+              <Property name="ProcessorAffinity" type="Cardinal">0</Property>
+              <Property name="ProcessPriority" type="TFBExecuteThreadPriority">tpNormal</Property>
+              <Property name="Quiet" type="Boolean">False</Property>
+              <Property name="RetryPauseInterval" type="Cardinal">1000</Property>
+              <Property MultiValue="0" name="Revision" type="string">HEAD</Property>
+              <Property MultiValue="0" name="Source" type="string">https://initranslator.svn.sourceforge.net/svnroot/initranslator/translator/trunk</Property>
+              <Property name="SuppressStatusMessages" type="Boolean">False</Property>
+              <Property name="TerminateOnTimeout" type="Boolean">True</Property>
+              <Property name="TimeoutLength" type="Cardinal">2</Property>
+              <Property MultiValue="0" name="UserName" type="string"></Property>
+              <Property MultiValue="0" name="WorkFolder" type="string">%ROOTPATH%</Property>
+              <Object Class="TBuildScript" XMLID="{64188A31-21E3-40FB-9E52-06126CE2FA5D}"><Property MultiValue="0" name="BreakPointsStore" type="string"></Property>
+                <Property MultiValue="0" name="Name" type="string">Condition</Property>
+                <Property MultiValue="0" name="Script" type="string">CREATETAG = true</Property>
+                <Property MultiValue="0" name="ScriptLanguage" type="string">VBScript</Property>
+                </Object>
+              </Object>
             <Object Class="TFBSubversionCheckout" XMLID="{FD18A0BC-F0EC-4DD8-96E6-6D6E1857E9BB}"><Property MultiValue="0" name="ActionComment" type="string"></Property>
               <Property name="ActionTextColor" type="Cardinal">0</Property>
               <Property MultiValue="0" name="ActionTypeID" type="string"></Property>
@@ -320,7 +397,7 @@ SRCPATH = ROOTPATH &amp; "src\"
               <Property name="IsBreakPoint" type="WordBool">False</Property>
               <Property MultiValue="0" name="LogToVariable" type="string"></Property>
               <Property name="MaxRetryAttempts" type="Cardinal">0</Property>
-              <Property name="NodeCollapsed" type="Boolean">False</Property>
+              <Property name="NodeCollapsed" type="Boolean">True</Property>
               <Property name="PauseInterval" type="Cardinal">0</Property>
               <Property name="RetryPauseInterval" type="Cardinal">1000</Property>
               <Property name="SuppressStatusMessages" type="Boolean">False</Property>
@@ -3029,7 +3106,7 @@ Action.SetVersionInfoKey("ProductVersion",Action.GetVersionInfoKey("FileVersion"
               <Property name="IsBreakPoint" type="WordBool">False</Property>
               <Property MultiValue="0" name="LogToVariable" type="string"></Property>
               <Property name="MaxRetryAttempts" type="Cardinal">0</Property>
-              <Property name="NodeCollapsed" type="Boolean">True</Property>
+              <Property name="NodeCollapsed" type="Boolean">False</Property>
               <Property name="PauseInterval" type="Cardinal">0</Property>
               <Property name="RetryPauseInterval" type="Cardinal">1000</Property>
               <Property name="SuppressStatusMessages" type="Boolean">False</Property>
@@ -3125,7 +3202,7 @@ Action.SetVersionInfoKey("ProductVersion",Action.GetVersionInfoKey("FileVersion"
               <Property name="IsBreakPoint" type="WordBool">False</Property>
               <Property MultiValue="0" name="LogToVariable" type="string"></Property>
               <Property name="MaxRetryAttempts" type="Cardinal">0</Property>
-              <Property name="NodeCollapsed" type="Boolean">True</Property>
+              <Property name="NodeCollapsed" type="Boolean">False</Property>
               <Property name="PauseInterval" type="Cardinal">0</Property>
               <Property name="RetryPauseInterval" type="Cardinal">1000</Property>
               <Property name="SuppressStatusMessages" type="Boolean">False</Property>
@@ -3154,7 +3231,7 @@ Peter Thornqvist
 ]]>
                   </Property>
                 <Property MultiValue="0" name="Description" type="string">News Post to Borland</Property>
-                <Property MultiValue="0" name="EmailAddress" type="string">peter3@nospam.peter3.com</Property>
+                <Property MultiValue="0" name="EmailAddress" type="string">peter3@nospam.users.sourceforge.net</Property>
                 <Property name="Enabled" type="WordBool">True</Property>
                 <Property MultiValue="0" name="Encoding" type="string"></Property>
                 <Property name="ExpandActionLogTitle" type="Boolean">True</Property>
@@ -3174,7 +3251,7 @@ Peter Thornqvist
                 <Property MultiValue="0" name="ReplyTo" type="string"></Property>
                 <Property name="RetryPauseInterval" type="Cardinal">1000</Property>
                 <Property MultiValue="0" name="SenderName" type="string">Peter Thornqvist</Property>
-                <Property MultiValue="0" name="Subject" type="string">ANN: New version of IniTranslator released</Property>
+                <Property MultiValue="0" name="Subject" type="string">ANN: New version of IniTranslator released %CURRENTDATE%</Property>
                 <Property name="SuppressStatusMessages" type="Boolean">False</Property>
                 <Property name="TimeOut" type="Integer">0</Property>
                 <Property MultiValue="0" name="Token" type="string"></Property>
@@ -3205,7 +3282,7 @@ Peter Thornqvist
 ]]>
                   </Property>
                 <Property MultiValue="0" name="Description" type="string">News Post to JRSoftware</Property>
-                <Property MultiValue="0" name="EmailAddress" type="string">peter3@nospam.peter3.com</Property>
+                <Property MultiValue="0" name="EmailAddress" type="string">peter3@nospam.users.sourceforge.net</Property>
                 <Property name="Enabled" type="WordBool">True</Property>
                 <Property MultiValue="0" name="Encoding" type="string"></Property>
                 <Property name="ExpandActionLogTitle" type="Boolean">True</Property>
@@ -3225,7 +3302,7 @@ Peter Thornqvist
                 <Property MultiValue="0" name="ReplyTo" type="string"></Property>
                 <Property name="RetryPauseInterval" type="Cardinal">1000</Property>
                 <Property MultiValue="0" name="SenderName" type="string">Peter Thornqvist</Property>
-                <Property MultiValue="0" name="Subject" type="string">ANN: New version of IniTranslator released</Property>
+                <Property MultiValue="0" name="Subject" type="string">ANN: New version of IniTranslator released %CURRENTDATE%</Property>
                 <Property name="SuppressStatusMessages" type="Boolean">False</Property>
                 <Property name="TimeOut" type="Integer">0</Property>
                 <Property MultiValue="0" name="Token" type="string"></Property>
@@ -3256,7 +3333,7 @@ Peter Thornqvist
 ]]>
                   </Property>
                 <Property MultiValue="0" name="Description" type="string">News Post to JEDI</Property>
-                <Property MultiValue="0" name="EmailAddress" type="string">peter3@nospam.peter3.com</Property>
+                <Property MultiValue="0" name="EmailAddress" type="string">peter3@nospam.users.sourceforge.net</Property>
                 <Property name="Enabled" type="WordBool">True</Property>
                 <Property MultiValue="0" name="Encoding" type="string"></Property>
                 <Property name="ExpandActionLogTitle" type="Boolean">True</Property>
@@ -3276,7 +3353,7 @@ Peter Thornqvist
                 <Property MultiValue="0" name="ReplyTo" type="string"></Property>
                 <Property name="RetryPauseInterval" type="Cardinal">1000</Property>
                 <Property MultiValue="0" name="SenderName" type="string">Peter Thornqvist</Property>
-                <Property MultiValue="0" name="Subject" type="string">ANN: New version of IniTranslator released</Property>
+                <Property MultiValue="0" name="Subject" type="string">ANN: New version of IniTranslator released %CURRENTDATE%</Property>
                 <Property name="SuppressStatusMessages" type="Boolean">False</Property>
                 <Property name="TimeOut" type="Integer">0</Property>
                 <Property MultiValue="0" name="Token" type="string"></Property>
@@ -3307,7 +3384,7 @@ Peter Thornqvist
 ]]>
                   </Property>
                 <Property MultiValue="0" name="Description" type="string">News Post to Microsoft</Property>
-                <Property MultiValue="0" name="EmailAddress" type="string">peter3@nospam.peter3.com</Property>
+                <Property MultiValue="0" name="EmailAddress" type="string">peter3@nospam.users.sourceforge.net</Property>
                 <Property name="Enabled" type="WordBool">True</Property>
                 <Property MultiValue="0" name="Encoding" type="string"></Property>
                 <Property name="ExpandActionLogTitle" type="Boolean">True</Property>
@@ -3327,7 +3404,7 @@ Peter Thornqvist
                 <Property MultiValue="0" name="ReplyTo" type="string"></Property>
                 <Property name="RetryPauseInterval" type="Cardinal">1000</Property>
                 <Property MultiValue="0" name="SenderName" type="string">Peter Thornqvist</Property>
-                <Property MultiValue="0" name="Subject" type="string">ANN: New version of IniTranslator released</Property>
+                <Property MultiValue="0" name="Subject" type="string">ANN: New version of IniTranslator released %CURRENTDATE%</Property>
                 <Property name="SuppressStatusMessages" type="Boolean">False</Property>
                 <Property name="TimeOut" type="Integer">0</Property>
                 <Property MultiValue="0" name="Token" type="string"></Property>
@@ -3423,7 +3500,7 @@ Peter Thornqvist
       </Object>
     <Object Class="TFBVariablesCollection" XMLID="{C95A8F83-E731-4886-851A-9740E107DB47}"><Property MultiValue="0" name="Name" type="string"></Property>
       <Object Class="TFBVariable" XMLID="{8BFA64C1-2C51-4F04-996F-75E8F6E92E74}"><Property MultiValue="0" name="Comment" type="string"></Property>
-        <Property MultiValue="0" name="DefaultValue" type="string">C:\Program FIles\Borland\AddOns</Property>
+        <Property MultiValue="0" name="DefaultValue" type="string">%ProgramFiles%\Borland\AddOns</Property>
         <Property name="IsMacro" type="Boolean">False</Property>
         <Property name="IsPersistent" type="Boolean">False</Property>
         <Property name="MakeEnv" type="Boolean">False</Property>
@@ -3508,6 +3585,22 @@ Peter Thornqvist
         <Property name="IsPersistent" type="Boolean">False</Property>
         <Property name="MakeEnv" type="Boolean">False</Property>
         <Property MultiValue="0" name="Name" type="string">VCSCHECKOUT</Property>
+        <Property name="VariableType" type="TFBVariableType">vtProject</Property>
+        </Object>
+      <Object Class="TFBVariable" XMLID="{9F83AEE6-9EEB-4A66-B0C5-CE35A599ED6E}"><Property MultiValue="0" name="Comment" type="string"></Property>
+        <Property MultiValue="0" name="DefaultValue" type="string"></Property>
+        <Property name="IsMacro" type="Boolean">False</Property>
+        <Property name="IsPersistent" type="Boolean">False</Property>
+        <Property name="MakeEnv" type="Boolean">False</Property>
+        <Property MultiValue="0" name="Name" type="string">CURRENTDATE</Property>
+        <Property name="VariableType" type="TFBVariableType">vtProject</Property>
+        </Object>
+      <Object Class="TFBVariable" XMLID="{B41B38BD-4F60-4CD2-873A-136F62853B9E}"><Property MultiValue="0" name="Comment" type="string"></Property>
+        <Property MultiValue="0" name="DefaultValue" type="string">false</Property>
+        <Property name="IsMacro" type="Boolean">False</Property>
+        <Property name="IsPersistent" type="Boolean">False</Property>
+        <Property name="MakeEnv" type="Boolean">False</Property>
+        <Property MultiValue="0" name="Name" type="string">CREATETAG</Property>
         <Property name="VariableType" type="TFBVariableType">vtProject</Property>
         </Object>
       </Object>

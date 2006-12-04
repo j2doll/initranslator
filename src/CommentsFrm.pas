@@ -91,7 +91,7 @@ begin
 end;
 
 procedure TfrmComments.SetComments(const Item: ITranslationItem; CommentChars: TTntStrings);
-var i: integer;
+// var i: integer;
 begin
   if Item = nil then
   begin

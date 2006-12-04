@@ -186,7 +186,7 @@ function TTranslationItems.Add(const Item: ITranslationItem): integer;
 begin
   Item.Index := Count;
   Item.Owner := self;
-//  Item._AddRef;
+  //  Item._AddRef;
   Result := FItems.Add(nil);
   ITranslationItem(FItems.List[Result]) := Item;
   FSort := stNone;
@@ -656,8 +656,7 @@ begin
             FItem := FOrphans.Add;
             FItem.Section := ASection;
             FItem.Name := Copy(S[i], 1, j - 1);
-
-            FItem.Original := Copy(S[i], 1, j - 1);
+            FItem.Original := Copy(S[i], 1, j - 1);  // have to store something...
             FItem.Translation := Copy(S[i], j + 1, MaxInt);
             // normal behavior is to regard empty translations as untranslated
 //            FItem.Translated := FItem.Translation <> '';
@@ -685,6 +684,7 @@ var
   i: integer;
   S: TTNTStringlist;
   ASection: WideString;
+  NewSection:boolean;
   FOldSort: TTranslateSortType;
 begin
   S := TTNTStringlist.Create;
@@ -696,12 +696,14 @@ begin
     Items.Sort := stIndex;
     for i := 0 to Items.Count - 1 do
     begin
-      if ASection <> Items[i].Section then
+      NewSection := ASection <> Items[i].Section;
+      if NewSection then
       begin
         S.Add(StartSection + Items[i].Section + EndSection);
         ASection := Items[i].Section;
       end;
-      FixAndAddComments(S, Items[i].OrigComments);
+      if not NewSection then
+        FixAndAddComments(S, Items[i].OrigComments);
       S.Add(Items[i].Name + SeparatorChar + Items[i].Original);
     end;
     if Footer <> '' then
@@ -727,26 +729,30 @@ var
   i: integer;
   S: TTNTStringlist;
   ASection: WideString;
-  FoldSort: TTranslateSortType;
+  NewSection:boolean;
+  FOldSort: TTranslateSortType;
 begin
   ASection := '';
   S := TTNTStringlist.Create;
   FOldSort := Items.Sort;
   try
     S.Text := Header;
-    Items.Sort := stSection;
-//    Items.Sort := stIndex;
+//    Items.Sort := stSection;
+    Items.Sort := stIndex;
     for i := 0 to Items.Count - 1 do
     begin
-      if ASection <> Items[i].Section then
+      NewSection := ASection <> Items[i].Section;
+      if NewSection then
       begin
-        if ASection <> '' then
-          S.Add('');
+        //if ASection <> '' then
+          //S.Add('');
+        FixAndAddComments(S, Items[i].TransComments);
 
         ASection := Items[i].Section;
         S.Add(StartSection + ASection + EndSection);
       end;
-      FixAndAddComments(S, Items[i].TransComments);
+      if not NewSection then
+        FixAndAddComments(S, Items[i].TransComments);
       S.Add(Items[i].Name + SeparatorChar + Items[i].Translation);
     end;
     if Footer <> '' then

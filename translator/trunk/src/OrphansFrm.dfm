@@ -107,7 +107,7 @@ object frmOrphans: TfrmOrphans
     DesignSize = (
       433
       41)
-    object TntButton1: TTntButton
+    object btnSave: TTntButton
       Left = 259
       Top = 7
       Width = 75
@@ -116,7 +116,7 @@ object frmOrphans: TfrmOrphans
       Anchors = [akTop, akRight]
       TabOrder = 0
     end
-    object TntButton2: TTntButton
+    object btnMerge: TTntButton
       Left = 343
       Top = 7
       Width = 75

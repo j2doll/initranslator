@@ -1,0 +1,38 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<BorlandProject>
+	<PersonalityInfo>
+		<Option>
+			<Option Name="Personality">Default.Personality</Option>
+			<Option Name="ProjectType"></Option>
+			<Option Name="Version">1.0</Option>
+			<Option Name="GUID">{ADFD96BC-A5F4-40AF-BEAA-8757E3068587}</Option>
+		</Option>
+	</PersonalityInfo>
+	<Default.Personality>  <Projects>
+      <Projects Name="translator.exe">src\translator.bdsproj</Projects>
+      <Projects Name="FoxitParser.dll">src\FoxitPlugin\FoxitParser.bdsproj</Projects>
+      <Projects Name="IBForumsParser.dll">src\IBForumsPlugin\IBForumsParser.bdsproj</Projects>
+      <Projects Name="MozillaDTDParser.dll">src\MozillaPlugin\MozillaDTDParser.bdsproj</Projects>
+      <Projects Name="MozillaPropsParser.dll">src\MozillaPlugin\MozillaPropsParser.bdsproj</Projects>
+      <Projects Name="MSDictBuild.exe">src\MsDictBuild\MSDictBuild.bdsproj</Projects>
+      <Projects Name="MSDictParser.dll">src\MSDictParser\MSDictParser.bdsproj</Projects>
+      <Projects Name="MsTermBuild.exe">src\MsTermBuild\MsTermBuild.bdsproj</Projects>
+      <Projects Name="OlegParser.dll">src\OlegPlugin\OlegParser.bdsproj</Projects>
+      <Projects Name="OOGSIParser.dll">src\OpenOfficeGSIPlugin\OOGSIParser.bdsproj</Projects>
+      <Projects Name="PHPNukeParser.dll">src\PHPNukePlugin\PHPNukeParser.bdsproj</Projects>
+      <Projects Name="PHPParser.dll">src\PHPPlugin\PHPParser.bdsproj</Projects>
+      <Projects Name="PolyGlotParser.dll">src\PolyglotPlugin\PolyGlotParser.bdsproj</Projects>
+      <Projects Name="POParser.dll">src\POPlugin\POParser.bdsproj</Projects>
+      <Projects Name="SciTEParser.dll">src\SciTEPlugin\SciTEParser.bdsproj</Projects>
+      <Projects Name="TMXParser.dll">src\TMXPlugin\TMXParser.bdsproj</Projects>
+      <Projects Name="ToolListEdit.dll">src\ToolListEdit\ToolListEdit.bdsproj</Projects>
+      <Projects Name="ToolPluginDemo.dll">src\ToolPluginDemo\ToolPluginDemo.bdsproj</Projects>
+      <Projects Name="ToolPropertiesView.dll">src\ToolPropertiesView\ToolPropertiesView.bdsproj</Projects>
+      <Projects Name="ToolTreeView.dll">src\ToolTreeView\ToolTreeView.bdsproj</Projects>
+      <Projects Name="XilisoftParser.dll">src\XilisoftPlugin\XilisoftParser.bdsproj</Projects>
+      <Projects Name="XLIFFParser.dll">src\XLIFFPlugin\XLIFFParser.bdsproj</Projects>
+      <Projects Name="Targets">translator.exe FoxitParser.dll IBForumsParser.dll MozillaDTDParser.dll MozillaPropsParser.dll MSDictBuild.exe MSDictParser.dll MsTermBuild.exe OlegParser.dll OOGSIParser.dll PHPNukeParser.dll PHPParser.dll PolyGlotParser.dll POParser.dll SciTEParser.dll TMXParser.dll ToolListEdit.dll ToolPluginDemo.dll ToolPropertiesView.dll ToolTreeView.dll XilisoftParser.dll XLIFFParser.dll</Projects>
+    </Projects>
+    <Dependencies/>
+  </Default.Personality>
+</BorlandProject>

@@ -1,6 +1,7 @@
 Ini Translator Changelog
 ========================
 2006-12-04:
+- Released on Sourceforge as 1.9.0.41
 - Bug Fixed: translation is now sorted by index before saving (was sorted by section)
 - Bug Fixed: when merging orphans, items are now inserted at the correct location in the translation
 - Bug Fixed: when an item is deleted, remaining items are reindexed

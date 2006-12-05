@@ -1,4 +1,4 @@
-{@abstract(Implementation if ToolPropertiesView) }
+{@abstract(Implementation of ToolPropertiesView) }
 {
   Copyright © 2003-2006 by Peter Thornqvist; all rights reserved
 

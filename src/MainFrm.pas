@@ -2864,6 +2864,7 @@ begin
     for i := 0 to FTranslateFile.Items.Count - 1 do
     begin
       FTranslateFile.Items[i].Translation := '';
+      FTranslateFile.Items[i].TransComments := '';
       FTranslateFile.Items[i].Translated := false;
     end;
   finally

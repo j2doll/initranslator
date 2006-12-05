@@ -556,7 +556,7 @@ begin
     begin
       if TWinControl(AControl).Controls[i] is TCustomComboBox then
       begin
-        if IsAppThemed {Win32PlatformIsXP} then
+        if Assigned(IsAppThemed) and IsAppThemed {Win32PlatformIsXP} then
           TAccessComboBox(TWinControl(AControl).Controls[i]).BevelKind := bkNone
         else
           TAccessComboBox(TWinControl(AControl).Controls[i]).BevelKind := bkFlat;
@@ -578,7 +578,7 @@ begin
     begin
       if WC.Controls[i] is TCustomComboBox then
       begin
-        if IsAppThemed {Win32PlatformIsXP} then
+        if Assigned(IsAppThemed) and IsAppThemed {Win32PlatformIsXP} then
           TAccessComboBox(TWinControl(AControl).Controls[i]).BevelKind := bkNone
         else
           TAccessComboBox(TWinControl(AControl).Controls[i]).BevelKind := bkFlat;

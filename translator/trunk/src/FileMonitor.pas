@@ -57,6 +57,32 @@ uses
 resourcestring
   SFmtMonitorFileNotFound = 'File "%s" not found: cannot monitor a nonexistent file!';
 
+{$IFNDEF COMPILER9_UP}
+function FileAge(const FileName: string; out FileDateTime: TDateTime): Boolean;
+var
+  Handle: THandle;
+  FindData: TWin32FindData;
+  LSystemTime: TSystemTime;
+  LocalFileTime: TFileTime;
+begin
+  Result := False;
+  Handle := FindFirstFile(PChar(FileName), FindData);
+  if Handle <> INVALID_HANDLE_VALUE then
+  begin
+    Windows.FindClose(Handle);
+    if (FindData.dwFileAttributes and FILE_ATTRIBUTE_DIRECTORY) = 0 then
+    begin
+      Result := True;
+      FileTimeToLocalFileTime(FindData.ftLastWriteTime, LocalFileTime);
+      FileTimeToSystemTime(LocalFileTime, LSystemTime);
+      with LSystemTime do
+        FileDateTime := EncodeDate(wYear, wMonth, wDay) +
+          EncodeTime(wHour, wMinute, wSecond, wMilliSeconds);
+    end;
+  end;
+end;
+{$ENDIF}
+  
 { TFileMonitorThread }
 
 procedure TFileMonitorThread.Change;

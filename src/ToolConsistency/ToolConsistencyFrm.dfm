@@ -24,7 +24,7 @@ object frmToolConsistency: TfrmToolConsistency
     Width = 3
     Height = 13
     Alignment = taRightJustify
-    Anchors = [akRight, akBottom]
+    Anchors = [akTop, akRight]
     Font.Charset = DEFAULT_CHARSET
     Font.Color = clWindowText
     Font.Height = -11
@@ -57,34 +57,71 @@ object frmToolConsistency: TfrmToolConsistency
     Left = 7
     Top = 25
     Width = 378
-    Height = 138
+    Height = 134
     Anchors = [akLeft, akTop, akRight, akBottom]
+    BevelKind = bkFlat
+    BorderStyle = bsNone
+    ChangeDelay = 60
+    HideSelection = False
     Indent = 19
-    ReadOnly = True
+    PopupMenu = popItems
     TabOrder = 0
     OnChange = tvItemsChange
+    OnEdited = tvItemsEdited
+    OnEditing = tvItemsEditing
   end
   object btnClose: TTntButton
     Left = 307
     Top = 168
     Width = 75
     Height = 25
+    Action = acClose
     Anchors = [akRight, akBottom]
     Cancel = True
-    Caption = '&Close'
-    ModalResult = 2
     TabOrder = 3
-    OnClick = btnCloseClick
   end
   object btnUpdate: TTntButton
     Left = 223
     Top = 168
     Width = 75
     Height = 25
+    Action = acUpdate
     Anchors = [akRight, akBottom]
-    Caption = '&Update'
-    Default = True
     TabOrder = 2
-    OnClick = btnUpdateClick
+  end
+  object alMain: TActionList
+    OnUpdate = alMainUpdate
+    Left = 196
+    Top = 56
+    object acUpdate: TAction
+      Caption = '&Update'
+      ShortCut = 116
+      OnExecute = acUpdateExecute
+    end
+    object acClose: TAction
+      Caption = '&Close'
+      ShortCut = 27
+      OnExecute = acCloseExecute
+    end
+    object acEdit: TAction
+      Caption = 'Edit'
+      ShortCut = 113
+      OnExecute = acEditExecute
+    end
+    object acUseThisTranslation: TAction
+      Caption = 'Use &this translation'
+      ShortCut = 16397
+      OnExecute = acUseThisTranslationExecute
+    end
+  end
+  object popItems: TPopupMenu
+    Left = 252
+    Top = 56
+    object Usethistranslation1: TMenuItem
+      Action = acUseThisTranslation
+    end
+    object Edit1: TMenuItem
+      Action = acEdit
+    end
   end
 end

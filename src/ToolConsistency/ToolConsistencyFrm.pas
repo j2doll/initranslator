@@ -5,7 +5,7 @@ interface
 uses
   Windows, Messages, SysUtils, Classes, Graphics, Controls, Forms, TntForms,
   Dialogs, TntClasses, TransIntf, TntMenus, StdCtrls, ComCtrls,
-  TntStdCtrls, TntComCtrls;
+  TntStdCtrls, TntComCtrls, ActnList, Menus;
 
 type
   TTranslationItems = class
@@ -34,21 +34,39 @@ type
     lblInfo: TTntLabel;
     btnUpdate: TTntButton;
     TntLabel1: TTntLabel;
+    alMain: TActionList;
+    acUpdate: TAction;
+    acClose: TAction;
+    acEdit: TAction;
+    acUseThisTranslation: TAction;
+    popItems: TPopupMenu;
+    Usethistranslation1: TMenuItem;
+    Edit1: TMenuItem;
     procedure chkIgnoreAccelCharClick(Sender: TObject);
     procedure tvItemsChange(Sender: TObject; Node: TTreeNode);
-    procedure btnCloseClick(Sender: TObject);
-    procedure btnUpdateClick(Sender: TObject);
+    procedure tvItemsEditing(Sender: TObject; Node: TTreeNode;
+      var AllowEdit: Boolean);
+    procedure tvItemsEdited(Sender: TObject; Node: TTntTreeNode;
+      var S: WideString);
+    procedure acUseThisTranslationExecute(Sender: TObject);
+    procedure acEditExecute(Sender: TObject);
+    procedure acCloseExecute(Sender: TObject);
+    procedure acUpdateExecute(Sender: TObject);
+    procedure alMainUpdate(Action: TBasicAction; var Handled: Boolean);
   private
     { Private declarations }
     FItems: ITranslationItems;
     FTItems: TTranslationItems;
+    FSelectedItem: ITranslationItem;
     procedure BuildList(IgnoreAccelChar: boolean);
     procedure LoadSettings;
     procedure SaveSettings;
 
   public
     { Public declarations }
-    class function Execute(const ApplicationServices: IApplicationServices; const Items, Orphans: ITranslationItems): boolean;
+    class function Execute(const ApplicationServices: IApplicationServices;
+      const Items, Orphans: ITranslationItems;
+      var SelectedItem: ITranslationItem): boolean;
     destructor Destroy; override;
   end;
 
@@ -62,6 +80,7 @@ procedure TfrmToolConsistency.BuildList(IgnoreAccelChar: boolean);
 var
   i, j: integer;
   N: TTntTreeNode;
+  AItem: ITranslationItem;
 begin
   FreeAndNil(FTItems);
   tvItems.Items.Clear;
@@ -73,7 +92,10 @@ begin
     begin
       N := tvItems.Items.Add(nil, FTItems.Name[i]);
       for j := 0 to FTItems.Items[i].Count - 1 do
-        tvItems.Items.AddChildObject(N, FTItems.Items[i].Strings[j], Pointer(FTItems.RealItem[i, j]));
+      begin
+        AItem := FTItems.RealItem[i, j];
+        tvItems.Items.AddChildObject(N, AItem.Translation, Pointer(AItem));
+      end;
     end;
   if tvItems.Items.Count = 0 then
   begin
@@ -87,15 +109,17 @@ begin
   tvItems.Selected.MakeVisible;
 end;
 
-class function TfrmToolConsistency.Execute(const ApplicationServices: IApplicationServices; const Items, Orphans: ITranslationItems): boolean;
+class function TfrmToolConsistency.Execute(const ApplicationServices: IApplicationServices; const Items, Orphans: ITranslationItems; var SelectedItem: ITranslationItem): boolean;
 var frm: TfrmToolConsistency;
 begin
   frm := self.Create(Application);
   try
     frm.FItems := Items;
+    frm.FSelectedItem := SelectedItem;
     frm.LoadSettings;
-    frm.btnUpdate.Click;
+    frm.acUpdate.Execute;
     frm.ShowModal;
+    SelectedItem := frm.FSelectedItem;
     frm.SaveSettings;
     Result := true;
   finally
@@ -121,25 +145,16 @@ end;
 
 procedure TfrmToolConsistency.tvItemsChange(Sender: TObject;
   Node: TTreeNode);
-var AItem:ITranslationItem;
 begin
   if Assigned(Node) and Assigned(Node.Data) then
   begin
-    AItem := ITranslationItem(Node.Data);
-    lblInfo.Caption := WideFormat('(%s.%s)',[AItem.Section, AItem.Name]);
+    FSelectedItem := ITranslationItem(Node.Data);
+    lblInfo.Caption := WideFormat('(%s.%s)', [FSelectedItem.Section, FSelectedItem.Name]);
   end
   else
     lblInfo.Caption := '';
-end;
-
-procedure TfrmToolConsistency.btnCloseClick(Sender: TObject);
-begin
-  Close;
-end;
-
-procedure TfrmToolConsistency.btnUpdateClick(Sender: TObject);
-begin
-  BuildList(chkIgnoreAccelChar.Checked);
+  
+  alMain.UpdateAction(nil);
 end;
 
 { TTranslationItems }
@@ -220,6 +235,82 @@ end;
 function TTranslationItems.GetRealItem(Index, SubIndex: integer): ITranslationItem;
 begin
   Result := ITranslationItem(Pointer(TTntStrings(FOriginalItems.Objects[Index]).Objects[SubIndex]));
+end;
+
+procedure TfrmToolConsistency.tvItemsEditing(Sender: TObject;
+  Node: TTreeNode; var AllowEdit: Boolean);
+begin
+  AllowEdit := Assigned(Node) and Assigned(Node.Data);
+end;
+
+procedure TfrmToolConsistency.tvItemsEdited(Sender: TObject;
+  Node: TTntTreeNode; var S: WideString);
+begin
+  FSelectedItem := ITranslationItem(Node.Data);
+  if FSelectedItem <> nil then
+    FSelectedItem.Translation := S;
+end;
+
+procedure TfrmToolConsistency.acUseThisTranslationExecute(Sender: TObject);
+var
+  N: TTntTreeNode;
+  Item1, Item2:ITranslationItem;
+begin
+  if Assigned(tvItems.Selected) and Assigned(tvItems.Selected.Data) then
+  begin
+    N := tvItems.Selected;
+    Item1 := ITranslationItem(tvItems.Selected.Data);
+
+    N := N.getPrevSibling;
+    while N <> nil do
+    begin
+      Caption := 'N.getPrevSibling';
+      Item2 := ITranslationItem(N.Data);
+      Item2.Translation := Item1.Translation;
+      Item2.Translated := Item2.Translation <> '';
+      N.Text := Item2.Translation;
+      N := N.getPrevSibling;
+    end;
+
+    N := tvItems.Selected;
+    Item1 := ITranslationItem(tvItems.Selected.Data);
+    N := N.getNextSibling;
+    while N <> nil do
+    begin
+      Caption := 'N.getNextSibling';
+      Item2 := ITranslationItem(N.Data);
+      Item2.Translation := Item1.Translation;
+      Item2.Translated := Item2.Translation <> '';
+      N.Text := Item2.Translation;
+      N := N.getNextSibling;
+    end;
+  end;
+end;
+
+procedure TfrmToolConsistency.acEditExecute(Sender: TObject);
+begin
+  if Assigned(tvItems.Selected) and Assigned(tvItems.Selected.Data) then
+    tvItems.Selected.EditText;
+end;
+
+procedure TfrmToolConsistency.acCloseExecute(Sender: TObject);
+begin
+  if tvItems.IsEditing then
+    tvItems.Selected.EndEdit(true)
+  else
+    Close;
+end;
+
+procedure TfrmToolConsistency.acUpdateExecute(Sender: TObject);
+begin
+  BuildList(chkIgnoreAccelChar.Checked);
+end;
+
+procedure TfrmToolConsistency.alMainUpdate(Action: TBasicAction;
+  var Handled: Boolean);
+begin
+  acUseThisTranslation.Enabled := Assigned(tvItems.Selected) and Assigned(tvItems.Selected.Data);
+  acEdit.Enabled := acUseThisTranslation.Enabled;
 end;
 
 end.

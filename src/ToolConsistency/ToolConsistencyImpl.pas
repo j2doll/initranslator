@@ -78,7 +78,7 @@ end;
 
 function TToolConsistencyPlugin.Execute(const Items, Orphans: ITranslationItems; var SelectedItem: ITranslationItem): HRESULT;
 begin
-  TfrmToolConsistency.Execute(FAppServices, Items, Orphans);
+  TfrmToolConsistency.Execute(FAppServices, Items, Orphans, SelectedItem);
   Result := S_OK;
 end;
 

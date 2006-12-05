@@ -4,6 +4,11 @@ Ini Translator Release Notes
 Ini Translator is a small Windows tool to simplify the translation of ini style language files (as used by programs like FlashGet, Inno Setup and Wallpaper Sequencer to name a few) and the GUI is similar to that of poEdit (a translation editor for gnu gettext).
 
 The program and the sources are hosted at sourceforge and are released subject to the MPL 1.1 license.
+
+New in version 1.9.0.42:
+- Bug Fixed: previous version did not work on non-XP systems
+- New tool plugin: ToolConsistency. Checks if items are consistently translated, i.e same translation for same original
+
 New in version 1.9.0.41:
 - Bug Fixed: translation is now sorted by index before saving (was sorted by section)
 - Bug Fixed: when merging orphans, items are now inserted at the correct location in the translation

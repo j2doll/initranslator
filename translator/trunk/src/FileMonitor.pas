@@ -31,7 +31,7 @@ type
   private
     FOnChange: TFileMonitorEvent;
     FFilename: WideString;
-    FFileAge: integer;
+    FFileAge: TDateTime;
     FTimeOut: integer;
     procedure Change; dynamic;
     procedure SetFilename(const Value: WideString);
@@ -84,7 +84,7 @@ begin
   inherited Create(true);
   Priority := tpLowest;
   Filename := AFilename;
-  FFileAge := FileAge(Filename);
+  FileAge(Filename, FFileAge);
   FTimeOut := ATimeOut;
 end;
 
@@ -109,13 +109,15 @@ begin
 end;
 
 function TFileMonitorThread.HasChanged: boolean;
+var tmp:TDateTime;
 begin
-  Result := FFileAge < FileAge(Filename);
+  FileAge(Filename, tmp);
+  Result := FFileAge < tmp;
 end;
 
 procedure TFileMonitorThread.InitMonitor;
 begin
-  FFileAge := FileAge(Filename);
+  FileAge(Filename, FFileAge);
 end;
 
 procedure TFileMonitorThread.SetFilename(const Value: WideString);

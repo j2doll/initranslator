@@ -1,5 +1,9 @@
 Ini Translator Changelog
 ========================
+2006-12-05:
+- Bug Fixed: translation comment wasn't cleared when user clicked "New translation"
+- New tool plugin: ToolConsistency. Checks if items are consistently translated, i.e same translation for same original
+
 2006-12-04:
 - Released on Sourceforge as 1.9.0.41
 - Bug Fixed: translation is now sorted by index before saving (was sorted by section)

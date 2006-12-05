@@ -145,7 +145,7 @@
 			<VersionInfo Name="MajorVer">1</VersionInfo>
 			<VersionInfo Name="MinorVer">9</VersionInfo>
 			<VersionInfo Name="Release">0</VersionInfo>
-			<VersionInfo Name="Build">4</VersionInfo>
+			<VersionInfo Name="Build">5</VersionInfo>
 			<VersionInfo Name="Debug">False</VersionInfo>
 			<VersionInfo Name="PreRelease">False</VersionInfo>
 			<VersionInfo Name="Special">False</VersionInfo>
@@ -157,7 +157,7 @@
 		<VersionInfoKeys>
 			<VersionInfoKeys Name="CompanyName">IniTranslator</VersionInfoKeys>
 			<VersionInfoKeys Name="FileDescription">Tool Property Viewer Plugin for IniTranslator</VersionInfoKeys>
-			<VersionInfoKeys Name="FileVersion">1.9.0.4</VersionInfoKeys>
+			<VersionInfoKeys Name="FileVersion">1.9.0.5</VersionInfoKeys>
 			<VersionInfoKeys Name="InternalName">ToolPropertiesView.dll</VersionInfoKeys>
 			<VersionInfoKeys Name="LegalCopyright">Copyright (c) 2006 by Peter Thörnqvist; all rights reserved</VersionInfoKeys>
 			<VersionInfoKeys Name="LegalTrademarks"></VersionInfoKeys>

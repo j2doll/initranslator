@@ -4,9 +4,57 @@ interface
 
 uses
   Windows, Messages, SysUtils, Classes, Graphics, Controls, Forms, TntForms,
-  Dialogs, TntClasses, TransIntf, TntMenus, StdCtrls, ComCtrls,
-  TntStdCtrls, TntComCtrls, ActnList, Menus;
+  Dialogs, TransIntf, TntWindows, TntClasses, TntMenus, StdCtrls, ComCtrls,
+  TntStdCtrls, TntComCtrls, ActnList, Menus, TntActnList;
 
+type
+  TfrmToolConsistency = class(TTntForm)
+    chkIgnoreAccelChar: TTntCheckBox;
+    tvItems: TTntTreeView;
+    btnClose: TTntButton;
+    lblInfo: TTntLabel;
+    btnUpdate: TTntButton;
+    TntLabel1: TTntLabel;
+    alMain: TTntActionList;
+    acUpdate: TTntAction;
+    acClose: TTntAction;
+    acEdit: TTntAction;
+    acUseThisTranslation: TTntAction;
+    popItems: TTntPopupMenu;
+    Usethistranslation1: TTntMenuItem;
+    Edit1: TTntMenuItem;
+    procedure chkIgnoreAccelCharClick(Sender: TObject);
+    procedure tvItemsChange(Sender: TObject; Node: TTreeNode);
+    procedure tvItemsEditing(Sender: TObject; Node: TTreeNode;
+      var AllowEdit: Boolean);
+    procedure tvItemsEdited(Sender: TObject; Node: TTntTreeNode;
+      var S: WideString);
+    procedure acUseThisTranslationExecute(Sender: TObject);
+    procedure acEditExecute(Sender: TObject);
+    procedure acCloseExecute(Sender: TObject);
+    procedure acUpdateExecute(Sender: TObject);
+    procedure alMainUpdate(Action: TBasicAction; var Handled: Boolean);
+  private
+    { Private declarations }
+    FItems: ITranslationItems;
+
+    FSelectedItem: ITranslationItem;
+    procedure BuildList(IgnoreAccelChar: boolean);
+    procedure LoadSettings;
+    procedure SaveSettings;
+
+  public
+    { Public declarations }
+    class function Execute(const ApplicationServices: IApplicationServices;
+      const Items, Orphans: ITranslationItems;
+      var SelectedItem: ITranslationItem): boolean;
+  end;
+
+implementation
+uses
+  WideIniFiles;
+
+{$R *.dfm}
 type
   TTranslationItems = class
   private
@@ -26,136 +74,6 @@ type
     property RealItem[Index, SubIndex: integer]: ITranslationItem read GetRealItem;
     property Count: integer read GetCount;
   end;
-
-  TfrmToolConsistency = class(TTntForm)
-    chkIgnoreAccelChar: TTntCheckBox;
-    tvItems: TTntTreeView;
-    btnClose: TTntButton;
-    lblInfo: TTntLabel;
-    btnUpdate: TTntButton;
-    TntLabel1: TTntLabel;
-    alMain: TActionList;
-    acUpdate: TAction;
-    acClose: TAction;
-    acEdit: TAction;
-    acUseThisTranslation: TAction;
-    popItems: TPopupMenu;
-    Usethistranslation1: TMenuItem;
-    Edit1: TMenuItem;
-    procedure chkIgnoreAccelCharClick(Sender: TObject);
-    procedure tvItemsChange(Sender: TObject; Node: TTreeNode);
-    procedure tvItemsEditing(Sender: TObject; Node: TTreeNode;
-      var AllowEdit: Boolean);
-    procedure tvItemsEdited(Sender: TObject; Node: TTntTreeNode;
-      var S: WideString);
-    procedure acUseThisTranslationExecute(Sender: TObject);
-    procedure acEditExecute(Sender: TObject);
-    procedure acCloseExecute(Sender: TObject);
-    procedure acUpdateExecute(Sender: TObject);
-    procedure alMainUpdate(Action: TBasicAction; var Handled: Boolean);
-  private
-    { Private declarations }
-    FItems: ITranslationItems;
-    FTItems: TTranslationItems;
-    FSelectedItem: ITranslationItem;
-    procedure BuildList(IgnoreAccelChar: boolean);
-    procedure LoadSettings;
-    procedure SaveSettings;
-
-  public
-    { Public declarations }
-    class function Execute(const ApplicationServices: IApplicationServices;
-      const Items, Orphans: ITranslationItems;
-      var SelectedItem: ITranslationItem): boolean;
-    destructor Destroy; override;
-  end;
-
-implementation
-
-{$R *.dfm}
-
-{ TfrmToolConsistency }
-
-procedure TfrmToolConsistency.BuildList(IgnoreAccelChar: boolean);
-var
-  i, j: integer;
-  N: TTntTreeNode;
-  AItem: ITranslationItem;
-begin
-  FreeAndNil(FTItems);
-  tvItems.Items.Clear;
-  FTItems := TTranslationItems.Create(IgnoreAccelChar);
-  for i := 0 to FItems.Count - 1 do
-    FTItems.Add(FItems[i]);
-  for i := 0 to FTItems.Count - 1 do
-    if FTItems.Items[i].Count > 1 then
-    begin
-      N := tvItems.Items.Add(nil, FTItems.Name[i]);
-      for j := 0 to FTItems.Items[i].Count - 1 do
-      begin
-        AItem := FTItems.RealItem[i, j];
-        tvItems.Items.AddChildObject(N, AItem.Translation, Pointer(AItem));
-      end;
-    end;
-  if tvItems.Items.Count = 0 then
-  begin
-    tvItems.ShowRoot := false;
-    tvItems.Items.Add(nil, 'Congratulations! - No inconsistent items found!');
-  end
-  else
-    tvItems.ShowRoot := true;
-  tvItems.FullExpand;
-  tvItems.Selected := tvItems.Items.GetFirstNode;
-  tvItems.Selected.MakeVisible;
-end;
-
-class function TfrmToolConsistency.Execute(const ApplicationServices: IApplicationServices; const Items, Orphans: ITranslationItems; var SelectedItem: ITranslationItem): boolean;
-var frm: TfrmToolConsistency;
-begin
-  frm := self.Create(Application);
-  try
-    frm.FItems := Items;
-    frm.FSelectedItem := SelectedItem;
-    frm.LoadSettings;
-    frm.acUpdate.Execute;
-    frm.ShowModal;
-    SelectedItem := frm.FSelectedItem;
-    frm.SaveSettings;
-    Result := true;
-  finally
-    frm.Free;
-  end;
-end;
-
-destructor TfrmToolConsistency.Destroy;
-begin
-  FreeAndNil(FTItems);
-  inherited;
-end;
-
-procedure TfrmToolConsistency.LoadSettings;
-begin
-// TODO
-end;
-
-procedure TfrmToolConsistency.SaveSettings;
-begin
-// TODO
-end;
-
-procedure TfrmToolConsistency.tvItemsChange(Sender: TObject;
-  Node: TTreeNode);
-begin
-  if Assigned(Node) and Assigned(Node.Data) then
-  begin
-    FSelectedItem := ITranslationItem(Node.Data);
-    lblInfo.Caption := WideFormat('(%s.%s)', [FSelectedItem.Section, FSelectedItem.Name]);
-  end
-  else
-    lblInfo.Caption := '';
-  
-  alMain.UpdateAction(nil);
-end;
 
 { TTranslationItems }
 
@@ -222,10 +140,6 @@ begin
   Result := TTntStrings(FOriginalItems.Objects[Index]);
 end;
 
-procedure TfrmToolConsistency.chkIgnoreAccelCharClick(Sender: TObject);
-begin
-  BuildList(chkIgnoreAccelChar.Checked);
-end;
 
 function TTranslationItems.GetName(Index: integer): WideString;
 begin
@@ -235,6 +149,115 @@ end;
 function TTranslationItems.GetRealItem(Index, SubIndex: integer): ITranslationItem;
 begin
   Result := ITranslationItem(Pointer(TTntStrings(FOriginalItems.Objects[Index]).Objects[SubIndex]));
+end;
+
+{ TfrmToolConsistency }
+
+procedure TfrmToolConsistency.chkIgnoreAccelCharClick(Sender: TObject);
+begin
+  BuildList(chkIgnoreAccelChar.Checked);
+end;
+
+procedure TfrmToolConsistency.BuildList(IgnoreAccelChar: boolean);
+var
+  i, j: integer;
+  N: TTntTreeNode;
+  AItem: ITranslationItem;
+  FTItems: TTranslationItems;
+begin
+  tvItems.Items.Clear;
+  FTItems := TTranslationItems.Create(IgnoreAccelChar);
+  try
+    // first build a list of original items with translations as subitems
+    // each original item only appears once and each subitem translation
+    // only appear once (because the lists are sorted and we ignore duplicates)
+    for i := 0 to FItems.Count - 1 do
+      FTItems.Add(FItems[i]);
+    // next, build a tree of all items that have more than 1 unique translation
+    // since this indicates that the translations are not consistent for the specific original item
+    for i := 0 to FTItems.Count - 1 do
+      if FTItems.Items[i].Count > 1 then
+      begin
+        N := tvItems.Items.Add(nil, FTItems.Name[i]);
+        for j := 0 to FTItems.Items[i].Count - 1 do
+        begin
+          AItem := FTItems.RealItem[i, j];
+          tvItems.Items.AddChildObject(N, AItem.Translation, Pointer(AItem));
+        end;
+      end;
+    if tvItems.Items.Count = 0 then
+    begin
+      // no items in tree -> translation is consistent
+      tvItems.ShowRoot := false;
+      tvItems.Items.Add(nil, 'Congratulations! - No inconsistent items found!');
+    end
+    else
+      tvItems.ShowRoot := true;
+    tvItems.FullExpand;
+    tvItems.Selected := tvItems.Items.GetFirstNode;
+    tvItems.Selected.MakeVisible;
+  finally
+    FreeAndNil(FTItems);
+  end;
+end;
+
+class function TfrmToolConsistency.Execute(const ApplicationServices: IApplicationServices; const Items, Orphans: ITranslationItems; var SelectedItem: ITranslationItem): boolean;
+var
+  frm: TfrmToolConsistency;
+  FAppHandle:Cardinal;
+begin
+  FAppHandle := Application.Handle;
+  Application.Handle := ApplicationServices.AppHandle;
+  frm := self.Create(Application);
+  try
+    frm.FItems := Items;
+    frm.FSelectedItem := SelectedItem;
+    frm.LoadSettings;
+    frm.acUpdate.Execute;
+    frm.ShowModal;
+    SelectedItem := frm.FSelectedItem;
+    frm.SaveSettings;
+    Result := true;
+  finally
+    frm.Free;
+    Application.Handle := FAppHandle;
+  end;
+end;
+
+procedure TfrmToolConsistency.LoadSettings;
+begin
+  with TWideMemIniFile.Create(ChangeFileExt(GetModuleName(HInstance), '.ini')) do
+  try
+    chkIgnoreAccelChar.Checked := ReadBool('Settings', 'IgnoreAccelChar', chkIgnoreAccelChar.Checked);
+  finally
+    Free;
+  end;
+end;
+
+
+procedure TfrmToolConsistency.SaveSettings;
+begin
+  with TWideMemIniFile.Create(ChangeFileExt(GetModuleName(HInstance), '.ini')) do
+  try
+    WriteBool('Settings', 'IgnoreAccelChar', chkIgnoreAccelChar.Checked);
+    UpdateFile;
+  finally
+    Free;
+  end;
+end;
+
+procedure TfrmToolConsistency.tvItemsChange(Sender: TObject;
+  Node: TTreeNode);
+begin
+  if Assigned(Node) and Assigned(Node.Data) then
+  begin
+    FSelectedItem := ITranslationItem(Node.Data);
+    lblInfo.Caption := WideFormat('(%s.%s)', [FSelectedItem.Section, FSelectedItem.Name]);
+  end
+  else
+    lblInfo.Caption := '';
+
+  alMain.UpdateAction(nil);
 end;
 
 procedure TfrmToolConsistency.tvItemsEditing(Sender: TObject;
@@ -254,7 +277,7 @@ end;
 procedure TfrmToolConsistency.acUseThisTranslationExecute(Sender: TObject);
 var
   N: TTntTreeNode;
-  Item1, Item2:ITranslationItem;
+  Item1, Item2: ITranslationItem;
 begin
   if Assigned(tvItems.Selected) and Assigned(tvItems.Selected.Data) then
   begin

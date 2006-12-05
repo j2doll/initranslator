@@ -23,7 +23,8 @@ uses
   Classes,
   ToolConsistencyImpl in 'ToolConsistencyImpl.pas',
   TransIntf in '..\TransIntf.pas',
-  ToolConsistencyFrm in 'ToolConsistencyFrm.pas' {frmToolConsistency};
+  ToolConsistencyFrm in 'ToolConsistencyFrm.pas' {frmToolConsistency},
+  WideIniFiles in '..\WideIniFiles.pas';
 
 {$R *.res}
 function InstallPlugin(out ToolItems: IToolItems): HResult; stdcall;

@@ -77,7 +77,7 @@ end;
 procedure TFoxitParser.BuildPreview(Items: ITranslationItems; Strings: TTntStrings);
 var
   i: integer;
-  TI: ItranslationItem;
+  TI: ITranslationItem;
   S: WideString;
 begin
   if XML = '' then

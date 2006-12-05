@@ -62,7 +62,7 @@ end;
 
 function TToolListViewPlugin.DisplayName: WideString;
 begin
-  Result := 'Alternate list editor';
+  Result := '&Alternate list editor...';
 end;
 
 function TToolListViewPlugin.Execute(const Items, Orphans: ITranslationItems; var SelectedItem: ITranslationItem): HRESULT;

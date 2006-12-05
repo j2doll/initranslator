@@ -2894,6 +2894,7 @@ begin
     Options := Options + [ofOverwritePrompt];
     Title := _(ClassName, SSaveTranslationTemplate);
     Filter := SFileFilter;
+    DefaultExt := 'lng';
     if Execute then
     begin
       WaitCursor;

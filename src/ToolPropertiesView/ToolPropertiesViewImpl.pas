@@ -86,7 +86,7 @@ end;
 
 function TToolPropertiesViewPlugin.DisplayName: WideString;
 begin
-  Result := 'View all properties';
+  Result := 'View all &properties...';
 end;
 
 function TToolPropertiesViewPlugin.Execute(const Items,

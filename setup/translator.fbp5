@@ -3684,7 +3684,7 @@ Peter Thornqvist
         <Property name="VariableType" type="TFBVariableType">vtProject</Property>
         </Object>
       <Object Class="TFBVariable" XMLID="{2C0ECC00-A68D-45F6-9BBA-67E2C178ACCA}"><Property MultiValue="0" name="Comment" type="string"></Property>
-        <Property MultiValue="0" name="DefaultValue" type="string">41</Property>
+        <Property MultiValue="0" name="DefaultValue" type="string">42</Property>
         <Property name="IsMacro" type="Boolean">False</Property>
         <Property name="IsPersistent" type="Boolean">False</Property>
         <Property name="MakeEnv" type="Boolean">False</Property>

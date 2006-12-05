@@ -61,7 +61,7 @@ end;
 
 function TToolTreeViewPlugin.DisplayName: WideString;
 begin
-  Result := '&Tree view';
+  Result := '&Tree view...';
 end;
 
 function TToolTreeViewPlugin.Execute(const Items, Orphans: ITranslationItems; var SelectedItem:ITranslationItem): HRESULT;

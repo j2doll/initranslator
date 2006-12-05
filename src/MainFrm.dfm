@@ -53,7 +53,6 @@ object frmMain: TfrmMain
         TextTruncation = twEndEllipsis
       end
       item
-        Framed = False
         Size = 150
         Tag = 0
         TextTruncation = twEndEllipsis

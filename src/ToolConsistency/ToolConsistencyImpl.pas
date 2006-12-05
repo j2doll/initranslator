@@ -73,7 +73,7 @@ end;
 
 function TToolConsistencyPlugin.DisplayName: WideString;
 begin
-  Result := 'Check consistency';
+  Result := 'Check translation consistency...';
 end;
 
 function TToolConsistencyPlugin.Execute(const Items, Orphans: ITranslationItems; var SelectedItem: ITranslationItem): HRESULT;

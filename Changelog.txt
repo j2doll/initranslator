@@ -1,8 +1,17 @@
 Ini Translator Changelog
 ========================
 2006-12-05:
+- Released on Sourceforge as 1.9.0.42
+- Bug Fixed: latest release did not work on non-XP systems
 - Bug Fixed: translation comment wasn't cleared when user clicked "New translation"
 - New tool plugin: ToolConsistency. Checks if items are consistently translated, i.e same translation for same original
+ToolConsistency:
+- the user settings are now persisted
+- components are now TNT
+- Items can now be edited in the tree
+- Items can easily be copied to all other matching items
+- Translations always display their accelerator key
+- When form closes, the selected item in the main list is synced
 
 2006-12-04:
 - Released on Sourceforge as 1.9.0.41

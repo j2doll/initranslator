@@ -1,5 +1,8 @@
 Ini Translator Changelog
 ========================
+2006-12-06:
+- Multiple undo
+
 2006-12-05:
 - Released on Sourceforge as 1.9.0.42
 - Bug Fixed: latest release did not work on non-XP systems

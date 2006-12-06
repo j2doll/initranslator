@@ -55,7 +55,8 @@ uses
   DictEditFrm in 'DictEditFrm.pas' {frmDictEdit: TTntForm},
   ToolItems in 'ToolItems.pas',
   ColorsFrm in 'ColorsFrm.pas' {frmColors: TTntForm},
-  ApplicationServices in 'ApplicationServices.pas';
+  ApplicationServices in 'ApplicationServices.pas',
+  UndoList in 'UndoList.pas';
 
 {$R *.res}
 {$R 'manifest.res' 'manifest.rc'}

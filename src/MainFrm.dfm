@@ -206,7 +206,7 @@ object frmMain: TfrmMain
         object TBItem14: TSpTBXItem
           Action = acUndo
           CaptionW = 'Undo'
-          HintW = 'Undo last edit'
+          HintW = 'Undo last action'
         end
         object TBSeparatorItem8: TSpTBXSeparatorItem
         end
@@ -618,6 +618,13 @@ object frmMain: TfrmMain
         HintW = 'Save current translation file'
       end
       object TBSeparatorItem1: TSpTBXSeparatorItem
+      end
+      object SpTBXItem3: TSpTBXItem
+        Action = acUndo
+        CaptionW = 'Undo'
+        HintW = 'Undo last action'
+      end
+      object SpTBXSeparatorItem2: TSpTBXSeparatorItem
       end
       object TBItem12: TSpTBXItem
         Action = acCut
@@ -1203,7 +1210,7 @@ object frmMain: TfrmMain
     object acUndo: TTntAction
       Category = 'Edit'
       Caption = 'Undo'
-      Hint = 'Undo last edit'
+      Hint = 'Undo last action'
       ImageIndex = 13
       ShortCut = 16474
       OnExecute = acUndoExecute
@@ -3840,7 +3847,7 @@ object frmMain: TfrmMain
     object Undo1: TSpTBXItem
       Action = acUndo
       CaptionW = 'Undo'
-      HintW = 'Undo last edit'
+      HintW = 'Undo last action'
     end
     object N13: TSpTBXSeparatorItem
     end

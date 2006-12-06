@@ -27,7 +27,7 @@ uses
   // app specific
   BaseForm, FileMonitor, MsgTranslate, AppOptions,
   AppConsts, TranslateFile, TransIntf, Dictionary,
-  FindReplaceFrm, EncodingDlgs, ToolItems, WideIniFiles,
+  FindReplaceFrm, EncodingDlgs, ToolItems, WideIniFiles, UndoList,
 
 {$IFDEF USEADDICTSPELLCHECKER}
   // addict spell checker (www.addictive-software.com)
@@ -341,6 +341,8 @@ type
     SpTBXItem1: TSpTBXItem;
     SpTBXSeparatorItem1: TSpTBXSeparatorItem;
     SpTBXItem2: TSpTBXItem;
+    SpTBXItem3: TSpTBXItem;
+    SpTBXSeparatorItem2: TSpTBXSeparatorItem;
     procedure FormCreate(Sender: TObject);
     procedure FormCloseQuery(Sender: TObject; var CanClose: boolean);
     procedure lvTranslateStringsChange(Sender: TObject; Item: TListItem;
@@ -432,9 +434,9 @@ type
     procedure acToolsCustomizeExecute(Sender: TObject);
     procedure TBXSubmenuItem1Select(Sender: TTBCustomItem;
       Viewer: TTBItemViewer; Selecting: Boolean);
-    procedure acDeleteItemExecute(Sender: TObject);
-    procedure acEditItemExecute(Sender: TObject);
     procedure acAddItemExecute(Sender: TObject);
+    procedure acEditItemExecute(Sender: TObject);
+    procedure acDeleteItemExecute(Sender: TObject);
     procedure acSaveOriginalExecute(Sender: TObject);
     procedure lvTranslateStringsDblClick(Sender: TObject);
     procedure acTrimExecute(Sender: TObject);
@@ -450,6 +452,7 @@ type
     FTranslateFile: TTranslateFiles;
     FLastFindText, FLastFolder: WideString;
     FCommandProcessor, FModified, FIsImport: boolean;
+    FUndoList: TUndoList;
 
     FDictionary: TDictionaryItems;
     FFileMonitors: array of TFileMonitorThread;
@@ -464,6 +467,7 @@ type
     function NotifyChanging(Msg, WParam, LParam: integer): WordBool;
     procedure NotifyChanged(Msg, WParam, LParam: integer);
 {$IFDEF USEADDICTSPELLCHECKER}
+
     procedure SpellCheckComplete(Sender: TObject);
     procedure CreateSpellChecker;
     procedure SpellCheckGetString(Sender: TObject;
@@ -555,7 +559,9 @@ type
     procedure DoTrim;
     procedure AddItem(const Section, Original, Translation, OrigComments, TransComments: WideString); overload;
     procedure AddItem(AItem: ITranslationItem); overload;
-    procedure DeleteItem(Index: integer);
+    procedure InsertItem(AItem: ITranslationItem);
+    procedure DeleteItem(Index: integer); overload;
+    procedure DeleteItem(const Item: ITranslationItem); overload;
     procedure DoExternalToolClick(Sender: TObject);
     function GetSelectedItem: ITranslationItem;
     procedure SetSelectedItem(const Value: ITranslationItem);
@@ -565,6 +571,8 @@ type
     function SelectOriginal(ShowDialog, ShowTransDialog: boolean): boolean;
     function SelectTranslation(ShowDialog, CalledByOrig: boolean): boolean;
     procedure DoMergeOrphans(Sender: TObject);
+    procedure DoUndoEvent(Sender: TObject; AItem: TUndoItem);
+    procedure AddUndo(const Item: ITranslationItem; Description: WideString; UndoType: integer);
   public
     function GetItems: ITranslationItems;
     function GetOrphans: ITranslationItems;
@@ -614,6 +622,37 @@ uses
 
 {$R *.dfm}
 
+type
+  TTranslationUndoItem = class(TUndoData)
+  private
+    FItem: ITranslationItem;
+  public
+    constructor Create(const Items: ITranslationItems; const Item: ITranslationItem);
+    property Item: ITranslationItem read FItem;
+  end;
+
+{ TTranslationUndoItem }
+
+constructor TTranslationUndoItem.Create(const Items: ITranslationItems;
+  const Item: ITranslationItem);
+begin
+  inherited Create;
+  FreeObject := true;
+  FItem := Items.CreateItem;
+  FItem.Index := Item.Index;
+  FItem.Translated := Item.Translated;
+  FItem.TransComments := Item.TransComments;
+  FItem.OrigComments := Item.OrigComments;
+  FItem.Original := Item.Original;
+  FItem.Translation := Item.Translation;
+  FItem.Section := Item.Section;
+  FItem.Name := Item.Name;
+  FItem.PrivateStorage := Item.PrivateStorage;
+  FItem.PreData := Item.PreData;
+  FItem.PostData := Item.PostData;
+  FItem.Modified := Item.Modified;
+end;
+
 { TfrmMain }
 // frmMain support routines
 
@@ -625,6 +664,8 @@ begin
   // only options that can be changed from the options dialog needs to be reset, so these are only set once
   if FirstLoad then
   begin
+    FUndoList := TUndoList.Create;
+    FUndoList.OnUndo := DoUndoEvent;
     CreateDialogs;
     if WideFileExists(GlobalAppOptions.OriginalFile) then
       LoadOriginal(GlobalAppOptions.OriginalFile, TEncoding(GlobalAppOptions.OrigEncoding)); // ??
@@ -905,7 +946,7 @@ begin
     Exit;
   if not CheckModified then
     Exit;
-
+  FUndoList.Clear;
   if WideFileExists(Filename) and not FCommandProcessor then
   begin
     FCapabilitesSupported := 0;
@@ -946,6 +987,7 @@ begin
     Exit;
   if not CheckModified then
     Exit;
+  FUndoList.Clear;
   StopMonitor(FFileMonitors[cTransMonitor]);
   reOriginal.Clear;
   reTranslation.Clear;
@@ -1259,10 +1301,14 @@ begin
           begin
             if (S <> '') and FPrompt then
               FDictionary[j].Translations.Add(S);
+            AddUndo(FTranslateFile.Items[i], _(ClassName, SUndoEdit), cUndoEdit);
             FTranslateFile.Items[i].Translation := S;
           end;
         cDictUse:
-          FTranslateFile.Items[i].Translation := S;
+          begin
+            AddUndo(FTranslateFile.Items[i], _(ClassName, SUndoEdit), cUndoEdit);
+            FTranslateFile.Items[i].Translation := S;
+          end;
         cDictCancel:
           Exit;
       end;
@@ -1699,6 +1745,10 @@ begin
   ini.WriteString(ClassName, EncodeStrings(SConfirmRemoveOrphans), EncodeStrings(SConfirmRemoveOrphans));
   ini.WriteString(ClassName, EncodeStrings(SFmtOrphansCount), EncodeStrings(SFmtOrphansCount));
   ini.WriteString(ClassName, EncodeStrings(SImportedPromptToExport), EncodeStrings(SImportedPromptToExport));
+  ini.WriteString(ClassName, EncodeStrings(SUndo), EncodeStrings(SUndo));
+  ini.WriteString(ClassName, EncodeStrings(SUndoAdd), EncodeStrings(SUndoAdd));
+  ini.WriteString(ClassName, EncodeStrings(SUndoEdit), EncodeStrings(SUndoEdit));
+  ini.WriteString(ClassName, EncodeStrings(SUndoDelete), EncodeStrings(SUndoDelete));
 
   for i := 0 to alMain.ActionCount - 1 do
   begin
@@ -1774,12 +1824,16 @@ begin
   if b then
   begin
     if FFindReplace.MatchLine then
-      FTranslateFile.Items[i].Translation := FFindReplace.ReplaceText
+    begin
+      AddUndo(FTranslateFile.Items[i], _(ClassName, SUndoEdit), cUndoEdit);
+      FTranslateFile.Items[i].Translation := FFindReplace.ReplaceText;
+    end
     else
     begin
       F := [rfReplaceAll];
       if not FFindReplace.MatchCase then
         Include(F, rfIgnoreCase);
+      AddUndo(FTranslateFile.Items[i], _(ClassName, SUndoEdit), cUndoEdit);
       FTranslateFile.Items[i].Translation := Tnt_WideStringReplace(FTranslateFile.Items[i].Translation,
         FFindReplace.FindText, FFindReplace.ReplaceText, F);
     end;
@@ -1824,12 +1878,16 @@ begin
     if b then
     begin
       if FFindReplace.MatchLine then
-        FTranslateFile.Items[i].Translation := FFindReplace.ReplaceText
+      begin
+        AddUndo(FTranslateFile.Items[i], _(ClassName, SUndoEdit), cUndoEdit);
+        FTranslateFile.Items[i].Translation := FFindReplace.ReplaceText;
+      end
       else
       begin
         F := [rfReplaceAll];
         if not FFindReplace.MatchCase then
           Include(F, rfIgnoreCase);
+        AddUndo(FTranslateFile.Items[i], _(ClassName, SUndoEdit), cUndoEdit);
         FTranslateFile.Items[i].Translation := Tnt_WideStringReplace(FTranslateFile.Items[i].Translation,
           FFindReplace.FindText, FFindReplace.ReplaceText, F);
       end;
@@ -2146,7 +2204,12 @@ begin
   else
     Index := -1;
   ACount := FTranslateFile.Items.Count;
-  acUndo.Enabled := reTranslation.Focused and Modified;
+  acUndo.Enabled := FUndoList.CanUndo; //  reTranslation.Focused and Modified;
+  if acUndo.Enabled then
+    acUndo.Caption := _(ClassName, FUndoList.Current.Description)
+  else
+    acUndo.Caption := _(ClassName, SUndo);
+
   acDictSave.Enabled := FDictionary.Count > 0;
   acDictEdit.Enabled := acDictSave.Enabled;
   acDictTranslate.Enabled := (FDictionary.Count > 0) and (ACount > 0);
@@ -2403,6 +2466,7 @@ begin
   FreeAndNil(FTranslateFile);
   FreeAndNil(FDictionary);
   FreeAndNil(FExternalToolItems);
+  FreeAndNil(FUndoList);
   for i := 0 to Length(FFileMonitors) - 1 do
     if FFileMonitors[i] <> nil then
     begin
@@ -2444,6 +2508,7 @@ begin
     begin
       if not NotifyChanging(NOTIFY_ITEM_TRANS_CHANGE, Integer(PWideChar(Translation)), Integer(PWideChar(reTranslation.Text))) then
         Exit;
+      AddUndo(SelectedItem, _(ClassName, SUndoEdit), cUndoEdit);
       Translation := RemoveQuotes(trimCRLFRight(reTranslation.Text));
       NotifyChanged(NOTIFY_ITEM_TRANS_CHANGE, Integer(PWideChar(Translation)), 0);
       Translated := MyWideDequotedStr(Translation, TransQuote) <> '';
@@ -2637,7 +2702,9 @@ end;
 
 procedure TfrmMain.acUndoExecute(Sender: TObject);
 begin
-  if ActiveControl is TWinControl then
+  if FUndoList.CanUndo then
+    FUndoList.Undo
+  else if ActiveControl is TWinControl then
     SendMessage(TWinControl(ActiveControl).Handle, WM_UNDO, 0, 0);
 end;
 
@@ -2859,6 +2926,7 @@ begin
   else
     j := 0;
   ScrollToTop;
+  FUndoList.Clear;
   lvTranslateStrings.Items.Count := 0;
   try
     for i := 0 to FTranslateFile.Items.Count - 1 do
@@ -2931,6 +2999,7 @@ procedure TfrmMain.acCopyAllFromOrigExecute(Sender: TObject);
 var
   i: integer;
 begin
+  FUndoList.Clear;
   lvTranslateStrings.Items.Count := 0;
   try
     for i := 0 to FTranslateFile.Items.Count - 1 do
@@ -3174,6 +3243,7 @@ procedure TfrmMain.acClearAllTranslationsExecute(Sender: TObject);
 var
   i: integer;
 begin
+  FUndoList.Clear;
   for i := 0 to FTranslateFile.Items.Count - 1 do
   begin
     FTranslateFile.Items[i].Translation := '';
@@ -3203,6 +3273,7 @@ begin
           if WideSameText(FOrig, FTranslateFile.Items[j].Original) and
             not WideSameText(FTrans, FTranslateFile.Items[j].Translation) then
           begin
+            AddUndo(FTranslateFile.Items[j], _(ClassName, SUndoEdit), cUndoEdit);
             FTranslateFile.Items[j].Translation := FTrans;
             FTranslateFile.Items[j].Translated := true;
             Modified := true;
@@ -3231,6 +3302,7 @@ begin
   begin
     if WideSameText(FOrig, FTranslateFile.Items[i].Original) then
     begin
+      AddUndo(FTranslateFile.Items[i], _(ClassName, SUndoEdit), cUndoEdit);
       FTranslateFile.Items[i].Translation := FTrans;
       FTranslateFile.Items[i].Translated := FTrans <> '';
       Modified := true;
@@ -3410,14 +3482,15 @@ begin
   lvTranslateStrings.Items.Count := 0;
   reOriginal.Clear;
   reTranslation.Clear;
+  FUndoList.Clear;
   if TfrmImportExport.Edit(FTranslateFile.Items, FTranslateFile.Orphans,
     GetPluginsFolder, true, FImportIndex, FCapabilitesSupported) then
   begin
     FIsImport := true;
-    // make sure the "Save As" dialog is shown on Ctrl+S to prevent inadverent saving to wrong file
     StopMonitor(FFileMonitors[cOrigMonitor]);
     StopMonitor(FFileMonitors[cTransMonitor]);
     //    StopMonitor(FFileMonitors[cDictMonitor]);
+    // make sure the "Save As" dialog is shown on Ctrl+S to prevent inadverent saving to wrong file
     GlobalAppOptions.TranslationFile := '';
     GlobalAppOptions.OriginalFile := '';
     acRestoreSort.Execute;
@@ -4019,9 +4092,28 @@ begin
   AddItem(AItem);
 end;
 
+procedure TfrmMain.InsertItem(AItem: ITranslationItem);
+var
+  i, aIndex: integer;
+  FOldSort: TTranslateSortType;
+begin
+  aIndex := AItem.Index;
+  FOldSort := FTranslateFile.Items.Sort;
+  try
+    FTranslateFile.Items.Sort := stNone;
+    for i := 0 to FTranslateFile.Items.Count - 1 do
+      if FTranslateFile.Items[i].Index >= aIndex then
+        FTranslateFile.Items[i].Index := FTranslateFile.Items[i].Index + 1;
+    FTranslateFile.Items.Add(AItem);
+    AItem.Index := aIndex;
+  finally
+    FTranslateFile.Items.Sort := FOldSort;
+  end;
+end;
+
 procedure TfrmMain.DeleteItem(Index: integer);
 var
-  i:integer;
+  i: integer;
   FOldSort: TTranslateSortType;
 begin
   if (Index >= 0) and (Index < FTranslateFile.Items.Count) then
@@ -4042,6 +4134,14 @@ begin
   end;
 end;
 
+procedure TfrmMain.DeleteItem(const Item: ITranslationItem);
+var i: integer;
+begin
+  i := FTranslateFile.Items.IndexOf(Item);
+  if i >= 0 then
+    DeleteItem(i);
+end;
+
 procedure TfrmMain.acAddItemExecute(Sender: TObject);
 var
   AItem: ITranslationItem;
@@ -4056,6 +4156,7 @@ begin
     GetSections(ASections);
     if TfrmEditItem.Edit(_(ClassName, SCaptionAddItem), ASections, AItem, true) then
     begin
+      AddUndo(AItem, _(ClassName, SUndoAdd), cUndoAdd);
       if (AItem.Section = '') then
         ErrMsg(_(ClassName, SErrSectionEmpty), SErrorCaption)
       else if (AItem.Name = '') then
@@ -4132,6 +4233,7 @@ begin
     begin
       if EqualItems(AItem, ANewItem) then
         Exit;
+      AddUndo(AItem, _(ClassName, SUndoEdit), cUndoEdit);
       lvTranslateStrings.Items.BeginUpdate;
       try
         if (ANewItem.Section = '') then
@@ -4163,10 +4265,12 @@ end;
 procedure TfrmMain.acDeleteItemExecute(Sender: TObject);
 var i: integer;
 begin
-  if (SelectedListItem <> nil) and YesNo(_(ClassName, SPromptDeleteItem), _(ClassName, SConfirmDelete)) then
+  if (SelectedItem <> nil)
+    and YesNo(_(ClassName, SPromptDeleteItem), _(ClassName, SConfirmDelete)) then
   begin
     i := SelectedListItem.Index;
-    DeleteItem(SelectedListItem.Index);
+    AddUndo(SelectedItem, _(ClassName, SUndoDelete), cUndoDelete);
+    DeleteItem(SelectedItem);
     lvTranslateStrings.Items.Count := FTranslateFile.Items.Count;
     if i >= FTranslateFile.Items.Count then
       i := FTranslateFile.Items.Count - 1
@@ -4237,6 +4341,7 @@ begin
         InternalTrim(S);
         if Length(S) <> Length(ti.Translation) then
         begin
+          AddUndo(FTranslateFile.Items[i], _(ClassName, SUndoEdit), cUndoEdit);
           ti.Translation := S;
           Modified := true;
         end;
@@ -4434,6 +4539,57 @@ begin
     lvTranslateStrings.Items.EndUpdate;
     SelectedItem := AItem;
   end;
+end;
+
+procedure TfrmMain.DoUndoEvent(Sender: TObject; AItem: TUndoItem);
+var
+  i: integer;
+  ItemOrig, ItemNew: ITranslationItem;
+begin
+  ItemOrig := TTranslationUndoItem(AItem.Data).Item;
+  case AItem.UndoType of
+    cUndoAdd: // an item was added, remove it
+      begin
+        SelectedItem := ItemOrig;
+        DeleteItem(ItemOrig);
+      end;
+    cUndoEdit: // an item was changed, restore it
+      begin
+        i := FTranslateFile.Items.IndexOf(ItemOrig);
+        if i >= 0 then
+        begin
+          ItemNew := FTranslateFile.Items[i];
+          ItemNew.Index := ItemOrig.Index;
+          ItemNew.Translated := ItemOrig.Translated;
+          ItemNew.TransComments := ItemOrig.TransComments;
+          ItemNew.OrigComments := ItemOrig.OrigComments;
+          ItemNew.Original := ItemOrig.Original;
+          ItemNew.Translation := ItemOrig.Translation;
+          ItemNew.Section := ItemOrig.Section;
+          ItemNew.Name := ItemOrig.Name;
+          ItemNew.PrivateStorage := ItemOrig.PrivateStorage;
+          ItemNew.PreData := ItemOrig.PreData;
+          ItemNew.PostData := ItemOrig.PostData;
+          ItemNew.Modified := ItemOrig.Modified;
+          SelectedItem := ItemNew;
+        end;
+      end;
+    cUndoDelete: // an item was deleted, recreate it
+      begin
+        InsertItem(ItemOrig);
+        SelectedItem := ItemOrig;
+      end;
+  end;
+  if SelectedListItem <> nil then
+    SelectedListItem.MakeVisible(false);
+  lvTranslateStrings.Invalidate;
+end;
+
+procedure TfrmMain.AddUndo(const Item: ITranslationItem;
+  Description: WideString; UndoType: integer);
+begin
+  FUndoList.Add(TTranslationUndoItem.Create(FTranslateFile.Items, Item),
+    Description, UndoType);
 end;
 
 end.

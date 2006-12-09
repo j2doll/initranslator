@@ -25,7 +25,8 @@ uses
   DualImportFrm in '..\PluginCommon\DualImportFrm.pas' {frmDualImport},
   XilisoftParserImpl in 'XilisoftParserImpl.pas',
   XilisoftParserCfgForm in 'XilisoftParserCfgForm.pas' {XilisoftCfgForm},
-  CommonUtils in '..\CommonUtils.pas';
+  CommonUtils in '..\CommonUtils.pas',
+  XiliSoftParserConsts in 'XiliSoftParserConsts.pas';
 
 {$R *.res}
 

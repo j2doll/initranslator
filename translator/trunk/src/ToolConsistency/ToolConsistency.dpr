@@ -24,7 +24,8 @@ uses
   ToolConsistencyImpl in 'ToolConsistencyImpl.pas',
   TransIntf in '..\TransIntf.pas',
   ToolConsistencyFrm in 'ToolConsistencyFrm.pas' {frmToolConsistency},
-  WideIniFiles in '..\WideIniFiles.pas';
+  WideIniFiles in '..\WideIniFiles.pas',
+  ToolConsistencyConsts in 'ToolConsistencyConsts.pas';
 
 {$R *.res}
 function InstallPlugin(out ToolItems: IToolItems): HResult; stdcall;

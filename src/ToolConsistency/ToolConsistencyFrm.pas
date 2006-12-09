@@ -23,6 +23,7 @@ type
     popItems: TTntPopupMenu;
     Usethistranslation1: TTntMenuItem;
     Edit1: TTntMenuItem;
+    chkAutoAccelChar: TTntCheckBox;
     procedure chkIgnoreAccelCharClick(Sender: TObject);
     procedure tvItemsChange(Sender: TObject; Node: TTreeNode);
     procedure tvItemsEditing(Sender: TObject; Node: TTreeNode;
@@ -52,7 +53,7 @@ type
 
 implementation
 uses
-  WideIniFiles;
+  WideIniFiles, TntWideStrUtils, StrUtils;
 
 {$R *.dfm}
 type
@@ -229,6 +230,7 @@ begin
   with TWideMemIniFile.Create(ChangeFileExt(GetModuleName(HInstance), '.ini')) do
   try
     chkIgnoreAccelChar.Checked := ReadBool('Settings', 'IgnoreAccelChar', chkIgnoreAccelChar.Checked);
+    chkAutoAccelChar.Checked := ReadBool('Settings', 'InsertAccelChar', chkAutoAccelChar.Checked);
   finally
     Free;
   end;
@@ -240,6 +242,7 @@ begin
   with TWideMemIniFile.Create(ChangeFileExt(GetModuleName(HInstance), '.ini')) do
   try
     WriteBool('Settings', 'IgnoreAccelChar', chkIgnoreAccelChar.Checked);
+    WriteBool('Settings', 'InsertAccelChar', chkAutoAccelChar.Checked);
     UpdateFile;
   finally
     Free;
@@ -268,10 +271,18 @@ end;
 
 procedure TfrmToolConsistency.tvItemsEdited(Sender: TObject;
   Node: TTntTreeNode; var S: WideString);
+  function DoAutoAccelChar(var S:WideString):WideString;
+  begin
+    Result := S;
+    if chkAutoAccelChar.Checked and AnsiContainsText(FSelectedItem.Original, '&')
+      and not AnsiContainsText(S, '&') then
+        Result := '&' + S;
+    S := Result;
+  end;
 begin
   FSelectedItem := ITranslationItem(Node.Data);
   if FSelectedItem <> nil then
-    FSelectedItem.Translation := S;
+    FSelectedItem.Translation := DoAutoAccelChar(S);
 end;
 
 procedure TfrmToolConsistency.acUseThisTranslationExecute(Sender: TObject);

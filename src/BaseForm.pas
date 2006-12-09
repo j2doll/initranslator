@@ -74,25 +74,22 @@ procedure TfrmBase.LoadFormPos;
 var
   W: TAppWindowInfo;
 begin
-  if GlobalAppOptions.SaveFormPos then
+  if (Self = Application.MainForm) and IsIconic(Application.Handle) or IsZoomed(Handle) then
+    ShowWindow(Handle, SW_RESTORE);
+  W := GlobalAppOptions.WindowInfos[Self];
+  if (W.WindowState = wsMinimized) and (Self = Application.MainForm) then
+    ShowWindow(Application.Handle, SW_MINIMIZE);
+  WindowState := W.WindowState;
+  if WindowState = wsNormal then
   begin
-    if (Self = Application.MainForm) and IsIconic(Application.Handle) or IsZoomed(Handle) then
-      ShowWindow(Handle, SW_RESTORE);
-    W := GlobalAppOptions.WindowInfos[Self];
-    if (W.WindowState = wsMinimized) and (Self = Application.MainForm) then
-      ShowWindow(Application.Handle, SW_MINIMIZE);
-    WindowState := W.WindowState;
-    if WindowState = wsNormal then
-    begin
       // set default (screen center)
-      SetBounds((Screen.Width - Width) div 2, (Screen.Height - Height) div 2, Width, Height);
-      if BorderStyle in [bsSizeable, bsSizeToolWin] then
-        BoundsRect := W.BoundsRect
-      else
-      begin
-        Top := W.BoundsRect.Top;
-        Left := W.BoundsRect.Left;
-      end;
+    SetBounds((Screen.Width - Width) div 2, (Screen.Height - Height) div 2, Width, Height);
+    if BorderStyle in [bsSizeable, bsSizeToolWin] then
+      BoundsRect := W.BoundsRect
+    else
+    begin
+      Top := W.BoundsRect.Top;
+      Left := W.BoundsRect.Left;
     end;
   end;
 end;
@@ -101,14 +98,12 @@ procedure TfrmBase.SaveFormPos;
 var
   W: TAppWindowInfo;
 begin
-  if GlobalAppOptions.SaveFormPos then
-  begin
-    W.Name := self.Name;
-    W.WindowState := WindowState;
-    W.BoundsRect := BoundsRect;
-    GlobalAppOptions.WindowInfos[self] := W;
-  end;
+  W.Name := self.Name;
+  W.WindowState := WindowState;
+  W.BoundsRect := BoundsRect;
+  GlobalAppOptions.WindowInfos[self] := W;
   inherited;
 end;
 
 end.
+

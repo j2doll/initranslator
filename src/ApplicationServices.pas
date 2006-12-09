@@ -13,8 +13,10 @@ type
     function BeginUpdate: Integer; safecall;
     function EndUpdate: Integer; safecall;
     function GetAppHandle: Cardinal;
-    function GetAppOption(const Section: WideString; const Name: WideString; const Default: WideString): WideString;
-      safecall;
+    function GetAppOption(const Section: WideString; const Name: WideString; const Default: WideString): WideString; safecall;
+    function GetSelectedItem:ITranslationItem;
+    procedure SetSelectedItem(const Value:ITranslationItem);
+    
     function GetDictionaryItems: IDictionaryItems;
     function GetFooter: WideString;
     function GetHeader: WideString;
@@ -27,6 +29,7 @@ type
     procedure SetHeader(const Value: WideString);
     function Translate(const Section, Name, Value: WideString): WideString; safecall;
     procedure UnRegisterNotify(const ANotify: INotify); safecall;
+
 
   end;
 
@@ -86,6 +89,11 @@ begin
   Result := FForm.GetOrphans;
 end;
 
+function TApplicationServices.GetSelectedItem: ITranslationItem;
+begin
+  Result := FForm.SelectedItem;
+end;
+
 procedure TApplicationServices.RegisterNotify(const ANotify: INotify);
 begin
   FForm.RegisterNotify(ANotify);
@@ -105,6 +113,11 @@ end;
 procedure TApplicationServices.SetHeader(const Value: WideString);
 begin
   FForm.SetHeader(Value);
+end;
+
+procedure TApplicationServices.SetSelectedItem(const Value: ITranslationItem);
+begin
+  FForm.SelectedItem := Value;
 end;
 
 function TApplicationServices.Translate(const Section, Name, Value: WideString): WideString; safecall;

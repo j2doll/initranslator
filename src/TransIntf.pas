@@ -235,6 +235,8 @@ type
     procedure SetHeader(const Value: WideString);
     function GetFooter: WideString;
     procedure SetFooter(const Value: WideString);
+    function GetSelectedItem:ITranslationItem;
+    procedure SetSelectedItem(const Value:ITranslationItem);
 
     function GetAppOption(const Section, Name, Default: WideString): WideString; safecall;
     procedure SetAppOption(const Section, Name, Value: WideString); safecall;
@@ -246,10 +248,12 @@ type
 
     property Items: ITranslationItems read GetItems;
     property Orphans: ITranslationItems read GetOrphans;
+    property SelectedItem:ITranslationItem read GetSelectedItem write SetSelectedItem;
     property Dictionary: IDictionaryItems read GetDictionaryItems;
     property AppHandle: Cardinal read GetAppHandle;
     property Header: WideString read GetHeader write SetHeader;
     property Footer: WideString read GetFooter write SetFooter;
+
   end;
 
   // return S_OK if all is fine

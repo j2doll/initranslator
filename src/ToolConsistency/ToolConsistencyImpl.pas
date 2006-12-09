@@ -154,7 +154,9 @@ function TToolConsistencyPlugin.Status(const Items,
   Orphans: ITranslationItems;
   const SelectedItem: ITranslationItem): Integer;
 begin
-  Result := TOOL_VISIBLE or TOOL_ENABLED;
+  Result := TOOL_VISIBLE;
+  if Items.Count > 0 then
+    Result := Result or TOOL_ENABLED;
 end;
 
 end.

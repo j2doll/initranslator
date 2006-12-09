@@ -1,3 +1,22 @@
+{@abstract(ToolKeyCheck edit form) }
+{
+  Copyright © 2003-2006 by Peter Thornqvist; all rights reserved
+
+  Developer(s):
+    p3 - peter3 att users dott sourceforge dott net
+
+  Status:
+   The contents of this file are subject to the Mozilla Public License Version
+   1.1 (the "License"); you may not use this file except in compliance with the
+   License. You may obtain a copy of the License at http://www.mozilla.org/MPL/MPL-1.1.html
+
+   Software distributed under the License is distributed on an "AS IS" basis,
+   WITHOUT WARRANTY OF ANY KIND, either express or implied. See the License for
+   the specific language governing rights and limitations under the License.
+}
+
+// $Id$
+
 unit ToolKeyCheckFrm;
 
 interface
@@ -8,8 +27,8 @@ uses
 
 type
   TListViewInfo = class
-    Column:TListColumn;
-    Descending:boolean;
+    Column: TListColumn;
+    Descending: boolean;
   end;
 
   TfrmToolKeyCheck = class(TTntForm)
@@ -38,33 +57,90 @@ type
     procedure acEditExecute(Sender: TObject);
   private
     { Private declarations }
-    FAppServices:IApplicationServices;
-    FListViewInfo:TListViewInfo;
+    FAppServices: IApplicationServices;
+    FListViewInfo: TListViewInfo;
     FItems: ITranslationItems;
     procedure LoadItems;
     procedure LoadSettings;
     procedure SaveSettings;
   public
     { Public declarations }
-    class function Edit(const ApplicationServices:IApplicationServices; const Items: ITranslationItems): boolean;
+    class function Edit(const ApplicationServices: IApplicationServices; const Items: ITranslationItems): boolean;
   end;
 
 implementation
-
 uses
-  CommonUtils, TntWindows, TntMenus, Math;
+  CommonUtils, TntWindows, TntSysUtils, TntMenus, WideIniFiles, ToolKeyCheckEditFrm;
 
 {$R *.DFM}
 const
   cUpArrow = 4;
   cDnArrow = 5;
 
+function ConvertCRLF(const S:WideString):WideString;
+begin
+  Result := Tnt_WideStringReplace(S, CRLF, '\r\n', [rfReplaceAll]);
+end;
+
+function GetAccelerator(const S: WideString): WideString;
+begin
+  Result := WideGetHotkey(S);
+end;
+
+function GetAccessKey(const S: WideString): WideString;
+var
+  i: integer;
+  aShortCut: TShortCut;
+  tmp: WideString;
+begin
+  Result := '';
+    // sanity check
+  if Pos(WideString('Ctrl'), S) +
+    Pos(WideString('Shift'), S) + Pos(WideString('Alt'), S) +
+    Pos(WideString('\t'), S) + Pos(WideString(#9), S) <= 0 then
+    Exit;
+
+  // trim off as much as possible
+  tmp := S;
+  i := Pos(WideChar(' '), tmp);
+  while i > 0 do
+  begin
+    tmp := Copy(tmp, i + 1, MaxInt);
+    i := Pos(WideChar(' '), tmp);
+  end;
+  i := Pos(WideString('\t'), tmp);
+  while i > 0 do
+  begin
+    tmp := Copy(tmp, i + 2, MaxInt);
+    i := Pos(WideString('\t'), tmp);
+  end;
+
+  i := Pos(WideChar(#9), tmp);
+  while i > 0 do
+  begin
+    tmp := Copy(tmp, i + 1, MaxInt);
+    i := Pos(WideChar(#9), tmp);
+  end;
+
+    // brute force (slow!)
+  for i := 1 to Length(tmp) - 1 do // need at least 2 characters
+  begin
+    aShortCut := WideTextToShortCut(Copy(tmp, i, MaxInt));
+    if aShortCut <> 0 then
+    begin
+      Result := WideShortCutToText(aShortCut);
+      Exit;
+    end;
+  end;
+  Result := '';
+end;
+
 { TfrmToolKeyCheck }
 
-class function TfrmToolKeyCheck.Edit(const ApplicationServices:IApplicationServices; const Items: ITranslationItems): boolean;
+class function TfrmToolKeyCheck.Edit(const ApplicationServices: IApplicationServices; const Items: ITranslationItems): boolean;
 var
   frm: TfrmToolKeyCheck;
-  FAppHandle:Cardinal;
+  FAppHandle: Cardinal;
 begin
   FAppHandle := Application.Handle;
   Application.Handle := ApplicationServices.AppHandle;
@@ -87,70 +163,18 @@ procedure TfrmToolKeyCheck.LoadItems;
 var
   i: integer;
   li: TTntListItem;
-  aAccess, aAccel:WideString;
-
-  function GetAccelerator(const S: WideString): WideString;
-  begin
-    Result := WideGetHotkey(S);
-  end;
-
-  function GetAccessKey(const S: WideString): WideString;
-  var
-    i: integer;
-    aShortCut: TShortCut;
-    tmp :WideString;
-  begin
-    Result := '';
-    // sanity check
-    if Pos(WideString('Ctrl'),S) +
-      Pos(WideString('Shift'),S) + Pos(WideString('Alt'),S) +
-      Pos(WideString('\t'),S) + Pos(WideString(#9),S) <= 0 then
-        Exit;
-
-    // trim off as much as possible
-    tmp := S;
-    i := Pos(WideChar(' '), tmp);
-    while i > 0 do
-    begin
-      tmp := Copy(tmp, i + 1, MaxInt);
-      i := Pos(WideChar(' '), tmp);
-    end;
-    i := Pos(WideString('\t'), tmp);
-    while i > 0 do
-    begin
-      tmp := Copy(tmp, i + 1, MaxInt);
-      i := Pos(WideString('\t'), tmp);
-    end;
-
-    i := Pos(WideChar(#9), tmp);
-    while i > 0 do
-    begin
-      tmp := Copy(tmp, i + 1, MaxInt);
-      i := Pos(WideChar(#9), tmp);
-    end;
-
-    // brute force (slow!)
-    for i := 1 to Length(tmp) - 1 do // need at least 2 characters
-    begin
-      aShortCut := WideTextToShortCut(Copy(tmp, i, MaxInt));
-      if aShortCut <> 0 then
-      begin
-        Result := WideShortCutToText(aShortCut);
-        Exit;
-      end;
-    end;
-    Result := '';
-  end;
+  aAccess, aAccel: WideString;
 begin
   WaitCursor;
-  if FItems = nil then Exit;
+  if FItems = nil then
+    Exit;
   lvItems.Items.BeginUpdate;
   try
     lvItems.Items.Clear;
     for i := 0 to FItems.Count - 1 do
     begin
-      aAccess := GetAccessKey(FItems[i].Translation);
       aAccel := GetAccelerator(FItems[i].Translation);
+      aAccess := GetAccessKey(FItems[i].Translation);
       if not chkIgnoreEmpty.Checked or (aAccel <> '') or (aAccess <> '') then
       begin
         li := lvItems.Items.Add;
@@ -162,7 +186,7 @@ begin
       end;
     end;
     FListViewInfo.Column := nil;
-    lvItemsColumnClick(lvItems, lvItems.Columns[2]); 
+    lvItemsColumnClick(lvItems, lvItems.Columns[2]);
   finally
     lvItems.Items.EndUpdate;
   end;
@@ -185,13 +209,12 @@ begin
   end;
 end;
 
-
 function ListViewSort(lParam1, lParam2, lParamSort: Integer): Integer; stdcall;
 var
-  Item1:TTntListItem absolute lParam1;
-  Item2:TTntListItem absolute lParam2;
-  Info:TListVIewInfo absolute lParamSort;
-  S1, S2:WIdeString;
+  Item1: TTntListItem absolute lParam1;
+  Item2: TTntListItem absolute lParam2;
+  Info: TListVIewInfo absolute lParamSort;
+  S1, S2: WIdeString;
 begin
   if Info.Column.Index = 0 then
   begin
@@ -212,7 +235,7 @@ end;
 
 procedure TfrmToolKeyCheck.lvItemsColumnClick(Sender: TObject;
   Column: TListColumn);
-var i:integer;
+var i: integer;
 begin
   if FListViewInfo.Column = Column then
     FListViewInfo.Descending := not FListViewInfo.Descending
@@ -239,17 +262,17 @@ begin
 end;
 
 procedure TfrmToolKeyCheck.lvItemsDblClick(Sender: TObject);
-var AItem:ITranslationItem;
+var AItem: ITranslationItem;
 begin
   if lvItems.Selected <> nil then
-  AItem := ITranslationItem(lvItems.Selected.Data);
+    AItem := ITranslationItem(lvItems.Selected.Data);
   if AItem <> nil then
     FAppServices.SelectedItem := AItem;
 end;
 
 procedure TfrmToolKeyCheck.lvItemsSelectItem(Sender: TObject;
   Item: TListItem; Selected: Boolean);
-var AItem:ITranslationItem;
+var AItem: ITranslationItem;
 begin
   if Assigned(Item) and Assigned(Item.Data) then
   begin
@@ -293,8 +316,23 @@ begin
 end;
 
 procedure TfrmToolKeyCheck.acEditExecute(Sender: TObject);
+var
+  AItem: ITranslationItem;
+  S: WideString;
 begin
-//
+  if Assigned(lvItems.Selected) and Assigned(lvItems.Selected.Data) then
+  begin
+    AItem := ITranslationItem(lvItems.Selected.Data);
+    S := AItem.Translation;
+    if TfrmToolKeyCheckEdit.Edit(AItem.Original, S) and
+      not WideSameText(AItem.Translation, S) then
+    begin
+      AItem.Translation := ConvertCRLF(trim(S));
+      lvItems.Selected.SubItems[0] := ConvertCRLF(trim(S));
+      lvItems.Selected.SubItems[1] := GetAccelerator(S);
+      lvItems.Selected.SubItems[2] := GetAccessKey(S);
+    end;
+  end;
 end;
 
 end.

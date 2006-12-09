@@ -27,7 +27,8 @@ uses
   TransIntf in '..\TransIntf.pas',
   ToolKeyCheckFrm in 'ToolKeyCheckFrm.pas' {frmToolKeyCheck: TfrmToolKeyCheck},
   CommonUtils in '..\CommonUtils.pas',
-  WideIniFiles in '..\WideIniFiles.pas';
+  WideIniFiles in '..\WideIniFiles.pas',
+  ToolKeyCheckEditFrm in 'ToolKeyCheckEditFrm.pas' {frmToolKeyCheckEdit: TTntForm};
 
 {$R *.res}
 function InstallPlugin(out ToolItems: IToolItems): HResult; stdcall;

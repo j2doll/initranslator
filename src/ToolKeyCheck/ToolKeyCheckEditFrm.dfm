@@ -56,6 +56,7 @@ object frmToolKeyCheckEdit: TfrmToolKeyCheckEdit
     PlainText = True
     ScrollBars = ssBoth
     TabOrder = 1
+    WantReturns = False
     WordWrap = False
     OnKeyDown = reTranslationKeyDown
     OnKeyUp = reTranslationKeyUp

@@ -122,7 +122,7 @@ begin
     i := Pos(WideChar(#9), tmp);
   end;
 
-    // brute force (slow!)
+  // brute force (slow!)
   for i := 1 to Length(tmp) - 1 do // need at least 2 characters
   begin
     aShortCut := WideTextToShortCut(Copy(tmp, i, MaxInt));

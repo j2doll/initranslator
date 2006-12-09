@@ -385,6 +385,8 @@ object frmToolKeyCheck: TfrmToolKeyCheck
     object acEdit: TTntAction
       Caption = 'Edit'
       ShortCut = 113
+      SecondaryShortCuts.Strings = (
+        'Enter')
       OnExecute = acEditExecute
     end
     object acClose: TTntAction

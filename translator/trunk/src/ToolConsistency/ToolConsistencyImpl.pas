@@ -4,6 +4,7 @@
 
   Developer(s):
     p3 - peter3 att users dott sourceforge dott net
+    Korney San - kora att users dott sourceforge dott net
 
   Status:
    The contents of this file are subject to the Mozilla Public License Version
@@ -16,6 +17,7 @@
 }
 
 // $Id$
+
 unit ToolConsistencyImpl;
 
 interface
@@ -29,9 +31,13 @@ type
       safecall;
   end;
 
-  TToolConsistencyPlugin = class(TInterfacedObject, IInterface, IToolItem)
+  TToolConsistencyPlugin = class(TInterfacedObject, IInterface, IToolItem, ILocalizable)
   private
+    FStringIndex: integer;
     FAppServices:IApplicationServices;
+    function Translate(const Value: WideString): WideString;
+    { ILocalizable }
+    function GetString(out Section: WideString; out Name: WideString; out Value: WideString): WordBool; safecall;
   public
     function About: WideString; safecall;
     function DisplayName: WideString; safecall;
@@ -43,7 +49,7 @@ type
 
 implementation
 
-uses ToolConsistencyFrm;
+uses ToolConsistencyFrm, ToolConsistencyConsts;
 
 { TToolConsistencyPlugins }
 
@@ -66,14 +72,66 @@ end;
 
 { TToolConsistencyPlugin }
 
+function TToolConsistencyPlugin.Translate(const Value: WideString): WideString;
+begin
+  if FAppServices <> nil then
+    Result := FAppServices.Translate(SLocalizeSectionName, Value, Value)
+  else
+    Result := Value;
+end;
+
+function TToolConsistencyPlugin.GetString(out Section, Name, Value: WideString): WordBool;
+begin
+  Section := SLocalizeSectionName;
+  Result := true;
+  case FStringIndex of
+    0:
+      Name := SToolConsistencyAbout;
+    1:
+      Name := SToolConsistencyPluginDisplayName;
+    2:
+      Name := SToolConsistencyFormCaption;
+    3:
+      Name := SToolConsistencyLabel1;
+    4:
+      Name := SToolConsistencybtnClose;
+    5:
+      Name := SToolConsistencybtnCloseHint;
+    6:
+      Name := SToolConsistencybtnUpdate;
+    7:
+      Name := SToolConsistencybtnUpdateHint;
+    8:
+      Name := SToolConsistencychkIgnoreAccelChar;
+    9:
+      Name := SToolConsistencychkIgnoreAccelCharHint;
+    10:
+      Name := SToolConsistencytvItemsHint;
+    11:
+      Name := SToolConsistencyUsethistranslation1;
+    12:
+      Name := SToolConsistencyUsethistranslation1Hint;
+    13:
+      Name := SToolConsistencyEdit1;
+    14:
+      Name := SToolConsistencyEdit1Hint;
+    15:
+      Name := SToolConsistencyIsConsistent;
+  else
+    Result := false;
+  end;
+  Value := Name;
+  Inc(FStringIndex);
+end;
+
 function TToolConsistencyPlugin.About: WideString;
 begin
-  Result := 'This plugin checks and displays inconsistent translations';
+  Result := Translate(SToolConsistencyAbout);
 end;
 
 function TToolConsistencyPlugin.DisplayName: WideString;
 begin
-  Result := 'Check translation consistency...';
+  Result := Translate(SToolConsistencyPluginDisplayName);
 end;
 
 function TToolConsistencyPlugin.Execute(const Items, Orphans: ITranslationItems; var SelectedItem: ITranslationItem): HRESULT;
@@ -100,4 +158,5 @@ begin
 end;
 
 end.
+
 

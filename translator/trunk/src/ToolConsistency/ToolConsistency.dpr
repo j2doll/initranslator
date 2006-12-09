@@ -37,3 +37,4 @@ exports InstallPlugin name cRegisterTransToolItemsFuncName;
 
 begin
 end.
+

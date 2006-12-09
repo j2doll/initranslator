@@ -1,3 +1,22 @@
+{@abstract(Edit form for ToolConsistency) }
+{
+  Copyright © 2003-2006 by Peter Thornqvist; all rights reserved
+
+  Developer(s):
+    p3 - peter3 att users dott sourceforge dott net
+    Korney San - kora att users dott sourceforge dott net
+
+  Status:
+   The contents of this file are subject to the Mozilla Public License Version
+   1.1 (the "License"); you may not use this file except in compliance with the
+   License. You may obtain a copy of the License at http://www.mozilla.org/MPL/MPL-1.1.html
+
+   Software distributed under the License is distributed on an "AS IS" basis,
+   WITHOUT WARRANTY OF ANY KIND, either express or implied. See the License for
+   the specific language governing rights and limitations under the License.
+}
+// $Id$
+
 unit ToolConsistencyFrm;
 
 interface
@@ -23,7 +42,7 @@ type
     popItems: TTntPopupMenu;
     Usethistranslation1: TTntMenuItem;
     Edit1: TTntMenuItem;
-    chkAutoAccelChar: TTntCheckBox;
+    chkSynchronizeAccelChar: TTntCheckBox;
     procedure chkIgnoreAccelCharClick(Sender: TObject);
     procedure tvItemsChange(Sender: TObject; Node: TTreeNode);
     procedure tvItemsEditing(Sender: TObject; Node: TTreeNode;
@@ -35,14 +54,19 @@ type
     procedure acCloseExecute(Sender: TObject);
     procedure acUpdateExecute(Sender: TObject);
     procedure alMainUpdate(Action: TBasicAction; var Handled: Boolean);
+    procedure tvItemsDblClick(Sender: TObject);
   private
     { Private declarations }
+    Congratulations: WideString;
     FItems: ITranslationItems;
+    FAppServices: IApplicationServices;
 
     FSelectedItem: ITranslationItem;
     procedure BuildList(IgnoreAccelChar: boolean);
     procedure LoadSettings;
     procedure SaveSettings;
+    function AutoShortCut(const Item: ITranslationItem;
+      S: WideString): WideString;
 
   public
     { Public declarations }
@@ -53,9 +77,11 @@ type
 
 implementation
 uses
-  WideIniFiles, TntWideStrUtils, StrUtils;
+  ToolConsistencyConsts,
+  WideIniFiles;
 
 {$R *.dfm}
+
 type
   TTranslationItems = class
   private
@@ -141,7 +167,6 @@ begin
   Result := TTntStrings(FOriginalItems.Objects[Index]);
 end;
 
-
 function TTranslationItems.GetName(Index: integer): WideString;
 begin
   Result := FOriginalItems[Index];
@@ -153,6 +178,30 @@ begin
 end;
 
 { TfrmToolConsistency }
+
+function TfrmToolConsistency.AutoShortCut(const Item: ITranslationItem; S: WideString): WideString;
+begin
+  if (Item <> nil) then
+  begin
+    // Synchronize accelerator
+    if chkSynchronizeAccelChar.Checked then
+    begin
+      if WideGetHotkey(Item.Original) = '' then
+      begin
+          //No accelerator in original
+        S := WideStripHotkey(S);
+      end
+      else
+      begin
+        // Accelerator in original
+        if WideGetHotkey(S) = '' then
+          S := cHotkeyPrefix + S;
+      end;
+    end;
+    Item.Translation := S;
+  end;
+  Result := S;
+end;
 
 procedure TfrmToolConsistency.chkIgnoreAccelCharClick(Sender: TObject);
 begin
@@ -190,7 +239,7 @@ begin
     begin
       // no items in tree -> translation is consistent
       tvItems.ShowRoot := false;
-      tvItems.Items.Add(nil, 'Congratulations! - No inconsistent items found!');
+      tvItems.Items.Add(nil, Congratulations);
     end
     else
       tvItems.ShowRoot := true;
@@ -205,12 +254,32 @@ end;
 class function TfrmToolConsistency.Execute(const ApplicationServices: IApplicationServices; const Items, Orphans: ITranslationItems; var SelectedItem: ITranslationItem): boolean;
 var
   frm: TfrmToolConsistency;
-  FAppHandle:Cardinal;
+  FAppHandle: Cardinal;
 begin
   FAppHandle := Application.Handle;
   Application.Handle := ApplicationServices.AppHandle;
   frm := self.Create(Application);
   try
+    if ApplicationServices <> nil then
+    begin
+      frm.FAppServices := ApplicationServices;
+      frm.Caption := ApplicationServices.Translate(SLocalizeSectionName, SToolConsistencyFormCaption, SToolConsistencyFormCaption);
+      frm.TntLabel1.Caption := ApplicationServices.Translate(SLocalizeSectionName, SToolConsistencyLabel1, SToolConsistencyLabel1);
+      frm.tvItems.Hint := ApplicationServices.Translate(SLocalizeSectionName, SToolConsistencytvItemsHint, SToolConsistencytvItemsHint);
+      frm.btnClose.Caption := ApplicationServices.Translate(SLocalizeSectionName, SToolConsistencybtnClose, SToolConsistencybtnClose);
+      frm.btnClose.Hint := ApplicationServices.Translate(SLocalizeSectionName, SToolConsistencybtnCloseHint, SToolConsistencybtnCloseHint);
+      frm.btnUpdate.Caption := ApplicationServices.Translate(SLocalizeSectionName, SToolConsistencybtnUpdate, SToolConsistencybtnUpdate);
+      frm.btnUpdate.Hint := ApplicationServices.Translate(SLocalizeSectionName, SToolConsistencybtnUpdateHint, SToolConsistencybtnUpdateHint);
+      frm.chkIgnoreAccelChar.Caption := ApplicationServices.Translate(SLocalizeSectionName, SToolConsistencychkIgnoreAccelChar, SToolConsistencychkIgnoreAccelChar);
+      frm.chkIgnoreAccelChar.Hint := ApplicationServices.Translate(SLocalizeSectionName, SToolConsistencychkIgnoreAccelCharHint, SToolConsistencychkIgnoreAccelCharHint);
+      frm.Usethistranslation1.Caption := ApplicationServices.Translate(SLocalizeSectionName, SToolConsistencyUsethistranslation1, SToolConsistencyUsethistranslation1);
+      frm.Usethistranslation1.Hint := ApplicationServices.Translate(SLocalizeSectionName, SToolConsistencyUsethistranslation1Hint, SToolConsistencyUsethistranslation1Hint);
+      frm.Edit1.Caption := ApplicationServices.Translate(SLocalizeSectionName, SToolConsistencyEdit1, SToolConsistencyEdit1);
+      frm.Edit1.Hint := ApplicationServices.Translate(SLocalizeSectionName, SToolConsistencyEdit1Hint, SToolConsistencyEdit1Hint);
+      frm.Congratulations := ApplicationServices.Translate(SLocalizeSectionName, SToolConsistencyIsConsistent, SToolConsistencyIsConsistent);
+    end
+    else
+      frm.Congratulations := SToolConsistencyIsConsistent;
     frm.FItems := Items;
     frm.FSelectedItem := SelectedItem;
     frm.LoadSettings;
@@ -230,19 +299,19 @@ begin
   with TWideMemIniFile.Create(ChangeFileExt(GetModuleName(HInstance), '.ini')) do
   try
     chkIgnoreAccelChar.Checked := ReadBool('Settings', 'IgnoreAccelChar', chkIgnoreAccelChar.Checked);
-    chkAutoAccelChar.Checked := ReadBool('Settings', 'InsertAccelChar', chkAutoAccelChar.Checked);
+    chkSynchronizeAccelChar.Checked := ReadBool('Settings', 'SyncAccelChar', chkSynchronizeAccelChar.Checked);
+    
   finally
     Free;
   end;
 end;
-
 
 procedure TfrmToolConsistency.SaveSettings;
 begin
   with TWideMemIniFile.Create(ChangeFileExt(GetModuleName(HInstance), '.ini')) do
   try
     WriteBool('Settings', 'IgnoreAccelChar', chkIgnoreAccelChar.Checked);
-    WriteBool('Settings', 'InsertAccelChar', chkAutoAccelChar.Checked);
+    WriteBool('Settings', 'SyncAccelChar', chkSynchronizeAccelChar.Checked);
     UpdateFile;
   finally
     Free;
@@ -271,18 +340,8 @@ end;
 
 procedure TfrmToolConsistency.tvItemsEdited(Sender: TObject;
   Node: TTntTreeNode; var S: WideString);
-  function DoAutoAccelChar(var S:WideString):WideString;
-  begin
-    Result := S;
-    if chkAutoAccelChar.Checked and AnsiContainsText(FSelectedItem.Original, '&')
-      and not AnsiContainsText(S, '&') then
-        Result := '&' + S;
-    S := Result;
-  end;
 begin
-  FSelectedItem := ITranslationItem(Node.Data);
-  if FSelectedItem <> nil then
-    FSelectedItem.Translation := DoAutoAccelChar(S);
+  S := AutoShortCut(ITranslationItem(Node.Data), S);
 end;
 
 procedure TfrmToolConsistency.acUseThisTranslationExecute(Sender: TObject);
@@ -298,9 +357,9 @@ begin
     N := N.getPrevSibling;
     while N <> nil do
     begin
-      Caption := 'N.getPrevSibling';
+      // Caption := 'N.getPrevSibling';
       Item2 := ITranslationItem(N.Data);
-      Item2.Translation := Item1.Translation;
+      Item2.Translation := AutoShortCut(Item2, Item1.Translation);
       Item2.Translated := Item2.Translation <> '';
       N.Text := Item2.Translation;
       N := N.getPrevSibling;
@@ -311,9 +370,9 @@ begin
     N := N.getNextSibling;
     while N <> nil do
     begin
-      Caption := 'N.getNextSibling';
+      // Caption := 'N.getNextSibling';
       Item2 := ITranslationItem(N.Data);
-      Item2.Translation := Item1.Translation;
+      Item2.Translation := AutoShortCut(Item2, Item1.Translation);
       Item2.Translated := Item2.Translation <> '';
       N.Text := Item2.Translation;
       N := N.getNextSibling;
@@ -345,6 +404,12 @@ procedure TfrmToolConsistency.alMainUpdate(Action: TBasicAction;
 begin
   acUseThisTranslation.Enabled := Assigned(tvItems.Selected) and Assigned(tvItems.Selected.Data);
   acEdit.Enabled := acUseThisTranslation.Enabled;
+end;
+
+procedure TfrmToolConsistency.tvItemsDblClick(Sender: TObject);
+begin
+  if Assigned(tvItems.Selected) and Assigned(tvItems.Selected.Data) then
+    FAppServices.SelectedItem := ITranslationItem(tvItems.Selected.Data);
 end;
 
 end.

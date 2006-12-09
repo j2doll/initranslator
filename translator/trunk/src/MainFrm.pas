@@ -4387,6 +4387,8 @@ begin
     lvTranslateStrings.ItemIndex := FTranslateFile.Items.IndexOf(Value)
   else
     lvTranslateStrings.ItemIndex := -1;
+  if lvTranslateStrings.Selected <> nil then
+    lvTranslateStrings.Selected.MakeVisible(false);
 end;
 
 function TfrmMain.GetSelectedListItem: TTntListItem;

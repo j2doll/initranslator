@@ -2,7 +2,7 @@ object frmToolConsistency: TfrmToolConsistency
   Left = 436
   Top = 264
   Width = 402
-  Height = 235
+  Height = 244
   ActiveControl = tvItems
   Caption = 'Consistency Checker'
   Color = clBtnFace
@@ -131,7 +131,7 @@ object frmToolConsistency: TfrmToolConsistency
   ShowHint = True
   DesignSize = (
     394
-    201)
+    210)
   PixelsPerInch = 96
   TextHeight = 13
   object lblInfo: TTntLabel
@@ -158,68 +158,63 @@ object frmToolConsistency: TfrmToolConsistency
     FocusControl = tvItems
   end
   object chkIgnoreAccelChar: TTntCheckBox
-    Left = 13
-    Top = 166
-    Width = 190
+    Left = 16
+    Top = 171
+    Width = 134
     Height = 17
     Hint = 'Include/exclude accelerator key when displaying original items'
     Anchors = [akLeft, akBottom]
     Caption = 'Ignore accelerator &key'
-    Checked = True
-    State = cbChecked
-    TabOrder = 2
+    TabOrder = 1
     OnClick = chkIgnoreAccelCharClick
   end
   object tvItems: TTntTreeView
     Left = 7
     Top = 25
     Width = 378
-    Height = 116
-    Hint = 'Press F2 to edit an item'
+    Height = 141
+    Hint = 'Press F2 to edit an item. Double click to synch with main list.'
     Anchors = [akLeft, akTop, akRight, akBottom]
-    BevelInner = bvNone
     BevelKind = bkFlat
     BorderStyle = bsNone
     ChangeDelay = 60
     HideSelection = False
     Indent = 19
     PopupMenu = popItems
-    ShowButtons = False
     TabOrder = 0
     OnChange = tvItemsChange
+    OnDblClick = tvItemsDblClick
     OnEdited = tvItemsEdited
     OnEditing = tvItemsEditing
   end
   object btnClose: TTntButton
     Left = 307
-    Top = 163
+    Top = 175
     Width = 75
     Height = 25
     Action = acClose
     Anchors = [akRight, akBottom]
     Cancel = True
-    TabOrder = 4
+    TabOrder = 3
   end
   object btnUpdate: TTntButton
     Left = 223
-    Top = 163
+    Top = 175
     Width = 75
     Height = 25
     Action = acUpdate
     Anchors = [akRight, akBottom]
-    TabOrder = 3
+    TabOrder = 2
   end
-  object chkAutoAccelChar: TTntCheckBox
-    Left = 13
-    Top = 145
-    Width = 365
+  object chkSynchronizeAccelChar: TTntCheckBox
+    Left = 16
+    Top = 188
+    Width = 201
     Height = 17
-    Hint = 'Include/exclude accelerator key when displaying original items'
+    Hint = 'Automatically insert missing accelerator key when editing.'
     Anchors = [akLeft, akBottom]
-    Caption = 'Insert &accelerator key on edit'
-    Checked = True
-    State = cbChecked
-    TabOrder = 1
+    Caption = 'Synchronize accelerator with &original'
+    TabOrder = 4
   end
   object alMain: TTntActionList
     OnUpdate = alMainUpdate
@@ -255,6 +250,7 @@ object frmToolConsistency: TfrmToolConsistency
     Top = 56
     object Usethistranslation1: TTntMenuItem
       Action = acUseThisTranslation
+      Hint = 'Use this translation for all items'
     end
     object Edit1: TTntMenuItem
       Action = acEdit

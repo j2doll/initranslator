@@ -14,6 +14,7 @@ object frmToolKeyCheckEdit: TfrmToolKeyCheckEdit
   Font.Style = []
   OldCreateOrder = False
   Position = poScreenCenter
+  ShowHint = True
   DesignSize = (
     478
     183)
@@ -45,6 +46,7 @@ object frmToolKeyCheckEdit: TfrmToolKeyCheckEdit
     ReadOnly = True
     ScrollBars = ssBoth
     TabOrder = 0
+    WantReturns = False
     WordWrap = False
   end
   object reTranslation: TTntRichEdit
@@ -58,6 +60,7 @@ object frmToolKeyCheckEdit: TfrmToolKeyCheckEdit
     TabOrder = 1
     WantReturns = False
     WordWrap = False
+    OnEnter = reTranslationEnter
     OnKeyDown = reTranslationKeyDown
     OnKeyUp = reTranslationKeyUp
   end

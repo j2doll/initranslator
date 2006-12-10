@@ -18,6 +18,7 @@ type
       Shift: TShiftState);
     procedure reTranslationKeyUp(Sender: TObject; var Key: Word;
       Shift: TShiftState);
+    procedure reTranslationEnter(Sender: TObject);
   private
     { Private declarations }
   public
@@ -59,6 +60,11 @@ procedure TfrmToolKeyCheckEdit.reTranslationKeyUp(Sender: TObject;
 begin
  if Key = VK_RETURN then
    Key := 0;
+end;
+
+procedure TfrmToolKeyCheckEdit.reTranslationEnter(Sender: TObject);
+begin
+  reTranslation.SelectAll;
 end;
 
 end.

@@ -54,6 +54,14 @@ function RunProcess(const Filename, Params: WideString; WorkingDir: WideString;
 function SubStrCount(const SubStr, Str: WideString): integer;
 function WideContainsChar(Ch: WideChar; const S: WideString): boolean;
 function IsCharPunct(const S: WideChar): boolean;
+function IsCharUpper(const S: WideChar): boolean;
+function IsCharLower(const S: WideChar): boolean;
+function IsCharDigit(const S: WideChar): boolean;
+function IsCharSpace(const S: WideChar): boolean;
+function IsCharControl(const S: WideChar): boolean;
+function IsCharBlank(const S: WideChar): boolean;
+function IsCharHex(const S: WideChar): boolean;
+function IsCharAlpha(const S: WideChar): boolean;
 
 implementation
 uses
@@ -486,18 +494,71 @@ begin
 end;
 
 function WideContainsChar(Ch: WideChar; const S: WideString): boolean;
+var i: integer;
 begin
-  Result := SubStrCount(Ch, S) > 0;
+  for i := 1 to Length(S) do
+    if Ch = S[i] then
+    begin
+      Result := true;
+      Exit;
+    end;
+  Result := false;
 end;
 
-function IsCharPunct(const S: WideChar): boolean;
+function IsCharType(const S: WideChar; InfoType, AType: Cardinal): boolean;
 var
   CharType: integer;
 begin
-  if GetStringTypeExW(LOCALE_SYSTEM_DEFAULT, CT_CTYPE1, @S, 1, CharType) then
-    Result := CharType and C1_PUNCT = C1_PUNCT
+  if (S <> WideChar(#0)) and GetStringTypeExW(LOCALE_USER_DEFAULT, InfoType, @S, 1, CharType) then
+    Result := CharType and AType = AType
   else
     Result := false;
 end;
 
+function IsCharPunct(const S: WideChar): boolean;
+begin
+  Result := IsCharType(S, CT_CTYPE1, C1_PUNCT);
+end;
+
+function IsCharUpper(const S: WideChar): boolean;
+begin
+  Result := IsCharType(S, CT_CTYPE1, C1_UPPER);
+end;
+
+function IsCharLower(const S: WideChar): boolean;
+begin
+  Result := IsCharType(S, CT_CTYPE1, C1_LOWER);
+end;
+
+function IsCharDigit(const S: WideChar): boolean;
+begin
+  Result := IsCharType(S, CT_CTYPE1, C1_DIGIT);
+end;
+
+function IsCharSpace(const S: WideChar): boolean;
+begin
+  Result := IsCharType(S, CT_CTYPE1, C1_SPACE);
+end;
+
+function IsCharControl(const S: WideChar): boolean;
+begin
+  Result := IsCharType(S, CT_CTYPE1, C1_CNTRL);
+end;
+
+function IsCharBlank(const S: WideChar): boolean;
+begin
+  Result := IsCharType(S, CT_CTYPE1, C1_BLANK);
+end;
+
+function IsCharHex(const S: WideChar): boolean;
+begin
+  Result := IsCharType(S, CT_CTYPE1, C1_XDIGIT);
+end;
+
+function IsCharAlpha(const S: WideChar): boolean;
+begin
+  Result := IsCharType(S, CT_CTYPE1, C1_ALPHA);
+end;
+
 end.
+

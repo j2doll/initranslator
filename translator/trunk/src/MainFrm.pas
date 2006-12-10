@@ -3333,8 +3333,8 @@ var
     Result := 0;
     if not GlobalAppOptions.MisMatchLeadingSpaces then
       Exit;
-    for j := 1 to Length(S) do // is this loop really correct? does it skip trailbytes?
-      if S[j] = cWideSpace then
+    for j := 1 to Length(S) do
+      if IsCharSpace(S[j]) then
         Inc(Result)
       else
         Exit;
@@ -3347,8 +3347,8 @@ var
     Result := 0;
     if not GlobalAppOptions.MisMatchTrailingSpaces then
       Exit;
-    for j := Length(S) downto 1 do // is this loop really correct? does it skip trailbytes?
-      if S[j] = cWideSpace then
+    for j := Length(S) downto 1 do
+      if IsCharSpace(S[j]) then
         Inc(Result)
       else
         Exit;
@@ -3360,7 +3360,7 @@ var
     i: integer;
   begin
     Result := '';
-    for i := Length(S) downto 1 do // is this loop really correct? does it skip trailbytes?
+    for i := Length(S) downto 1 do
     begin
       W := TntWideLastChar(S[i]);
       if IsCharPunct(W) then
@@ -3372,7 +3372,8 @@ var
 
   function IsSameEndControl(const Original, Translation: WideString): boolean;
   begin
-    Result := not GlobalAppOptions.MisMatchEndControl or WideSameStr(EndControl(Original), EndControl(Translation));
+    Result := not GlobalAppOptions.MisMatchEndControl
+              or WideSameStr(EndControl(Original), EndControl(Translation));
   end;
 
   function CountMisMatch(const Original, Translation: WideString): boolean;
@@ -3404,7 +3405,7 @@ begin
   // * if any of the items in the "MisMatch" list doesn't match between Original and Translation
   MisMatchList := TTntStringlist.Create;
   try
-    MisMatchList.CommaText := GLobalAppOptions.MisMatchItems;
+    MisMatchList.CommaText := GlobalAppOptions.MisMatchItems;
     SaveEditChanges;
     if SelectedListItem <> nil then
       i := SelectedListItem.Index

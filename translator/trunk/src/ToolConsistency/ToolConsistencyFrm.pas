@@ -65,8 +65,7 @@ type
     procedure BuildList(IgnoreAccelChar: boolean);
     procedure LoadSettings;
     procedure SaveSettings;
-    function AutoShortCut(const Item: ITranslationItem;
-      S: WideString): WideString;
+    function AutoShortCut(Item: ITranslationItem; S: WideString): WideString;
 
   public
     { Public declarations }
@@ -179,23 +178,37 @@ end;
 
 { TfrmToolConsistency }
 
-function TfrmToolConsistency.AutoShortCut(const Item: ITranslationItem; S: WideString): WideString;
+function TfrmToolConsistency.AutoShortCut(Item: ITranslationItem; S: WideString): WideString;
+var
+  WHK:WideString;
+  i:integer;
 begin
   if (Item <> nil) then
   begin
     // Synchronize accelerator
     if chkSynchronizeAccelChar.Checked then
     begin
-      if WideGetHotkey(Item.Original) = '' then
-      begin
-          //No accelerator in original
-        S := WideStripHotkey(S);
-      end
+      WHK := WideUpperCase(WideGetHotkey(Item.Original));
+      if WHK = '' then
+        S := WideStripHotkey(S)
       else
       begin
         // Accelerator in original
         if WideGetHotkey(S) = '' then
-          S := cHotkeyPrefix + S;
+        begin
+          i := Pos(WHK, WideUpperCase(S));
+          if i > 0 then // insert at same character as original
+            S := Copy(S, 1, i - 1) + cHotkeyPrefix + Copy(S, i, MaxInt)
+          else // insert at the same character position as original
+          begin
+            i := Pos(cHotKeyPrefix + WHK, WideUpperCase(Item.Original));
+            if (i > 0) and (i <= Length(S)) then
+              S := Copy(S, 1, i - 1) + cHotkeyPrefix + Copy(S, i, MaxInt)
+            else  // give up - insert at start
+              S := cHotkeyPrefix + S;
+          end;
+        end;
+
       end;
     end;
     Item.Translation := S;

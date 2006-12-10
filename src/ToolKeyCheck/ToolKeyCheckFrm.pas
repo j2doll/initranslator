@@ -23,7 +23,8 @@ interface
 uses
   Windows, Messages, SysUtils, Classes, Graphics, Controls, Forms,
   Dialogs, TntForms, ComCtrls, TransIntf, TntComCtrls, ImgList, ActnList,
-  TntActnList, StdCtrls, TntStdCtrls, ExtCtrls, TntExtCtrls;
+  TntActnList, StdCtrls, TntStdCtrls, ExtCtrls, TntExtCtrls, Menus,
+  TntMenus;
 
 type
   TListViewInfo = class
@@ -42,12 +43,18 @@ type
     acUpdate: TTntAction;
     acEdit: TTntAction;
     acClose: TTntAction;
+    popListView: TTntPopupMenu;
+    Edit1: TTntMenuItem;
+    acSync: TTntAction;
+    Showinmainlist1: TTntMenuItem;
+    N1: TTntMenuItem;
+    Update1: TTntMenuItem;
+    Close1: TTntMenuItem;
     procedure lvItemsResize(Sender: TObject);
     procedure lvItemsEnter(Sender: TObject);
     procedure lvItemsColumnClick(Sender: TObject; Column: TListColumn);
     procedure TntFormCreate(Sender: TObject);
     procedure TntFormDestroy(Sender: TObject);
-    procedure lvItemsDblClick(Sender: TObject);
     procedure lvItemsSelectItem(Sender: TObject; Item: TListItem;
       Selected: Boolean);
     procedure lvItemsInsert(Sender: TObject; Item: TListItem);
@@ -55,6 +62,7 @@ type
     procedure acUpdateExecute(Sender: TObject);
     procedure chkIgnoreEmptyClick(Sender: TObject);
     procedure acEditExecute(Sender: TObject);
+    procedure acSyncExecute(Sender: TObject);
   private
     { Private declarations }
     FAppServices: IApplicationServices;
@@ -70,7 +78,7 @@ type
 
 implementation
 uses
-  CommonUtils, TntWindows, TntSysUtils, TntMenus, WideIniFiles, ToolKeyCheckEditFrm;
+  TntWindows, TntSysUtils, CommonUtils, WideIniFiles, ToolKeyCheckEditFrm;
 
 {$R *.DFM}
 const
@@ -261,15 +269,6 @@ begin
   FListViewInfo.Free;
 end;
 
-procedure TfrmToolKeyCheck.lvItemsDblClick(Sender: TObject);
-var AItem: ITranslationItem;
-begin
-  if lvItems.Selected <> nil then
-    AItem := ITranslationItem(lvItems.Selected.Data);
-  if AItem <> nil then
-    FAppServices.SelectedItem := AItem;
-end;
-
 procedure TfrmToolKeyCheck.lvItemsSelectItem(Sender: TObject;
   Item: TListItem; Selected: Boolean);
 var AItem: ITranslationItem;
@@ -307,12 +306,23 @@ end;
 
 procedure TfrmToolKeyCheck.LoadSettings;
 begin
-// TODO
+  with TWideMemIniFile.Create(ChangeFileExt(GetModuleName(hInstance), '.ini')) do
+  try
+    chkIgnoreEmpty.Checked := ReadBool('Settings', 'IgnoreEmpty', chkIgnoreEmpty.Checked);
+  finally
+    Free;
+  end;
 end;
 
 procedure TfrmToolKeyCheck.SaveSettings;
 begin
-// TODO
+  with TWideMemIniFile.Create(ChangeFileExt(GetModuleName(hInstance), '.ini')) do
+  try
+    WriteBool('Settings', 'IgnoreEmpty', chkIgnoreEmpty.Checked);
+    UpdateFile;
+  finally
+    Free;
+  end;
 end;
 
 procedure TfrmToolKeyCheck.acEditExecute(Sender: TObject);
@@ -333,6 +343,15 @@ begin
       lvItems.Selected.SubItems[2] := GetAccessKey(S);
     end;
   end;
+end;
+
+procedure TfrmToolKeyCheck.acSyncExecute(Sender: TObject);
+var AItem: ITranslationItem;
+begin
+  if lvItems.Selected <> nil then
+    AItem := ITranslationItem(lvItems.Selected.Data);
+  if AItem <> nil then
+    FAppServices.SelectedItem := AItem;
 end;
 
 end.

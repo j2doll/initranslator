@@ -89,11 +89,12 @@ object frmToolKeyCheck: TfrmToolKeyCheck
     HideSelection = False
     ReadOnly = True
     RowSelect = True
+    PopupMenu = popListView
     SmallImages = ilSortArrows
     TabOrder = 1
     ViewStyle = vsReport
     OnColumnClick = lvItemsColumnClick
-    OnDblClick = lvItemsDblClick
+    OnDblClick = acSyncExecute
     OnEnter = lvItemsEnter
     OnInsert = lvItemsInsert
     OnResize = lvItemsResize
@@ -393,6 +394,30 @@ object frmToolKeyCheck: TfrmToolKeyCheck
       Caption = 'Close'
       ShortCut = 27
       OnExecute = acCloseExecute
+    end
+    object acSync: TTntAction
+      Caption = 'Show in main list'
+      OnExecute = acSyncExecute
+    end
+  end
+  object popListView: TTntPopupMenu
+    Left = 224
+    Top = 63
+    object Showinmainlist1: TTntMenuItem
+      Action = acSync
+      Default = True
+    end
+    object Edit1: TTntMenuItem
+      Action = acEdit
+    end
+    object N1: TTntMenuItem
+      Caption = '-'
+    end
+    object Update1: TTntMenuItem
+      Action = acUpdate
+    end
+    object Close1: TTntMenuItem
+      Action = acClose
     end
   end
 end

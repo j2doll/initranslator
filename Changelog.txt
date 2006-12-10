@@ -1,5 +1,20 @@
 Ini Translator Changelog
 ========================
+2006-12-10:
+ToolConsistency:
+- better alhorithm in AutoShortCut
+ToolKeyCheck:
+- Remember user settings
+
+2006-12-09:
+IniTranslator:
+- Option to set SelectedItem in IApplicationServices (peter3)
+ToolKeyCheck:
+- New plugin: ToolKeyCheck. Displays access and accelerator keys in the translation
+ToolConsistency:
+- Implemented ILocalizable (kora)
+- Auto add shortcuts option added (kora)
+
 2006-12-06:
 - Multiple undo
 

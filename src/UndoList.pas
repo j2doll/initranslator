@@ -25,10 +25,11 @@ uses
 type
   TUndoData = class(TObject)
   protected
-    FreeObject:boolean; // set to true if you want the item auto-freed
+    FreeObject: boolean; // set to true if you want the item auto-freed
   end;
 
   TUndoItem = class;
+
   TUndoEvent = procedure(Sender: TObject; AItem: TUndoItem) of object;
 
   TUndoItem = class
@@ -149,8 +150,11 @@ end;
 
 procedure TUndoList.BeginGroup(Description: WideString);
 begin
-  FGroupItem := TUndoItem.Create(nil, Description, -1);
-  InternalAdd(FGroupItem);
+  if not Updating then
+  begin
+    FGroupItem := TUndoItem.Create(nil, Description, -1);
+    InternalAdd(FGroupItem);
+  end;
 end;
 
 procedure TUndoList.BeginUpdate;
@@ -160,13 +164,13 @@ end;
 
 function TUndoList.CanUndo: boolean;
 begin
-  Result := Current <> nil;
+  Result := not Updating and (Current <> nil);
 end;
 
 procedure TUndoList.Clear;
 var i: integer;
 begin
-  if FItems <> nil then
+  if not Updating and Assigned(FItems) then
   begin
     for i := 0 to FItems.Count - 1 do
       TUndoItem(FItems[i]).Free;
@@ -182,7 +186,7 @@ end;
 
 procedure TUndoList.InternalDelete(Index: integer);
 begin
-  if FItems <> nil then
+  if not Updating and Assigned(FItems) then
   begin
     TUndoItem(FItems[Index]).Free;
     FItems.Delete(Index);
@@ -191,6 +195,7 @@ end;
 
 destructor TUndoList.Destroy;
 begin
+  FUpdateCount := 0;
   Clear;
   FreeAndNil(FItems);
   inherited;
@@ -198,7 +203,8 @@ end;
 
 procedure TUndoList.EndGroup;
 begin
-  FGroupItem := nil;
+  if not Updating then
+    FGroupItem := nil;
 end;
 
 procedure TUndoList.EndUpdate;
@@ -210,20 +216,23 @@ end;
 
 procedure TUndoList.InternalAdd(AItem: TUndoItem);
 begin
-  if FItems = nil then
-    FItems := TList.Create;
-  while (FMaxCount > 0) and (FItems.Count >= FMaxCount) do
-    InternalDelete(0);
-  if FGroupItem = nil then
-    FItems.Add(AItem)
-  else
-    FGroupItem.Add(AItem);
+  if not Updating then
+  begin
+    if FItems = nil then
+      FItems := TList.Create;
+    while (FMaxCount > 0) and (FItems.Count >= FMaxCount) do
+      InternalDelete(0);
+    if FGroupItem = nil then
+      FItems.Add(AItem)
+    else
+      FGroupItem.Add(AItem);
+  end;
 end;
 
 procedure TUndoList.Undo;
 var i: integer;
 begin
-  if Assigned(FOnUndo) and (Current <> nil) then
+  if not Updating and Assigned(FOnUndo) and (Current <> nil) then
   begin
     if FGroupItem <> nil then
     begin

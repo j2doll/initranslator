@@ -115,10 +115,6 @@ type
     FUseTranslationEverywhere: boolean;
     FAutoFocusTranslation: boolean;
     FTools: TToolItems;
-    FTrimWhiteSpace: boolean;
-    FTrimHow: integer;
-    FTrimWhere: integer;
-    FTrimWhat: WideString;
     FMisMatchItems: WideString;
     FMisMatchTrailingSpaces: boolean;
     FMisMatchLeadingSpaces: boolean;
@@ -201,11 +197,6 @@ type
     property SearchUp: boolean read FSearchUp write FSearchUp;
     property FuzzySearch: boolean read FFuzzySearch write FFuzzySearch;
     property FindInIndex: integer read FFindInIndex write FFindInIndex;
-    // trim
-    property TrimWhat: WideString read FTrimWhat write FTrimWhat;
-    property TrimWhere: integer read FTrimWhere write FTrimWhere;
-    property TrimHow: integer read FTrimHow write FTrimHow;
-    property TrimWhiteSpace: boolean read FTrimWhiteSpace write FTrimWhiteSpace;
 
     property MisMatchItems: WideString read FMisMatchItems write FMisMatchItems;
     property MisMatchLeadingSpaces: boolean read FMisMatchLeadingSpaces write FMisMatchLeadingSpaces;
@@ -538,11 +529,6 @@ begin
     if (FindInIndex < 0) or (FindInIndex > 2) then
       FindInIndex := 0;
 
-    TrimWhat := ini.ReadString('Trim', 'TrimWhat', '');
-    TrimWhere := ini.ReadInteger('Trim', 'TrimWhere', cTrimTranslation);
-    TrimHow := ini.ReadInteger('Trim', 'TrimHow', cTrimBoth);
-    TrimWhiteSpace := ini.ReadBool('Trim', 'TrimWhiteSpace', true);
-
     MisMatchItems := ini.ReadString('MisMatch', 'Items', '&,!,...,?,:,!');
     MisMatchLeadingSpaces := ini.ReadBool('MisMatch', 'MisMatchLeadingSpaces', true);
     MisMatchTrailingSpaces := ini.ReadBool('MisMatch', 'MisMatchTrailingSpaces', true);
@@ -633,6 +619,7 @@ begin
     // find replace dialog
     ini.WriteString('FindReplace', 'FindText', FindText);
     ini.WriteString('FindReplace', 'ReplaceText', ReplaceText);
+
     ini.WriteString('FindReplace', 'FindHistory', trim(FindHistory));
     ini.WriteString('FindReplace', 'ReplaceHistory', trim(ReplaceHistory));
     ini.WriteBool('FindReplace', 'MatchLine', MatchLine);
@@ -640,11 +627,6 @@ begin
     ini.WriteBool('FindReplace', 'SearchUp', SearchUp);
     ini.WriteBool('FindReplace', 'FuzzySearch', FuzzySearch);
     ini.WriteInteger('FindReplace', 'FindInIndex', FindInIndex);
-
-    ini.WriteString('Trim', 'TrimWhat', TrimWhat);
-    ini.WriteInteger('Trim', 'TrimWhere', TrimWhere);
-    ini.WriteInteger('Trim', 'TrimHow', TrimHow);
-    ini.WriteBool('Trim', 'TrimWhiteSpace', TrimWhiteSpace);
 
     ini.WriteString('MisMatch', 'Items', MisMatchItems);
     ini.WriteBool('MisMatch', 'MisMatchLeadingSpaces', MisMatchLeadingSpaces);

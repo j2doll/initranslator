@@ -49,7 +49,6 @@ uses
   OptionsFrm in 'OptionsFrm.pas' {frmOptions},
   OrphansFrm in 'OrphansFrm.pas' {frmOrphans},
   PromptArgsFrm in 'PromptArgsFrm.pas' {frmPromptArgs},
-  TrimFrm in 'TrimFrm.pas' {frmTrim: TTntForm},
   SuspiciousConfigFrm in 'SuspiciousConfigFrm.pas' {frmConfigSuspicious: TTntForm},
   DictTranslationSelectDlg in 'DictTranslationSelectDlg.pas' {frmDictTranslationSelect: TTntForm},
   DictEditFrm in 'DictEditFrm.pas' {frmDictEdit: TTntForm},

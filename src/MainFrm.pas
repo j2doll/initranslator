@@ -327,7 +327,6 @@ type
     acSaveOriginal: TTntAction;
     TBXItem13: TSpTBXItem;
     TBXItem14: TSpTBXItem;
-    acTrim: TTntAction;
     acConfigSuspicious: TTntAction;
     TBXItem15: TSpTBXItem;
     acDictEdit: TTntAction;
@@ -439,7 +438,6 @@ type
     procedure acDeleteItemExecute(Sender: TObject);
     procedure acSaveOriginalExecute(Sender: TObject);
     procedure lvTranslateStringsDblClick(Sender: TObject);
-    procedure acTrimExecute(Sender: TObject);
     procedure acConfigSuspiciousExecute(Sender: TObject);
     procedure acDictEditExecute(Sender: TObject);
     procedure mnuPluginsPopup(Sender: TTBCustomItem; FromLink: Boolean);
@@ -556,7 +554,6 @@ type
 
     procedure GetSections(Strings: TTntStringlist);
     procedure CheckBookMarkImages;
-    procedure DoTrim;
     procedure AddItem(const Section, Original, Translation, OrigComments, TransComments: WideString); overload;
     procedure AddItem(AItem: ITranslationItem); overload;
     procedure InsertItem(AItem: ITranslationItem);
@@ -617,7 +614,7 @@ uses
 {$ENDIF USEADDICTSPELLCHECKER}
   AppUtils, CommonUtils, OptionsFrm, CommentsFrm, OrphansFrm, ApplicationServices,
   KbdCfgFrame, KbdCfgFrm, ImportExportFrm, ExtToolsFrm, PromptArgsFrm,
-  EditItemFrm, TrimFrm, SuspiciousConfigFrm, DictTranslationSelectDlg,
+  EditItemFrm, SuspiciousConfigFrm, DictTranslationSelectDlg,
   DictEditFrm, ColorsFrm;
 
 {$R *.dfm}
@@ -1669,7 +1666,19 @@ procedure TfrmMain.DoSaveExtra(Sender: TObject; ini: TWideCustomIniFile);
 var
   i: integer;
   S: WideString;
+  {$IFDEF USEADDICTSPELLCHECKER}
+  l:TSpellLanguageString;
+  {$ENDIF}
 begin
+  {$IFDEF USEADDICTSPELLCHECKER}
+  // add all spellchecker strings
+  for l := Low(TSpellLanguageString) to High(TSpellLanguageString) do
+  begin
+    S := EncodeStrings(ad3SpellLanguages.GetString(l, ltEnglish));
+    ini.WriteString('SpellChecker', S, S);
+  end;
+  {$ENDIF}
+
   // write out all resourcestrings
   ini.WriteString(ClassName, EncodeStrings(SFmtAboutText), EncodeStrings(SFmtAboutText));
   ini.WriteString(ClassName, EncodeStrings(SFmtAboutCaption), EncodeStrings(SFmtAboutCaption));
@@ -2238,7 +2247,6 @@ begin
   acDeleteItem.Enabled := (Index <> -1) and ((FCapabilitesSupported = 0) or (FCapabilitesSupported and CAP_ITEM_DELETE = CAP_ITEM_DELETE));
   acAddItem.Enabled := (Index <> -1) and ((FCapabilitesSupported = 0) or (FCapabilitesSupported and CAP_ITEM_INSERT = CAP_ITEM_INSERT));
   acEditItem.Enabled := (Index <> -1) and ((FCapabilitesSupported = 0) or (FCapabilitesSupported and CAP_ITEM_EDIT = CAP_ITEM_EDIT));
-  acTrim.Enabled := FTranslateFile.Items.Count > 0;
   // Handled := true;
 end;
 
@@ -2948,9 +2956,9 @@ end;
 
 procedure TfrmMain.acCreateTranslationFileExecute(Sender: TObject);
 const
-  cTranslatableForms: array[0..11] of TFormClass =
+  cTranslatableForms: array[0..10] of TFormClass =
   (TfrmOptions, TfrmOrphans, TfrmConfigKbd, TfrmImportExport, TfrmTools, TfrmPromptArgs,
-    TfrmEditItem, TfrmTrim, TfrmConfigSuspicious, TfrmDictTranslationSelect,
+    TfrmEditItem, TfrmConfigSuspicious, TfrmDictTranslationSelect,
     TfrmDictEdit, TfrmColors);
 
 var
@@ -4291,77 +4299,6 @@ end;
 procedure TfrmMain.lvTranslateStringsDblClick(Sender: TObject);
 begin
   acEditItem.Execute;
-end;
-
-procedure TfrmMain.DoTrim;
-var
-  i: integer;
-  ti: ITranslationItem;
-  S: WideString;
-
-  procedure InternalTrim(var S: WideString);
-  var iStart: integer;
-  begin
-    if GlobalAppOptions.TrimHow in [cTrimLeading, cTrimBoth] then
-    begin
-      iStart := 1;
-      while (iStart <= Length(S)) and ((Pos(S[iStart], GlobalAppOptions.TrimWhat) > 0)
-        or (GlobalAppOptions.TrimWhiteSpace and (S[iStart] < #33))) do
-        Inc(iStart);
-      S := Copy(S, iStart, MaxInt);
-    end;
-    if GlobalAppOptions.TrimHow in [cTrimTrailing, cTrimBoth] then
-    begin
-      iStart := Length(S);
-      while (iStart >= 1) and ((Pos(S[iStart], GlobalAppOptions.TrimWhat) > 0)
-        or (GlobalAppOptions.TrimWhiteSpace and (S[iStart] < #33))) do
-        Dec(iStart);
-      S := Copy(S, 1, iStart);
-    end;
-
-  end;
-begin
-  if (GlobalAppOptions.TrimWhat <> '') or GlobalAppOptions.TrimWhiteSpace then
-  begin
-    for i := 0 to FTranslateFile.Items.Count - 1 do
-    begin
-      ti := FTranslateFile.Items[i];
-      if (GlobalAppOptions.TrimWhere in [cTrimOriginal, cTrimBoth]) and (ti.Original <> '') then
-      begin
-        S := ti.Original;
-        InternalTrim(S);
-        if Length(S) <> Length(ti.Original) then
-        begin
-          ti.Original := S;
-          Modified := true;
-        end;
-      end;
-      if (GlobalAppOptions.TrimWhere in [cTrimTranslation, cTrimBoth]) and (ti.Translation <> '') then
-      begin
-        S := ti.Translation;
-        InternalTrim(S);
-        if Length(S) <> Length(ti.Translation) then
-        begin
-          AddUndo(FTranslateFile.Items[i], _(ClassName, SUndoEdit), cUndoEdit);
-          ti.Translation := S;
-          Modified := true;
-        end;
-      end;
-    end;
-  end;
-end;
-
-procedure TfrmMain.acTrimExecute(Sender: TObject);
-begin
-  if TfrmTrim.Edit(GlobalAppOptions) then
-  begin
-    lvTranslateStrings.Items.BeginUpdate;
-    try
-      DoTrim;
-    finally
-      lvTranslateStrings.Items.EndUpdate;
-    end;
-  end;
 end;
 
 procedure TfrmMain.acConfigSuspiciousExecute(Sender: TObject);

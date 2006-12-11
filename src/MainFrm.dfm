@@ -308,7 +308,7 @@ object frmMain: TfrmMain
           HintW = 'Restore original sort'
         end
         object TBXItem14: TSpTBXItem
-          Action = acTrim
+          ShortCut = 24660
           CaptionW = 'Trim...'
           HintW = 'Trim leading and trailing characters'
         end
@@ -1419,13 +1419,6 @@ object frmMain: TfrmMain
       ImageIndex = 15
       ShortCut = 16430
       OnExecute = acDeleteItemExecute
-    end
-    object acTrim: TTntAction
-      Category = 'Actions'
-      Caption = 'Trim...'
-      Hint = 'Trim leading and trailing characters'
-      ShortCut = 24660
-      OnExecute = acTrimExecute
     end
     object acMakeConsistent: TTntAction
       Category = 'Actions'

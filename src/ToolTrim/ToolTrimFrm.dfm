@@ -1,9 +1,21 @@
-inherited frmTrim: TfrmTrim
+object frmToolTrim: TfrmToolTrim
+  Left = 636
+  Top = 240
   ActiveControl = edTrimWhat
   BorderStyle = bsDialog
   Caption = 'Trim Options'
-  ClientHeight = 240
+  ClientHeight = 228
   ClientWidth = 390
+  Color = clBtnFace
+  Font.Charset = DEFAULT_CHARSET
+  Font.Color = clWindowText
+  Font.Height = -11
+  Font.Name = 'MS Shell Dlg 2'
+  Font.Style = []
+  OldCreateOrder = False
+  DesignSize = (
+    390
+    228)
   PixelsPerInch = 96
   TextHeight = 13
   object TntLabel1: TTntLabel
@@ -16,7 +28,7 @@ inherited frmTrim: TfrmTrim
   end
   object TntLabel2: TTntLabel
     Left = 8
-    Top = 96
+    Top = 88
     Width = 57
     Height = 13
     Caption = 'Trim wh&ere:'
@@ -24,7 +36,7 @@ inherited frmTrim: TfrmTrim
   end
   object TntLabel3: TTntLabel
     Left = 8
-    Top = 144
+    Top = 136
     Width = 47
     Height = 13
     Caption = 'Trim h&ow:'
@@ -42,7 +54,7 @@ inherited frmTrim: TfrmTrim
   end
   object cbTrimWhere: TTntComboBox
     Left = 8
-    Top = 112
+    Top = 104
     Width = 373
     Height = 21
     Style = csDropDownList
@@ -58,7 +70,7 @@ inherited frmTrim: TfrmTrim
   end
   object cbTrimHow: TTntComboBox
     Left = 8
-    Top = 160
+    Top = 152
     Width = 373
     Height = 21
     Style = csDropDownList
@@ -74,7 +86,7 @@ inherited frmTrim: TfrmTrim
   end
   object chkTrimWhitespace: TTntCheckBox
     Left = 16
-    Top = 63
+    Top = 60
     Width = 364
     Height = 17
     Anchors = [akLeft, akTop, akRight]
@@ -83,7 +95,7 @@ inherited frmTrim: TfrmTrim
   end
   object btnOK: TTntButton
     Left = 204
-    Top = 202
+    Top = 190
     Width = 80
     Height = 23
     Anchors = [akRight, akBottom]
@@ -91,10 +103,11 @@ inherited frmTrim: TfrmTrim
     Default = True
     ModalResult = 1
     TabOrder = 4
+    OnClick = btnOKClick
   end
   object btnCancel: TTntButton
     Left = 292
-    Top = 202
+    Top = 190
     Width = 80
     Height = 23
     Anchors = [akRight, akBottom]

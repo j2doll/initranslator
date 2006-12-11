@@ -1,6 +1,12 @@
 Ini Translator Changelog
 ========================
+2006-12-11:
+- Trim removed from main app
+- Trim now its own tool plugin
+
 2006-12-10:
+IniTranslator:
+- Add SpellChecker strings to template file
 ToolConsistency:
 - better alhorithm in AutoShortCut
 ToolKeyCheck:

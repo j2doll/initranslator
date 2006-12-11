@@ -14,7 +14,8 @@ PROJECTS = FoxitParser.dll IBForumsParser.dll MozillaDTDParser.dll \
   OlegParser.dll OOGSIParser.dll PHPNukeParser.dll PHPParser.dll \
   PolyGlotParser.dll POParser.dll SciTEParser.dll TMXParser.dll \
   ToolConsistency.dll ToolKeyCheck.dll ToolListEdit.dll ToolPropertiesView.dll \
-  ToolTreeView.dll XLIFFParser.dll XilisoftParser.dll translator.exe
+  ToolTreeView.dll ToolTrim.dll XLIFFParser.dll XilisoftParser.dll \
+  translator.exe
 #------------------------------------------------------------------------------
 default: $(PROJECTS)
 #------------------------------------------------------------------------------
@@ -86,6 +87,9 @@ ToolConsistency.dll: src\ToolConsistency\ToolConsistency.dpr
   $(DCC)
 
 ToolKeyCheck.dll: src\ToolKeyCheck\ToolKeyCheck.dpr
+  $(DCC)
+
+ToolTrim.dll: src\ToolTrim\ToolTrim.dpr
   $(DCC)
 
 

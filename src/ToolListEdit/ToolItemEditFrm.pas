@@ -15,8 +15,11 @@ type
       Shift: TShiftState);
     procedure TntFormKeyUp(Sender: TObject; var Key: Word;
       Shift: TShiftState);
+    procedure TntFormKeyDown(Sender: TObject; var Key: Word;
+      Shift: TShiftState);
   private
     { Private declarations }
+    ReturnKey:boolean;
   public
     { Public declarations }
     class function Edit(const AItem:ITranslationItem; APos:TPoint):boolean;
@@ -70,13 +73,22 @@ end;
 procedure TfrmEditItem.TntFormKeyUp(Sender: TObject; var Key: Word;
   Shift: TShiftState);
 begin
-  if Key = VK_RETURN then
+  if ReturnKey and (Key = VK_RETURN) then
   begin
     Key := 0;
     ModalResult := mrOK;
   end
   else if Key = VK_ESCAPE then
     ModalResult := mrCancel;
+  ReturnKey := false;
+end;
+
+procedure TfrmEditItem.TntFormKeyDown(Sender: TObject; var Key: Word;
+  Shift: TShiftState);
+begin
+  ReturnKey := false;
+  if Key = VK_RETURN then
+    ReturnKey := true;
 end;
 
 end.

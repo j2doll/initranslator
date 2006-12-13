@@ -94,7 +94,7 @@ object frmToolKeyCheck: TfrmToolKeyCheck
     TabOrder = 1
     ViewStyle = vsReport
     OnColumnClick = lvItemsColumnClick
-    OnDblClick = acSyncExecute
+    OnDblClick = acEditExecute
     OnEnter = lvItemsEnter
     OnInsert = lvItemsInsert
     OnResize = lvItemsResize
@@ -114,7 +114,7 @@ object frmToolKeyCheck: TfrmToolKeyCheck
       43)
     object chkIgnoreEmpty: TTntCheckBox
       Left = 18
-      Top = 12
+      Top = 14
       Width = 457
       Height = 17
       Caption = '&Ignore items without keys'
@@ -137,7 +137,7 @@ object frmToolKeyCheck: TfrmToolKeyCheck
     Left = 84
     Top = 70
     Bitmap = {
-      494C01010600090004000F000F00FFFFFFFFFF00FFFFFFFFFFFFFFFF424D3600
+      494C01010600090004000F000F00FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
       00000000000036000000280000003C0000001E0000000100200000000000201C
       0000000000000000000000000000000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000
@@ -373,11 +373,12 @@ object frmToolKeyCheck: TfrmToolKeyCheck
       FFFFFFFC00000000FFFFFFFFFFFFFFF0FFFFFFFFFFFFFFF0F83FFDFFFFFFF7F0
       F83FF8FFE0FFE3F0F83FF07FE0FFC1F0F83FE03E000F80F0C007C01F001F0070
       E00F800F803E0030F01FF07FC07C0010F83FF07FE0FFC1F0FC7FF07FF1FFC1F0
-      FEFFF07FFBFFFFF0FFFFFFFFFFFFFFF0FFFFFFFFFFFFFFF0FFFFFFFFFFFFFFF0}
+      FEFFF07FFBFFFFF0FFFFFFFFFFFFFFF0FFFFFFFFFFFFFFF0FFFFFFFFFFFFFFF0
+      00000000000000000000000000000000000000000000}
   end
   object alMain: TTntActionList
-    Left = 126
-    Top = 70
+    Left = 142
+    Top = 78
     object acUpdate: TTntAction
       Caption = '&Update'
       ShortCut = 116
@@ -397,18 +398,19 @@ object frmToolKeyCheck: TfrmToolKeyCheck
     end
     object acSync: TTntAction
       Caption = 'Show in main list'
+      ShortCut = 16416
       OnExecute = acSyncExecute
     end
   end
   object popListView: TTntPopupMenu
-    Left = 224
-    Top = 63
-    object Showinmainlist1: TTntMenuItem
-      Action = acSync
-      Default = True
-    end
+    Left = 208
+    Top = 79
     object Edit1: TTntMenuItem
       Action = acEdit
+      Default = True
+    end
+    object Showinmainlist1: TTntMenuItem
+      Action = acSync
     end
     object N1: TTntMenuItem
       Caption = '-'

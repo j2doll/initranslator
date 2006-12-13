@@ -89,9 +89,25 @@ object frmToolListEdit: TfrmToolListEdit
     ViewStyle = vsReport
     OnAdvancedCustomDrawItem = lvItemsAdvancedCustomDrawItem
     OnData = lvItemsData
-    OnDblClick = lvItemsDblClick
+    OnDblClick = acEditExecute
     OnEnter = lvItemsEnter
-    OnKeyUp = lvItemsKeyUp
     OnResize = lvItemsResize
+  end
+  object alMain: TTntActionList
+    Left = 144
+    Top = 96
+    object acEdit: TTntAction
+      Caption = 'Edit'
+      ShortCut = 113
+      SecondaryShortCuts.Strings = (
+        ''
+        'Enter')
+      OnExecute = acEditExecute
+    end
+    object acClose: TTntAction
+      Caption = 'Close'
+      ShortCut = 27
+      OnExecute = acCloseExecute
+    end
   end
 end

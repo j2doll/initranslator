@@ -34,8 +34,6 @@ type
     pnlBottomRight: TTntPanel;
     lblTranslation: TTntLabel;
     reTranslation: TTntRichEdit;
-    procedure reOriginalKeyDown(Sender: TObject; var Key: Word;
-      Shift: TShiftState);
     procedure tvSectionsChanging(Sender: TObject; Node: TTreeNode;
       var AllowChange: Boolean);
     procedure lvViewDblClick(Sender: TObject);
@@ -51,16 +49,20 @@ type
     procedure lvViewCustomDrawItem(Sender: TCustomListView;
       Item: TListItem; State: TCustomDrawState; var DefaultDraw: Boolean);
     procedure tvSectionsDblClick(Sender: TObject);
-    procedure tvSectionsKeyDown(Sender: TObject; var Key: Word;
-      Shift: TShiftState);
     procedure lvViewKeyDown(Sender: TObject; var Key: Word;
       Shift: TShiftState);
     procedure tvSectionsKeyPress(Sender: TObject; var Key: Char);
     procedure lvViewKeyPress(Sender: TObject; var Key: Char);
     procedure lvViewEnter(Sender: TObject);
-    procedure tvSectionsMouseUp(Sender: TObject; Button: TMouseButton;
-      Shift: TShiftState; X, Y: Integer);
     procedure TntFormResize(Sender: TObject);
+    procedure TntFormKeyUp(Sender: TObject; var Key: Word;
+      Shift: TShiftState);
+    procedure reTranslationKeyUp(Sender: TObject; var Key: Word;
+      Shift: TShiftState);
+    procedure tvSectionsKeyUp(Sender: TObject; var Key: Word;
+      Shift: TShiftState);
+    procedure reTranslationKeyDown(Sender: TObject; var Key: Word;
+      Shift: TShiftState);
   private
     { Private declarations }
     procedure BuildTree(const Items: ITranslationItems; const SelectedItem: ITranslationItem);
@@ -161,17 +163,6 @@ begin
     Result := true;
   finally
     frm.Free;
-  end;
-end;
-
-procedure TfrmToolTreeView.reOriginalKeyDown(Sender: TObject;
-  var Key: Word; Shift: TShiftState);
-begin
-  if Key = VK_RETURN then
-  begin
-    if tvSections.CanFocus then
-      tvSections.SetFocus;
-    Key := 0;
   end;
 end;
 
@@ -484,16 +475,6 @@ begin
   reTranslation.SelectAll;
 end;
 
-procedure TfrmToolTreeView.tvSectionsKeyDown(Sender: TObject;
-  var Key: Word; Shift: TShiftState);
-begin
-  if Key = VK_RETURN then
-  begin
-    tvSectionsDblClick(Sender);
-    Key := 0;
-  end;
-end;
-
 procedure TfrmToolTreeView.lvViewKeyDown(Sender: TObject; var Key: Word;
   Shift: TShiftState);
 begin
@@ -525,12 +506,6 @@ begin
     lvView.Selected.Focused := true;
 end;
 
-procedure TfrmToolTreeView.tvSectionsMouseUp(Sender: TObject;
-  Button: TMouseButton; Shift: TShiftState; X, Y: Integer);
-begin
-  if Button = mbRight then
-end;
-
 procedure TfrmToolTreeView.TntFormResize(Sender: TObject);
 var i, j:integer;
 begin
@@ -539,6 +514,41 @@ begin
   i := lvView.ClientWidth div lvView.Columns.Count;
   for j := 0 to lvView.Columns.Count - 1 do
     lvView.Columns[j].Width := i;
+end;
+
+procedure TfrmToolTreeView.TntFormKeyUp(Sender: TObject; var Key: Word;
+  Shift: TShiftState);
+begin
+  if (Key = VK_ESCAPE) then
+    Close;
+end;
+
+procedure TfrmToolTreeView.reTranslationKeyUp(Sender: TObject;
+  var Key: Word; Shift: TShiftState);
+begin
+  if Key = VK_RETURN then
+  begin
+    if tvSections.CanFocus then
+      tvSections.SetFocus;
+    Key := 0;
+  end;
+end;
+
+procedure TfrmToolTreeView.tvSectionsKeyUp(Sender: TObject; var Key: Word;
+  Shift: TShiftState);
+begin
+  if Key = VK_RETURN then
+  begin
+    tvSectionsDblClick(Sender);
+    Key := 0;
+  end;
+end;
+
+procedure TfrmToolTreeView.reTranslationKeyDown(Sender: TObject;
+  var Key: Word; Shift: TShiftState);
+begin
+  if Key = VK_RETURN then
+    Key := 0;
 end;
 
 end.

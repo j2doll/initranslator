@@ -46,11 +46,13 @@ object frmToolTreeView: TfrmToolTreeView
     0007C0000007C0000007C0000007C0000007C0000007C0000007C0000007C000
     0007C0000007C0000007C0000007C0000007C0000007C0000007C0000007C000
     0007C0000007C0000007C0000007E000000FF24924BF}
+  KeyPreview = True
   OldCreateOrder = False
   PopupMenu = popTreeview
   Position = poMainFormCenter
   Scaled = False
   ShowHint = True
+  OnKeyUp = TntFormKeyUp
   OnResize = TntFormResize
   PixelsPerInch = 96
   TextHeight = 13
@@ -117,9 +119,8 @@ object frmToolTreeView: TfrmToolTreeView
       OnCustomDrawItem = tvSectionsCustomDrawItem
       OnDblClick = tvSectionsDblClick
       OnGetImageIndex = tvSectionsGetImageIndex
-      OnKeyDown = tvSectionsKeyDown
       OnKeyPress = tvSectionsKeyPress
-      OnMouseUp = tvSectionsMouseUp
+      OnKeyUp = tvSectionsKeyUp
     end
   end
   object nbViews: TNotebook
@@ -183,7 +184,6 @@ object frmToolTreeView: TfrmToolTreeView
             TabOrder = 0
             WantReturns = False
             WordWrap = False
-            OnKeyDown = reOriginalKeyDown
           end
         end
         object pnlBottomRight: TTntPanel
@@ -218,7 +218,8 @@ object frmToolTreeView: TfrmToolTreeView
             TabOrder = 0
             WantReturns = False
             WordWrap = False
-            OnKeyDown = reOriginalKeyDown
+            OnKeyDown = reTranslationKeyDown
+            OnKeyUp = reTranslationKeyUp
           end
         end
       end

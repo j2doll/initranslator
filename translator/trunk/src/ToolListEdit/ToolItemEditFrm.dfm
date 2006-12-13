@@ -14,6 +14,7 @@ object frmEditItem: TfrmEditItem
   Font.Style = []
   KeyPreview = True
   OldCreateOrder = False
+  OnKeyDown = TntFormKeyDown
   OnKeyUp = TntFormKeyUp
   PixelsPerInch = 96
   TextHeight = 13

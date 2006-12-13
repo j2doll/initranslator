@@ -183,7 +183,7 @@ object frmToolConsistency: TfrmToolConsistency
     PopupMenu = popItems
     TabOrder = 0
     OnChange = tvItemsChange
-    OnDblClick = tvItemsDblClick
+    OnDblClick = acEditExecute
     OnEdited = tvItemsEdited
     OnEditing = tvItemsEditing
   end
@@ -244,16 +244,28 @@ object frmToolConsistency: TfrmToolConsistency
       ShortCut = 16397
       OnExecute = acUseThisTranslationExecute
     end
+    object acSync: TTntAction
+      Caption = 'Show in main list'
+      ShortCut = 16416
+      OnExecute = acSyncExecute
+    end
   end
   object popItems: TTntPopupMenu
     Left = 252
     Top = 56
+    object Edit1: TTntMenuItem
+      Action = acEdit
+      Default = True
+    end
+    object N1: TTntMenuItem
+      Caption = '-'
+    end
     object Usethistranslation1: TTntMenuItem
       Action = acUseThisTranslation
       Hint = 'Use this translation for all items'
     end
-    object Edit1: TTntMenuItem
-      Action = acEdit
+    object acSync1: TTntMenuItem
+      Action = acSync
     end
   end
 end

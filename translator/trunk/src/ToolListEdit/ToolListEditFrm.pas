@@ -4,7 +4,8 @@ interface
 
 uses
   Windows, Messages, SysUtils, Classes, Graphics, Controls, Forms,
-  Dialogs, TntForms, TntComCtrls, TntGrids, ComCtrls, Grids, TransIntf;
+  Dialogs, TntForms, TntComCtrls, TntGrids, ComCtrls, Grids, TransIntf,
+  ActnList, TntActnList;
 const
   WM_EDITITEM = WM_USER + 101;
 
@@ -12,15 +13,17 @@ type
   TfrmToolListEdit = class(TTntForm)
     TntStatusBar1: TTntStatusBar;
     lvItems: TTntListView;
+    alMain: TTntActionList;
+    acEdit: TTntAction;
+    acClose: TTntAction;
     procedure lvItemsResize(Sender: TObject);
-    procedure lvItemsDblClick(Sender: TObject);
-    procedure lvItemsKeyUp(Sender: TObject; var Key: Word;
-      Shift: TShiftState);
     procedure lvItemsData(Sender: TObject; Item: TListItem);
     procedure lvItemsAdvancedCustomDrawItem(Sender: TCustomListView;
       Item: TListItem; State: TCustomDrawState; Stage: TCustomDrawStage;
       var DefaultDraw: Boolean);
     procedure lvItemsEnter(Sender: TObject);
+    procedure acCloseExecute(Sender: TObject);
+    procedure acEditExecute(Sender: TObject);
   private
     { Private declarations }
     FItems: ITranslationItems;
@@ -90,21 +93,6 @@ begin
   lvItems.Columns[2].Width := W;
 end;
 
-procedure TfrmToolListEdit.lvItemsDblClick(Sender: TObject);
-begin
-  EditItem;
-end;
-
-procedure TfrmToolListEdit.lvItemsKeyUp(Sender: TObject; var Key: Word;
-  Shift: TShiftState);
-begin
-  if Key = VK_RETURN then
-  begin
-    Key := 0;
-    EditItem;
-  end;
-end;
-
 procedure TfrmToolListEdit.lvItemsData(Sender: TObject; Item: TListItem);
 begin
   if (Item <> nil) and (Item.Index >= 0) then
@@ -139,7 +127,16 @@ begin
     lvItems.Selected := lvItems.Items[0];
     lvItems.Selected.Focused := true;
   end;
+end;
 
+procedure TfrmToolListEdit.acCloseExecute(Sender: TObject);
+begin
+  Close;
+end;
+
+procedure TfrmToolListEdit.acEditExecute(Sender: TObject);
+begin
+  EditItem;
 end;
 
 end.

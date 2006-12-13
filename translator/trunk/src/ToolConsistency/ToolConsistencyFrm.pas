@@ -43,6 +43,9 @@ type
     Usethistranslation1: TTntMenuItem;
     Edit1: TTntMenuItem;
     chkSynchronizeAccelChar: TTntCheckBox;
+    acSync1: TTntMenuItem;
+    acSync: TTntAction;
+    N1: TTntMenuItem;
     procedure chkIgnoreAccelCharClick(Sender: TObject);
     procedure tvItemsChange(Sender: TObject; Node: TTreeNode);
     procedure tvItemsEditing(Sender: TObject; Node: TTreeNode;
@@ -54,19 +57,17 @@ type
     procedure acCloseExecute(Sender: TObject);
     procedure acUpdateExecute(Sender: TObject);
     procedure alMainUpdate(Action: TBasicAction; var Handled: Boolean);
-    procedure tvItemsDblClick(Sender: TObject);
+    procedure acSyncExecute(Sender: TObject);
   private
     { Private declarations }
     Congratulations: WideString;
     FItems: ITranslationItems;
     FAppServices: IApplicationServices;
-
     FSelectedItem: ITranslationItem;
     procedure BuildList(IgnoreAccelChar: boolean);
     procedure LoadSettings;
     procedure SaveSettings;
     function AutoShortCut(Item: ITranslationItem; S: WideString): WideString;
-
   public
     { Public declarations }
     class function Execute(const ApplicationServices: IApplicationServices;
@@ -313,7 +314,6 @@ begin
   try
     chkIgnoreAccelChar.Checked := ReadBool('Settings', 'IgnoreAccelChar', chkIgnoreAccelChar.Checked);
     chkSynchronizeAccelChar.Checked := ReadBool('Settings', 'SyncAccelChar', chkSynchronizeAccelChar.Checked);
-    
   finally
     Free;
   end;
@@ -419,7 +419,7 @@ begin
   acEdit.Enabled := acUseThisTranslation.Enabled;
 end;
 
-procedure TfrmToolConsistency.tvItemsDblClick(Sender: TObject);
+procedure TfrmToolConsistency.acSyncExecute(Sender: TObject);
 begin
   if Assigned(tvItems.Selected) and Assigned(tvItems.Selected.Data) then
     FAppServices.SelectedItem := ITranslationItem(tvItems.Selected.Data);

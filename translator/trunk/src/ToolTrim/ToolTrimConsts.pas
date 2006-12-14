@@ -18,10 +18,36 @@
 unit ToolTrimConsts;
 
 interface
+uses
+  TransIntf;
+  
 const
+  SSectionName = 'ToolTrim';
   SToolTrimAbout = 'This plugin trims leading and trailing whitespaces and other characters';
   SToolTrimPluginDisplayName = 'Trim...';
+  SFormCaption = 'Trim Options';
+  STrimWhatLabel = 'Trim wh&at:';
+  STrimWhereLabel = 'Trim wh&ere:';
+  STrimHowLabel = 'Trim h&ow:';
+  STrimWhiteSpace = 'Trim additional &whitespace also';
+  STrimWhereOptions = 'Original\r\nTranslation\r\nBoth';
+  STrimHowOptions = 'Leading\r\nTrailing\r\nBoth';
+  SOK = 'OK';
+  SCancel = 'Cancel';
+
+var
+  GlobalAppServices:IApplicationServices = nil;
+
+function Translate(const Value:WideString):WideString;
 
 implementation
+
+function Translate(const Value:WideString):WideString;
+begin
+  if GlobalAppServices <> nil then
+    Result := GlobalAppServices.Translate(SSectionName, Value, Value)
+  else
+    Result := Value;
+end;
 
 end.

@@ -160,7 +160,7 @@ object frmToolConsistency: TfrmToolConsistency
   object chkIgnoreAccelChar: TTntCheckBox
     Left = 16
     Top = 171
-    Width = 134
+    Width = 195
     Height = 17
     Hint = 'Include/exclude accelerator key when displaying original items'
     Anchors = [akLeft, akBottom]

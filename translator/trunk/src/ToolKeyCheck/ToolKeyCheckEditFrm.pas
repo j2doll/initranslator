@@ -4,7 +4,7 @@ interface
 
 uses
   Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
-  Dialogs, TntForms, StdCtrls, TntStdCtrls, ComCtrls, TntComCtrls;
+  Dialogs, TntForms, StdCtrls, TntStdCtrls, ComCtrls, TntComCtrls, TransIntf;
 
 type
   TfrmToolKeyCheckEdit = class(TTntForm)
@@ -21,12 +21,15 @@ type
     procedure reTranslationEnter(Sender: TObject);
   private
     { Private declarations }
+    procedure DoTranslate;
   public
     { Public declarations }
     class function Edit(const Original:WideString; var Translation:WideString):boolean;
   end;
 
 implementation
+uses
+  ToolKeyCheckConsts;
 
 {$R *.DFM}
 
@@ -38,6 +41,7 @@ var frm:TfrmToolKeyCheckEdit;
 begin
   frm := self.Create(Application);
   try
+    frm.DoTranslate;
     frm.reOriginal.Text := Original;
     frm.reTranslation.Text := Translation;
     Result := frm.ShowModal = mrOK;
@@ -65,6 +69,15 @@ end;
 procedure TfrmToolKeyCheckEdit.reTranslationEnter(Sender: TObject);
 begin
   reTranslation.SelectAll;
+end;
+
+procedure TfrmToolKeyCheckEdit.DoTranslate;
+begin
+  Caption := Translate(SEditFormCaption);
+  TntLabel1.Caption := Translate(SOriginalLabel);
+  TntLabel2.Caption := Translate(STranslationLabel);
+  btnOK.Caption := Translate(SOK);
+  btnCancel.Caption := Translate(SCancel);
 end;
 
 end.

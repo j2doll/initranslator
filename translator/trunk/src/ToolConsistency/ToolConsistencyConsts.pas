@@ -30,6 +30,8 @@ const
   SToolConsistencybtnUpdate = '&Update';
   SToolConsistencybtnUpdateHint = 'Update the list';
   SToolConsistencychkIgnoreAccelChar = 'Ignore accelerator &key';
+  SToolConsistencySynchronize = 'Synchronize accelerator with &original';
+  SToolConsistencySynchronizeHint = 'Automatically insert missing accelerator key when editing.';
   SToolConsistencychkIgnoreAccelCharHint = 'Include/exclude accelerator key when displaying original items';
   SToolConsistencyUsethistranslation1 = 'Use &this translation';
   SToolConsistencyUsethistranslation1Hint = 'Use this translation for all items';

@@ -328,7 +328,6 @@ end;
 
 function TXilisoftParser.GetString(out Section, Name, Value: WideString): WordBool;
 begin
-  Section := SLocalizeSectionName;
   Result := true;
   case FStringIndex of
     0:
@@ -350,8 +349,14 @@ begin
   else
     Result := false;
   end;
-  Value := Name;
-  Inc(FStringIndex);
+  if Result then
+  begin
+    Section := SLocalizeSectionName;
+    Value := Name;
+    Inc(FStringIndex);
+  end
+  else
+    FStringIndex := 0;
 end;
 
 end.

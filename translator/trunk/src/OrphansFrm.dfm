@@ -22,9 +22,9 @@ object frmOrphans: TfrmOrphans
   TextHeight = 13
   object lvOrphaned: TTntListView
     Left = 0
-    Top = 41
+    Top = 64
     Width = 433
-    Height = 201
+    Height = 219
     Align = alClient
     BevelInner = bvNone
     BevelOuter = bvRaised
@@ -45,7 +45,6 @@ object frmOrphans: TfrmOrphans
     ReadOnly = True
     RowSelect = True
     ParentShowHint = False
-    PopupMenu = popListView
     ShowHint = True
     TabOrder = 0
     ViewStyle = vsReport
@@ -62,7 +61,7 @@ object frmOrphans: TfrmOrphans
   end
   object Panel1: TTntPanel
     Left = 0
-    Top = 0
+    Top = 23
     Width = 433
     Height = 41
     Align = alTop
@@ -95,41 +94,80 @@ object frmOrphans: TfrmOrphans
       end
     end
   end
-  object TntPanel1: TTntPanel
+  object TopDock: TSpTBXDock
     Left = 0
-    Top = 242
+    Top = 0
     Width = 433
-    Height = 41
-    Align = alBottom
-    BevelOuter = bvNone
-    ParentBackground = False
-    TabOrder = 3
-    DesignSize = (
-      433
-      41)
-    object btnSave: TTntButton
-      Left = 259
-      Top = 7
-      Width = 75
-      Height = 25
-      Action = acSave
-      Anchors = [akTop, akRight]
+    Height = 23
+    FixAlign = True
+    object tbMenu: TSpTBXToolbar
+      Left = 0
+      Top = 0
+      Caption = 'Menu'
+      ChevronHint = 'More Buttons|Click to see more buttons'
+      CloseButton = False
+      DefaultDock = TopDock
+      DockMode = dmCannotFloatOrChangeDocks
+      DockPos = 0
+      FullSize = True
+      HideWhenInactive = False
+      MenuBar = True
+      Options = [tboLongHintInMenuOnly, tboShowHint]
+      ProcessShortCuts = True
+      Resizable = False
       TabOrder = 0
-    end
-    object btnMerge: TTntButton
-      Left = 343
-      Top = 7
-      Width = 75
-      Height = 25
-      Action = acMerge
-      Anchors = [akTop, akRight]
-      TabOrder = 1
+      Customizable = False
+      object Actions1: TSpTBXSubmenuItem
+        CaptionW = '&Actions'
+        object SpTBXItem19: TSpTBXItem
+          Action = acSave
+          CaptionW = '&Save...'
+        end
+        object SpTBXItem18: TSpTBXItem
+          Action = acMerge
+          CaptionW = '&Merge...'
+        end
+        object SpTBXSeparatorItem3: TSpTBXSeparatorItem
+        end
+        object SpTBXItem17: TSpTBXItem
+          Action = acCopy
+          CaptionW = 'Copy'
+        end
+        object SpTBXItem16: TSpTBXItem
+          Action = acRemove
+          CaptionW = 'Remove'
+        end
+        object SpTBXItem15: TSpTBXItem
+          Action = acPaste
+          CaptionW = 'Paste into current item'
+        end
+        object SpTBXItem14: TSpTBXItem
+          Action = acClear
+          CaptionW = 'Clear'
+        end
+        object SpTBXSeparatorItem4: TSpTBXSeparatorItem
+        end
+        object SpTBXItem13: TSpTBXItem
+          Action = acFindItem
+          CaptionW = 'Find Item'
+        end
+        object SpTBXItem12: TSpTBXItem
+          Action = acFindNext
+          CaptionW = 'Find Next'
+        end
+        object SpTBXSeparatorItem5: TSpTBXSeparatorItem
+        end
+        object SpTBXItem10: TSpTBXItem
+          Action = acClose
+          CaptionW = 'Close'
+        end
+      end
     end
   end
   object alOrphans: TTntActionList
     OnUpdate = alOrphansUpdate
-    Left = 320
-    Top = 176
+    Left = 194
+    Top = 148
     object acCopy: TTntAction
       Caption = 'Copy'
       ShortCut = 16451
@@ -145,13 +183,34 @@ object frmOrphans: TfrmOrphans
       ShortCut = 16461
       OnExecute = acMergeExecute
     end
-  end
-  object popListView: TSpTBXPopupMenu
-    Left = 128
-    Top = 144
-    object Copy1: TSpTBXItem
-      Action = acCopy
-      CaptionW = 'Copy'
+    object acClear: TTntAction
+      Caption = 'Clear'
+      OnExecute = acClearExecute
+    end
+    object acClose: TTntAction
+      Caption = 'Close'
+      ShortCut = 27
+      OnExecute = acCloseExecute
+    end
+    object acRemove: TTntAction
+      Caption = 'Remove'
+      ShortCut = 16430
+      OnExecute = acRemoveExecute
+    end
+    object acPaste: TTntAction
+      Caption = 'Paste into current item'
+      ShortCut = 16470
+      OnExecute = acPasteExecute
+    end
+    object acFindItem: TTntAction
+      Caption = 'Find Item'
+      ShortCut = 16454
+      OnExecute = acFindItemExecute
+    end
+    object acFindNext: TTntAction
+      Caption = 'Find Next'
+      ShortCut = 114
+      OnExecute = acFindNextExecute
     end
   end
 end

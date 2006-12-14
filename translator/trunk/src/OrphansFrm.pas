@@ -29,7 +29,7 @@ uses
   ActnList,
   BaseForm, TranslateFile, TransIntf, WideIniFiles,
   TntClasses, TntComCtrls, TntStdCtrls, TntActnList, TntMenus, TntExtCtrls, TntDialogs,
-  TB2Item, TBX, SpTBXItem;
+  TB2Item, TBX, SpTBXItem, TB2Dock, TB2Toolbar;
 
 type
   TfrmOrphans = class(TfrmBase)
@@ -39,14 +39,30 @@ type
     Panel2: TTntPanel;
     lblSection: TTntLabel;
     alOrphans: TTntActionList;
-    popListView: TSpTBXPopupMenu;
-    Copy1: TSpTBXItem;
     acCopy: TTntAction;
-    TntPanel1: TTntPanel;
-    btnSave: TTntButton;
-    btnMerge: TTntButton;
     acSave: TTntAction;
     acMerge: TTntAction;
+    acClear: TTntAction;
+    acClose: TTntAction;
+    acRemove: TTntAction;
+    acPaste: TTntAction;
+    acFindItem: TTntAction;
+    acFindNext: TTntAction;
+    TopDock: TSpTBXDock;
+    tbMenu: TSpTBXToolbar;
+    Actions1: TSpTBXSubmenuItem;
+    SpTBXItem10: TSpTBXItem;
+    SpTBXItem12: TSpTBXItem;
+    SpTBXItem13: TSpTBXItem;
+    SpTBXItem14: TSpTBXItem;
+    SpTBXItem15: TSpTBXItem;
+    SpTBXItem16: TSpTBXItem;
+    SpTBXItem17: TSpTBXItem;
+    SpTBXItem18: TSpTBXItem;
+    SpTBXItem19: TSpTBXItem;
+    SpTBXSeparatorItem3: TSpTBXSeparatorItem;
+    SpTBXSeparatorItem4: TSpTBXSeparatorItem;
+    SpTBXSeparatorItem5: TSpTBXSeparatorItem;
     procedure lvOrphanedResize(Sender: TObject);
     procedure acCopyExecute(Sender: TObject);
     procedure alOrphansUpdate(Action: TBasicAction; var Handled: Boolean);
@@ -56,15 +72,22 @@ type
     procedure acMergeExecute(Sender: TObject);
     procedure lvOrphanedData(Sender: TObject; Item: TListItem);
     procedure acSaveExecute(Sender: TObject);
+    procedure acCloseExecute(Sender: TObject);
+    procedure acClearExecute(Sender: TObject);
+    procedure acRemoveExecute(Sender: TObject);
+    procedure acPasteExecute(Sender: TObject);
+    procedure acFindItemExecute(Sender: TObject);
+    procedure acFindNextExecute(Sender: TObject);
   private
-    FItems, FOrphans: ITranslationItems;
-    FOnMerge:TNotifyEvent;
+    FAppServices: IApplicationServices;
+    FOnMerge: TNotifyEvent;
     procedure SaveToFile(const FileName: WideString);
-    procedure ShowError(Count:integer);
+    procedure ShowError(Count: integer);
+    function SelectedItem: ITranslationItem;
     { Private declarations }
   public
     { Public declarations }
-    class function Edit(const Items, Orphans: ITranslationItems; CanMerge:boolean; OnMerge:TNotifyEvent): boolean;
+    class function Edit(const ApplicationServices: IApplicationServices; CanMerge: boolean; OnMerge: TNotifyEvent): boolean;
   end;
 
 implementation
@@ -73,18 +96,17 @@ uses
 
 {$R *.dfm}
 
-class function TfrmOrphans.Edit(const Items, Orphans: ITranslationItems; CanMerge:boolean; OnMerge:TNotifyEvent): boolean;
+class function TfrmOrphans.Edit(const ApplicationServices: IApplicationServices; CanMerge: boolean; OnMerge: TNotifyEvent): boolean;
 var
   frmOrphans: TfrmOrphans;
 begin
   frmOrphans := self.Create(Application);
   try
-    frmOrphans.FItems := Items;
-    frmOrphans.FOrphans := Orphans;
+    frmOrphans.FAppServices := ApplicationServices;
     frmOrphans.FOnMerge := OnMerge;
-    frmOrphans.lvOrphaned.Items.Count := Orphans.Count;
-    frmOrphans.acSave.Enabled := Orphans.Count > 0;
-    frmOrphans.acMerge.Enabled := Assigned(OnMerge) and CanMerge and (Orphans.Count > 0);
+    frmOrphans.lvOrphaned.Items.Count := ApplicationServices.Orphans.Count;
+    frmOrphans.acSave.Enabled := ApplicationServices.Orphans.Count > 0;
+    frmOrphans.acMerge.Enabled := Assigned(OnMerge) and CanMerge and (ApplicationServices.Orphans.Count > 0);
     Result := frmOrphans.ShowModal = mrOK;
   finally
     frmOrphans.Free;
@@ -102,11 +124,11 @@ var S: WideString;
 begin
   with lvOrphaned.Selected do
   begin
-    if (Index >= 0) and (Index < FOrphans.Count) then
+    if (Index >= 0) and (Index < FAppServices.Orphans.Count) then
     begin
-      S := FOrphans.Items[Index].Translation;
+      S := FAppServices.Orphans.Items[Index].Translation;
       if S = '' then
-        S := FOrphans.Items[Index].Original;
+        S := FAppServices.Orphans.Items[Index].Original;
       if S <> '' then
         TntClipboard.AsWideText := S;
     end;
@@ -115,16 +137,23 @@ end;
 
 procedure TfrmOrphans.alOrphansUpdate(Action: TBasicAction;
   var Handled: Boolean);
+var AItem: ITranslationItem;
 begin
   acCopy.Enabled := (lvOrphaned.Selected <> nil)
     and ((lvOrphaned.Selected.Caption <> '') or (lvOrphaned.Selected.SubItems[0] <> ''));
+  AItem := SelectedItem;
+  acClear.Enabled := FAppServices.Orphans.Count > 0;
+  acRemove.Enabled := Assigned(AItem);
+  acPaste.Enabled := Assigned(AItem) and (AItem.Translation <> '');
+  acFindItem.Enabled := Assigned(AItem) and (AItem.Original <> '');
+  acFindNext.Enabled := acFindItem.Enabled;
 end;
 
 procedure TfrmOrphans.lvOrphanedChange(Sender: TObject; Item: TListItem;
   Change: TItemChange);
 begin
-  if (lvOrphaned.Selected <> nil) then
-    lblSection.Caption := '[' + FOrphans.Items[lvOrphaned.Selected.Index].Section + '] ' + FOrphans.Items[lvOrphaned.Selected.Index].Name 
+  if (SelectedItem <> nil) then
+    lblSection.Caption := '[' + SelectedItem.Section + '] ' + SelectedItem.Name
   else
     lblSection.Caption := '[]';
 end;
@@ -143,8 +172,8 @@ begin
   with TWideMemIniFile.Create(Filename) do
   try
     iError := 0;
-    for i := 0 to FOrphans.Count - 1 do
-      with FOrphans.Items[i] do
+    for i := 0 to FAppServices.Orphans.Count - 1 do
+      with FAppServices.Orphans.Items[i] do
         if Original <> '' then
           WriteString(Section, Original, Translation)
         else
@@ -162,21 +191,21 @@ begin
   if Assigned(FOnMerge) then
   begin
     FOnMerge(self);
-    lvOrphaned.Items.Count := FOrphans.Count;
+    lvOrphaned.Items.Count := FAppServices.Orphans.Count;
     lvOrphaned.Invalidate;
   end;
-  acMerge.Enabled := (FOrphans.Count > 0);
+  acMerge.Enabled := (FAppServices.Orphans.Count > 0);
   acSave.Enabled := acMerge.Enabled;
   lvOrphanedChange(nil, nil, ctState);
 end;
 
 procedure TfrmOrphans.lvOrphanedData(Sender: TObject; Item: TListItem);
 begin
-  if (Item <> nil) and (Item.Index >= 0) and (Item.Index < FOrphans.Count) then
-    begin
-      TTntListItem(Item).Caption := FOrphans.Items[Item.Index].Original;
-      TTntListItem(Item).SubItems.Add(FOrphans.Items[Item.Index].Translation);
-    end;
+  if (Item <> nil) and (Item.Index >= 0) and (Item.Index < FAppServices.Orphans.Count) then
+  begin
+    TTntListItem(Item).Caption := FAppServices.Orphans.Items[Item.Index].Original;
+    TTntListItem(Item).SubItems.Add(FAppServices.Orphans.Items[Item.Index].Translation);
+  end;
 end;
 
 procedure TfrmOrphans.acSaveExecute(Sender: TObject);
@@ -195,7 +224,91 @@ end;
 
 procedure TfrmOrphans.ShowError(Count: integer);
 begin
-  ErrMsg(WideFormat(SFmtSaveItemsNoName,[Count]), SErrorCaption);
+  ErrMsg(WideFormat(SFmtSaveItemsNoName, [Count]), SErrorCaption);
+end;
+
+procedure TfrmOrphans.acCloseExecute(Sender: TObject);
+begin
+  Close;
+end;
+
+procedure TfrmOrphans.acClearExecute(Sender: TObject);
+begin
+  lvOrphaned.Items.Count := 0;
+  FAppServices.Orphans.Clear;
+  lvOrphaned.Invalidate;
+end;
+
+procedure TfrmOrphans.acRemoveExecute(Sender: TObject);
+var i: integer;
+begin
+  i := FAppServices.Orphans.IndexOf(SelectedItem);
+  if i >= 0 then
+    FAppServices.Orphans.Delete(i);
+  lvOrphaned.Items.Count := FAppServices.Orphans.Count;
+  lvOrphaned.ItemIndex := i;
+  lvOrphaned.Invalidate;
+end;
+
+procedure TfrmOrphans.acPasteExecute(Sender: TObject);
+begin
+  if (SelectedItem <> nil) and (FAppServices.SelectedItem <> nil) then
+    FAppServices.SelectedItem.Translation := SelectedItem.Translation;
+end;
+
+procedure TfrmOrphans.acFindItemExecute(Sender: TObject);
+var
+  i: integer;
+  AItem: ITranslationItem;
+begin
+  if SelectedItem <> nil then
+  begin
+    AItem := SelectedItem;
+    for i := 0 to FAppServices.Items.Count - 1 do
+      if WideSameText(FAppServices.Items[i].Original, AItem.Original) then
+      begin
+        FAppServices.SelectedItem := FAppServices.Items[i];
+        Exit;
+      end;
+
+    InfoMsg(WideFormat(_(Application.MainForm.ClassName, SFmtTextNotFound), [AItem.Original]),
+      _(Application.MainForm.ClassName, SSearchFailCaption));
+  end;
+end;
+
+procedure TfrmOrphans.acFindNextExecute(Sender: TObject);
+var
+  i, j: integer;
+  AItem: ITranslationItem;
+begin
+  if SelectedItem <> nil then
+  begin
+    if FAppServices.SelectedItem <> nil then
+    begin
+      AItem := SelectedItem;
+      j := FAppServices.Items.IndexOf(FAppServices.SelectedItem);
+      if j < 0 then
+        Exit;
+      for i := j + 1 to FAppServices.Items.Count - 1 do
+        if WideSameText(FAppServices.Items[i].Original, AItem.Original) then
+        begin
+          FAppServices.SelectedItem := FAppServices.Items[i];
+          Exit;
+        end;
+      InfoMsg(WideFormat(_(Application.MainForm.ClassName, SFmtTextNotFound), [AItem.Original]),
+        _(Application.MainForm.ClassName, SSearchFailCaption));
+    end
+    else
+      acFindItem.Execute;
+  end;
+end;
+
+function TfrmOrphans.SelectedItem: ITranslationItem;
+begin
+  if lvOrphaned.Selected <> nil then
+    Result := FAppServices.Orphans[lvOrphaned.Selected.Index]
+  else
+    Result := nil;
 end;
 
 end.

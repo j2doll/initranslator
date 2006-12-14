@@ -65,20 +65,21 @@ type
     procedure acSyncExecute(Sender: TObject);
   private
     { Private declarations }
-    FAppServices: IApplicationServices;
     FListViewInfo: TListViewInfo;
     FItems: ITranslationItems;
     procedure LoadItems;
     procedure LoadSettings;
     procedure SaveSettings;
+    procedure DoTranslate;
   public
     { Public declarations }
-    class function Edit(const ApplicationServices: IApplicationServices; const Items: ITranslationItems): boolean;
+    class function Edit(const Items: ITranslationItems): boolean;
   end;
 
 implementation
 uses
-  TntWindows, TntSysUtils, CommonUtils, WideIniFiles, ToolKeyCheckEditFrm;
+  TntWindows, TntSysUtils, CommonUtils, WideIniFiles,
+  ToolKeyCheckEditFrm, ToolKeyCheckConsts;
 
 {$R *.DFM}
 const
@@ -145,17 +146,14 @@ end;
 
 { TfrmToolKeyCheck }
 
-class function TfrmToolKeyCheck.Edit(const ApplicationServices: IApplicationServices; const Items: ITranslationItems): boolean;
+class function TfrmToolKeyCheck.Edit(const Items: ITranslationItems): boolean;
 var
   frm: TfrmToolKeyCheck;
-  FAppHandle: Cardinal;
 begin
-  FAppHandle := Application.Handle;
-  Application.Handle := ApplicationServices.AppHandle;
   frm := self.Create(Application);
   try
+    frm.DoTranslate;
     frm.FItems := Items;
-    frm.FAppServices := ApplicationServices;
     frm.LoadSettings;
     frm.acUpdate.Execute;
     frm.ShowModal;
@@ -163,7 +161,6 @@ begin
     Result := true;
   finally
     frm.Free;
-    Application.Handle := FAppHandle;
   end;
 end;
 
@@ -351,7 +348,21 @@ begin
   if lvItems.Selected <> nil then
     AItem := ITranslationItem(lvItems.Selected.Data);
   if AItem <> nil then
-    FAppServices.SelectedItem := AItem;
+    GlobalAppServices.SelectedItem := AItem;
+end;
+
+procedure TfrmToolKeyCheck.DoTranslate;
+begin
+  Caption := Translate(SMainFormCaption);
+  lvItems.Columns[0].Caption := Translate(SOriginal);
+  lvItems.Columns[1].Caption := Translate(STranslation);
+  lvItems.Columns[2].Caption := Translate(SAccelKey);
+  lvItems.Columns[3].Caption := Translate(SAccessKey);
+  chkIgnoreEmpty.Caption := Translate(SIgnoreEmpty);
+  acUpdate.Caption := Translate(SUpdate);
+  acEdit.Caption := Translate(SEdit);
+  acClose.Caption := Translate(SClose);
+  acSync.Caption := Translate(SSync);
 end;
 
 end.

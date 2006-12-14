@@ -28,7 +28,8 @@ uses
   ToolKeyCheckFrm in 'ToolKeyCheckFrm.pas' {frmToolKeyCheck: TfrmToolKeyCheck},
   CommonUtils in '..\CommonUtils.pas',
   WideIniFiles in '..\WideIniFiles.pas',
-  ToolKeyCheckEditFrm in 'ToolKeyCheckEditFrm.pas' {frmToolKeyCheckEdit: TTntForm};
+  ToolKeyCheckEditFrm in 'ToolKeyCheckEditFrm.pas' {frmToolKeyCheckEdit: TTntForm},
+  ToolKeyCheckConsts in 'ToolKeyCheckConsts.pas';
 
 {$R *.res}
 function InstallPlugin(out ToolItems: IToolItems): HResult; stdcall;

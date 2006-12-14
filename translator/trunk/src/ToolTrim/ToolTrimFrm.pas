@@ -26,11 +26,11 @@ uses
 
 type
   TfrmToolTrim = class(TTntForm)
-    TntLabel1: TTntLabel;
+    lblTrimWhat: TTntLabel;
     edTrimWhat: TTntEdit;
-    TntLabel2: TTntLabel;
+    lblTrimWhere: TTntLabel;
     cbTrimWhere: TTntComboBox;
-    TntLabel3: TTntLabel;
+    lblTrimHow: TTntLabel;
     cbTrimHow: TTntComboBox;
     chkTrimWhitespace: TTntCheckBox;
     btnOK: TTntButton;
@@ -42,32 +42,39 @@ type
     procedure LoadSettings;
     procedure SaveSettings;
     procedure DoTrim;
+    procedure DoTranslate;
   public
     { Public declarations }
-    class function Execute(const ApplicationServices: IApplicationServices; const Items: ITranslationItems): boolean;
+    class function Execute(const Items: ITranslationItems): boolean;
   end;
 
 implementation
 uses
-  WideIniFiles;
+  ToolTrimConsts, WideIniFiles;
 
 {$R *.dfm}
 
 { TfrmTrim }
 
-class function TfrmToolTrim.Execute(const ApplicationServices: IApplicationServices; const Items: ITranslationItems): boolean;
+class function TfrmToolTrim.Execute(const Items: ITranslationItems): boolean;
 var
   frmTrim: TfrmToolTrim;
+  FAppHandle:Cardinal;
 begin
+  FAppHandle := Application.Handle;
+  Application.Handle := GlobalAppServices.AppHandle;
+
   frmTrim := self.Create(Application);
   try
     // frmTrim.Font := Application.MainForm.Font;
     frmTrim.FItems := Items;
+    frmTrim.DoTranslate;
     frmTrim.LoadSettings;
     Result := frmTrim.ShowModal = mrOK;
     frmTrim.SaveSettings;
   finally
     frmTrim.Free;
+    Application.Handle := FAppHandle;
   end;
 end;
 
@@ -152,6 +159,19 @@ begin
       end;
     end;
   end;
+end;
+
+procedure TfrmToolTrim.DoTranslate;
+begin
+  Caption := Translate(SFormCaption);
+  lblTrimWhat.Caption := Translate(STrimWhatLabel);
+  chkTrimWhitespace.Caption := Translate(STrimWhiteSpace);
+  lblTrimWhere.Caption := Translate(STrimWhereLabel);
+  cbTrimWhere.Items.Text := Translate(STrimWhereOptions);
+  lblTrimHow.Caption := Translate(STrimHowLabel);
+  cbTrimHow.Items.Text := Translate(STrimHowOptions);
+  btnOK.Caption := Translate(SOK);
+  btnCancel.Caption := Translate(SCancel);
 end;
 
 end.

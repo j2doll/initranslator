@@ -104,18 +104,22 @@ begin
     8:
       Name := SToolConsistencychkIgnoreAccelChar;
     9:
-      Name := SToolConsistencychkIgnoreAccelCharHint;
+      Name := SToolConsistencySynchronize;
     10:
-      Name := SToolConsistencytvItemsHint;
+      Name := SToolConsistencySynchronizeHint;
     11:
-      Name := SToolConsistencyUsethistranslation1;
+      Name := SToolConsistencychkIgnoreAccelCharHint;
     12:
-      Name := SToolConsistencyUsethistranslation1Hint;
+      Name := SToolConsistencytvItemsHint;
     13:
-      Name := SToolConsistencyEdit1;
+      Name := SToolConsistencyUsethistranslation1;
     14:
-      Name := SToolConsistencyEdit1Hint;
+      Name := SToolConsistencyUsethistranslation1Hint;
     15:
+      Name := SToolConsistencyEdit1;
+    16:
+      Name := SToolConsistencyEdit1Hint;
+    17:
       Name := SToolConsistencyIsConsistent;
   else
     Result := false;

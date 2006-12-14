@@ -568,6 +568,7 @@ Change log:
     type bugs).
 
 *)
+// $Id:$
 
 unit FastMM4;
 

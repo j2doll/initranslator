@@ -18,7 +18,7 @@ object frmToolTrim: TfrmToolTrim
     228)
   PixelsPerInch = 96
   TextHeight = 13
-  object TntLabel1: TTntLabel
+  object lblTrimWhat: TTntLabel
     Left = 8
     Top = 16
     Width = 51
@@ -26,7 +26,7 @@ object frmToolTrim: TfrmToolTrim
     Caption = 'Trim wh&at:'
     FocusControl = edTrimWhat
   end
-  object TntLabel2: TTntLabel
+  object lblTrimWhere: TTntLabel
     Left = 8
     Top = 88
     Width = 57
@@ -34,7 +34,7 @@ object frmToolTrim: TfrmToolTrim
     Caption = 'Trim wh&ere:'
     FocusControl = cbTrimWhere
   end
-  object TntLabel3: TTntLabel
+  object lblTrimHow: TTntLabel
     Left = 8
     Top = 136
     Width = 47

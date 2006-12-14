@@ -499,10 +499,10 @@ begin
     if Result <> '' then
       Result := DecodeStrings(Result)
     else
-      Result := Value;
+      Result := DecodeStrings(Value);
   end
   else
-    Result := Value;
+    Result := DecodeStrings(Value);
 end;
 
 procedure TAppLanguage.DoWriteObject(AnObject: TObject;

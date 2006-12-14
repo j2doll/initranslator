@@ -556,8 +556,8 @@ object frmMain: TfrmMain
         OnPopup = mnuPluginsPopup
         CaptionW = '&Plugins'
       end
-      object TBXSubmenuItem1: TSpTBXSubmenuItem
-        OnSelect = TBXSubmenuItem1Select
+      object mnuTools: TSpTBXSubmenuItem
+        OnPopup = mnuToolsPopup
         CaptionW = 'T&ools'
         object TBXItem10: TSpTBXItem
           Action = acToolsCustomize

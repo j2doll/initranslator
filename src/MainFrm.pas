@@ -315,7 +315,7 @@ type
     tbxSpellCheck: TSpTBXItem;
     acToolsCustomize: TTntAction;
     TBXItem10: TSpTBXItem;
-    TBXSubmenuItem1: TSpTBXSubmenuItem;
+    mnuTools: TSpTBXSubmenuItem;
     acNoRichEditTntAction: TTntAction;
     acDeleteItem: TTntAction;
     acEditItem: TTntAction;
@@ -431,8 +431,6 @@ type
     procedure acFullScreenExecute(Sender: TObject);
     procedure popEditPopup(Sender: TObject);
     procedure acToolsCustomizeExecute(Sender: TObject);
-    procedure TBXSubmenuItem1Select(Sender: TTBCustomItem;
-      Viewer: TTBItemViewer; Selecting: Boolean);
     procedure acAddItemExecute(Sender: TObject);
     procedure acEditItemExecute(Sender: TObject);
     procedure acDeleteItemExecute(Sender: TObject);
@@ -442,6 +440,7 @@ type
     procedure acDictEditExecute(Sender: TObject);
     procedure mnuPluginsPopup(Sender: TTBCustomItem; FromLink: Boolean);
     procedure acMakeConsistentExecute(Sender: TObject);
+    procedure mnuToolsPopup(Sender: TTBCustomItem; FromLink: Boolean);
   private
     { Private declarations }
     OpenOrigDlg, OpenTransDlg: TEncodingOpenDialog;
@@ -1766,6 +1765,7 @@ begin
     S := EncodeStrings(TAction(alMain.Actions[i]).Hint);
     ini.WriteString(ClassName, S, S);
   end;
+
   // write out all file plugins
   TfrmImportExport.GetStrings(GetPluginsFolder, ini);
 
@@ -1785,9 +1785,11 @@ end;
 
 procedure TfrmMain.DoAllowWriting(Sender, AnObject: TObject; const APropName: WideString; var ATranslate: boolean);
 begin
-  ATranslate := (AnObject <> lblViewDetails) and
-    (AnObject <> lvTranslateStrings.Columns[0]) and (AnObject <> lvTranslateStrings.Columns[1]) and
-    not ((AnObject is TTntComboBox) and (TTntComboBox(AnObject).Style = csDropDown));
+  ATranslate := (AnObject <> lblViewDetails)
+    and (AnObject <> lvTranslateStrings.Columns[0]) and (AnObject <> lvTranslateStrings.Columns[1])
+    and not ((AnObject is TTntComboBox) and (TTntComboBox(AnObject).Style = csDropDown));
+  if ATranslate and (AnObject is TSpTBXItem) then
+    ATranslate := not (TSpTBXItem(AnObject).Parent is TSpTBXThemeGroupItem);
 end;
 
 procedure TfrmMain.DoFindNext(Sender: TObject);
@@ -2407,6 +2409,10 @@ begin
   ScreenCursor(crAppStart);
   FApplicationServices := TApplicationServices.Create(self);
   GlobalApplicationServicesFunc := @InternalApplicationServicesFunc;
+  FTranslateFile := TTranslateFiles.Create;
+  FFindReplace := TFindReplace.Create(Self);
+  FDictionary := TDictionaryItems.Create;
+
   ClearBookmarks;
 
   GlobalLanguageFile.OnRead := DoReadObject;
@@ -2439,19 +2445,15 @@ begin
   GlobalLanguageFile.SkipClass(TProgressBar);
   GlobalLanguageFile.SkipClass(TTBXSeparatorItem);
   GlobalLanguageFile.SkipClass(TTBXComboBoxItem);
-
-  BuildExternalToolMenu(mnuPlugins);
   DragAcceptFiles(Handle, true);
   ToolbarFont.CharSet := DEFAULT_CHARSET;
-  FTranslateFile := TTranslateFiles.Create;
-  FFindReplace := TFindReplace.Create(Self);
-  FDictionary := TDictionaryItems.Create;
   SetLength(FFileMonitors, 3);
 
   LoadSettings(true);
+  BuildExternalToolMenu(mnuPlugins);
+
   HandleCommandLine;
   UpdateStatus;
-
   Windows.SetFocus(reTranslation.Handle);
   // strange bug here: form picks up "Show about box" hint (something to do with TBX maybe?)
   Hint := '';
@@ -2975,6 +2977,10 @@ begin
     begin
       WaitCursor;
       try
+        mnuPlugins.Clear; // let the plugins translate themselves!
+        while mnuTools.Count > 1 do
+          mnuTools.Delete(mnuTools.Count - 1); // tool items should not be translated
+
         RenameFile(FileName, FileName + '.bak');
         DeleteFile(FileName); // make sure there are no redundant items in the file
         GlobalLanguageFile.OnWriting := DoAllowWriting;
@@ -2992,6 +2998,8 @@ begin
             AForms[i].Free;
         end;
         DeleteFile(FileName + '.bak'); // remove backup
+        BuildToolMenu(mnuTools);
+        BuildExternalToolMenu(mnuPlugins);
       except
         // something went wrong, restore old file
         RenameFile(Filename + '.bak', Filename);
@@ -3465,7 +3473,7 @@ procedure TfrmMain.acViewOrphansExecute(Sender: TObject);
 begin
 //  lvTranslateStrings.Items.BeginUpdate;
   try
-    TfrmOrphans.Edit(FTranslateFile.Items, FTranslateFile.Orphans, (FCapabilitesSupported = 0) or (FCapabilitesSupported and CAP_ITEM_INSERT = CAP_ITEM_INSERT), DoMergeOrphans);
+    TfrmOrphans.Edit(GlobalApplicationServices, (FCapabilitesSupported = 0) or (FCapabilitesSupported and CAP_ITEM_INSERT = CAP_ITEM_INSERT), DoMergeOrphans);
     lvTranslateStrings.Items.Count := FTranslateFile.Items.Count;
   finally
 //    lvTranslateStrings.Items.EndUpdate;
@@ -3891,9 +3899,12 @@ var
   i: integer;
   E: TExternalToolItem;
 begin
-  FExternalToolItems := TExternalToolItems.Create(GetPluginsFolder);
+  if FExternalToolItems = nil then
+  begin
+    FExternalToolItems := TExternalToolItems.Create(GetPluginsFolder);
+    FExternalToolItems.InitAll();
+  end;
   Parent.Clear;
-  FExternalToolItems.InitAll();
   for i := 0 to FExternalToolItems.Count - 1 do
   begin
     E := FExternalToolItems[i];
@@ -3924,7 +3935,7 @@ begin
     if mnuPlugins[i].Visible then
       Inc(aVisibleCount);
   end;
-  mnuPlugins.Visible := aVisibleCount > 0;
+  // mnuPlugins.Visible := aVisibleCount > 0;
 end;
 
 function TfrmMain.MacroReplace(const AMacros: WideString): WideString;
@@ -4022,13 +4033,6 @@ end;
 procedure TfrmMain.DoTestToolClick(Sender: TObject; Tool: TToolItem);
 begin
   ExecuteTool(Tool);
-end;
-
-procedure TfrmMain.TBXSubmenuItem1Select(Sender: TTBCustomItem;
-  Viewer: TTBItemViewer; Selecting: Boolean);
-begin
-  if Selecting then
-    BuildToolMenu(Sender);
 end;
 
 procedure TfrmMain.GetSections(Strings: TTntStringlist);
@@ -4530,6 +4534,11 @@ procedure TfrmMain.AddUndo(const Item: ITranslationItem;
 begin
   FUndoList.Add(TTranslationUndoItem.Create(FTranslateFile.Items, Item),
     Description, UndoType);
+end;
+
+procedure TfrmMain.mnuToolsPopup(Sender: TTBCustomItem; FromLink: Boolean);
+begin
+  BuildToolMenu(Sender);
 end;
 
 end.

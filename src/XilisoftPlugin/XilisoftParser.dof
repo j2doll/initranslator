@@ -25,7 +25,7 @@ AutoIncBuild=0
 MajorVer=1
 MinorVer=9
 Release=0
-Build=1
+Build=42
 Debug=0
 PreRelease=0
 Special=0
@@ -36,7 +36,7 @@ CodePage=1251
 [Version Info Keys]
 CompanyName=Alexander Kornienko
 FileDescription=Xilisoft plugin for IniTranslator
-FileVersion=1.9.0.1
+FileVersion=1.9.0.42
 InternalName=
 LegalCopyright=Copyright (c) 2006 by Alexander Kornienko; all rights reserved
 LegalTrademarks=

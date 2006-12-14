@@ -286,6 +286,8 @@ begin
       frm.btnUpdate.Hint := ApplicationServices.Translate(SLocalizeSectionName, SToolConsistencybtnUpdateHint, SToolConsistencybtnUpdateHint);
       frm.chkIgnoreAccelChar.Caption := ApplicationServices.Translate(SLocalizeSectionName, SToolConsistencychkIgnoreAccelChar, SToolConsistencychkIgnoreAccelChar);
       frm.chkIgnoreAccelChar.Hint := ApplicationServices.Translate(SLocalizeSectionName, SToolConsistencychkIgnoreAccelCharHint, SToolConsistencychkIgnoreAccelCharHint);
+      frm.chkSynchronizeAccelChar.Caption := ApplicationServices.Translate(SLocalizeSectionName, SToolConsistencySynchronize, SToolConsistencySynchronize);
+      frm.chkSynchronizeAccelChar.Hint := ApplicationServices.Translate(SLocalizeSectionName, SToolConsistencySynchronizeHint, SToolConsistencySynchronizeHint);
       frm.Usethistranslation1.Caption := ApplicationServices.Translate(SLocalizeSectionName, SToolConsistencyUsethistranslation1, SToolConsistencyUsethistranslation1);
       frm.Usethistranslation1.Hint := ApplicationServices.Translate(SLocalizeSectionName, SToolConsistencyUsethistranslation1Hint, SToolConsistencyUsethistranslation1Hint);
       frm.Edit1.Caption := ApplicationServices.Translate(SLocalizeSectionName, SToolConsistencyEdit1, SToolConsistencyEdit1);

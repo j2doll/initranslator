@@ -31,10 +31,10 @@ type
       safecall;
   end;
 
-  TToolTrimPlugin = class(TInterfacedObject, IInterface, IToolItem)
+  TToolTrimPlugin = class(TInterfacedObject, IInterface, IToolItem, ILocalizable)
   private
-    FAppServices:IApplicationServices;
     { ILocalizable }
+    FIndex: integer;
   public
     function About: WideString; safecall;
     function DisplayName: WideString; safecall;
@@ -42,11 +42,15 @@ type
     function Icon: Cardinal; safecall;
     procedure Init(const ApplicationServices: IApplicationServices); safecall;
     function Status(const Items: ITranslationItems; const Orphans: ITranslationItems; const SelectedItem: ITranslationItem): Integer; safecall;
+    function GetString(out Section: WideString; out Name: WideString;
+      out Value: WideString): WordBool; safecall;
+
   end;
 
 implementation
 
-uses ToolTrimFrm, ToolTrimConsts;
+uses
+  ToolTrimFrm, ToolTrimConsts;
 
 { TToolTrimPlugins }
 
@@ -71,18 +75,47 @@ end;
 
 function TToolTrimPlugin.About: WideString;
 begin
-  Result := SToolTrimAbout;
+  Result := Translate(SToolTrimAbout);
 end;
 
 function TToolTrimPlugin.DisplayName: WideString;
 begin
-  Result := SToolTrimPluginDisplayName;
+  Result := Translate(SToolTrimPluginDisplayName);
 end;
 
 function TToolTrimPlugin.Execute(const Items, Orphans: ITranslationItems; var SelectedItem: ITranslationItem): HRESULT;
 begin
-  TfrmToolTrim.Execute(FAppServices, Items);
+  TfrmToolTrim.Execute(Items);
   Result := S_OK;
+end;
+
+function TToolTrimPlugin.GetString(out Section, Name,
+  Value: WideString): WordBool;
+begin
+  Result := true;
+  case FIndex of
+    0: Value := SToolTrimAbout;
+    1: Value := SToolTrimPluginDisplayName;
+    2: Value := SFormCaption;
+    3: Value := STrimWhatLabel;
+    4: Value := STrimWhereLabel;
+    5: Value := STrimHowLabel;
+    6: Value := STrimWhiteSpace;
+    7: Value := STrimWhereOptions;
+    8: Value := STrimHowOptions;
+    9: Value := SOK;
+    10: Value := SCancel;
+  else
+    Result := false;
+  end;
+  if Result then
+  begin
+    Section := SSectionName;
+    Name := Value;
+    Inc(FIndex);
+  end
+  else
+    FIndex := 0;
 end;
 
 function TToolTrimPlugin.Icon: Cardinal;
@@ -92,7 +125,7 @@ end;
 
 procedure TToolTrimPlugin.Init(const ApplicationServices: IApplicationServices);
 begin
-  FAppServices := ApplicationServices;
+  GlobalAppServices := ApplicationServices;
 end;
 
 function TToolTrimPlugin.Status(const Items,
@@ -105,5 +138,4 @@ begin
 end;
 
 end.
-
 

@@ -13,6 +13,7 @@ type
     function BeginUpdate: Integer; safecall;
     function EndUpdate: Integer; safecall;
     function GetAppHandle: Cardinal;
+    function GetMainFormHandle:Cardinal;
     function GetAppOption(const Section: WideString; const Name: WideString; const Default: WideString): WideString; safecall;
     function GetSelectedItem:ITranslationItem;
     procedure SetSelectedItem(const Value:ITranslationItem);
@@ -58,6 +59,11 @@ begin
   Result := FForm.GetAppHandle;
 end;
 
+function TApplicationServices.GetMainFormHandle: Cardinal;
+begin
+  Result := FForm.GetMainFormHandle;
+end;
+
 function TApplicationServices.GetAppOption(const Section, Name,
   Default: WideString): WideString;
 begin
@@ -83,6 +89,7 @@ function TApplicationServices.GetItems: ITranslationItems;
 begin
   Result := FForm.GetItems;
 end;
+
 
 function TApplicationServices.GetOrphans: ITranslationItems;
 begin

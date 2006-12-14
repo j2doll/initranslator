@@ -92,8 +92,36 @@ object frmToolPropertiesView: TfrmToolPropertiesView
     OwnerData = True
     ReadOnly = True
     RowSelect = True
+    PopupMenu = popListView
     TabOrder = 1
     ViewStyle = vsReport
     OnData = lvItemsData
+  end
+  object alMain: TTntActionList
+    Left = 184
+    Top = 96
+    object acSync: TTntAction
+      Caption = 'Select in main list'
+      ShortCut = 16416
+      OnExecute = acSyncExecute
+    end
+    object acClose: TTntAction
+      Caption = 'Close'
+      ShortCut = 27
+      OnExecute = acCloseExecute
+    end
+  end
+  object popListView: TTntPopupMenu
+    Left = 256
+    Top = 112
+    object Selectinmainlist1: TTntMenuItem
+      Action = acSync
+    end
+    object N1: TTntMenuItem
+      Caption = '-'
+    end
+    object Close1: TTntMenuItem
+      Action = acClose
+    end
   end
 end

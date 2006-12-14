@@ -573,6 +573,7 @@ type
     function GetItems: ITranslationItems;
     function GetOrphans: ITranslationItems;
     function GetAppHandle: Cardinal;
+    function GetMainFormHandle:Cardinal;
     function GetDictionaryItems: IDictionaryItems;
     function GetHeader: WideString;
     procedure SetHeader(const Value: WideString);
@@ -4363,6 +4364,11 @@ begin
   Result := Application.Handle;
 end;
 
+function TfrmMain.GetMainFormHandle: Cardinal;
+begin
+  Result := self.Handle;
+end;
+
 function TfrmMain.GetAppOption(const Section, Name,
   Default: WideString): WideString;
 begin
@@ -4538,7 +4544,7 @@ end;
 
 procedure TfrmMain.mnuToolsPopup(Sender: TTBCustomItem; FromLink: Boolean);
 begin
-  BuildToolMenu(Sender);
+//  BuildToolMenu(Sender);
 end;
 
 end.

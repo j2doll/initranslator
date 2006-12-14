@@ -5,7 +5,7 @@ interface
 uses
   Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms, TntForms,
   Dialogs, ComCtrls, TntComCtrls, StdCtrls, TntStdCtrls, ExtCtrls,
-  TntExtCtrls, TransIntf, Menus, TntMenus, ImgList;
+  TntExtCtrls, TransIntf, Menus, TntMenus, ImgList, ActnList, TntActnList;
 
 type
   TfrmToolTreeView = class(TTntForm)
@@ -22,29 +22,31 @@ type
     reOriginal: TTntRichEdit;
     lvView: TTntListView;
     popTreeview: TTntPopupMenu;
-    mnuPrevSection: TTntMenuItem;
-    mnuNextSection: TTntMenuItem;
     N1: TTntMenuItem;
-    mnuPrevUntranslated: TTntMenuItem;
-    mnuNextUntranslated: TTntMenuItem;
     N2: TTntMenuItem;
-    mnuMoveUp: TTntMenuItem;
-    mnuMoveDown: TTntMenuItem;
     ilTreeView: TImageList;
     pnlBottomRight: TTntPanel;
     lblTranslation: TTntLabel;
     reTranslation: TTntRichEdit;
+    alMain: TTntActionList;
+    acPrev: TTntAction;
+    acNext: TTntAction;
+    acPrevUntrans: TTntAction;
+    acNextUntrans: TTntAction;
+    acPrevSection: TTntAction;
+    acNextSection: TTntAction;
+    acClose: TTntAction;
+    Previous1: TTntMenuItem;
+    Next1: TTntMenuItem;
+    Previousuntranslated1: TTntMenuItem;
+    Nextuntranslated1: TTntMenuItem;
+    Previoussection1: TTntMenuItem;
+    Nextsection1: TTntMenuItem;
     procedure tvSectionsChanging(Sender: TObject; Node: TTreeNode;
       var AllowChange: Boolean);
     procedure lvViewDblClick(Sender: TObject);
     procedure tvSectionsCustomDrawItem(Sender: TCustomTreeView;
       Node: TTreeNode; State: TCustomDrawState; var DefaultDraw: Boolean);
-    procedure mnuNextUntranslatedClick(Sender: TObject);
-    procedure mnuPrevUntranslatedClick(Sender: TObject);
-    procedure mnuMoveUpClick(Sender: TObject);
-    procedure mnuMoveDownClick(Sender: TObject);
-    procedure mnuPrevSectionClick(Sender: TObject);
-    procedure mnuNextSectionClick(Sender: TObject);
     procedure tvSectionsGetImageIndex(Sender: TObject; Node: TTreeNode);
     procedure lvViewCustomDrawItem(Sender: TCustomListView;
       Item: TListItem; State: TCustomDrawState; var DefaultDraw: Boolean);
@@ -63,6 +65,13 @@ type
       Shift: TShiftState);
     procedure reTranslationKeyDown(Sender: TObject; var Key: Word;
       Shift: TShiftState);
+    procedure acPrevExecute(Sender: TObject);
+    procedure acNextExecute(Sender: TObject);
+    procedure acPrevUntransExecute(Sender: TObject);
+    procedure acNextUntransExecute(Sender: TObject);
+    procedure acPrevSectionExecute(Sender: TObject);
+    procedure acNextSectionExecute(Sender: TObject);
+    procedure acCloseExecute(Sender: TObject);
   private
     { Private declarations }
     procedure BuildTree(const Items: ITranslationItems; const SelectedItem: ITranslationItem);
@@ -311,116 +320,6 @@ begin
   end;
 end;
 
-procedure TfrmToolTreeView.mnuNextUntranslatedClick(Sender: TObject);
-var
-  N: TTntTreeNode;
-  I: ITranslationItem;
-begin
-  N := tvSections.Selected;
-  if N <> nil then
-    N := N.GetNext;
-  while N <> nil do
-  begin
-    if N.Data <> nil then
-    begin
-      I := ITranslationItem(N.Data);
-      if (I <> nil) and (not I.Translated) then
-      begin
-        tvSections.Selected := N;
-        Exit;
-      end;
-    end;
-    N := N.GetNext;
-  end;
-  ShowAtEndMsg;
-end;
-
-procedure TfrmToolTreeView.mnuPrevUntranslatedClick(Sender: TObject);
-var
-  N: TTntTreeNode;
-  I: ITranslationItem;
-begin
-  N := tvSections.Selected;
-  if N <> nil then
-    N := N.GetPrev;
-  while N <> nil do
-  begin
-    if N.Data <> nil then
-    begin
-      I := ITranslationItem(N.Data);
-      if (I <> nil) and (not I.Translated) then
-      begin
-        tvSections.Selected := N;
-        Exit;
-      end;
-    end;
-    N := N.GetPrev;
-  end;
-  ShowAtStartMsg;
-end;
-
-procedure TfrmToolTreeView.mnuMoveUpClick(Sender: TObject);
-begin
-  if (tvSections.Selected <> nil) and (tvSections.Selected.GetPrev <> nil) then
-  begin
-    tvSections.Selected := tvSections.Selected.GetPrev;
-    Exit;
-  end;
-  ShowAtStartMsg;
-end;
-
-procedure TfrmToolTreeView.mnuMoveDownClick(Sender: TObject);
-begin
-  if (tvSections.Selected <> nil) and (tvSections.Selected.GetNext <> nil) then
-  begin
-    tvSections.Selected := tvSections.Selected.GetNext;
-    Exit;
-  end;
-  ShowAtEndMsg;
-end;
-
-procedure TfrmToolTreeView.mnuPrevSectionClick(Sender: TObject);
-var
-  N: TTntTreeNode;
-begin
-  N := tvSections.Selected;
-  if N <> nil then
-    N := N.GetPrev;
-  while N <> nil do
-  begin
-    if N.Data = nil then
-    begin
-      N.MakeVisible;
-      N.Expand(false);
-      tvSections.Selected := N;
-      Exit;
-    end;
-    N := N.GetPrev;
-  end;
-  ShowAtStartMsg;
-end;
-
-procedure TfrmToolTreeView.mnuNextSectionClick(Sender: TObject);
-var
-  N: TTntTreeNode;
-begin
-  N := tvSections.Selected;
-  if N <> nil then
-    N := N.GetNext;
-  while N <> nil do
-  begin
-    if N.Data = nil then
-    begin
-      N.MakeVisible;
-      N.Expand(false);
-      tvSections.Selected := N;
-      Exit;
-    end;
-    N := N.GetNext;
-  end;
-  ShowAtEndMsg;
-end;
-
 procedure TfrmToolTreeView.tvSectionsGetImageIndex(Sender: TObject;
   Node: TTreeNode);
 var I: ITranslationItem;
@@ -549,6 +448,121 @@ procedure TfrmToolTreeView.reTranslationKeyDown(Sender: TObject;
 begin
   if Key = VK_RETURN then
     Key := 0;
+end;
+
+procedure TfrmToolTreeView.acPrevExecute(Sender: TObject);
+begin
+  if (tvSections.Selected <> nil) and (tvSections.Selected.GetPrev <> nil) then
+  begin
+    tvSections.Selected := tvSections.Selected.GetPrev;
+    Exit;
+  end;
+  ShowAtStartMsg;
+end;
+
+procedure TfrmToolTreeView.acNextExecute(Sender: TObject);
+begin
+  if (tvSections.Selected <> nil) and (tvSections.Selected.GetNext <> nil) then
+  begin
+    tvSections.Selected := tvSections.Selected.GetNext;
+    Exit;
+  end;
+  ShowAtEndMsg;
+end;
+
+procedure TfrmToolTreeView.acPrevUntransExecute(Sender: TObject);
+var
+  N: TTntTreeNode;
+  I: ITranslationItem;
+begin
+  N := tvSections.Selected;
+  if N <> nil then
+    N := N.GetPrev;
+  while N <> nil do
+  begin
+    if N.Data <> nil then
+    begin
+      I := ITranslationItem(N.Data);
+      if (I <> nil) and (not I.Translated) then
+      begin
+        tvSections.Selected := N;
+        Exit;
+      end;
+    end;
+    N := N.GetPrev;
+  end;
+  ShowAtStartMsg;
+end;
+
+procedure TfrmToolTreeView.acNextUntransExecute(Sender: TObject);
+var
+  N: TTntTreeNode;
+  I: ITranslationItem;
+begin
+  N := tvSections.Selected;
+  if N <> nil then
+    N := N.GetNext;
+  while N <> nil do
+  begin
+    if N.Data <> nil then
+    begin
+      I := ITranslationItem(N.Data);
+      if (I <> nil) and (not I.Translated) then
+      begin
+        tvSections.Selected := N;
+        Exit;
+      end;
+    end;
+    N := N.GetNext;
+  end;
+  ShowAtEndMsg;
+end;
+
+procedure TfrmToolTreeView.acPrevSectionExecute(Sender: TObject);
+var
+  N: TTntTreeNode;
+begin
+  N := tvSections.Selected;
+  if N <> nil then
+    N := N.GetPrev;
+  while N <> nil do
+  begin
+    if N.Data = nil then
+    begin
+      N.MakeVisible;
+      N.Expand(false);
+      tvSections.Selected := N;
+      Exit;
+    end;
+    N := N.GetPrev;
+  end;
+  ShowAtStartMsg;
+end;
+
+procedure TfrmToolTreeView.acNextSectionExecute(Sender: TObject);
+var
+  N: TTntTreeNode;
+begin
+  N := tvSections.Selected;
+  if N <> nil then
+    N := N.GetNext;
+  while N <> nil do
+  begin
+    if N.Data = nil then
+    begin
+      N.MakeVisible;
+      N.Expand(false);
+      tvSections.Selected := N;
+      Exit;
+    end;
+    N := N.GetNext;
+  end;
+  ShowAtEndMsg;
+end;
+
+procedure TfrmToolTreeView.acCloseExecute(Sender: TObject);
+begin
+  Close;
 end;
 
 end.

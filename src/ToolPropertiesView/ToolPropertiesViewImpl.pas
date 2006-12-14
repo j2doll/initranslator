@@ -31,9 +31,8 @@ type
 
   TToolPropertiesViewPlugin = class(TInterfacedObject, IInterface, IToolItem)
   private
-    FOldAppHandle:Cardinal;
+    FAppServices:IApplicationServices;
   public
-
     function About: WideString; safecall;
     function DisplayName: WideString; safecall;
     function Execute(const Items: ITranslationItems;
@@ -44,12 +43,11 @@ type
     function Status(const Items: ITranslationItems;
       const Orphans: ITranslationItems;
       const SelectedItem: ITranslationItem): Integer; safecall;
-    destructor Destroy; override;
   end;
 
 implementation
 uses
-  Forms, ToolPropertiesViewFrm;
+  ToolPropertiesViewFrm;
 
 { TToolPropertiesViewPlugins }
 
@@ -77,12 +75,6 @@ begin
   Result := 'Plugin to display all properties of the translation items';
 end;
 
-destructor TToolPropertiesViewPlugin.Destroy;
-begin
-  if FOldAppHandle <> 0 then
-    Application.Handle := FOldAppHandle;
-  inherited Destroy;
-end;
 
 function TToolPropertiesViewPlugin.DisplayName: WideString;
 begin
@@ -92,7 +84,7 @@ end;
 function TToolPropertiesViewPlugin.Execute(const Items,
   Orphans: ITranslationItems; var SelectedItem: ITranslationItem): HRESULT;
 begin
-  if TfrmToolPropertiesView.Execute(Items, Orphans, SelectedItem) then
+  if TfrmToolPropertiesView.Execute(FAppServices, SelectedItem) then
     Result := S_OK
   else
     Result := S_FALSE;
@@ -105,9 +97,7 @@ end;
 
 procedure TToolPropertiesViewPlugin.Init(const ApplicationServices: IApplicationServices);
 begin
-  if FOldAppHandle = 0 then
-    FOldAppHandle := Application.Handle;
-  Application.Handle := ApplicationServices.AppHandle;
+  FAppServices := ApplicationServices;
 end;
 
 function TToolPropertiesViewPlugin.Status(const Items,

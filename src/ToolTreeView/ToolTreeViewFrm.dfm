@@ -1,6 +1,6 @@
 object frmToolTreeView: TfrmToolTreeView
-  Left = 559
-  Top = 284
+  Left = 494
+  Top = 220
   Width = 644
   Height = 483
   ActiveControl = tvSections
@@ -268,41 +268,29 @@ object frmToolTreeView: TfrmToolTreeView
   object popTreeview: TTntPopupMenu
     Left = 72
     Top = 56
-    object mnuMoveUp: TTntMenuItem
-      Caption = 'Previous'
-      ShortCut = 38
-      OnClick = mnuMoveUpClick
+    object Previous1: TTntMenuItem
+      Action = acPrev
     end
-    object mnuMoveDown: TTntMenuItem
-      Caption = 'Next'
-      ShortCut = 40
-      OnClick = mnuMoveDownClick
+    object Next1: TTntMenuItem
+      Action = acNext
     end
     object N2: TTntMenuItem
       Caption = '-'
     end
-    object mnuPrevUntranslated: TTntMenuItem
-      Caption = 'Previous untranslated'
-      ShortCut = 16422
-      OnClick = mnuPrevUntranslatedClick
+    object Previousuntranslated1: TTntMenuItem
+      Action = acPrevUntrans
     end
-    object mnuNextUntranslated: TTntMenuItem
-      Caption = 'Next untranslated'
-      ShortCut = 16424
-      OnClick = mnuNextUntranslatedClick
+    object Nextuntranslated1: TTntMenuItem
+      Action = acNextUntrans
     end
     object N1: TTntMenuItem
       Caption = '-'
     end
-    object mnuPrevSection: TTntMenuItem
-      Caption = 'Previous section'
-      ShortCut = 16417
-      OnClick = mnuPrevSectionClick
+    object Previoussection1: TTntMenuItem
+      Action = acPrevSection
     end
-    object mnuNextSection: TTntMenuItem
-      Caption = 'Next section'
-      ShortCut = 16418
-      OnClick = mnuNextSectionClick
+    object Nextsection1: TTntMenuItem
+      Action = acNextSection
     end
   end
   object ilTreeView: TImageList
@@ -579,5 +567,44 @@ object frmToolTreeView: TfrmToolTreeView
       C000C000E0070001E0010001E00F0001E001C001F01F0001F0038003F83F0003
       FC0F200FFFFF80FFFFFFE9FFFFFFC1FF00000000000000000000000000000000
       000000000000}
+  end
+  object alMain: TTntActionList
+    Left = 88
+    Top = 104
+    object acPrev: TTntAction
+      Caption = 'Previous'
+      ShortCut = 38
+      OnExecute = acPrevExecute
+    end
+    object acNext: TTntAction
+      Caption = 'Next'
+      ShortCut = 40
+      OnExecute = acNextExecute
+    end
+    object acPrevUntrans: TTntAction
+      Caption = 'Previous untranslated'
+      ShortCut = 16422
+      OnExecute = acPrevUntransExecute
+    end
+    object acNextUntrans: TTntAction
+      Caption = 'Next untranslated'
+      ShortCut = 16424
+      OnExecute = acNextUntransExecute
+    end
+    object acPrevSection: TTntAction
+      Caption = 'Previous section'
+      ShortCut = 16417
+      OnExecute = acPrevSectionExecute
+    end
+    object acNextSection: TTntAction
+      Caption = 'Next section'
+      ShortCut = 16418
+      OnExecute = acNextSectionExecute
+    end
+    object acClose: TTntAction
+      Caption = 'Close'
+      ShortCut = 27
+      OnExecute = acCloseExecute
+    end
   end
 end

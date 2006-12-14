@@ -230,6 +230,7 @@ type
     function GetItems: ITranslationItems;
     function GetOrphans: ITranslationItems;
     function GetAppHandle: Cardinal;
+    function GetMainFormHandle: Cardinal;
     function GetDictionaryItems: IDictionaryItems;
     function GetHeader: WideString;
     procedure SetHeader(const Value: WideString);
@@ -251,6 +252,7 @@ type
     property SelectedItem:ITranslationItem read GetSelectedItem write SetSelectedItem;
     property Dictionary: IDictionaryItems read GetDictionaryItems;
     property AppHandle: Cardinal read GetAppHandle;
+    property MainFormHandle: Cardinal read GetMainFormHandle;
     property Header: WideString read GetHeader write SetHeader;
     property Footer: WideString read GetFooter write SetFooter;
 

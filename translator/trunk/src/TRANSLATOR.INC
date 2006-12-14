@@ -5,7 +5,7 @@
 // define this to use TBX pre 2.2 beta
 {$DEFINE USEOLDTBX}
 // define this to use the FastMM4 memory manager
-{.$DEFINE USE_FASTMM4}
+{$DEFINE USE_FASTMM4}
 
 // defines for various Delphi/Kylix versions
 {$IFDEF WIN32}

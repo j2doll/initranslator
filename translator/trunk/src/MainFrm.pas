@@ -481,6 +481,7 @@ type
     function CheckOrphans: boolean;
     procedure LoadSettings(FirstLoad: boolean);
     procedure SaveSettings;
+    function CloseApp: boolean;
     procedure LoadTranslate;
     function LoadOriginal(const FileName: WideString; Encoding: TEncoding): TEncoding;
     function LoadTranslation(const FileName: WideString; Encoding: TEncoding): TEncoding;
@@ -499,9 +500,10 @@ type
     procedure LoadDictionary(const FileName: WideString);
     procedure SaveDictionary(const FileName: WideString);
     procedure HandleCommandLine;
+    // performs a command
     // returns false if the application should be terminated
     function ProcessCommand(const ACommand: WideString): boolean;
-    // lods a file with commands and processes them
+    // lods a file with commands and calls ProcessCommand for each row
     procedure ProcessCommands(const CommandFile: WideString);
     procedure DoMonitoredFileChange(Sender: TObject; const FileName: WideString; var AContinue, AReset: boolean);
     procedure DoThreadTerminate(Sender: TObject);
@@ -791,6 +793,8 @@ begin
   end;
 end;
 
+
+
 function TfrmMain.ProcessCommand(const ACommand: WideString): boolean;
 var
   tmp, tmp2: WideString;
@@ -873,7 +877,7 @@ begin
   begin
     WaitCursor;
     FCommandProcessor := true;
-    ShowWindow(Application.Handle, SW_MINIMIZE);
+    ShowWindow(Application.Handle, SW_HIDE);
     SendMessage(Handle, WM_SETREDRAW, 0, 0);
     try
       S := TTntStringlist.Create;
@@ -882,6 +886,7 @@ begin
         for i := 0 to S.Count - 1 do
           if not ProcessCommand(S[i]) then
           begin
+            CloseApp;
             Application.Terminate;
             Halt(0); // Close is not fast enough
             Exit; // this will skip the ShowWindow below
@@ -893,8 +898,8 @@ begin
       FCommandProcessor := false;
     end;
     lvTranslateStrings.Items.Count := FTranslateFile.Items.Count;
-    ShowWindow(Application.Handle, SW_RESTORE);
-    ShowWindow(Handle, SW_RESTORE);
+    ShowWindow(Application.Handle, SW_SHOW);
+    ShowWindow(Handle, SW_SHOW);
     SendMessage(Handle, WM_SETREDRAW, 1, 0);
   end;
 end;
@@ -2127,7 +2132,7 @@ end;
 function TfrmMain.CheckDictModified: boolean;
 begin
   Result := true;
-  if FDictionary.Modified then
+  if not FCommandProcessor and FDictionary.Modified then
   begin
     case YesNoCancel(_(ClassName, SSaveDictPrompt), _(ClassName, SConfirmCaption)) of
       IDYES:
@@ -2144,7 +2149,7 @@ end;
 
 function TfrmMain.CheckOrphans: boolean;
 begin
-  if FTranslateFile.Orphans.Count > 0 then
+  if not FCommandProcessor and (FTranslateFile.Orphans.Count > 0) then
     Result := YesNo(_(ClassName, SConfirmRemoveOrphans),
       _(ClassName, SConfirmDelete))
   else
@@ -2460,13 +2465,12 @@ begin
   Hint := '';
 end;
 
-procedure TfrmMain.FormCloseQuery(Sender: TObject; var CanClose: boolean);
+function TfrmMain.CloseApp:boolean;
 var
   i: integer;
 begin
-  WaitCursor;
-  CanClose := CheckModified and CheckDictModified;
-  if not CanClose then
+  Result := CheckModified and CheckDictModified;
+  if not Result then
     Exit;
   if acFullScreen.Checked then
     acFullScreen.Execute;
@@ -2486,6 +2490,12 @@ begin
       FFileMonitors[i].Free;
     end;
   FApplicationServices := nil;
+end;
+
+procedure TfrmMain.FormCloseQuery(Sender: TObject; var CanClose: boolean);
+begin
+  WaitCursor;
+  CanClose := CloseApp;
 end;
 
 procedure TfrmMain.lvTranslateStringsChange(Sender: TObject;
@@ -4544,7 +4554,7 @@ end;
 
 procedure TfrmMain.mnuToolsPopup(Sender: TTBCustomItem; FromLink: Boolean);
 begin
-//  BuildToolMenu(Sender);
+  BuildToolMenu(Sender);
 end;
 
 end.

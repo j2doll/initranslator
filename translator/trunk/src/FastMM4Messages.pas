@@ -7,6 +7,7 @@ English translation by Pierre le Riche.
 }
 
 unit FastMM4Messages;
+// $Id:$
 
 interface
 

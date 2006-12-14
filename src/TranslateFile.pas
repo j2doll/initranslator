@@ -517,6 +517,7 @@ begin
   FItems := nil;
   FOrphans.Clear;
   FOrphans := nil;
+  FCommentChars.Free;
   inherited;
 end;
 

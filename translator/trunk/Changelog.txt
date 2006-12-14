@@ -1,5 +1,37 @@
 Ini Translator Changelog
 ========================
+2006-12-14:
+Translator:
+- Memory leak removed
+- Don't show dialogs when CommandProcessor is running
+- Minor updates to tool plugins
+- FastMM4 units added
+FinalBuilder:
+- No need to load and save variables in FB5: use persistent variables instead
+ToolKeyCheck:
+- new unit with strings
+- svn:keywords property added
+
+2006-12-13:
+Translator:
+- Updated language files
+- Fix so tool plugin items are translated correctly
+- New actions for orphan dialog: clear, remove, find
+ToolConsistency:
+- New strings
+ToolKeyCheck:
+- implements ILocalizable
+ToolTrim:
+- implements ILocalizable
+XiliSoftParser:
+- reset counter when there are no more translations
+FinalBuilder:
+- Missing projects added
+- Updated tool project paths
+ToolTreeView, ToolListEdit, ToolConsistency:
+- Handle ENTER and ESCAPE better
+- Use action list
+
 2006-12-11:
 - Trim removed from main app
 - Trim now its own tool plugin

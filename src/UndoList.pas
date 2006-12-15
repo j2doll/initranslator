@@ -23,10 +23,7 @@ uses
   SysUtils, Classes;
 
 type
-  TUndoData = class(TObject)
-  protected
-    FreeObject: boolean; // set to true if you want the item auto-freed
-  end;
+  TUndoData = class(TObject);
 
   TUndoItem = class;
 
@@ -93,18 +90,23 @@ begin
 end;
 
 procedure TUndoItem.Clear;
-var i: integer;
+var
+  i: integer;
+  AItem:TUndoItem;
 begin
   if FItems <> nil then
   begin
     for i := 0 to FItems.Count - 1 do
-      TUndoItem(FItems[i]).Free;
+    begin
+      AItem := TUndoItem(FItems[i]);
+      FItems[i] := nil;
+      FreeAndNil(AItem);
+    end;
     FItems.Clear;
   end;
 end;
 
-constructor TUndoItem.Create(Data: TUndoData; Description: WideString;
-  UndoType: integer);
+constructor TUndoItem.Create(Data: TUndoData; Description: WideString; UndoType: integer);
 begin
   inherited Create;
   self.Data := Data;
@@ -122,8 +124,7 @@ destructor TUndoItem.Destroy;
 begin
   Clear;
   FreeAndNil(FItems);
-  if Assigned(FData) and FData.FreeObject then
-    FreeAndNil(FData);
+  FreeAndNil(FData);
   inherited Destroy;
 end;
 
@@ -144,8 +145,10 @@ end;
 
 procedure TUndoList.Add(Data: TUndoData; Description: WideString;
   UndoType: integer);
+var AItem:TUndoItem;
 begin
-  InternalAdd(TUndoItem.Create(Data, Description, UndoType));
+  AItem := TUndoItem.Create(Data, Description, UndoType);
+  InternalAdd(AItem);
 end;
 
 procedure TUndoList.BeginGroup(Description: WideString);
@@ -168,12 +171,18 @@ begin
 end;
 
 procedure TUndoList.Clear;
-var i: integer;
+var
+  i: integer;
+  AItem:TUndoItem;
 begin
   if not Updating and Assigned(FItems) then
   begin
     for i := 0 to FItems.Count - 1 do
-      TUndoItem(FItems[i]).Free;
+    begin
+      AItem := TUndoItem(FItems[i]);
+      FItems[i] := nil;
+      FreeAndNil(AItem);
+    end;
     FItems.Clear;
   end;
 end;
@@ -198,7 +207,7 @@ begin
   FUpdateCount := 0;
   Clear;
   FreeAndNil(FItems);
-  inherited;
+  inherited Destroy;
 end;
 
 procedure TUndoList.EndGroup;
@@ -230,7 +239,9 @@ begin
 end;
 
 procedure TUndoList.Undo;
-var i: integer;
+var
+  i: integer;
+  AItem:TUndoItem;
 begin
   if not Updating and Assigned(FOnUndo) and (Current <> nil) then
   begin
@@ -243,8 +254,10 @@ begin
     end
     else
     begin
-      FOnUndo(self, Current);
-      FItems.Remove(Current);
+      AItem := Current;
+      FOnUndo(self, AItem);
+      FItems.Remove(AItem);
+      FreeAndNil(AItem);
     end;
   end;
 end;

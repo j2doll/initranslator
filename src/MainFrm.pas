@@ -610,7 +610,7 @@ var
 
 implementation
 uses
-  ShellAPI, StrUtils, TntWindows, TntClipbrd, TntWideStrUtils,
+  ShellAPI, TntWindows, TntClipbrd, TntWideStrUtils,
 {$IFDEF USEADDICTSPELLCHECKER}
   ad3ParseEngine,
 {$ENDIF USEADDICTSPELLCHECKER}
@@ -636,7 +636,6 @@ constructor TTranslationUndoItem.Create(const Items: ITranslationItems;
   const Item: ITranslationItem);
 begin
   inherited Create;
-  FreeObject := true;
   FItem := Items.CreateItem;
   FItem.Index := Item.Index;
   FItem.Translated := Item.Translated;
@@ -802,6 +801,7 @@ var
 begin
   Result := true;
   i := Pos(WideChar(' '), ACommand);
+
   if i > 0 then
   begin
     tmp := trim(Copy(ACommand, 1, i - 1));
@@ -831,28 +831,40 @@ begin
     if (tmp2 = '') then
       ErrMsg('SAVETRANS called with empty Filename', _(ClassName, SErrorCaption))
     else
+    begin
+      ForceDirectories(ExtractFilePath(tmp2));
       SaveTranslation(tmp2, feAnsi);
+    end;
   end
   else if WideSameText('SAVETRANSUC', tmp) then
   begin
     if (tmp2 = '') then
       ErrMsg('SAVETRANSUC called with empty Filename', _(ClassName, SErrorCaption))
     else
+    begin
+      ForceDirectories(ExtractFilePath(tmp2));
       SaveTranslation(tmp2, feUnicode);
+    end;
   end
   else if WideSameText('SAVETRANSUTF8', tmp) then
   begin
     if (tmp2 = '') then
       ErrMsg('SAVETRANSUTF8 called with empty Filename', _(ClassName, SErrorCaption))
     else
+    begin
+      ForceDirectories(ExtractFilePath(tmp2));
       SaveTranslation(tmp2, feUTF8);
+    end;
   end
   else if WideSameText('SAVEDICT', tmp) then
   begin
     if (tmp2 = '') then
       ErrMsg('SAVEDICT called with empty Filename', _(ClassName, SErrorCaption))
     else
+    begin
+      ForceDirectories(ExtractFilePath(tmp2));
       SaveDictionary(tmp2);
+    end;
   end
   else if WideSameText('CREATEDICT', tmp) then
     CreateDict(false)
@@ -1322,7 +1334,6 @@ begin
 end;
 
 procedure TfrmMain.SetModified(const Value: boolean);
-
   procedure ClearModified;
   var i: integer;
   begin
@@ -2472,6 +2483,7 @@ begin
   Result := CheckModified and CheckDictModified;
   if not Result then
     Exit;
+  lvTranslateStrings.Items.Count := 0;  // clear
   if acFullScreen.Checked then
     acFullScreen.Execute;
   DragAcceptFiles(Handle, false);
@@ -2723,6 +2735,9 @@ end;
 
 procedure TfrmMain.acUndoExecute(Sender: TObject);
 begin
+//  if (ActiveControl is TRichEdit) and TRichEdit(ActiveControl).CanUndo then
+//    TRichEdit(ActiveControl).Undo
+//  else
   if FUndoList.CanUndo then
     FUndoList.Undo
   else if ActiveControl is TWinControl then
@@ -2926,7 +2941,7 @@ begin
   // we ignore most properties here
   while (StartIndex >= 0) and (StartIndex < FTranslateFile.Items.Count) do
   begin
-    if AnsiStartsText(FindString, FTranslateFile.Items[StartIndex].Original) then
+    if WideStartsText(FindString, FTranslateFile.Items[StartIndex].Original) then
     begin
       Index := StartIndex;
       Exit;
@@ -3065,6 +3080,7 @@ end;
 procedure TfrmMain.reTranslationKeyDown(Sender: TObject; var Key: Word;
   Shift: TShiftState);
 begin
+  inherited;
   if Key = VK_RETURN then
   begin
     if GlobalAppOptions.SaveOnReturn then
@@ -3316,26 +3332,28 @@ end;
 
 procedure TfrmMain.acReplaceEverywhereExecute(Sender: TObject);
 var
+  AItem:ITranslationItem;
   FOrig, FTrans: WideString;
   i: integer;
+  FModified:boolean;
 begin
   SaveEditChanges;
-  with SelectedListItem do
-  begin
-    FOrig := FTranslateFile.Items[Index].Original;
-    FTrans := FTranslateFile.Items[Index].Translation;
-  end;
+  FModified := false;
+  AItem := SelectedItem;
+  FOrig := AItem.Original;
+  FTrans := AItem.Translation;
   for i := 0 to FTranslateFile.Items.Count - 1 do
   begin
-    if WideSameText(FOrig, FTranslateFile.Items[i].Original) then
+    if (AItem <> FTranslateFile.Items[i]) and WideSameText(FOrig, FTranslateFile.Items[i].Original) then
     begin
       AddUndo(FTranslateFile.Items[i], _(ClassName, SUndoEdit), cUndoEdit);
       FTranslateFile.Items[i].Translation := FTrans;
       FTranslateFile.Items[i].Translated := FTrans <> '';
-      Modified := true;
+      FModified := true;
     end;
   end;
   lvTranslateStrings.Refresh;
+  Modified := Modified or FModified;
 end;
 
 procedure TfrmMain.acMakeConsistentExecute(Sender: TObject);
@@ -3933,9 +3951,8 @@ end;
 
 procedure TfrmMain.mnuPluginsPopup(Sender: TTBCustomItem; FromLink: Boolean);
 var
-  i, AStatus, aVisibleCount: integer;
+  i, AStatus: integer;
 begin
-  aVisibleCount := 0;
   for i := 0 to mnuPlugins.Count - 1 do
   begin
     with TExternalToolItem(mnuPlugins[i].Tag) do
@@ -3943,10 +3960,7 @@ begin
     mnuPlugins[i].Enabled := AStatus and TOOL_ENABLED = TOOL_ENABLED;
     mnuPlugins[i].Checked := AStatus and TOOL_CHECKED = TOOL_CHECKED;
     mnuPlugins[i].Visible := AStatus and TOOL_VISIBLE = TOOL_VISIBLE;
-    if mnuPlugins[i].Visible then
-      Inc(aVisibleCount);
   end;
-  // mnuPlugins.Visible := aVisibleCount > 0;
 end;
 
 function TfrmMain.MacroReplace(const AMacros: WideString): WideString;
@@ -4557,5 +4571,9 @@ begin
   BuildToolMenu(Sender);
 end;
 
+
+
+
 end.
+
 

@@ -57,6 +57,9 @@ function AutoDetectCharacterSet(Stream: TStream): TEncoding; overload;
 function AutoDetectCharacterSet(const Filename: WideString): TEncoding; overload;
 function FileCharSetToEncoding(CharSet: TTntStreamCharSet): TEncoding;
 
+function WideStartsText(const ASubText, AText: WideString): Boolean;
+function WideEndsText(const ASubText, AText: WideString): Boolean;
+
 // for Delphi 6
 function ValueFromIndex(S: TTntStrings; i: integer): WideString; overload;
 function ValueFromIndex(S: TStrings; i: integer): AnsiString; overload;
@@ -79,7 +82,7 @@ var
 implementation
 uses
   Windows, Forms, Dialogs, Math, Registry, StdCtrls, ExtCtrls, TypInfo,
-  WideIniFiles, Menus, Consts, ShFolder,
+  WideIniFiles, Menus, Consts, ShFolder, StrUtils, 
   CommonUtils, ShlObj, ActiveX, TbxUxThemes,
   TntWindows, TntSysUtils, TntWideStrUtils;
 
@@ -100,7 +103,8 @@ begin
 end;
 
 function AutoDetectCharacterSet(const Filename: WideString): TEncoding;
-var F: TTntFileStream;
+var
+  F: TTntFileStream;
 begin
   F := TTntFileStream.Create(Filename, fmOpenRead or fmShareDenyNone);
   try
@@ -118,6 +122,46 @@ begin
     csUtf8: Result := feUtf8;
   else
     Result := feAnsi;
+  end;
+end;
+
+function WideStartsText(const ASubText, AText: WideString): Boolean;
+var
+  L, L2: Integer;
+begin
+  if not Win32PlatformIsUnicode then
+    Result := AnsiStartsText(ASubText, AText)
+  else
+  begin
+    L := Length(ASubText);
+    L2 := Length(AText);
+    if L > L2 then
+      Result := False
+    else
+      Result := CompareStringW(LOCALE_USER_DEFAULT, NORM_IGNORECASE,
+        PWideChar(AText), L, PWideChar(ASubText), L) = 2;
+  end;
+end;
+
+function WideEndsText(const ASubText, AText: WideString): Boolean;
+var
+  SubTextLocation: Integer;
+  P: PWideChar;
+begin
+  if not Win32PlatformIsUnicode then
+    Result := AnsiEndsText(ASubText, AText)
+  else
+  begin
+    SubTextLocation := Length(AText) - Length(ASubText) + 1;
+    if (SubTextLocation > 0) and (ASubText <> '') then
+    begin
+      P := PWIdeChar(AText);
+      Inc(P, SubTextLocation);
+      Result := CompareStringW(LOCALE_USER_DEFAULT, NORM_IGNORECASE, P, -1,
+        PWideChar(ASubText), -1) = 2;
+    end
+    else
+      Result := False;
   end;
 end;
 
@@ -146,7 +190,8 @@ end;
 function SHGetFolderPathW2(hwnd: HWND; csidl: Integer; hToken: THandle; dwFlags: DWord; pszPath: PWideChar): HRESULT; stdcall; external 'SHFolder.dll' name 'SHGetFolderPathW';
 
 function WideSHGetFolderPath(hwnd: HWND; csidl: Integer; hToken: THandle; dwFlags: DWord; pszPath: PWideChar): HRESULT;
-var AnsiBuff: AnsiString;
+var
+  AnsiBuff: AnsiString;
 begin
   if Win32PlatformIsUnicode then
     Result := SHGetFolderPathW2(hwnd, csidl, hToken, dwFlags, pszPath)
@@ -203,7 +248,8 @@ begin
 end;
 
 function WideUpperCaseFirst(const S: WideString): WideString;
-var i: integer;
+var
+  i: integer;
 begin
   if S = '' then
     Result := ''
@@ -320,7 +366,8 @@ begin
 end;
 
 function GetCurrentYear: Integer;
-var Y, M, D: Word;
+var
+  Y, M, D: Word;
 begin
   DecodeDate(Date, Y, M, D);
   Result := Y;
@@ -500,7 +547,8 @@ begin
 end;
 
 function ValueFromIndex(S: TStrings; i: integer): AnsiString;
-var tmp: TTntStringlist;
+var
+  tmp: TTntStringlist;
 begin
   tmp := TTntStringlist.Create;
   try
@@ -549,7 +597,8 @@ type
   TAccessComboBox = class(TCustomComboBox);
 
 procedure SetXPComboStyle(AControl: TControl);
-var i: integer;
+var
+  i: integer;
 begin
   if (AControl is TWinControl) then
     for i := 0 to TWinControl(AControl).ControlCount - 1 do
@@ -595,7 +644,8 @@ begin
 end;
 
 function GetClipboardString(const Section, Name, Value: WideString): WideString;
-var S: TTntStringlist;
+var
+  S: TTntStringlist;
 begin
   S := TTntStringlist.Create;
   try
@@ -609,7 +659,8 @@ begin
 end;
 
 function ParseClipboardString(const Str: WideString; out Section, Name, Value: WideString): boolean;
-var S: TTntStringlist;
+var
+  S: TTntStringlist;
 begin
   S := TTntStringlist.Create;
   try

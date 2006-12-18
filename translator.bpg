@@ -9,9 +9,9 @@ MAKE = $(ROOT)\bin\make.exe -$(MAKEFLAGS) -f$**
 DCC = $(ROOT)\bin\dcc32.exe $**
 BRCC = $(ROOT)\bin\brcc32.exe $**
 #------------------------------------------------------------------------------
-PROJECTS = FoxitParser.dll IBForumsParser.dll MozillaDTDParser.dll \
-  MozillaPropsParser.dll MSDictBuild.exe MSDictParser.dll MsTermBuild.exe \
-  OlegParser.dll OOGSIParser.dll PHPNukeParser.dll PHPParser.dll \
+PROJECTS = FoxitParser.dll IBForumsParser.dll KeePassParser.dll \
+  MozillaDTDParser.dll MozillaPropsParser.dll MSDictBuild.exe MSDictParser.dll \
+  MsTermBuild.exe OlegParser.dll OOGSIParser.dll PHPNukeParser.dll PHPParser.dll \
   PolyGlotParser.dll POParser.dll SciTEParser.dll TMXParser.dll \
   ToolConsistency.dll ToolKeyCheck.dll ToolListEdit.dll ToolPropertiesView.dll \
   ToolTreeView.dll ToolTrim.dll XLIFFParser.dll XilisoftParser.dll SDFSplit.exe \
@@ -93,6 +93,9 @@ ToolTrim.dll: src\ToolTrim\ToolTrim.dpr
   $(DCC)
 
 SDFSplit.exe: src\SDFSplit\SDFSplit.dpr
+  $(DCC)
+
+KeePassParser.dll: src\KeePassPlugin\KeePassParser.dpr
   $(DCC)
 
 

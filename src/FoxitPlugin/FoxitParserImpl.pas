@@ -65,13 +65,13 @@ var
 
 { TFoxitParser }
 
-function XMLEncode(const S:WideString):WideString;
+function XMLEncode(const S: WideString): WideString;
 begin
-  Result := Tnt_WideStringReplace(S, '&', '&amp;',[rfReplaceAll]);
-  Result := Tnt_WideStringReplace(Result, '"', '&quot;',[rfReplaceAll]);
-  Result := Tnt_WideStringReplace(Result, '''', '&apos;',[rfReplaceAll]);
-  Result := Tnt_WideStringReplace(Result, '<', '&lt;',[rfReplaceAll]);
-  Result := Tnt_WideStringReplace(Result, '>', '&gt;',[rfReplaceAll]);
+  Result := Tnt_WideStringReplace(S, '&', '&amp;', [rfReplaceAll]);
+  Result := Tnt_WideStringReplace(Result, '"', '&quot;', [rfReplaceAll]);
+  Result := Tnt_WideStringReplace(Result, '''', '&apos;', [rfReplaceAll]);
+  Result := Tnt_WideStringReplace(Result, '<', '&lt;', [rfReplaceAll]);
+  Result := Tnt_WideStringReplace(Result, '>', '&gt;', [rfReplaceAll]);
 end;
 
 procedure TFoxitParser.BuildPreview(Items: ITranslationItems; Strings: TTntStrings);
@@ -246,9 +246,9 @@ begin
     LoadSettings;
     if TfrmDualImport.Execute(FOrigFile, FTransFile, cFoxitImportTitle, cFoxitFilter, '.', 'xml') then
     begin
-      FXMLImport := TXMLDocument.Create(nil);
+      FXMLImport := TXMLDocument.Create(FOrigFile);
       try
-        FXMLImport.LoadFromFile(FOrigFile);
+        // FXMLImport.LoadFromFile(FOrigFile);
         // TODO: load original items
         if FXMLImport.DocumentElement <> nil then
         begin
@@ -258,6 +258,8 @@ begin
           ImportOriginalItem(cStringItem);
         end;
         FXMLImport.SaveToXML(XML); // save the imported *original* data in a string - this will automatically adjust the translation so new items are added and old items are discarded
+
+        FXMLImport := TXMLDocument.Create(FTransFile);
         FXMLImport.LoadFromFile(FTransFile);
         if FXMLImport.DocumentElement <> nil then
         begin
@@ -268,6 +270,7 @@ begin
         end;
         SaveSettings;
         Items.Modified := false;
+        Orphans.Modified := false;
         Result := S_OK;
       finally
         FXMLImport := nil;

@@ -45,7 +45,9 @@ function strBetween(const S: WideString; StartChar, EndChar: WideChar): WideStri
 function StrDefault(const S, Default: WideString): WideString;
 
 function MyWideDequotedStr(const S: WideString; Quote: WideChar): WideString;
+function AutoWideDequotedStr(const S: WideString):WideString;
 function MyWideQuotedStr(const S: WideString; Quote: WideChar): WideString;
+
 function GetMinimizedFilename(const AFilename: WideString; Minimize: boolean): WideString;
 function DoubleQuoteString(const S: WideString; CheckString: boolean = true): WideString;
 
@@ -67,6 +69,15 @@ implementation
 uses
   Forms, Dialogs, Math, Registry, StrUtils,
   TntWindows, TntSysUtils, TntWideStrUtils;
+
+function AutoWideDequotedStr(const S: WideString):WideString;
+begin
+  if (Length(S) > 1) and (S[1] in [WideChar(''''), WideChar('"')]) and
+    (S[Length(S)] in [WideChar(''''), WideChar('"')]) then
+    Result := MyWideDequotedStr(S, S[1])
+  else
+    Result := S;
+end;
 
 function MyWideDequotedStr(const S: WideString; Quote: WideChar): WideString;
 // var LText:PWideChar;

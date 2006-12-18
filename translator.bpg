@@ -14,7 +14,7 @@ PROJECTS = FoxitParser.dll IBForumsParser.dll MozillaDTDParser.dll \
   OlegParser.dll OOGSIParser.dll PHPNukeParser.dll PHPParser.dll \
   PolyGlotParser.dll POParser.dll SciTEParser.dll TMXParser.dll \
   ToolConsistency.dll ToolKeyCheck.dll ToolListEdit.dll ToolPropertiesView.dll \
-  ToolTreeView.dll ToolTrim.dll XLIFFParser.dll XilisoftParser.dll \
+  ToolTreeView.dll ToolTrim.dll XLIFFParser.dll XilisoftParser.dll SDFSplit.exe \
   translator.exe
 #------------------------------------------------------------------------------
 default: $(PROJECTS)
@@ -90,6 +90,9 @@ ToolKeyCheck.dll: src\ToolKeyCheck\ToolKeyCheck.dpr
   $(DCC)
 
 ToolTrim.dll: src\ToolTrim\ToolTrim.dpr
+  $(DCC)
+
+SDFSplit.exe: src\SDFSplit\SDFSplit.dpr
   $(DCC)
 
 

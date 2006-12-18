@@ -316,6 +316,8 @@ begin
   begin
     if DoImport(Items, Orphans, FOrigFile, FTransFile) then
     begin
+      Items.Modified := false;
+      Orphans.Modified := false;
       SaveSettings;
       Result := S_OK;
     end

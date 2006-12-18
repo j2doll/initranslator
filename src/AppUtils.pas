@@ -82,7 +82,7 @@ var
 implementation
 uses
   Windows, Forms, Dialogs, Math, Registry, StdCtrls, ExtCtrls, TypInfo,
-  WideIniFiles, Menus, Consts, ShFolder, StrUtils, 
+  WideIniFiles, Menus, Consts, ShFolder, StrUtils,
   CommonUtils, ShlObj, ActiveX, TbxUxThemes,
   TntWindows, TntSysUtils, TntWideStrUtils;
 
@@ -126,42 +126,26 @@ begin
 end;
 
 function WideStartsText(const ASubText, AText: WideString): Boolean;
-var
-  L, L2: Integer;
 begin
-  if not Win32PlatformIsUnicode then
-    Result := AnsiStartsText(ASubText, AText)
+  if (ASubText <> '') and (AText <> '') then
+    Result := WideSameText(ASubText, Copy(AText, 1, Length(ASubText)))
   else
-  begin
-    L := Length(ASubText);
-    L2 := Length(AText);
-    if L > L2 then
-      Result := False
-    else
-      Result := CompareStringW(LOCALE_USER_DEFAULT, NORM_IGNORECASE,
-        PWideChar(AText), L, PWideChar(ASubText), L) = 2;
-  end;
+    Result := false;
 end;
 
 function WideEndsText(const ASubText, AText: WideString): Boolean;
 var
-  SubTextLocation: Integer;
-  P: PWideChar;
+  L: integer;
 begin
   if not Win32PlatformIsUnicode then
     Result := AnsiEndsText(ASubText, AText)
   else
   begin
-    SubTextLocation := Length(AText) - Length(ASubText) + 1;
-    if (SubTextLocation > 0) and (ASubText <> '') then
-    begin
-      P := PWIdeChar(AText);
-      Inc(P, SubTextLocation);
-      Result := CompareStringW(LOCALE_USER_DEFAULT, NORM_IGNORECASE, P, -1,
-        PWideChar(ASubText), -1) = 2;
-    end
+    L := Length(AText) - Length(ASubText);
+    if (L > 0) and (ASubText <> '') then
+      Result := WideSameText(ASubText, Copy(AText, L + 1, MaxInt))
     else
-      Result := False;
+      Result := false;
   end;
 end;
 

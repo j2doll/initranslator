@@ -110,7 +110,8 @@ resourcestring
   SConfirmRemoveOrphans = 'Saving the translation now will remove any orphaned items from the file. Continue anyway?';
   SFmtOrphansCount = '%d orphan(s)';
   SImportedPromptToExport = 'The current items seems to have been imported. Do you want to export them instead?';
-  SUndo = 'Nothing to undo';
+  SUndoText = 'Undo text';
+  SNothingToUndo = 'Nothing to undo';
   SUndoAdd = 'Undo add';
   SUndoEdit = 'Undo edit';
   SUndoDelete = 'Undo delete';

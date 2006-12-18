@@ -31,7 +31,7 @@ type
     procedure LoadSettings;
     procedure SaveSettings;
     procedure BuildPreview(Items: ITranslationItems; Strings: TTntStrings);
-    function Translate(const Value:WideString):WideString;
+    function Translate(const Value: WideString): WideString;
   public
     constructor Create;
     destructor Destroy; override;
@@ -159,6 +159,8 @@ end;
 
 function TMozillaDTDParser.ImportItems(const Items,
   Orphans: ITranslationItems): HRESULT;
+const
+  cEntity:PWideChar = '<!ENTITY ';
 var
   S: TTntStringlist;
   tmp, tmp2, cmt: WideString;
@@ -180,9 +182,9 @@ begin
         S.LoadFromFile(FOrigFile);
         for i := 0 to S.Count - 1 do
         begin
-          if Pos('<!ENTITY', S[i]) = 1 then
+          if Pos(cEntity, S[i]) = 1 then
           begin
-            tmp := Copy(S[i], Length('<!ENTITY ') + 1, MaxInt);
+            tmp := Copy(S[i], Length(cEntity) + 1, MaxInt);
             tmp2 := trim(Copy(tmp, 1, Pos('"', tmp) - 1));
 //            j := Items.IndexOf(cSectionName, tmp2);
 //            if j > -1 then
@@ -206,9 +208,9 @@ begin
         cmt := '';
         for i := 0 to S.Count - 1 do
         begin
-          if Pos('<!ENTITY', S[i]) = 1 then
+          if Pos(cEntity, S[i]) = 1 then
           begin
-            tmp := Copy(S[i], Length('<!ENTITY ') + 1, MaxInt);
+            tmp := Copy(S[i], Length(cEntity) + 1, MaxInt);
             tmp2 := trim(Copy(tmp, 1, Pos('"', tmp) - 1));
             j := Items.IndexOf(cSectionName, tmp2, true);
             if j > -1 then
@@ -229,6 +231,8 @@ begin
         Items.Sort := stIndex;
         S.Free;
       end;
+      Items.Modified := false;
+      Orphans.Modified := false;
       SaveSettings;
       Result := S_OK;
     end;

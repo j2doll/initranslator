@@ -326,7 +326,6 @@ type
     TBXItem12: TSpTBXItem;
     acSaveOriginal: TTntAction;
     TBXItem13: TSpTBXItem;
-    TBXItem14: TSpTBXItem;
     acConfigSuspicious: TTntAction;
     TBXItem15: TSpTBXItem;
     acDictEdit: TTntAction;
@@ -1770,7 +1769,8 @@ begin
   ini.WriteString(ClassName, EncodeStrings(SConfirmRemoveOrphans), EncodeStrings(SConfirmRemoveOrphans));
   ini.WriteString(ClassName, EncodeStrings(SFmtOrphansCount), EncodeStrings(SFmtOrphansCount));
   ini.WriteString(ClassName, EncodeStrings(SImportedPromptToExport), EncodeStrings(SImportedPromptToExport));
-  ini.WriteString(ClassName, EncodeStrings(SUndo), EncodeStrings(SUndo));
+  ini.WriteString(ClassName, EncodeStrings(SUndoText), EncodeStrings(SUndoText));
+  ini.WriteString(ClassName, EncodeStrings(SNothingToUndo), EncodeStrings(SNothingToUndo));
   ini.WriteString(ClassName, EncodeStrings(SUndoAdd), EncodeStrings(SUndoAdd));
   ini.WriteString(ClassName, EncodeStrings(SUndoEdit), EncodeStrings(SUndoEdit));
   ini.WriteString(ClassName, EncodeStrings(SUndoDelete), EncodeStrings(SUndoDelete));
@@ -2232,11 +2232,13 @@ begin
   else
     Index := -1;
   ACount := FTranslateFile.Items.Count;
-  acUndo.Enabled := FUndoList.CanUndo; //  reTranslation.Focused and Modified;
-  if acUndo.Enabled then
+  acUndo.Enabled := FUndoList.CanUndo or reTranslation.CanUndo; //  reTranslation.Focused and Modified;
+  if acUndo.Enabled and (FUndoList.Current <> nil) then
     acUndo.Caption := _(ClassName, FUndoList.Current.Description)
+  else if reTranslation.CanUndo then
+    acUndo.Caption := _(ClassName, SUndoText)
   else
-    acUndo.Caption := _(ClassName, SUndo);
+    acUndo.Caption := _(ClassName, SNothingToUndo);
 
   acDictSave.Enabled := FDictionary.Count > 0;
   acDictEdit.Enabled := acDictSave.Enabled;
@@ -2735,11 +2737,13 @@ end;
 
 procedure TfrmMain.acUndoExecute(Sender: TObject);
 begin
-//  if (ActiveControl is TRichEdit) and TRichEdit(ActiveControl).CanUndo then
-//    TRichEdit(ActiveControl).Undo
-//  else
   if FUndoList.CanUndo then
     FUndoList.Undo
+  else if reTranslation.CanUndo then
+  begin
+    reTranslation.Undo;
+    reTranslation.Modified := reTranslation.CanUndo;
+  end
   else if ActiveControl is TWinControl then
     SendMessage(TWinControl(ActiveControl).Handle, WM_UNDO, 0, 0);
 end;
@@ -4546,6 +4550,7 @@ begin
           ItemNew.PostData := ItemOrig.PostData;
           ItemNew.Modified := ItemOrig.Modified;
           SelectedItem := ItemNew;
+          reTranslation.Modified := false;
         end;
       end;
     cUndoDelete: // an item was deleted, recreate it

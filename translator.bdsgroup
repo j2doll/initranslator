@@ -26,12 +26,14 @@
       <Projects Name="SciTEParser.dll">src\SciTEPlugin\SciTEParser.bdsproj</Projects>
       <Projects Name="TMXParser.dll">src\TMXPlugin\TMXParser.bdsproj</Projects>
       <Projects Name="ToolConsistency.dll">src\ToolConsistency\ToolConsistency.bdsproj</Projects>
+      <Projects Name="ToolKeyCheck.dll">src\ToolKeyCheck\ToolKeyCheck.bdsproj</Projects>
       <Projects Name="ToolListEdit.dll">src\ToolListEdit\ToolListEdit.bdsproj</Projects>
       <Projects Name="ToolPropertiesView.dll">src\ToolPropertiesView\ToolPropertiesView.bdsproj</Projects>
       <Projects Name="ToolTreeView.dll">src\ToolTreeView\ToolTreeView.bdsproj</Projects>
+      <Projects Name="ToolTrim.dll">src\ToolTrim\ToolTrim.bdsproj</Projects>
       <Projects Name="XilisoftParser.dll">src\XilisoftPlugin\XilisoftParser.bdsproj</Projects>
       <Projects Name="XLIFFParser.dll">src\XLIFFPlugin\XLIFFParser.bdsproj</Projects>
-      <Projects Name="Targets">translator.exe FoxitParser.dll IBForumsParser.dll MozillaDTDParser.dll MozillaPropsParser.dll MSDictBuild.exe MSDictParser.dll MsTermBuild.exe OlegParser.dll OOGSIParser.dll PHPNukeParser.dll PHPParser.dll PolyGlotParser.dll POParser.dll SciTEParser.dll TMXParser.dll ToolConsistency.dll ToolListEdit.dll ToolPropertiesView.dll ToolTreeView.dll XilisoftParser.dll XLIFFParser.dll</Projects>
+      <Projects Name="Targets">translator.exe FoxitParser.dll IBForumsParser.dll MozillaDTDParser.dll MozillaPropsParser.dll MSDictBuild.exe MSDictParser.dll MsTermBuild.exe OlegParser.dll OOGSIParser.dll PHPNukeParser.dll PHPParser.dll PolyGlotParser.dll POParser.dll SciTEParser.dll TMXParser.dll ToolConsistency.dll ToolKeyCheck.dll ToolListEdit.dll ToolPropertiesView.dll ToolTreeView.dll ToolTrim.dll XilisoftParser.dll XLIFFParser.dll</Projects>
     </Projects>
     <Dependencies/>
   </Default.Personality>

@@ -37,6 +37,7 @@ type
     btnBrowse2: TTntButton;
     OpenDialog2: TTntOpenDialog;
     chkOriginalIsDual: TTntCheckBox;
+    chkSearchTranslation: TTntCheckBox;
     procedure CheckChange(Sender: TObject);
     procedure btnBrowseClick(Sender: TObject);
     procedure btnBrowse2Click(Sender: TObject);
@@ -48,7 +49,7 @@ type
   public
     { Public declarations }
     class function Execute(var AOriginalFile, ATranslationFile: string;
-      var OrigIsDualLine:boolean; const ACaption, Filter, InitialDir, DefaultExt: string): boolean;
+      var OrigIsDualLine, SearchTrans:boolean; const ACaption, Filter, InitialDir, DefaultExt: string): boolean;
   end;
 
 implementation
@@ -60,7 +61,7 @@ uses
 { TfrmImport }
 
 class function TfrmImport.Execute(var AOriginalFile, ATranslationFile: string;
-  var OrigIsDualLine:boolean; const ACaption, Filter, InitialDir, DefaultExt: string): boolean;
+  var OrigIsDualLine, SearchTrans:boolean; const ACaption, Filter, InitialDir, DefaultExt: string): boolean;
 var
   frmImport: TfrmImport;
 begin
@@ -78,6 +79,7 @@ begin
     edFilename.Text := AOriginalFile;
     edFilename2.Text := ATranslationFile;
     chkOriginalIsDual.Checked := OrigIsDualLine;
+    chkSearchTranslation.Checked := SearchTrans;
     CheckChange(nil);
     Result := (ShowModal = mrOk) and FileExists(edFilename.Text);
     if Result then
@@ -85,6 +87,7 @@ begin
       AOriginalFile := edFilename.Text;
       ATranslationFile := edFilename2.Text;
       OrigIsDualLine := chkOriginalIsDual.Checked;
+      SearchTrans := chkSearchTranslation.Checked;
     end;
     SaveSettings;
   finally
@@ -182,6 +185,7 @@ begin
   Label2.Enabled := not chkOriginalIsDual.Checked;
   edFilename2.Enabled := Label2.Enabled;
   btnBrowse2.Enabled := Label2.Enabled;
+  chkSearchTranslation.Enabled := Label2.Enabled;
 end;
 
 end.

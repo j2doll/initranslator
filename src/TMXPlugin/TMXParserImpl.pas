@@ -53,8 +53,8 @@ const
   cTMXFilter = 'TMX Files (*.tmx)|*.tmx|All files (*.*)|*.*';
   cTMXImportTitle = 'Import from TMX file';
   cTMXExportTitle = 'Export to TMX file';
-  cOriginalItem:WideString = '!!!!Original%d!!!!';
-  cTranslationItem:WideString = '!!!!Translation%d!!!!';
+  cOriginalItem: WideString = '!!!!Original%d!!!!';
+  cTranslationItem: WideString = '!!!!Translation%d!!!!';
 
 var
   XML: WideString = '';
@@ -65,7 +65,7 @@ procedure TTMXParser.BuildPreview(Items: ITranslationItems; Strings: TTntStrings
 var
   i: integer;
   TI: ItranslationItem;
-  S:WideString;
+  S: WideString;
 begin
   if XML = '' then
     raise Exception.Create('Building TMX file from scratch not supported. Please import from a TMX file before trying to export.');
@@ -166,7 +166,7 @@ var
       and WideSameText(Attributes.getNamedItem('xml:lang').nodeValue, FTransLang);
   end;
 
-  function RemoveTags(const S:WideString):WideString;
+  function RemoveTags(const S: WideString): WideString;
   begin
     Result := Tnt_WideStringReplace(S, '<seg>', '', [rfReplaceAll]);
     Result := Tnt_WideStringReplace(Result, '</seg>', '', [rfReplaceAll]);
@@ -201,7 +201,7 @@ begin
                   TI.Original := RemoveTags((ChildNode as IDOMNodeEx).xml);
                   Node.removeChild(ChildNode);
                   ChildNode := FXMLImport.DOMDocument.createTextNode('');
-                  ChildNode.nodeValue := WideFormat(cOriginalItem,[TI.Index]);
+                  ChildNode.nodeValue := WideFormat(cOriginalItem, [TI.Index]);
                   Node.appendChild(ChildNode);
                   Include(FFoundItems, fiOriginal);
                 end;
@@ -216,7 +216,7 @@ begin
                   TI.Translation := RemoveTags((ChildNode as IDOMNodeEx).xml);
                   Node.removeChild(ChildNode);
                   ChildNode := FXMLImport.DOMDocument.createTextNode('');
-                  ChildNode.nodeValue := WideFormat(cTranslationItem,[TI.Index]);
+                  ChildNode.nodeValue := WideFormat(cTranslationItem, [TI.Index]);
                   Node.appendChild(ChildNode);
                   Include(FFoundItems, fiTranslation);
                 end;
@@ -232,6 +232,7 @@ begin
         end;
         SaveSettings;
         Items.Modified := false;
+        Orphans.Modified := false;
         FXMLImport.SaveToXML(XML); // save the imported data in a string
         Result := S_OK;
       finally

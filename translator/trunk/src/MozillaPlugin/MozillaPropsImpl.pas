@@ -210,6 +210,8 @@ begin
       finally
         S.Free;
       end;
+      Items.Modified := false;
+      Orphans.Modified := false;
       SaveSettings;
       Result := S_OK;
     end;

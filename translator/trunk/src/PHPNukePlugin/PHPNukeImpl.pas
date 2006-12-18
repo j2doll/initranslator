@@ -26,8 +26,8 @@ type
   TPHPNukeParser = class(TInterfacedObject, IUnknown, IFileParser, ILocalizable)
   private
     FOldHandle: Cardinal;
-    FAppServices:IApplicationServices;
-    FCount:integer;
+    FAppServices: IApplicationServices;
+    FCount: integer;
     FOrigFile, FTransFile: string;
     procedure LoadSettings;
     procedure SaveSettings;
@@ -114,7 +114,7 @@ var
   i: integer;
   //  FOldSort: TTranslateSortType;
 
-  function DefaultStr(const S: WideString; QuoteChar:WideChar): WideString;
+  function DefaultStr(const S: WideString; QuoteChar: WideChar): WideString;
   begin
     if QuoteChar = WideChar(#0) then
     begin
@@ -125,7 +125,7 @@ var
       Result := S;
   end;
 
-  function HasContinuation(Index:integer):boolean;
+  function HasContinuation(Index: integer): boolean;
   begin
     Result := (Index < Items.Count - 1) and AnsiStartsText('.', trim(Items[Index + 1].TransComments));
   end;
@@ -145,9 +145,9 @@ begin
         if trim(Items[i].TransComments) <> '' then
           S.Add(Items[i].TransComments);
         if HasContinuation(i) then
-          S.Add(Format('DEFINE("%s",%s', [Items[i].Name, DefaultStr(Items[i].Translation, Items[i].TransQuote)]))
+          S.Add(Format('define("%s",%s', [Items[i].Name, DefaultStr(Items[i].Translation, Items[i].TransQuote)]))
         else
-          S.Add(Format('DEFINE("%s",%s);', [Items[i].Name, DefaultStr(Items[i].Translation, Items[i].TransQuote)]));
+          S.Add(Format('define("%s",%s);', [Items[i].Name, DefaultStr(Items[i].Translation, Items[i].TransQuote)]));
       end;
       S.AddStrings(FFooter);
       if TfrmExport.Execute(FAppServices, FTransFile, Translate(cPHPNukeExportTitle), Translate(cPHPNukeFilter), '.', 'php', S) then
@@ -184,17 +184,35 @@ begin
   Name := Value;
 end;
 
+function WideStartsText(const ASubText, AText: WideString): boolean;
+begin
+  if (ASubText <> '') and (AText <> '') then
+    Result := WideSameText(ASubText, Copy(AText, 1, Length(ASubText)))
+  else
+    Result := false;
+end;
+
+function WideEndsText(const ASubText, AText: WideString): boolean;
+var L: integer;
+begin
+  L := Length(AText) - Length(ASubText);
+  if (L > 0) and (ASubText <> '') then
+    Result := WideSameText(ASubText, Copy(AText, L + 1, MaxInt))
+  else
+    Result := false;
+end;
+
 function TPHPNukeParser.ImportItems(const Items, Orphans: ITranslationItems): HRESULT;
 var
+  T: ITranslationItem;
   S: TTntStringlist;
   Cmt: string;
-//  HeaderComplete: boolean;
   i: integer;
 
-  procedure ParseLine(const S, Cmt: WideString; const Items: ITranslationItems; IsTranslation: boolean);
+  function ParseLine(const S, Cmt: WideString; const Items: ITranslationItems; IsTranslation: boolean): ITranslationItem;
   var
-    T: ITranslationItem;
-    AName, AText, tmp: string;
+    AName, AText, tmp: WideString;
+    P: PWideChar;
     i: integer;
   begin
     // handle phpNuke as well as Joomla files:
@@ -209,42 +227,57 @@ var
     // . 'Text'
     // . 'Text3');
 
-    tmp := Copy(S, Pos('"', S) + 1, MaxInt);
-    if tmp = '' then
-      tmp := Copy(S, Pos('''', S) + 1, MaxInt);
-    AName := Copy(tmp, 1, Pos('"', tmp) - 1);
-    if AName = '' then
-      AName := Copy(tmp, 1, Pos('''', tmp) - 1);
+    P := PWideChar(S);
+    while not (P^ in [WideChar(#0), WideChar('('), WideChar('.'), WideChar('"'), WideChar('''')]) do
+      Inc(P);
+    if P^ = WideChar('(') then
+      Inc(P);
+    tmp := P;
 
+    AName := trim(Copy(tmp, 1, Pos(',', tmp) - 1));
     AText := trim(Copy(tmp, Pos(',', tmp) + 1, MaxInt));
 
-    if AnsiEndsText(');',AText) then
+    if WideEndsText(');', AText) then
       SetLength(AText, Length(AText) - 2);
     if not IsTranslation then
     begin
-      T := Items.Add;
-      T.Name := AName;
-      T.Original := AText;
-      T.Section := cSectionName;
-      T.OrigComments := Cmt;
+      Result := Items.Add;
+      Result.Name := AutoWideDequotedStr(AName);
+      Result.Original := AutoWideDequotedStr(AText);
+      Result.Section := cSectionName;
+      Result.OrigComments := Cmt;
     end
     else
     begin
-      i := Items.IndexOf(cSectionName, AName);
+      i := Items.IndexOf(cSectionName, AutoWideDequotedStr(AName));
       if i > -1 then
       begin
-        T := Items[i];
-        if T <> nil then
+        Result := Items[i];
+        if Result <> nil then
         begin
-          T.Translation := AText;
-          T.Translated := T.Translation <> '';
-          T.TransComments := Cmt;
+          Result.Translation := AutoWideDequotedStr(AText);
+          Result.Translated := Result.Translation <> '';
+          Result.TransComments := Cmt;
         end;
+      end;
     end;
-  end;
 
   end;
 
+  function IsContinuation(const S: WideString): boolean;
+  begin
+    Result := WideStartsText('.', trim(S));
+  end;
+
+  function GetContinuation(const S: WideString): WideString;
+  var i: integer;
+  begin
+    i := Pos('.', S);
+    if i > 0 then
+      Result := AutoWideDequotedStr(trim(Copy(S, i + 1, MaxInt)))
+    else
+      Result := S;
+  end;
 begin
   Result := S_FALSE;
   try
@@ -257,19 +290,17 @@ begin
         Orphans.Clear;
         FFooter.Clear;
         Items.Sort := stNone;
-//        HeaderComplete := false;
         Cmt := '';
         S := TTntStringlist.Create;
         try
           S.LoadFromFile(FOrigFile);
           for i := 0 to S.Count - 1 do
-            if AnsiSameText(Copy(S[i], 1, 7), 'define(') then
+            if WideStartsText('define(', S[i]) then
             begin
-//              HeaderComplete := true;
-              ParseLine(S[i], Cmt, Items, false);
+              ParseLine(Copy(S[i], 8, MaxInt), Cmt, Items, false);
               Cmt := '';
             end
-            else // if HeaderComplete then
+            else
             begin
               if Cmt <> '' then
                 Cmt := Cmt + #13#10 + S[i]
@@ -279,14 +310,17 @@ begin
 //          Items.Sort := stSection;
           Cmt := '';
           S.LoadFromFile(FTransFile);
+          T := nil;
           Items.Sort := stSection;
           for i := 0 to S.Count - 1 do
           begin
-            if AnsiSameText(Copy(S[i], 1, 7), 'define(') then
+            if WideStartsText('define(', S[i]) then
             begin
-              ParseLine(S[i], Cmt, Items, true);
+              T := ParseLine(Copy(S[i], 8, MaxInt), Cmt, Items, true);
               Cmt := '';
             end
+            else if IsContinuation(S[i]) and Assigned(T) then
+              T.Translation := T.Translation + GetContinuation(S[i])
             else
             begin
               if Cmt <> '' then
@@ -302,14 +336,16 @@ begin
         end;
         Result := S_OK;
       end;
+      Items.Modified := false;
+      Orphans.Modified := false;
     finally
       SaveSettings;
       Items.Sort := stIndex;
       //      Screen.Cursor := crDefault;
     end;
   except
-    on E:Exception do
-      ErrMsg(E.Message,cAppTitle);
+    on E: Exception do
+      ErrMsg(E.Message, cAppTitle);
   end;
 end;
 

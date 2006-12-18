@@ -234,6 +234,8 @@ begin
     finally
       S.Free;
     end;
+      Items.Modified := false;
+      Orphans.Modified := false;
     Items.Sort := FOldSort;
     Result := true;
   except

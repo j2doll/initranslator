@@ -24,6 +24,7 @@ uses
 {
  limitations:
   * only exports single line GSI files
+  * assumes original and translation items are equivalent in count and ordering
 }
 
 type
@@ -33,11 +34,11 @@ type
     FAppServices: IApplicationServices;
     FCount: integer;
     FOrigFile, FTransFile: string;
-    FOrigIsDual: boolean;
+    FOrigIsDual, FSearchTrans: boolean;
     FExportRect: TRect;
     procedure BuildPreview(const Items: ITranslationItems; Strings: TTntStrings);
     function DoImport(const Items, Orphans: ITranslationItems;
-      const OrigFile, TransFile: string; OrigIsDual: boolean): boolean;
+      const OrigFile, TransFile: string; OrigIsDual, SearchTrans: boolean): boolean;
     procedure LoadSettings;
     procedure SaveSettings;
     function Translate(const Value: WideString): WideString;
@@ -60,14 +61,14 @@ uses
   CommonUtils, PreviewExportFrm, OOGSIImportFrm;
 
 const
-  cGSIFilter = 'OpenOffice GSI files (*.gsi)|*.gsi|All files (*.*)|*.*';
-  cGSIExportTitle = 'Export to OpenOffice GSI language file';
-  cGSIImportTitle = 'Import from OpenOffice GSI language file';
+  cGSIFilter = 'OpenOffice files (*.gsi;*.sdf)|*.gsi;*.sdf|All files (*.*)|*.*';
+  cGSIExportTitle = 'Export to OpenOffice language file';
+  cGSIImportTitle = 'Import from OpenOffice language file';
   SImportError = 'There was an error importing, please check the files and try again';
-  SError = 'OpenOffice GSI Parser Error';
+  SError = 'OpenOffice Parser Error';
   SFmtErrorMsg = '%s';
   cGSIPlaceHolder = #27;
-  cSectionName = 'OpenOffice GSI';
+  cSectionName = 'OpenOffice';
 
 function YesNo(const Text, Caption: string): boolean;
 begin
@@ -147,7 +148,7 @@ end;
 
 procedure StrTokenize(const S: WideString; Delimiter: WideChar; List: TTNTStringlist; MinLength: integer = 1);
 var i, j: integer;
-  tmp: string;
+  tmp: WideString;
 begin
   j := 1;
   for i := 1 to Length(S) do
@@ -169,13 +170,14 @@ begin
 end;
 
 function TGSIParser.DoImport(const Items, Orphans: ITranslationItems;
-  const OrigFile, TransFile: string; OrigIsDual: boolean): boolean;
+  const OrigFile, TransFile: string; OrigIsDual, SearchTrans: boolean): boolean;
 var
   FOrig, FTrans, FTokens: TTntStringList;
-  i: integer;
+  i, j: integer;
   FOldSort: TTranslateSortType;
+  ATemplate, AName, ATranslation:WideString;
 
-  function GetGSIString(const S: WideString; var ExtractedTemplate: WideString): WideString;
+  function GetGSIString(const S: WideString; var ExtractedTemplate, AName: WideString): WideString;
   var i: integer;
   begin
     FTokens.Clear;
@@ -184,6 +186,11 @@ var
     begin
       Result := FTokens[10];
       FTokens[10] := cGSIPlaceHolder;
+      AName := FTokens[5];
+      if AName = '' then
+        AName := FTokens[4]
+      else
+        AName := FTokens[4] + WideChar('.') + AName;
       ExtractedTemplate := '';
       for i := 0 to FTokens.Count - 1 do
         ExtractedTemplate := ExtractedTemplate + FTokens[i] + #9;
@@ -197,18 +204,22 @@ var
   end;
 
   procedure ParseRow(const Orig, Trans: WideString);
-  var S: WideString;
+  var S, AName: WideString;
   begin
     with Items.Add do
     begin
       Index := Items.Count;
-//      Section := cSectionName;
+      Section := cSectionName;
       S := '';
-      Original := GetGSIString(Orig, S);
+      Original := GetGSIString(Orig, S, AName);
+      Name := AName;
       S := Trans;
-      Translation := GetGSIString(Trans, S);
-      Translated := (Translation <> '') or (Translation = Original);
-      PrivateStorage := S;
+      if S <> '' then
+      begin
+        Translation := GetGSIString(Trans, S, AName);
+        Translated := (Translation <> '') or (Translation = Original);
+        PrivateStorage := S;
+      end;
     end;
   end;
 begin
@@ -226,7 +237,7 @@ begin
     FTrans := TTntStringlist.Create;
     FTokens := TTntStringlist.Create;
     try
-      // GSI files are always encodeds as UTF-8 but without BOM
+      // GSI files are always encoded as UTF-8 but without BOM
       FOrig.AnsiStrings.LoadFromFileEx(OrigFile, CP_UTF8);
       if OrigIsDual then // ignore translation
       begin
@@ -242,11 +253,30 @@ begin
         FTrans.AddStrings(FOrig) // just make a copy in translation list
       else
         FTrans.AnsiStrings.LoadFromFileEx(TransFile, CP_UTF8);
-      for i := 0 to FOrig.Count - 1 do
-        if FTrans.Count > i then
-          ParseRow(FOrig[i], FTrans[i])
-        else
-          ParseRow(FOrig[i], FOrig[i]);
+      if not SearchTrans or OrigIsDual then
+      begin
+        for i := 0 to FOrig.Count - 1 do
+          if FTrans.Count > i then
+            ParseRow(FOrig[i], FTrans[i])
+          else
+            ParseRow(FOrig[i], FOrig[i]);
+      end
+      else
+      begin
+        for i := 0 to FOrig.Count - 1 do
+          ParseRow(FOrig[i], '');
+        for i := 0 to FTrans.Count - 1 do
+        begin
+          ATranslation := GetGSIString(FTrans[i], ATemplate, AName);
+          j := Items.IndexOf(cSectionName,  AName);
+          if j >= 0 then
+          begin
+            Items[j].Translation := ATranslation;
+            Items[j].PrivateStorage := ATemplate;
+            Items[j].Translated := (Items[j].Translation <> '') or (Items[j].Translation = Items[j].Original);
+          end;
+        end;
+      end;
     finally
       FOrig.Free;
       FTrans.Free;
@@ -289,10 +319,12 @@ begin
   try
     Result := S_FALSE;
     LoadSettings;
-    if TfrmImport.Execute(FOrigFile, FTransFile, FOrigIsDual, Translate(cGSIImportTitle), Translate(cGSIFilter), '.', 'gsi') then
+    if TfrmImport.Execute(FOrigFile, FTransFile, FOrigIsDual, FSearchTrans, Translate(cGSIImportTitle), Translate(cGSIFilter), '.', 'gsi') then
     begin
-      if DoImport(Items, Orphans, FOrigFile, FTransFile, FOrigIsDual) then
+      if DoImport(Items, Orphans, FOrigFile, FTransFile, FOrigIsDual, FSearchTrans) then
       begin
+        Items.Modified := false;
+        Orphans.Modified := false;
         SaveSettings;
         Result := S_OK;
       end
@@ -320,6 +352,7 @@ begin
       FOrigFile := ReadString('Settings', 'OrigFile', FOrigFile);
       FTransFile := ReadString('Settings', 'TransFile', FTransFile);
       FOrigIsDual := ReadBool('Settings', 'OrigIsDual', FOrigIsDual);
+      FSearchTrans := ReadBool('Settings', 'SearchTrans', FSearchTrans);
       M := TMemoryStream.Create;
       try
         if ReadBinaryStream('Forms', 'Export', M) = SizeOf(TRect) then
@@ -348,6 +381,7 @@ begin
       WriteString('Settings', 'OrigFile', FOrigFile);
       WriteString('Settings', 'TransFile', FTransFile);
       WriteBool('Settings', 'OrigIsDual', FOrigIsDual);
+      WriteBool('Settings', 'SearchTrans', FSearchTrans);
       M := TMemoryStream.Create;
       try
         M.Write(FExportRect, sizeof(TRect));

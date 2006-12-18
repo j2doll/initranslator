@@ -215,6 +215,8 @@ begin
             end;
           end;
         end;
+        Items.Modified := false;
+        Orphans.Modified := false;
       finally
         Items.Sort := stIndex;
         S.Free;
@@ -263,3 +265,4 @@ begin
 end;
 
 end.
+

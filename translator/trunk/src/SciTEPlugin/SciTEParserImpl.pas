@@ -237,6 +237,8 @@ begin
       if DoSciTEImport(Items, Orphans, FTransFile) then
       begin
         SaveSettings;
+        Items.Modified := false;
+        Orphans.Modified := false;
         Result := S_OK;
       end
       else

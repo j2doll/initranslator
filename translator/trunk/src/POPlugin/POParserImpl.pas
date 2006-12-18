@@ -386,6 +386,8 @@ begin
     if (FFilename <> '') then
     begin
       LoadFromPOFile(Items, Orphans, FFilename);
+      Items.Modified := false;
+      Orphans.Modified := false;
       SaveSettings;
       Result := S_OK;
     end;

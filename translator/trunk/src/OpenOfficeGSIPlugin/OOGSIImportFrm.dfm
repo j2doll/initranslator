@@ -130,13 +130,22 @@ object frmImport: TfrmImport
   end
   object chkOriginalIsDual: TTntCheckBox
     Left = 16
-    Top = 112
+    Top = 101
     Width = 353
     Height = 17
     Anchors = [akLeft, akTop, akRight]
     Caption = 'Original file is a &dual line file'
     TabOrder = 4
     OnClick = chkOriginalIsDualClick
+  end
+  object chkSearchTranslation: TTntCheckBox
+    Left = 16
+    Top = 119
+    Width = 353
+    Height = 17
+    Anchors = [akLeft, akTop, akRight]
+    Caption = '&Search for translation'
+    TabOrder = 7
   end
   object OpenDialog1: TTntOpenDialog
     InitialDir = '.'

@@ -307,11 +307,6 @@ object frmMain: TfrmMain
           CaptionW = 'Restore original sort'
           HintW = 'Restore original sort'
         end
-        object TBXItem14: TSpTBXItem
-          ShortCut = 24660
-          CaptionW = 'Trim...'
-          HintW = 'Trim leading and trailing characters'
-        end
         object TBSeparatorItem10: TSpTBXSeparatorItem
         end
         object TBSubmenuItem3: TSpTBXSubmenuItem

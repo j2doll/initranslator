@@ -129,7 +129,7 @@ begin
   end;
 end;
 var
-  frmImport:TfrmSingleImport = nil;
+  frmImport: TfrmSingleImport = nil;
 
 function TOlegParser.GetString(out Section, Name, Value: WideString): WordBool;
 begin
@@ -163,6 +163,9 @@ var
   i, j: integer;
   TI: ITranslationItem;
 begin
+  // format:
+  // no sections
+  // Name TAB(#9) Value
   Result := S_FALSE;
   try
     Items.Clear;
@@ -186,6 +189,9 @@ begin
             TI.Translation := Copy(S[i], j + 1, MaxInt);
           end;
         end;
+        Items.Modified := false;
+        Orphans.Modified := false;
+
       finally
         Items.Sort := stIndex;
         S.Free;

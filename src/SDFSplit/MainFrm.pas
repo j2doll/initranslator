@@ -60,8 +60,10 @@ var
   frmMain: TfrmMain;
 
 implementation
+
 uses
-  FileCtrl, IniFiles;
+  {$WARN UNIT_PLATFORM OFF}FileCtrl, {$WARN UNIT_PLATFORM ON} IniFiles;
+
 
 {$R *.dfm}
 

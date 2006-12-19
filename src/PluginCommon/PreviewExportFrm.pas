@@ -49,9 +49,9 @@ type
   public
     { Public declarations }
     class function Execute(var FileName: string; const ACaption, Filter, InitialDir, DefaultExt: string;
-      Preview: TTntStrings): boolean; overload;
+      Preview: TTntStrings; WordWrap:boolean = false): boolean; overload;
     class function Execute(const ApplicationServices: IApplicationServices; var FileName: string;
-      const ACaption, Filter, InitialDir, DefaultExt: string; Preview: TTntStrings): boolean; overload;
+      const ACaption, Filter, InitialDir, DefaultExt: string; Preview: TTntStrings; WordWrap:boolean = false): boolean; overload;
     function GetString(out Section: WideString; out Name: WideString; out Value: WideString): WordBool; safecall;
   end;
 
@@ -71,9 +71,9 @@ const
 
 class function TfrmExport.Execute(var FileName: string;
   const ACaption, Filter, InitialDir, DefaultExt: string;
-  Preview: TTntStrings): boolean;
+  Preview: TTntStrings; WordWrap:boolean = false): boolean;
 begin
-  Result := Execute(nil, Filename, ACaption, Filter, InitialDir, DefaultExt, Preview);
+  Result := Execute(nil, Filename, ACaption, Filter, InitialDir, DefaultExt, Preview, WordWrap);
 end;
 
 procedure TfrmExport.btnBrowseClick(Sender: TObject);
@@ -90,7 +90,7 @@ end;
 function TfrmExport.OverwriteOK: boolean;
 begin
   Result := FHasPrompted or not FileExists(edFilename.Text) or
-    (WideMessageBox(Handle, PWideChar(Translate(Format(SFmtOverwriteOK, [edFilename.Text]))), PWideChar(Translate(SConfirm)), MB_YESNO or MB_TASKMODAl or MB_ICONQUESTION) = IDYES);
+    (WideMessageBox(Handle, PWideChar(Translate(WideFormat(SFmtOverwriteOK, [edFilename.Text]))), PWideChar(Translate(SConfirm)), MB_YESNO or MB_TASKMODAl or MB_ICONQUESTION) = IDYES);
 end;
 
 procedure TfrmExport.LoadSettings;
@@ -191,7 +191,7 @@ end;
 
 class function TfrmExport.Execute(const ApplicationServices: IApplicationServices; var FileName: string;
   const ACaption, Filter, InitialDir, DefaultExt: string;
-  Preview: TTntStrings): boolean;
+  Preview: TTntStrings; WordWrap:boolean = false): boolean;
 var
   frmExport: TfrmExport;
 begin
@@ -213,6 +213,7 @@ begin
     SaveDialog1.InitialDir := InitialDir;
     SaveDialog1.DefaultExt := DefaultExt;
     edFilename.Text := Filename;
+    rePreview.WordWrap := WordWrap;
     rePreview.Lines := Preview;
     rePreview.SelStart := 0;
     SendMessage(rePreview.Handle, EM_SCROLLCARET, 0, 0);

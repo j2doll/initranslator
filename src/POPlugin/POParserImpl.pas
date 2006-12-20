@@ -298,6 +298,7 @@ begin
       begin
         S.Text := UTF8Encode(S.Text);
         S.AnsiStrings.SaveToFile(FFilename);
+        Result := S_OK;
         if FCompileMO then
         begin
           CmdLine := StringReplace(FCmdLine, '%i', FFilename, []);
@@ -305,7 +306,6 @@ begin
           if WinExec32AndWait(CmdLine, SW_SHOWNORMAL) > 31 then
             RaiseLastOSError;
         end;
-        Result := S_OK;
       end;
       SaveSettings;
     finally
@@ -428,6 +428,7 @@ begin
     8: Value := SBrowseCaption;
     9: Value := SOK;
     10: Value := SCancel;
+    11: Value := SCompileMOHint;
   else
     Result := false;
   end;

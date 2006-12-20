@@ -252,55 +252,60 @@ begin
   begin
     ASection := '';
     Count := GetPropList(AnObject, PropList);
-    for j := 0 to Count - 1 do
-    begin
-      PropInfo := PropList[j];
-      PropName := UpperCase(PropInfo^.Name);
-      if InSkipList(PropName) or not DoWriting(AnObject, PropName) then
-        Continue;
-      try
-        case PropInfo^.PropType^.Kind of
-          tkString, tkLString, tkWString:
-            begin
-              AValue := GetWideStrProp(AnObject, PropName);
-              if (trim(AValue) <> '') and (IsWriteProp(PropInfo)) then
+    try
+      for j := 0 to Count - 1 do
+      begin
+        PropInfo := PropList[j];
+        PropName := UpperCase(PropInfo^.Name);
+        if InSkipList(PropName) or not DoWriting(AnObject, PropName) then
+          Continue;
+        try
+          case PropInfo^.PropType^.Kind of
+            tkString, tkLString, tkWString:
               begin
-                AName := EncodeStrings(AValue);
-                DoWriteObject(AnObject, PropName, ASection, AName, AValue);
-                if (ASection <> '') and (AName <> '') then
-                  IniFile.WriteString(ASection, EncodeStrings(AName), EncodeStrings(AValue));
+                AValue := GetWideStrProp(AnObject, PropName);
+                if (trim(AValue) <> '') and (IsWriteProp(PropInfo)) then
+                begin
+                  AName := EncodeStrings(AValue);
+                  DoWriteObject(AnObject, PropName, ASection, AName, AValue);
+                  if (ASection <> '') and (AName <> '') then
+                    IniFile.WriteString(ASection, EncodeStrings(AName), EncodeStrings(AValue));
+                end;
               end;
-            end;
-          tkClass:
-            begin
-              sl := GetObjectProp(AnObject, PropName);
-              if (sl = nil) then
-                Continue;
+            tkClass:
+              begin
+                sl := GetObjectProp(AnObject, PropName);
+                if (sl = nil) then
+                  Continue;
              // Check for TStrings translation
-              if sl is TStrings then
-              begin
-                AValue := EncodeStrings(TStrings(sl).Text);
-                AName := AValue;
-                DoWriteObject(AnObject, PropName, ASection, AName, AValue);
-                if (ASection <> '') and (AName <> '') then
-                  IniFile.WriteString(ASection, EncodeStrings(AName), EncodeStrings(AValue));
-              end
-              else if sl is TTntStrings then
-              begin
-                AValue := EncodeStrings(TTntStrings(sl).Text);
-                AName := AValue;
-                DoWriteObject(AnObject, PropName, ASection, AName, AValue);
-                if (ASection <> '') and (AName <> '') then
-                  IniFile.WriteString(ASection, EncodeStrings(AName), EncodeStrings(AValue));
-              end
-              else if sl is TCollection then
-                for i := 0 to TCollection(sl).Count - 1 do
-                  WriteTranslationSub(IniFile, TCollection(sl).Items[i]);
-            end;
-        end; // case
-      except
+                if sl is TStrings then
+                begin
+                  AValue := EncodeStrings(TStrings(sl).Text);
+                  AName := AValue;
+                  DoWriteObject(AnObject, PropName, ASection, AName, AValue);
+                  if (ASection <> '') and (AName <> '') then
+                    IniFile.WriteString(ASection, EncodeStrings(AName), EncodeStrings(AValue));
+                end
+                else if sl is TTntStrings then
+                begin
+                  AValue := EncodeStrings(TTntStrings(sl).Text);
+                  AName := AValue;
+                  DoWriteObject(AnObject, PropName, ASection, AName, AValue);
+                  if (ASection <> '') and (AName <> '') then
+                    IniFile.WriteString(ASection, EncodeStrings(AName), EncodeStrings(AValue));
+                end
+                else if sl is TCollection then
+                  for i := 0 to TCollection(sl).Count - 1 do
+                    WriteTranslationSub(IniFile, TCollection(sl).Items[i]);
+              end;
+          end; // case
+        except
       //
+        end;
       end;
+    finally
+      if Count > 0 then
+        FreeMem(PropList);
     end;
   end;
   if AnObject is TComponent then

@@ -40,6 +40,7 @@ const
   SFileNameLabel = '&Filename:';
   SPreviewLabel = '&Preview (editable):';
   SCompileMOCaption = 'Compile to &MO:';
+  SCompileMOHint = 'Command-line to invoke the MO compiler (msgfmt.exe by default).\r\nUse "%i" to insert the filename in "Filename" as the file to compile and use "%o" to change the input file extension to .mo.';
   SBrowseCaption = '...';
   SOK = 'OK';
   SCancel = 'Cancel';

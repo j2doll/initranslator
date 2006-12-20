@@ -99,6 +99,7 @@ begin
     lblFileName.Caption := Translate(SFileNameLabel);
     lblPreview.Caption := Translate(SPreviewLabel);
     chkCompileMO.Caption := Translate(SCompileMOCaption);
+    edMOCmdLine.Hint := Translate(SCompileMOHint);
     btnBrowse.Caption := Translate(SBrowseCaption);
     btnOK.Caption := Translate(SOK);
     btnCancel.Caption := Translate(SCancel);

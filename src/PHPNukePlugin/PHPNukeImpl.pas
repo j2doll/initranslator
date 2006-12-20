@@ -28,7 +28,7 @@ type
     FOldHandle: Cardinal;
     FAppServices: IApplicationServices;
     FCount: integer;
-    FOrigFile, FTransFile: string;
+    FOrigFile, FTransFile: WideString;
     procedure LoadSettings;
     procedure SaveSettings;
     function Translate(const Value: WideString): WideString;
@@ -206,7 +206,7 @@ function TPHPNukeParser.ImportItems(const Items, Orphans: ITranslationItems): HR
 var
   T: ITranslationItem;
   S: TTntStringlist;
-  Cmt: string;
+  Cmt: WideString;
   i: integer;
 
   function ParseLine(const S, Cmt: WideString; const Items: ITranslationItems; IsTranslation: boolean): ITranslationItem;

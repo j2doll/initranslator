@@ -44,8 +44,8 @@ type
     function Translate(const Value:WideString):WideString;
   public
     { Public declarations }
-    class function Execute(var AFilename: string; var SkipLines: integer; const ACaption, Filter, InitialDir, DefaultExt: string): boolean;overload;
-    class function Execute(const ApplicationServices:IApplicationServices; var AFilename: string; var SkipLines: integer; const ACaption, Filter, InitialDir, DefaultExt: string): boolean;overload;
+    class function Execute(var AFilename: WideString; var SkipLines: integer; const ACaption, Filter, InitialDir, DefaultExt: WideString): boolean;overload;
+    class function Execute(const ApplicationServices:IApplicationServices; var AFilename: WideString; var SkipLines: integer; const ACaption, Filter, InitialDir, DefaultExt: WideString): boolean;overload;
     function GetString(out Section: WideString; out Name: WideString; out Value: WideString): WordBool; safecall;
   end;
 
@@ -55,8 +55,8 @@ implementation
 
 { TfrmImport }
 
-class function TfrmImport.Execute(var AFilename: string; var SkipLines: integer;
-  const ACaption, Filter, InitialDir, DefaultExt: string): boolean;
+class function TfrmImport.Execute(var AFilename: WideString; var SkipLines: integer;
+  const ACaption, Filter, InitialDir, DefaultExt: WideString): boolean;
 begin
   Result := Execute(nil, AFilename, SkipLines, ACaption, Filter, InitialDir, DefaultExt);
 end;
@@ -69,9 +69,9 @@ begin
 end;
 
 class function TfrmImport.Execute(
-  const ApplicationServices: IApplicationServices; var AFilename: string;
+  const ApplicationServices: IApplicationServices; var AFilename: WideString;
   var SkipLines: integer; const ACaption, Filter, InitialDir,
-  DefaultExt: string): boolean;
+  DefaultExt: WideString): boolean;
 var
   frmImport: TfrmImport;
 begin

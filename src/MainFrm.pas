@@ -479,9 +479,12 @@ type
     function CheckDictModified: boolean;
     function CheckOrphans: boolean;
     procedure LoadSettings(FirstLoad: boolean);
-    procedure SaveSettings;
-    function CloseApp: boolean;
+    procedure SetUpLangFile;
     procedure LoadTranslate;
+    procedure SaveSettings;
+    procedure CreateEverything;
+    procedure FreeEverything;
+    function CloseApp: boolean;
     function LoadOriginal(const FileName: WideString; Encoding: TEncoding): TEncoding;
     function LoadTranslation(const FileName: WideString; Encoding: TEncoding): TEncoding;
     function SaveTranslation(const FileName: WideString; Encoding: TEncoding; const InsertHeader: boolean = false; const InsertFooter: boolean = false): boolean;
@@ -574,7 +577,7 @@ type
     function GetItems: ITranslationItems;
     function GetOrphans: ITranslationItems;
     function GetAppHandle: Cardinal;
-    function GetMainFormHandle:Cardinal;
+    function GetMainFormHandle: Cardinal;
     function GetDictionaryItems: IDictionaryItems;
     function GetHeader: WideString;
     procedure SetHeader(const Value: WideString);
@@ -619,6 +622,13 @@ uses
   DictEditFrm, ColorsFrm;
 
 {$R *.dfm}
+var
+  FApplicationServices: IApplicationServices = nil;
+
+function InternalApplicationServicesFunc: IApplicationServices;
+begin
+  Result := FApplicationServices;
+end;
 
 type
   TTranslationUndoItem = class(TUndoData)
@@ -790,8 +800,6 @@ begin
       HandleFileCreateException(Self, E, GetUserShortcutFile);
   end;
 end;
-
-
 
 function TfrmMain.ProcessCommand(const ACommand: WideString): boolean;
 var
@@ -1333,7 +1341,8 @@ begin
 end;
 
 procedure TfrmMain.SetModified(const Value: boolean);
-  procedure ClearModified;
+
+procedure ClearModified;
   var i: integer;
   begin
     for i := 0 to FTranslateFile.Items.Count - 1 do
@@ -1564,7 +1573,7 @@ begin
   if GlobalAppOptions.MonitorFiles and WideFileExists(AFileName) then
   begin
     StopMonitor(AMonitor);
-    AMonitor := TFileMonitorThread.Create(AFileName);
+    AMonitor := TFileMonitorThread.Create(AFileName, 1000);
     AMonitor.FreeOnTerminate := true;
     AMonitor.OnTerminate := DoThreadTerminate;
     AMonitor.OnChange := DoMonitoredFileChange;
@@ -1681,18 +1690,18 @@ procedure TfrmMain.DoSaveExtra(Sender: TObject; ini: TWideCustomIniFile);
 var
   i: integer;
   S: WideString;
-  {$IFDEF USEADDICTSPELLCHECKER}
-  l:TSpellLanguageString;
-  {$ENDIF}
+{$IFDEF USEADDICTSPELLCHECKER}
+  l: TSpellLanguageString;
+{$ENDIF}
 begin
-  {$IFDEF USEADDICTSPELLCHECKER}
+{$IFDEF USEADDICTSPELLCHECKER}
   // add all spellchecker strings
   for l := Low(TSpellLanguageString) to High(TSpellLanguageString) do
   begin
     S := EncodeStrings(ad3SpellLanguages.GetString(l, ltEnglish));
     ini.WriteString('SpellChecker', S, S);
   end;
-  {$ENDIF}
+{$ENDIF}
 
   // write out all resourcestrings
   ini.WriteString(ClassName, EncodeStrings(SFmtAboutText), EncodeStrings(SFmtAboutText));
@@ -2415,25 +2424,8 @@ begin
   Close;
 end;
 
-var
-  FApplicationServices: IApplicationServices = nil;
-
-function InternalApplicationServicesFunc: IApplicationServices;
+procedure TfrmMain.SetUpLangFile;
 begin
-  Result := FApplicationServices;
-end;
-
-procedure TfrmMain.FormCreate(Sender: TObject);
-begin
-  ScreenCursor(crAppStart);
-  FApplicationServices := TApplicationServices.Create(self);
-  GlobalApplicationServicesFunc := @InternalApplicationServicesFunc;
-  FTranslateFile := TTranslateFiles.Create;
-  FFindReplace := TFindReplace.Create(Self);
-  FDictionary := TDictionaryItems.Create;
-
-  ClearBookmarks;
-
   GlobalLanguageFile.OnRead := DoReadObject;
   GlobalLanguageFile.SkipProperty('Name');
   GlobalLanguageFile.SkipProperty('Category');
@@ -2464,6 +2456,44 @@ begin
   GlobalLanguageFile.SkipClass(TProgressBar);
   GlobalLanguageFile.SkipClass(TTBXSeparatorItem);
   GlobalLanguageFile.SkipClass(TTBXComboBoxItem);
+end;
+
+procedure TfrmMain.CreateEverything;
+begin
+  FApplicationServices := TApplicationServices.Create(self);
+  GlobalApplicationServicesFunc := @InternalApplicationServicesFunc;
+  FTranslateFile := TTranslateFiles.Create;
+  FFindReplace := TFindReplace.Create(Self);
+  FDictionary := TDictionaryItems.Create;
+
+  ClearBookmarks;
+  SetUpLangFile;
+end;
+
+procedure TfrmMain.FreeEverything;
+var i:integer;
+begin
+  FreeAndNil(FNotify);
+  FreeAndNil(FTranslateFile);
+  FreeAndNil(FDictionary);
+  FreeAndNil(FExternalToolItems);
+  FreeAndNil(FUndoList);
+  for i := 0 to Length(FFileMonitors) - 1 do
+    if FFileMonitors[i] <> nil then
+    begin
+      FFileMonitors[i].FreeOnTerminate := false;
+      FFileMonitors[i].Terminate;
+      FFileMonitors[i].Free;
+      FFileMonitors[i] := nil;
+    end;
+  FApplicationServices := nil;
+end;
+
+procedure TfrmMain.FormCreate(Sender: TObject);
+begin
+  ScreenCursor(crAppStart);
+  CreateEverything;
+
   DragAcceptFiles(Handle, true);
   ToolbarFont.CharSet := DEFAULT_CHARSET;
   SetLength(FFileMonitors, 3);
@@ -2478,32 +2508,19 @@ begin
   Hint := '';
 end;
 
-function TfrmMain.CloseApp:boolean;
-var
-  i: integer;
+function TfrmMain.CloseApp: boolean;
 begin
   Result := CheckModified and CheckDictModified;
-  if not Result then
-    Exit;
-  lvTranslateStrings.Items.Count := 0;  // clear
-  if acFullScreen.Checked then
-    acFullScreen.Execute;
-  DragAcceptFiles(Handle, false);
-  SaveEditChanges;
-  SaveSettings;
-  FreeAndNil(FNotify);
-  FreeAndNil(FTranslateFile);
-  FreeAndNil(FDictionary);
-  FreeAndNil(FExternalToolItems);
-  FreeAndNil(FUndoList);
-  for i := 0 to Length(FFileMonitors) - 1 do
-    if FFileMonitors[i] <> nil then
-    begin
-      FFileMonitors[i].FreeOnTerminate := false;
-      FFileMonitors[i].Terminate;
-      FFileMonitors[i].Free;
-    end;
-  FApplicationServices := nil;
+  if Result then
+  begin
+    lvTranslateStrings.Items.Count := 0; // clear
+    if acFullScreen.Checked then
+      acFullScreen.Execute;
+    DragAcceptFiles(Handle, false);
+    SaveEditChanges;
+    SaveSettings;
+    FreeEverything;
+  end;
 end;
 
 procedure TfrmMain.FormCloseQuery(Sender: TObject; var CanClose: boolean);
@@ -3336,10 +3353,10 @@ end;
 
 procedure TfrmMain.acReplaceEverywhereExecute(Sender: TObject);
 var
-  AItem:ITranslationItem;
+  AItem: ITranslationItem;
   FOrig, FTrans: WideString;
   i: integer;
-  FModified:boolean;
+  FModified: boolean;
 begin
   SaveEditChanges;
   FModified := false;
@@ -3422,7 +3439,7 @@ var
   function IsSameEndControl(const Original, Translation: WideString): boolean;
   begin
     Result := not GlobalAppOptions.MisMatchEndControl
-              or WideSameStr(EndControl(Original), EndControl(Translation));
+      or WideSameStr(EndControl(Original), EndControl(Translation));
   end;
 
   function CountMisMatch(const Original, Translation: WideString): boolean;
@@ -3547,6 +3564,7 @@ begin
     Modified := true;
     NotifyChanged(NOTIFY_ITEM_IMPORT, 0, 0);
   end;
+  reTranslation.Modified := false;
   lvTranslateStrings.Items.Count := FTranslateFile.Items.Count;
   ScrollToTop;
   lvTranslateStrings.Invalidate;
@@ -3566,6 +3584,7 @@ begin
   begin
     NotifyChanged(NOTIFY_ITEM_EXPORT, 0, 0);
     lvTranslateStrings.Items.Count := FTranslateFile.Items.Count;
+    Modified := false;
   end;
 end;
 
@@ -4576,9 +4595,5 @@ begin
   BuildToolMenu(Sender);
 end;
 
-
-
-
 end.
-
 

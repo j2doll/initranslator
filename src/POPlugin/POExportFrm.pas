@@ -28,13 +28,13 @@ uses
 
 type
   TfrmPOExport = class(TTntForm)
-    Label1: TTntLabel;
+    lblFilename: TTntLabel;
     edFilename: TTntEdit;
     btnBrowse: TTntButton;
     btnOK: TTntButton;
     btnCancel: TTntButton;
     rePreview: TTntRichEdit;
-    Label3: TTntLabel;
+    lblPreview: TTntLabel;
     alPOExport: TTntActionList;
     acSaveFile: TTntAction;
     SaveDialog1: TTntSaveDialog;
@@ -52,6 +52,8 @@ type
   end;
 
 implementation
+uses
+  POParserConsts;
 
 {$R *.dfm}
 
@@ -93,8 +95,14 @@ begin
     rePreview.SelStart := 0;
     SendMessage(rePreview.Handle, EM_SCROLLCARET, 0, 0);
     chkCompileMO.Checked := CompileMO;
+    Caption := Translate(SFormCaption);
+    lblFileName.Caption := Translate(SFileNameLabel);
+    lblPreview.Caption := Translate(SPreviewLabel);
+    chkCompileMO.Caption := Translate(SCompileMOCaption);
+    btnBrowse.Caption := Translate(SBrowseCaption);
+    btnOK.Caption := Translate(SOK);
+    btnCancel.Caption := Translate(SCancel);
     Result := ShowModal = mrOK;
-
     if Result then
     begin
       AFilename := edFilename.Text;

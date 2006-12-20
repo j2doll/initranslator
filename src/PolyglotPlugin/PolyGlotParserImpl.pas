@@ -35,7 +35,7 @@ type
   TPolyGlotParser = class(TInterfacedObject, IUnknown, IFileParser)
   private
     FOldAppHandle: Cardinal;
-    FTransFile, FOrigFile: string;
+    FTransFile, FOrigFile: WideString;
     FSection: WideString;
     procedure LoadSettings;
     procedure SaveSettings;

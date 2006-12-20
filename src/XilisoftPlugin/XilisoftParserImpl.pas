@@ -25,8 +25,8 @@ type
   TXilisoftParser = class(TInterfacedObject, IUnknown, IFileParser, ILocalizable)
   private
     FOldAppHandle: Cardinal;
-    FOrigFile: string;
-    FTransFile: string;
+    FOrigFile: WideString;
+    FTransFile: WideString;
     FSkip: Boolean;
     FStringIndex: integer;
     FAppServices: IApplicationServices;
@@ -54,10 +54,10 @@ type
 
 implementation
 uses
-  XilisoftParserCfgForm, XiliSoftParserConsts,
+  XilisoftParserCfgForm, XiliSoftParserConsts, CommonUtils,
   Controls, Windows, SysUtils, Forms, IniFiles, DualImportFrm;
 
-function GetLocaleInformation(Flag: Integer): string;
+function GetLocaleInformation(Flag: Integer): WideString;
 var
   pcLCA: array[0..20] of Char;
 begin
@@ -138,7 +138,7 @@ begin
     LoadSettings;
     if not FileExists(FTransFile) then
     begin
-      MessageBox(0, PChar(string(Translate(SImportBeforeExport))), PChar(string(Translate(SFileNotFound))), MB_OK);
+      WideMessageBox(0, PWideChar(Translate(SImportBeforeExport)), PWideChar(Translate(SFileNotFound)), MB_OK);
       Exit;
     end;
     S := TTntStringlist.Create;
@@ -162,7 +162,7 @@ var
   SO, ST: TTntStringlist;
   i, j, k: integer;
   TI: ITranslationItem;
-  ssi, sst, sName, sValue: string;
+  ssi, sst, sName, sValue: WideString;
   IsInT: Boolean;
 begin
   Result := S_FALSE;
@@ -185,7 +185,7 @@ begin
           ssi := SO[i];
           if ssi = '' then
             Continue;
-          if ssi[1] in ['/', ';'] then
+          if ssi[1] in [WideChar('/'), WideChar(';')] then
             Continue;
           k := Pos('=', ssi);
           if k > 0 then

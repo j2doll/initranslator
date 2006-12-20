@@ -27,7 +27,7 @@ type
   private
     FOldAppHandle: Cardinal;
     FApplicationServices: IApplicationServices;
-    FFilename: string;
+    FFilename: WideString;
     procedure LoadSettings;
     procedure SaveSettings;
     function Translate(const Value:WideString):WideString;
@@ -271,7 +271,7 @@ begin
       end;
       SaveSettings;
       Items.Modified := false;
-      FXMLImport.SaveToXML(XML); // save the imported data in a string
+      FXMLImport.SaveToXML(XML); // save the imported data in a WideString
       Result := S_OK;
     end;
     FXMLImport := nil;

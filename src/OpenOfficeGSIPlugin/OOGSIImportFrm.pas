@@ -48,8 +48,8 @@ type
     procedure SaveSettings;
   public
     { Public declarations }
-    class function Execute(var AOriginalFile, ATranslationFile: string;
-      var OrigIsDualLine, SearchTrans:boolean; const ACaption, Filter, InitialDir, DefaultExt: string): boolean;
+    class function Execute(var AOriginalFile, ATranslationFile: WideString;
+      var OrigIsDualLine, SearchTrans:boolean; const ACaption, Filter, InitialDir, DefaultExt: WideString): boolean;
   end;
 
 implementation
@@ -60,8 +60,8 @@ uses
 
 { TfrmImport }
 
-class function TfrmImport.Execute(var AOriginalFile, ATranslationFile: string;
-  var OrigIsDualLine, SearchTrans:boolean; const ACaption, Filter, InitialDir, DefaultExt: string): boolean;
+class function TfrmImport.Execute(var AOriginalFile, ATranslationFile: WideString;
+  var OrigIsDualLine, SearchTrans:boolean; const ACaption, Filter, InitialDir, DefaultExt: WideString): boolean;
 var
   frmImport: TfrmImport;
 begin

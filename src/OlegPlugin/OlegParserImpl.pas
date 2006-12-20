@@ -26,7 +26,7 @@ type
     FOldAppHandle: Cardinal;
     FAppServices: IApplicationServices;
     FCount: integer;
-    FTransFile: string;
+    FTransFile: WideString;
     procedure LoadSettings;
     procedure SaveSettings;
     procedure BuildPreview(Items: ITranslationItems; Strings: TTntStrings);

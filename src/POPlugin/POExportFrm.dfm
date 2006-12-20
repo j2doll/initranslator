@@ -54,7 +54,7 @@ object frmPOExport: TfrmPOExport
     266)
   PixelsPerInch = 96
   TextHeight = 13
-  object Label1: TTntLabel
+  object lblFilename: TTntLabel
     Left = 8
     Top = 8
     Width = 46
@@ -62,7 +62,7 @@ object frmPOExport: TfrmPOExport
     Caption = '&Filename:'
     FocusControl = edFilename
   end
-  object Label3: TTntLabel
+  object lblPreview: TTntLabel
     Left = 8
     Top = 54
     Width = 91

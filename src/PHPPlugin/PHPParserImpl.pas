@@ -34,10 +34,10 @@ type
     FOldHandle: LongWord;
     FCount: integer;
     FAppServices: IApplicationServices;
-    FOrigFile, FTransFile: string;
+    FOrigFile, FTransFile: WideString;
     FExportRect: TRect;
     procedure BuildPreview(const Items: ITranslationItems; Strings: TTntStrings);
-    function DoPHPImport(const Items, Orphans: ITranslationItems; const OrigFile, TransFile: string): boolean;
+    function DoPHPImport(const Items, Orphans: ITranslationItems; const OrigFile, TransFile: WideString): boolean;
     procedure LoadSettings;
     procedure SaveSettings;
     function Translate(const Value: WideString): WideString;
@@ -65,14 +65,14 @@ const
   SError = 'PHP Parser Error';
   cSectionName = 'php';
 
-function YesNo(const Text, Caption: string): boolean;
+function YesNo(const Text, Caption: WideString): boolean;
 begin
-  Result := Application.MessageBox(PChar(Text), PChar(Caption), MB_YESNO or MB_ICONQUESTION) = IDYES;
+  Result := WideMessageBox(GetActiveWindow, PWideChar(Text), PWideChar(Caption), MB_YESNO or MB_ICONQUESTION) = IDYES;
 end;
 
-procedure ShowError(const Text: string);
+procedure ShowError(const Text: WideString);
 begin
-  Application.MessageBox(PChar('There was an error:'#13#10 + Text), PChar('PHP Error'), MB_OK or MB_ICONERROR);
+  WideMessageBox(GetActiveWindow, PWideChar('There was an error:'#13#10 + Text), PWideChar(WideString('PHP Error')), MB_OK or MB_ICONERROR);
 end;
 { TPHPParser }
 
@@ -132,17 +132,17 @@ begin
 end;
 
 function TPHPParser.DoPHPImport(const Items, Orphans: ITranslationItems;
-  const OrigFile, TransFile: string): boolean;
+  const OrigFile, TransFile: WideString): boolean;
 var
   S: TTntStringList;
   i, j: integer;
   FOldSort: TTranslateSortType;
 
-  function ParseRow(const S: string; AIndex: integer; IsTranslation: boolean): boolean;
+  function ParseRow(const S: WideString; AIndex: integer; IsTranslation: boolean): boolean;
   type
     TParseState = (stNone, stDollar, stEqual, stFirstQuote, stLastQuote, stSemi);
   var
-    AName, AStr: string;
+    AName, AStr: WideString;
     State: TParseState;
     i, j: integer;
   begin

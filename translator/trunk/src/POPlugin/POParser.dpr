@@ -25,7 +25,8 @@ uses
   TransIntf in '..\TransIntf.pas',
   POExportFrm in 'POExportFrm.pas' {frmPOExport},
   POParserImpl in 'POParserImpl.pas',
-  CommonUtils in '..\CommonUtils.pas';
+  CommonUtils in '..\CommonUtils.pas',
+  POParserConsts in 'POParserConsts.pas';
 
 {$R *.res}
 function InstallPlugin(out Parser:IFileParser):HResult;stdcall;

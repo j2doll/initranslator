@@ -26,7 +26,7 @@ type
   TFoxitParser = class(TInterfacedObject, IUnknown, IFileParser)
   private
     FOldAppHandle: Cardinal;
-    FOrigFile, FTransFile: string;
+    FOrigFile, FTransFile: WideString;
     procedure LoadSettings;
     procedure SaveSettings;
     procedure BuildPreview(Items: ITranslationItems; Strings: TTntStrings);

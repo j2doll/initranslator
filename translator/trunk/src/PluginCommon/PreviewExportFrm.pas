@@ -48,10 +48,10 @@ type
     function Translate(const Value: WideString): WideString;
   public
     { Public declarations }
-    class function Execute(var FileName: string; const ACaption, Filter, InitialDir, DefaultExt: string;
+    class function Execute(var FileName: WideString; const ACaption, Filter, InitialDir, DefaultExt: WideString;
       Preview: TTntStrings; WordWrap:boolean = false): boolean; overload;
-    class function Execute(const ApplicationServices: IApplicationServices; var FileName: string;
-      const ACaption, Filter, InitialDir, DefaultExt: string; Preview: TTntStrings; WordWrap:boolean = false): boolean; overload;
+    class function Execute(const ApplicationServices: IApplicationServices; var FileName: WideString;
+      const ACaption, Filter, InitialDir, DefaultExt: WideString; Preview: TTntStrings; WordWrap:boolean = false): boolean; overload;
     function GetString(out Section: WideString; out Name: WideString; out Value: WideString): WordBool; safecall;
   end;
 
@@ -69,11 +69,49 @@ const
 
 { TfrmExport }
 
-class function TfrmExport.Execute(var FileName: string;
-  const ACaption, Filter, InitialDir, DefaultExt: string;
-  Preview: TTntStrings; WordWrap:boolean = false): boolean;
+class function TfrmExport.Execute(var FileName: WideString; const ACaption, Filter, InitialDir, DefaultExt: WideString; Preview: TTntStrings; WordWrap:boolean = false): boolean;
 begin
   Result := Execute(nil, Filename, ACaption, Filter, InitialDir, DefaultExt, Preview, WordWrap);
+end;
+
+class function TfrmExport.Execute(const ApplicationServices: IApplicationServices; var FileName: WideString;
+  const ACaption, Filter, InitialDir, DefaultExt: WideString;
+  Preview: TTntStrings; WordWrap:boolean = false): boolean;
+var
+  frmExport: TfrmExport;
+begin
+  Result := false;
+  frmExport := self.Create(Application);
+  with frmExport do
+  try
+    LoadSettings;
+    FApplicationServices := ApplicationServices;
+    if ACaption <> '' then
+      Caption := Translate(ACaption)
+    else
+      Caption := Translate(Caption);
+    lblFilename.Caption := Translate(lblFilename.Caption);
+    lblPreview.Caption := Translate(lblPreview.Caption);
+    btnOK.Caption := Translate(btnOK.Caption);
+    btnCancel.Caption := Translate(btnCancel.Caption);
+    SaveDialog1.Filter := Translate(Filter);
+    SaveDialog1.InitialDir := InitialDir;
+    SaveDialog1.DefaultExt := DefaultExt;
+    edFilename.Text := Filename;
+    rePreview.WordWrap := WordWrap;
+    rePreview.Lines := Preview;
+    rePreview.SelStart := 0;
+    SendMessage(rePreview.Handle, EM_SCROLLCARET, 0, 0);
+    if (ShowModal = mrOK) and CheckFilename and OverwriteOK then
+    begin
+      Result := true;
+      Preview.Assign(rePreview.Lines);
+      Filename := edFilename.Text;
+    end;
+    SaveSettings;
+  finally
+    Free;
+  end;
 end;
 
 procedure TfrmExport.btnBrowseClick(Sender: TObject);
@@ -168,7 +206,7 @@ begin
   begin
     // try to create a new file: either it will fail because the file exists
     // or because the name is invalid
-    AHandle := CreateFile(PChar(string(edFilename.Text)), 0, 0, nil, CREATE_NEW, 0, 0);
+    AHandle := CreateFileW(PWideChar(WideString(edFilename.Text)), 0, 0, nil, CREATE_NEW, 0, 0);
     try
       ALastError := GetLastError;
       Result := (ALastError = ERROR_FILE_EXISTS) or (AHandle <> INVALID_HANDLE_VALUE);
@@ -187,46 +225,6 @@ begin
   Result := IsValidFilename;
   if not Result then
     WideMessageBox(Handle, PWideChar(Translate(Format(SFmtErrIvalidFilename, [edFilename.Text]))), PWideChar(Translate(SError)), MB_OK or MB_TASKMODAl or MB_ICONERROR);
-end;
-
-class function TfrmExport.Execute(const ApplicationServices: IApplicationServices; var FileName: string;
-  const ACaption, Filter, InitialDir, DefaultExt: string;
-  Preview: TTntStrings; WordWrap:boolean = false): boolean;
-var
-  frmExport: TfrmExport;
-begin
-  Result := false;
-  frmExport := self.Create(Application);
-  with frmExport do
-  try
-    LoadSettings;
-    FApplicationServices := ApplicationServices;
-    if ACaption <> '' then
-      Caption := Translate(ACaption)
-    else
-      Caption := Translate(Caption);
-    lblFilename.Caption := Translate(lblFilename.Caption);
-    lblPreview.Caption := Translate(lblPreview.Caption);
-    btnOK.Caption := Translate(btnOK.Caption);
-    btnCancel.Caption := Translate(btnCancel.Caption);
-    SaveDialog1.Filter := Translate(Filter);
-    SaveDialog1.InitialDir := InitialDir;
-    SaveDialog1.DefaultExt := DefaultExt;
-    edFilename.Text := Filename;
-    rePreview.WordWrap := WordWrap;
-    rePreview.Lines := Preview;
-    rePreview.SelStart := 0;
-    SendMessage(rePreview.Handle, EM_SCROLLCARET, 0, 0);
-    if (ShowModal = mrOK) and CheckFilename and OverwriteOK then
-    begin
-      Result := true;
-      Preview.Assign(rePreview.Lines);
-      Filename := edFilename.Text;
-    end;
-    SaveSettings;
-  finally
-    Free;
-  end;
 end;
 
 function TfrmExport.Translate(const Value: WideString): WideString;

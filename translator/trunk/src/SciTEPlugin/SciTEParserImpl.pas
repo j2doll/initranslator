@@ -32,10 +32,10 @@ type
   TSciTEParser = class(TInterfacedObject, IUnknown, IFileParser)
   private
     FOldHandle: LongWord;
-    FTransFile: string;
+    FTransFile: WideString;
     FExportRect: TRect;
     procedure BuildPreview(const Items: ITranslationItems; Strings: TTntStrings);
-    function DoSciTEImport(const Items, Orphans: ITranslationItems; const TransFile: string): boolean;
+    function DoSciTEImport(const Items, Orphans: ITranslationItems; const TransFile: WideString): boolean;
     procedure LoadSettings;
     procedure SaveSettings;
   public
@@ -51,7 +51,7 @@ type
 
 implementation
 uses
-  Windows, Forms, IniFiles, PreviewExportFrm, SingleImportFrm;
+  Windows, Forms, IniFiles, CommonUtils, PreviewExportFrm, SingleImportFrm;
 
 const
   cSciTEFilter = 'SciTE files (locale.properties)|*.properties|All files (*.*)|*.*';
@@ -61,14 +61,14 @@ const
   SImportError = 'There was an error importing, please check the files and try again';
   SError = 'SciTE Parser Error';
 
-function YesNo(const Text, Caption: string): boolean;
+function YesNo(const Text, Caption: WideString): boolean;
 begin
-  Result := Application.MessageBox(PChar(Text), PChar(Caption), MB_YESNO or MB_ICONQUESTION) = IDYES;
+  Result := WideMessageBox(GetActiveWindow, PWideChar(Text), PWideChar(Caption), MB_YESNO or MB_ICONQUESTION) = IDYES;
 end;
 
-procedure ShowError(const Text: string);
+procedure ShowError(const Text: WideString);
 begin
-  Application.MessageBox(PChar('There was an error:'#13#10 + Text), PChar('SciTE Error'), MB_OK or MB_ICONERROR);
+  WideMessageBox(GetActiveWindow, PWideChar('There was an error:'#13#10 + Text), PWideChar(WideString('SciTE Error')), MB_OK or MB_ICONERROR);
 end;
 
 { TSciTEParser }
@@ -131,7 +131,7 @@ begin
 end;
 
 function TSciTEParser.DoSciTEImport(const Items, Orphans: ITranslationItems;
-  const TransFile: string): boolean;
+  const TransFile: WideString): boolean;
 var
   S: TTntStringList;
   i: integer;

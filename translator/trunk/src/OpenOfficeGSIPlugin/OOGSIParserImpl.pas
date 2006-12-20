@@ -33,7 +33,7 @@ type
     FOldHandle: LongWord;
     FAppServices: IApplicationServices;
     FCount: integer;
-    FOrigFile, FTransFile: string;
+    FOrigFile, FTransFile: WideString;
     FOrigIsDual, FSearchTrans: boolean;
     FExportRect: TRect;
     procedure BuildPreview(const Items: ITranslationItems; Strings: TTntStrings);

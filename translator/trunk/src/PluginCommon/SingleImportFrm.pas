@@ -39,8 +39,8 @@ type
     function Translate(const Value:WideString):WideString;
   public
     { Public declarations }
-    class function Execute(var AFilename: string; const ACaption, Filter, InitialDir, DefaultExt: string): boolean;overload;
-    class function Execute(const ApplicationServices:IApplicationServices; var AFilename: string; const ACaption, Filter, InitialDir, DefaultExt: string): boolean;overload;
+    class function Execute(var AFilename: WideString; const ACaption, Filter, InitialDir, DefaultExt: WideString): boolean;overload;
+    class function Execute(const ApplicationServices:IApplicationServices; var AFilename: WideString; const ACaption, Filter, InitialDir, DefaultExt: WideString): boolean;overload;
     function GetString(out Section, Name, Value: WideString): WordBool; safecall;
 
   end;
@@ -51,7 +51,7 @@ implementation
 
 { TfrmImport }
 
-class function TfrmSingleImport.Execute(var AFilename: string; const ACaption, Filter, InitialDir, DefaultExt: string): boolean;
+class function TfrmSingleImport.Execute(var AFilename: WideString; const ACaption, Filter, InitialDir, DefaultExt: WideString): boolean;
 begin
   Result := Execute(nil, AFilename, ACaption, Filter, InitialDir, DefaultExt);
 end;
@@ -63,8 +63,8 @@ begin
     edFilename.Text := OpenDialog1.Filename;
 end;
 
-class function TfrmSingleImport.Execute(const ApplicationServices: IApplicationServices; var AFilename: string;
-  const ACaption, Filter, InitialDir, DefaultExt: string): boolean;
+class function TfrmSingleImport.Execute(const ApplicationServices: IApplicationServices; var AFilename: WideString;
+  const ACaption, Filter, InitialDir, DefaultExt: WideString): boolean;
 var
   frmImport: TfrmSingleImport;
 begin

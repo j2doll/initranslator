@@ -18,15 +18,14 @@
 
 unit POParserImpl;
 
-
 interface
 uses
   Windows, Forms, TntClasses, TntSysUtils, TransIntf;
 
 type
-  TPOFileParser = class(TInterfacedObject, IUnknown, IFileParser)
+  TPOFileParser = class(TInterfacedObject, IUnknown, IFileParser, ILocalizable)
   private
-    FOldHandle: LongWord;
+    FIndex: integer;
     FFilename, FCmdLine: string;
     FCompileMO: Boolean;
     procedure LoadSettings;
@@ -36,30 +35,20 @@ type
       const Filename: string);
     procedure MakePOFile(const Items: ITranslationItems; Header, Result: TTntStrings);
   public
-    constructor Create;
-    destructor Destroy; override;
     function Capabilities: Integer; safecall;
     function Configure(Capability: integer): HResult; safecall;
     function DisplayName(Capability: integer): WideString; safecall;
     function ExportItems(const Items, Orphans: ITranslationItems): HResult; safecall;
     function ImportItems(const Items, Orphans: ITranslationItems): HResult; safecall;
     procedure Init(const ApplicationServices: IApplicationServices); safecall;
+    function GetString(out Section: WideString; out Name: WideString;
+      out Value: WideString): WordBool; safecall;
+
   end;
 
 implementation
 uses
-  CommonUtils, SysUtils, Classes, Controls, Dialogs, IniFiles, POExportFrm;
-
-const
-  cDefaultHeader =
-    'Project-Id-Version: <PROJECT>\n' +
-    'POT-Creation-Date: 2003-05-20 12:17\n' +
-    'PO-Revision-Date: 2003-09-23 09:24+0100\n' +
-    'Last-Translator: <none>\n' +
-    'Language-Team: Unknown <unknown>\n' +
-    'MIME-Version: 1.0\n' +
-    'Content-Type: text/plain; charset=UTF-8\n' +
-    'Content-Transfer-Encoding: 8bit';
+  CommonUtils, SysUtils, Classes, Controls, Dialogs, IniFiles, POExportFrm, POParserConsts;
 
 var
   FHeader: TTntStringList;
@@ -101,27 +90,12 @@ begin
   Result := S_OK;
 end;
 
-constructor TPOFileParser.Create;
-begin
-  inherited Create;
-  FOldHandle := Application.Handle;
-  FCmdLine := 'msgfmt "%i" -o "%o"';
-
-//  FHeader.Text := cDefaultHeader;
-end;
-
-destructor TPOFileParser.Destroy;
-begin
-  Application.Handle := FOldHandle;
-  inherited;
-end;
-
 function TPOFileParser.DisplayName(Capability: integer): WideString;
 begin
   case Capability of
-    CAP_IMPORT: Result := 'Import from PO file';
-    CAP_EXPORT: Result := 'Export to PO file';
-    CAP_CONFIGURE: Result := 'Configure PO parser';
+    CAP_IMPORT: Result := Translate(SImportTitle);
+    CAP_EXPORT: Result := Translate(SExportTitle);
+    CAP_CONFIGURE: Result := Translate(SConfigureTitle);
   else
     Result := '';
   end;
@@ -204,16 +178,17 @@ begin
         i := 0;
         while i < S.Count do
         begin
-          if AnsiPos('#', S[i]) = 1 then
+          if Pos('#', S[i]) = 1 then
             FComments.Add(S[i])
-          else if AnsiPos('msgid', WideLowerCase(S[i])) = 1 then
+          else if Pos('msgid', WideLowerCase(S[i])) = 1 then
           begin
             AnItem.Original := trimQuotes(trim(Copy(S[i], 6, MaxInt)), '"');
             while true do
             begin
               Inc(i);
-              if i >= S.Count then Break;
-              if AnsiPos('"', trim(S[i])) = 1 then
+              if i >= S.Count then
+                Break;
+              if Pos('"', trim(S[i])) = 1 then
                 AnItem.Original := AnItem.Original + trimQuotes(trim(S[i]), '"')
               else
               begin
@@ -222,14 +197,15 @@ begin
               end;
             end;
           end
-          else if AnsiPos('msgstr', AnsiLowerCase(S[i])) = 1 then
+          else if Pos('msgstr', AnsiLowerCase(S[i])) = 1 then
           begin
             AnItem.Translation := trimQuotes(trim(Copy(S[i], 7, MaxInt)), '"');
             while true do
             begin
               Inc(i);
-              if i >= S.Count then Break;
-              if AnsiPos('"', trim(S[i])) = 1 then
+              if i >= S.Count then
+                Break;
+              if Pos('"', trim(S[i])) = 1 then
                 AnItem.Translation := AnItem.Translation + trimQuotes(trim(S[i]), '"')
               else
               begin
@@ -349,7 +325,7 @@ begin
       try
         Filename := AFilename;
         Options := Options + [ofFileMustExist];
-        Filter := 'PO files|*.po|All files|*.*';
+        Filter := Translate(SFileFilter);
         if Execute then
           Result := Filename
         else
@@ -363,7 +339,7 @@ begin
       try
         Filename := AFilename;
         Options := Options + [ofOverwritePrompt];
-        Filter := 'PO files|*.po|All files|*.*';
+        Filter := Translate(SFileFilter);
         if Execute then
           Result := Filename
         else
@@ -398,7 +374,7 @@ end;
 
 procedure TPOFileParser.Init(const ApplicationServices: IApplicationServices);
 begin
-  Application.Handle := ApplicationServices.AppHandle;
+  GLobalApplicationServices := ApplicationServices;
 end;
 
 procedure TPOFileParser.LoadSettings;
@@ -409,7 +385,7 @@ begin
 //    FHeader := ReadString('PO', 'Text', FHeader);
 //    FHeaderComment := ReadString('PO', 'Comment', FHeaderComment);
       FFilename := ReadString('PO', 'Filename', FFilename);
-      FCmdLine := ReadString('MO', 'CmdLine', FCmdLine);
+      FCmdLine := ReadString('MO', 'CmdLine', 'msgfmt "%i" -o "%o"');
       FCompileMO := ReadBool('MO', 'CompileMO', FCompileMO);
     finally
       Free;
@@ -437,8 +413,37 @@ begin
   end;
 end;
 
+function TPOFileParser.GetString(out Section, Name, Value: WideString): WordBool;
+begin
+  Result := true;
+  case FIndex of
+    0: Value := SImportTitle;
+    1: Value := SExportTitle;
+    2: Value := SConfigureTitle;
+    3: Value := SFileFilter;
+    4: Value := SFormCaption;
+    5: Value := SFileNameLabel;
+    6: Value := SPreviewLabel;
+    7: Value := SCompileMOCaption;
+    8: Value := SBrowseCaption;
+    9: Value := SOK;
+    10: Value := SCancel;
+  else
+    Result := false;
+  end;
+  if Result then
+  begin
+    Section := cSectionName;
+    Name := Value;
+    Inc(FIndex);
+  end
+  else
+    Findex := 0;
+end;
+
 initialization
   FHeader := TTntStringList.Create;
+
 finalization
   FreeAndNil(FHeader);
 end.

@@ -33,10 +33,10 @@ type
     FOldHandle: LongWord;
     FCount: integer;
     FAppServices: IApplicationServices;
-    FOrigFile, FTransFile: string;
+    FOrigFile, FTransFile: WideString;
     FExportRect: TRect;
     procedure BuildPreview(const Items: ITranslationItems; Strings: TTntStrings);
-    function DoImport(const Items, Orphans: ITranslationItems; const OrigFile, TransFile: string): boolean;
+    function DoImport(const Items, Orphans: ITranslationItems; const OrigFile, TransFile: WideString): boolean;
     procedure LoadSettings;
     procedure SaveSettings;
     function Translate(const Value: WideString): WideString;
@@ -65,13 +65,13 @@ var
   FHeader, FFooter: TTntStringlist;
 
 const
-  cPHPFilter = 'PHP files (*.php)|*.php|All files (*.*)|*.*';
-  cIBFExportTitle = 'Export to IB Forums language file';
-  cIBFImportTitle = 'Import from IB Forums language file';
-  cSectionName = 'IB Forums';
-  SImportError = 'There was an error importing, please check the files and try again';
-  SError = 'IB Forums Parser Error';
-  SFmtErrorMsg = '%s';
+  cPHPFilter:WideString = 'PHP files (*.php)|*.php|All files (*.*)|*.*';
+  cIBFExportTitle:WideString = 'Export to IB Forums language file';
+  cIBFImportTitle:WideString = 'Import from IB Forums language file';
+  cSectionName:WideString = 'IB Forums';
+  SImportError:WideString = 'There was an error importing, please check the files and try again';
+  SError:WideString = 'IB Forums Parser Error';
+  SFmtErrorMsg:WideString = '%s';
 
 
 function MyWideDequotedStr(const S: WideString; Quote: WideChar): WideString;
@@ -84,9 +84,9 @@ begin
     Result := Copy(S, 2, Length(S) - 2)
 end;
 
-procedure ShowError(const Text: string);
+procedure ShowError(const Text: WideString);
 begin
-  Application.MessageBox(PChar(Format(SFmtErrorMsg, [Text])), PChar(SError), MB_OK or MB_ICONERROR);
+  WideMessageBox(GetActiveWindow, PWideChar(WideFormat(SFmtErrorMsg, [Text])), PWideChar(SError), MB_OK or MB_ICONERROR);
 end;
 
 { TIBFParser }
@@ -152,18 +152,18 @@ begin
 end;
 
 function TIBFParser.DoImport(const Items, Orphans: ITranslationItems;
-  const OrigFile, TransFile: string): boolean;
+  const OrigFile, TransFile: WideString): boolean;
 var
   S: TTntStringList;
   HeaderComplete: boolean;
   i: integer;
   FOldSort: TTranslateSortType;
 
-  function ParseRow(const S: string; IsTranslation, TranslateFormat: boolean): boolean;
+  function ParseRow(const S: WideString; IsTranslation, TranslateFormat: boolean): boolean;
   var
     T: ITranslationItem;
     i: integer;
-    tmp, tmp2: Widestring;
+    tmp, tmp2: WideString;
   begin
     Result := false;
     if not TranslateFormat then

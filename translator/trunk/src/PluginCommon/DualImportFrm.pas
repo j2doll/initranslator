@@ -50,8 +50,8 @@ type
   public
     { Public declarations }
     // SecondIsOptional parameter suggested by Chris Thornton
-    class function Execute(var AOriginalFile, ATranslationFile: string; const ACaption, Filter, InitialDir, DefaultExt: string; const SecondIsOptional: Boolean = false): boolean; overload;
-    class function Execute(const ApplicationServices: IApplicationServices; var AOriginalFile, ATranslationFile: string; const ACaption, Filter, InitialDir, DefaultExt: string; const SecondIsOptional: Boolean = false): boolean; overload;
+    class function Execute(var AOriginalFile, ATranslationFile: WideString; const ACaption, Filter, InitialDir, DefaultExt: WideString; const SecondIsOptional: Boolean = false): boolean; overload;
+    class function Execute(const ApplicationServices: IApplicationServices; var AOriginalFile, ATranslationFile: WideString; const ACaption, Filter, InitialDir, DefaultExt: WideString; const SecondIsOptional: Boolean = false): boolean; overload;
     function GetString(out Section: WideString; out Name: WideString; out Value: WideString): WordBool; safecall;
   end;
 
@@ -66,7 +66,7 @@ resourcestring
 
 { TfrmImport }
 
-class function TfrmDualImport.Execute(var AOriginalFile, ATranslationFile: string; const ACaption, Filter, InitialDir, DefaultExt: string; const SecondIsOptional: Boolean = false): boolean;
+class function TfrmDualImport.Execute(var AOriginalFile, ATranslationFile: WideString; const ACaption, Filter, InitialDir, DefaultExt: WideString; const SecondIsOptional: Boolean = false): boolean;
 begin
   Result := Execute(nil, AOriginalFile, ATranslationFile, ACaption, Filter, InitialDir, DefaultExt, SecondIsOptional);
 end;
@@ -160,8 +160,8 @@ end;
 
 class function TfrmDualImport.Execute(
   const ApplicationServices: IApplicationServices; var AOriginalFile,
-  ATranslationFile: string; const ACaption, Filter, InitialDir,
-  DefaultExt: string; const SecondIsOptional: Boolean): boolean;
+  ATranslationFile: WideString; const ACaption, Filter, InitialDir,
+  DefaultExt: WideString; const SecondIsOptional: Boolean): boolean;
 var
   frmImport: TfrmDualImport;
 begin

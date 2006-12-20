@@ -39,7 +39,7 @@ type
     function AddCopyright: boolean;
     function Translate(const Value: WideString): WideString;
   protected
-    FTransFile: string;
+    FTransFile: WideString;
     procedure LoadSettings;
     procedure SaveSettings;
     procedure BuildPreview(Items: ITranslationItems; Strings: TTntStrings);

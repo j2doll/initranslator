@@ -26,7 +26,7 @@ type
     FOldAppHandle: Cardinal;
     FCount: integer;
     FAppServices: IApplicationServices;
-    FOrigFile, FTransFile: string;
+    FOrigFile, FTransFile: WideString;
     FExportRect: TRect;
     procedure LoadSettings;
     procedure SaveSettings;

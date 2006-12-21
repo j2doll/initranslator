@@ -14,8 +14,8 @@ PROJECTS = FoxitParser.dll IBForumsParser.dll KeePassParser.dll \
   MsTermBuild.exe OlegParser.dll OOGSIParser.dll PHPNukeParser.dll PHPParser.dll \
   PolyGlotParser.dll POParser.dll SciTEParser.dll TMXParser.dll \
   ToolConsistency.dll ToolKeyCheck.dll ToolListEdit.dll ToolPropertiesView.dll \
-  ToolTreeView.dll ToolTrim.dll XLIFFParser.dll XilisoftParser.dll SDFSplit.exe \
-  translator.exe
+  ToolTreeView.dll ToolTrim.dll WixParser.dll XLIFFParser.dll XilisoftParser.dll \
+  SDFSplit.exe translator.exe
 #------------------------------------------------------------------------------
 default: $(PROJECTS)
 #------------------------------------------------------------------------------
@@ -96,6 +96,9 @@ SDFSplit.exe: src\SDFSplit\SDFSplit.dpr
   $(DCC)
 
 KeePassParser.dll: src\KeePassPlugin\KeePassParser.dpr
+  $(DCC)
+
+WixParser.dll: src\WixPlugin\WixParser.dpr
   $(DCC)
 
 

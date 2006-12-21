@@ -52,6 +52,7 @@ type
     procedure SaveSettings;
     procedure SplitFile(const Filename, OutputFolder: string; SortItems: boolean);
     procedure ExtractFile(const Filename, OutputFolder, Language: string; SortItems: boolean);
+    function Validate: boolean;
   public
     { Public declarations }
   end;
@@ -62,7 +63,7 @@ var
 implementation
 
 uses
-  {$WARN UNIT_PLATFORM OFF}FileCtrl, {$WARN UNIT_PLATFORM ON} IniFiles;
+  {$WARN UNIT_PLATFORM OFF}FileCtrl, {$WARN UNIT_PLATFORM ON} IniFiles, TaskDialogAPI;
 
 
 {$R *.dfm}
@@ -90,27 +91,39 @@ begin
   end;
 end;
 
+function TfrmMain.Validate:boolean;
+var S:string;
+begin
+  S := '';
+  if not FileExists(edSDFFile.Text) then
+  begin
+    S := 'File does not exist';
+    edSDFFile.SetFocus;
+  end;
+  if not DirectoryExists(edSaveFolder.Text) then
+  begin
+    S := 'Output folder does not exist';
+    edSaveFolder.SetFocus;
+  end;
+  if chkExtractLanguage.Checked and (cbLanguages.Text = '') then
+  begin
+    S := 'No language specified';
+    cbLanguages.SetFocus;
+  end;
+  Result := S = '';
+  if not Result then
+    TaskDialog(Handle, HInstance, 'Error', PWideChar(WideString(S)), '', MB_OK or MB_ICONERROR, '', nil);
+end;
+
 procedure TfrmMain.btnOKClick(Sender: TObject);
 begin
-  if not FileExists(edSDFFile.Text) then
-    ShowMessage('File does not exist')
-  else if not DirectoryExists(edSaveFolder.Text) then
-    ShowMessage('Output folder does not exist')
-  else if chkExtractLanguage.Checked then
-  begin
-    if cbLanguages.Text = '' then
-    begin
-      ShowMessage('No language specified');
-      Exit;
-    end;
-    ExtractFile(edSDFFile.Text, edSaveFolder.Text, cbLanguages.Text, chkSortItems.Checked);
-    ShowMessage('Done');
-  end
+  if not Validate then Exit;
+
+  if chkExtractLanguage.Checked then
+    ExtractFile(edSDFFile.Text, edSaveFolder.Text, cbLanguages.Text, chkSortItems.Checked)
   else
-  begin
     SplitFile(edSDFFile.Text, edSaveFolder.Text, chkSortItems.Checked);
-    ShowMessage('Done');
-  end;
+  TaskDialog(Handle, HInstance, PWideChar(WideString(Caption)), 'Done', '', MB_OK or MB_ICONINFORMATION, '', nil);
 end;
 
 function GetLanguage(S: string): string;
@@ -285,7 +298,7 @@ begin
   if S = '' then
     S := ExtractFilePath(edSDFFile.Text);
   if SelectDirectory('Select output folder', '', S) then
-    edSDFFile.Text := S;
+    edSaveFolder.Text := S;
 end;
 
 procedure TfrmMain.chkExtractLanguageClick(Sender: TObject);

@@ -4,6 +4,7 @@ uses
   Forms,
   MainFrm in 'MainFrm.pas' {frmMain};
 
+{$R 'manifest.res' 'manifest.rc'}
 {$R *.res}
 
 begin

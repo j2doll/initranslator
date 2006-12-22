@@ -57,7 +57,7 @@ type
 
 implementation
 uses
-  ShellAPI, IniFiles, CommonUtils;
+  ShellAPI, IniFiles, CommonUtils, TntSysUtils;
 
 const
   SFmtErrIvalidFilename = 'Invalid filename "%s". Select another filename and try again.';
@@ -128,7 +128,7 @@ end;
 function TfrmExport.OverwriteOK: boolean;
 begin
   Result := FHasPrompted or not FileExists(edFilename.Text) or
-    (WideMessageBox(Handle, PWideChar(Translate(WideFormat(SFmtOverwriteOK, [edFilename.Text]))), PWideChar(Translate(SConfirm)), MB_YESNO or MB_TASKMODAl or MB_ICONQUESTION) = IDYES);
+    (WideMessageBox(Handle, PWideChar(Translate(WideFormat(SFmtOverwriteOK, [edFilename.Text]))), PWideChar(Translate(SConfirm)), MB_YESNO or MB_SETFOREGROUND or MB_TASKMODAL or MB_ICONQUESTION) = IDYES);
 end;
 
 procedure TfrmExport.LoadSettings;
@@ -200,20 +200,31 @@ end;
 function TfrmExport.IsValidFilename: boolean;
 var
   AHandle: THandle;
-  ALAstError: DWORD;
+  APrevError, ALastError: DWORD;
 begin
   if edFilename.Text <> '' then
   begin
     // try to create a new file: either it will fail because the file exists
     // or because the name is invalid
-    AHandle := CreateFileW(PWideChar(WideString(edFilename.Text)), 0, 0, nil, CREATE_NEW, 0, 0);
+    // if it doesn't fail, it is ok to create the file
+    APrevError := GetLastError;
+    if Win32PlatformIsUnicode then
+      AHandle := CreateFileW(PWideChar(edFilename.Text), 0, 0, nil, CREATE_NEW, 0, 0)
+    else
+      AHandle := CreateFileA(PChar(string(edFilename.Text)), 0, 0, nil, CREATE_NEW, 0, 0);
     try
       ALastError := GetLastError;
       Result := (ALastError = ERROR_FILE_EXISTS) or (AHandle <> INVALID_HANDLE_VALUE);
-      SetLastError(ALastError);
+      SetLastError(APrevError);
     finally
       if AHandle <> INVALID_HANDLE_VALUE then
+      begin
         CloseHandle(AHandle);
+        if Win32PlatformIsUnicode then
+          DeleteFileW(PWideChar(edFilename.Text))
+        else
+          DeleteFile(PChar(string(edFilename.Text)));
+      end;
     end;
   end
   else

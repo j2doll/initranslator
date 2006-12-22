@@ -23,11 +23,11 @@ uses
   Classes,
   WixParserImpl in 'WixParserImpl.pas',
   TransIntf in '..\TransIntf.pas',
-  SingleImportFrm in '..\PluginCommon\SingleImportFrm.pas' {frmSingleImport: TTntForm},
   PreviewExportFrm in '..\PluginCommon\PreviewExportFrm.pas' {frmExport: TTntForm},
   WixParserConsts in 'WixParserConsts.pas',
   CommonUtils in '..\CommonUtils.pas',
-  WideIniFiles in '..\WideIniFiles.pas';
+  WideIniFiles in '..\WideIniFiles.pas',
+  DualImportFrm in '..\PluginCommon\DualImportFrm.pas' {frmDualImport: TTntForm};
 
 {$R *.res}
 

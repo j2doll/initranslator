@@ -15,6 +15,7 @@ object frmImportExport: TfrmImportExport
   Font.Name = 'MS Shell Dlg 2'
   Font.Style = []
   OldCreateOrder = False
+  OnShow = FormShow
   DesignSize = (
     332
     283)

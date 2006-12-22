@@ -46,6 +46,7 @@ type
     procedure acImportExecute(Sender: TObject);
     procedure acExportExecute(Sender: TObject);
     procedure acConfigureExecute(Sender: TObject);
+    procedure FormShow(Sender: TObject);
   private
     { Private declarations }
     FCapabilitiesSupported: integer;
@@ -165,9 +166,10 @@ begin
     i := LoadPlugins(PluginFolder, DoImport);
     lvItems.AlphaSort;
     if (ItemIndex >= 0) and (ItemIndex < lvItems.Items.Count) then
+    with lvItems.Items[ItemIndex] do
     begin
-      lvItems.Items[ItemIndex].Selected := true;
-      lvItems.Items[ItemIndex].Focused := true;
+      Selected := true;
+      Focused := true;
     end;
     Result := (ShowModal = mrOK) and (i > 0);
     if Result then
@@ -250,8 +252,9 @@ procedure TfrmImportExport.lvItemsEnter(Sender: TObject);
 begin
   if (lvItems.Selected = nil) and (lvItems.Items.Count > 0) then
   begin
-    lvItems.Items[0].Selected := true;
-    lvItems.Items[0].Focused := true;
+    lvItems.Selected := lvItems.Items[0];
+    lvItems.Selected.Focused := true;
+    lvItems.Selected.MakeVisible(true);
   end;
 end;
 
@@ -342,6 +345,12 @@ begin
   finally
     frm.Free;
   end;
+end;
+
+procedure TfrmImportExport.FormShow(Sender: TObject);
+begin
+  if lvItems.Selected <> nil then
+    lvItems.Selected.MakeVisible(false);
 end;
 
 initialization

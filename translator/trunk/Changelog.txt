@@ -1,5 +1,50 @@
 Ini Translator Changelog
 ========================
+2006-12-22:
+- PreviewExportForm didn't delete temporary file
+WixParser:
+- Added support for dual file import (second file optional)
+
+2006-12-21:
+- New parser for Wix (http://wix.sourceforge.net) localization files
+SDFSplit:
+- Validate method added
+- XP manifest added
+- XP manifest files added
+
+2006-12-20:
+- Memory leak in MsgTranslate fixed
+
+2006-12-19:
+Translator:
+- after export, set items as not modified
+Plugins (all):
+- string replaced with WideString
+- PreviewExportForm now supports wordwrap
+POParser:
+- implements ILocalizable
+
+2006-12-18:
+- New plugin for KeePass (http://keepass.sourceforge.net) language files
+- SDFSplit: New utility for splitting and extracting languages from OpenOffice multi-language sdf files
+- Data files for various supported file formats added (for testing and format discovery)
+IniTranslator:
+- let richedit undo first before undolist kicks in
+- Updated arabic language file from Awadh A Al-Ghaamdi
+Plugins:
+- set items as unmodified after import
+OOGSI Parser:
+- improved parsing
+- option to search for correct translation (if items are not in the same order in orig and trans)
+PHPNuke Parser:
+- better parsing, can now handle continuation lines
+
+2006-12-15:
+- Better command processor handling
+- Memory leak in undo list fixed
+- Undo list now always frees the enclosed Data object
+- Replace everywhere was called twice (one too many)
+
 2006-12-14:
 Translator:
 - Memory leak removed

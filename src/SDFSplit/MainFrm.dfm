@@ -20,21 +20,21 @@ object frmMain: TfrmMain
     206)
   PixelsPerInch = 96
   TextHeight = 13
-  object Label1: TLabel
+  object Label1: TTntLabel
     Left = 8
     Top = 16
     Width = 40
     Height = 13
     Caption = 'SDF file:'
   end
-  object Label2: TLabel
+  object Label2: TTntLabel
     Left = 8
     Top = 65
     Width = 69
     Height = 13
     Caption = 'Output folder:'
   end
-  object edSDFFile: TEdit
+  object edSDFFile: TTntEdit
     Left = 8
     Top = 31
     Width = 466
@@ -42,7 +42,7 @@ object frmMain: TfrmMain
     Anchors = [akLeft, akTop, akRight]
     TabOrder = 0
   end
-  object btnSDFFile: TButton
+  object btnSDFFile: TTntButton
     Left = 478
     Top = 31
     Width = 21
@@ -52,7 +52,7 @@ object frmMain: TfrmMain
     TabOrder = 1
     OnClick = btnSDFFileClick
   end
-  object edSaveFolder: TEdit
+  object edSaveFolder: TTntEdit
     Left = 8
     Top = 80
     Width = 466
@@ -60,7 +60,7 @@ object frmMain: TfrmMain
     Anchors = [akLeft, akTop, akRight]
     TabOrder = 2
   end
-  object btnSaveFolder: TButton
+  object btnSaveFolder: TTntButton
     Left = 478
     Top = 80
     Width = 21
@@ -70,7 +70,7 @@ object frmMain: TfrmMain
     TabOrder = 3
     OnClick = btnSaveFolderClick
   end
-  object btnOK: TButton
+  object btnOK: TTntButton
     Left = 335
     Top = 170
     Width = 75
@@ -82,7 +82,7 @@ object frmMain: TfrmMain
     TabOrder = 7
     OnClick = btnOKClick
   end
-  object btnCancel: TButton
+  object btnCancel: TTntButton
     Left = 419
     Top = 170
     Width = 75
@@ -94,7 +94,7 @@ object frmMain: TfrmMain
     TabOrder = 8
     OnClick = btnCancelClick
   end
-  object chkExtractLanguage: TCheckBox
+  object chkExtractLanguage: TTntCheckBox
     Left = 16
     Top = 121
     Width = 120
@@ -103,7 +103,7 @@ object frmMain: TfrmMain
     TabOrder = 4
     OnClick = chkExtractLanguageClick
   end
-  object cbLanguages: TComboBox
+  object cbLanguages: TTntComboBox
     Left = 147
     Top = 119
     Width = 145
@@ -188,7 +188,7 @@ object frmMain: TfrmMain
       'zh-TW'
       'zu')
   end
-  object chkSortItems: TCheckBox
+  object chkSortItems: TTntCheckBox
     Left = 14
     Top = 154
     Width = 274
@@ -198,7 +198,7 @@ object frmMain: TfrmMain
     State = cbChecked
     TabOrder = 6
   end
-  object odSDFFile: TOpenDialog
+  object odSDFFile: TTntOpenDialog
     DefaultExt = 'sdf'
     Filter = 'SDF files|*.sdf|GSI files|*.gsi|All files|*.*'
     InitialDir = '.'

@@ -53,7 +53,7 @@ OOGSIParser.dll: src\OpenOfficeGSIPlugin\OOGSIParser.dpr
 OlegParser.dll: src\OlegPlugin\OlegParser.dpr
   $(DCC)
 
-MSDictParser.dll: src\MSDictParser\MSDictParser.dpr
+MSDictParser.dll: src\MSDictPlugin\MSDictParser.dpr
   $(DCC)
 
 MSDictBuild.exe: src\MsDictBuild\MSDictBuild.dpr

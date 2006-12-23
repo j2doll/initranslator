@@ -2,7 +2,8 @@ program SDFSplit;
 
 uses
   Forms,
-  MainFrm in 'MainFrm.pas' {frmMain};
+  MainFrm in 'MainFrm.pas' {frmMain},
+  CommonUtils in '..\CommonUtils.pas';
 
 {$R 'manifest.res' 'manifest.rc'}
 {$R *.res}

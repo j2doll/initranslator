@@ -23,22 +23,22 @@ interface
 
 uses
   Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
-  Dialogs, StdCtrls;
+  Dialogs, StdCtrls, TntForms, TntDialogs, TntStdCtrls;
 
 type
-  TfrmMain = class(TForm)
-    Label1: TLabel;
-    edSDFFile: TEdit;
-    btnSDFFile: TButton;
-    Label2: TLabel;
-    edSaveFolder: TEdit;
-    btnSaveFolder: TButton;
-    btnOK: TButton;
-    btnCancel: TButton;
-    odSDFFile: TOpenDialog;
-    chkExtractLanguage: TCheckBox;
-    cbLanguages: TComboBox;
-    chkSortItems: TCheckBox;
+  TfrmMain = class(TTntForm)
+    Label1: TTntLabel;
+    edSDFFile: TTntEdit;
+    btnSDFFile: TTntButton;
+    Label2: TTntLabel;
+    edSaveFolder: TTntEdit;
+    btnSaveFolder: TTntButton;
+    btnOK: TTntButton;
+    btnCancel: TTntButton;
+    odSDFFile: TTntOpenDialog;
+    chkExtractLanguage: TTntCheckBox;
+    cbLanguages: TTntComboBox;
+    chkSortItems: TTntCheckBox;
     procedure btnOKClick(Sender: TObject);
     procedure btnCancelClick(Sender: TObject);
     procedure btnSDFFileClick(Sender: TObject);
@@ -63,7 +63,7 @@ var
 implementation
 
 uses
-  {$WARN UNIT_PLATFORM OFF}FileCtrl, {$WARN UNIT_PLATFORM ON} IniFiles, TaskDialogAPI;
+  {$WARN UNIT_PLATFORM OFF}FileCtrl, {$WARN UNIT_PLATFORM ON} IniFiles, CommonUtils;
 
 
 {$R *.dfm}
@@ -92,7 +92,7 @@ begin
 end;
 
 function TfrmMain.Validate:boolean;
-var S:string;
+var S:WideString;
 begin
   S := '';
   if not FileExists(edSDFFile.Text) then
@@ -112,7 +112,7 @@ begin
   end;
   Result := S = '';
   if not Result then
-    TaskDialog(Handle, HInstance, 'Error', PWideChar(WideString(S)), '', MB_OK or MB_ICONERROR, '', nil);
+    WideMessageBox(Handle, PWideChar(S), 'Error', MB_OK or MB_ICONERROR);
 end;
 
 procedure TfrmMain.btnOKClick(Sender: TObject);
@@ -123,7 +123,7 @@ begin
     ExtractFile(edSDFFile.Text, edSaveFolder.Text, cbLanguages.Text, chkSortItems.Checked)
   else
     SplitFile(edSDFFile.Text, edSaveFolder.Text, chkSortItems.Checked);
-  TaskDialog(Handle, HInstance, PWideChar(WideString(Caption)), 'Done', '', MB_OK or MB_ICONINFORMATION, '', nil);
+  WideMessageBox(Handle, 'Done', PWideChar(Caption), MB_OK or MB_ICONINFORMATION);
 end;
 
 function GetLanguage(S: string): string;

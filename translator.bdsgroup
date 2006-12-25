@@ -5,19 +5,20 @@
       <Option Name="Personality">Default.Personality</Option>
       <Option Name="ProjectType"></Option>
       <Option Name="Version">1.0</Option>
-      <Option Name="GUID">{59D61320-2120-4035-BD53-729952E79890}</Option>
+      <Option Name="GUID">{5E82E63E-C378-40A6-AA75-EC2574507888}</Option>
     </Option>
   </PersonalityInfo>
   <Default.Personality>
     
     <Projects>
+      <Projects Name="DCPPParser.dll">src\DCPPPlugin\DCPPParser.bdsproj</Projects>
       <Projects Name="FoxitParser.dll">src\FoxitPlugin\FoxitParser.bdsproj</Projects>
       <Projects Name="IBForumsParser.dll">src\IBForumsPlugin\IBForumsParser.bdsproj</Projects>
       <Projects Name="KeePassParser.dll">src\KeePassPlugin\KeePassParser.bdsproj</Projects>
       <Projects Name="MozillaDTDParser.dll">src\MozillaPlugin\MozillaDTDParser.bdsproj</Projects>
       <Projects Name="MozillaPropsParser.dll">src\MozillaPlugin\MozillaPropsParser.bdsproj</Projects>
       <Projects Name="MSDictBuild.exe">src\MsDictBuild\MSDictBuild.bdsproj</Projects>
-      <Projects Name="MSDictParser.dll">src\MSDictParser\MSDictParser.bdsproj</Projects>
+      <Projects Name="MSDictParser.dll">src\MSDictPlugin\MSDictParser.bdsproj</Projects>
       <Projects Name="MsTermBuild.exe">src\MsTermBuild\MsTermBuild.bdsproj</Projects>
       <Projects Name="OlegParser.dll">src\OlegPlugin\OlegParser.bdsproj</Projects>
       <Projects Name="OOGSIParser.dll">src\OpenOfficeGSIPlugin\OOGSIParser.bdsproj</Projects>
@@ -33,11 +34,12 @@
       <Projects Name="ToolPropertiesView.dll">src\ToolPropertiesView\ToolPropertiesView.bdsproj</Projects>
       <Projects Name="ToolTreeView.dll">src\ToolTreeView\ToolTreeView.bdsproj</Projects>
       <Projects Name="ToolTrim.dll">src\ToolTrim\ToolTrim.bdsproj</Projects>
+      <Projects Name="WixParser.dll">src\WixPlugin\WixParser.bdsproj</Projects>
       <Projects Name="XLIFFParser.dll">src\XLIFFPlugin\XLIFFParser.bdsproj</Projects>
       <Projects Name="XilisoftParser.dll">src\XilisoftPlugin\XilisoftParser.bdsproj</Projects>
       <Projects Name="SDFSplit.exe">src\SDFSplit\SDFSplit.bdsproj</Projects>
       <Projects Name="translator.exe">src\translator.bdsproj</Projects>
-      <Projects Name="Targets">FoxitParser.dll IBForumsParser.dll KeePassParser.dll MozillaDTDParser.dll MozillaPropsParser.dll MSDictBuild.exe MSDictParser.dll MsTermBuild.exe OlegParser.dll OOGSIParser.dll PHPNukeParser.dll PHPParser.dll PolyGlotParser.dll POParser.dll SciTEParser.dll TMXParser.dll ToolConsistency.dll ToolKeyCheck.dll ToolListEdit.dll ToolPropertiesView.dll ToolTreeView.dll ToolTrim.dll XLIFFParser.dll XilisoftParser.dll SDFSplit.exe translator.exe</Projects>
+      <Projects Name="Targets">DCPPParser.dll FoxitParser.dll IBForumsParser.dll KeePassParser.dll MozillaDTDParser.dll MozillaPropsParser.dll MSDictBuild.exe MSDictParser.dll MsTermBuild.exe OlegParser.dll OOGSIParser.dll PHPNukeParser.dll PHPParser.dll PolyGlotParser.dll POParser.dll SciTEParser.dll TMXParser.dll ToolConsistency.dll ToolKeyCheck.dll ToolListEdit.dll ToolPropertiesView.dll ToolTreeView.dll ToolTrim.dll WixParser.dll XLIFFParser.dll XilisoftParser.dll SDFSplit.exe translator.exe</Projects>
     </Projects>
     <Dependencies/>
   </Default.Personality>

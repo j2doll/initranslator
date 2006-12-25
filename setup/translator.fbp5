@@ -28,9 +28,9 @@
           <Property name="PauseInterval" type="Cardinal">0</Property>
           <Property name="RetryPauseInterval" type="Cardinal">1000</Property>
           <Property name="SuppressStatusMessages" type="Boolean">False</Property>
-          <Object Class="TCommentAction" XMLID="{8FD1DB5C-EC8F-495A-89D0-3EB984FF4D3C}"><Property MultiValue="1" name="ActionComment" type="string"><![CDATA[This script checks out the latest sources of IniTranslator from the VCS archive on SF, builds all the deliverables, uploads the files to the project web space, notifies various newsgroups about the new release and finally deletes the files and folders it created.
+          <Object Class="TCommentAction" XMLID="{8FD1DB5C-EC8F-495A-89D0-3EB984FF4D3C}"><Property MultiValue="1" name="ActionComment" type="string"><![CDATA[This script can check out the latest sources of IniTranslator from the VCS archive on SF, build all the deliverables, upload the files to the project web space, notify various newsgroups about the new release and finally delete the files and folders it created.
 
-Optionally, it can build the deliverables from an existing folder. In this case, no check-out is done and no directories are created or deleted
+Optionally, it can build the deliverables from an existing folder. In this case, no check-outs are done and no directories are created nor deleted.
 
 
 Beware:
@@ -298,6 +298,172 @@ SRCPATH = ROOTPATH &amp; "src\"
             <Property name="PauseInterval" type="Cardinal">0</Property>
             <Property name="RetryPauseInterval" type="Cardinal">1000</Property>
             <Property name="SuppressStatusMessages" type="Boolean">False</Property>
+            <Object Class="TGroupAction" XMLID="{D1C60537-2C34-4578-8572-6D38EB317449}"><Property MultiValue="0" name="ActionComment" type="string"></Property>
+              <Property name="ActionTextColor" type="Cardinal">0</Property>
+              <Property MultiValue="0" name="ActionTypeID" type="string"></Property>
+              <Property MultiValue="0" name="Description" type="string">Remove old temp files</Property>
+              <Property name="Enabled" type="WordBool">True</Property>
+              <Property name="ExpandActionLogTitle" type="Boolean">True</Property>
+              <Property name="IgnoreFailure" type="WordBool">False</Property>
+              <Property name="IsAction" type="Boolean">True</Property>
+              <Property name="IsBreakPoint" type="WordBool">False</Property>
+              <Property MultiValue="0" name="LogToVariable" type="string"></Property>
+              <Property name="MaxRetryAttempts" type="Cardinal">0</Property>
+              <Property name="NodeCollapsed" type="Boolean">False</Property>
+              <Property name="PauseInterval" type="Cardinal">0</Property>
+              <Property name="RetryPauseInterval" type="Cardinal">1000</Property>
+              <Property name="SuppressStatusMessages" type="Boolean">False</Property>
+              <Object Class="TFBFileSetDefineAction" XMLID="{4D20F944-8F60-47E1-A6AE-5902FCA9ABBE}"><Property MultiValue="0" name="ActionComment" type="string"></Property>
+                <Property name="ActionTextColor" type="Cardinal">0</Property>
+                <Property MultiValue="0" name="ActionTypeID" type="string"></Property>
+                <Property MultiValue="0" name="Description" type="string">Define temp files</Property>
+                <Property name="Enabled" type="WordBool">True</Property>
+                <Property name="ExpandActionLogTitle" type="Boolean">True</Property>
+                <Property MultiValue="0" name="FileSetName" type="string">RemovableFiles</Property>
+                <Property name="FileSetObject" type="IFBFileSet" XMLID="{0718A53E-0F0C-4BA9-AB92-D7DD782E6864}"/>
+                <Property name="IgnoreFailure" type="WordBool">False</Property>
+                <Property name="IsAction" type="Boolean">True</Property>
+                <Property name="IsBreakPoint" type="WordBool">False</Property>
+                <Property MultiValue="0" name="LogToVariable" type="string"></Property>
+                <Property name="MaxRetryAttempts" type="Cardinal">0</Property>
+                <Property name="NodeCollapsed" type="Boolean">False</Property>
+                <Property name="PauseInterval" type="Cardinal">0</Property>
+                <Property name="RetryPauseInterval" type="Cardinal">1000</Property>
+                <Property name="SuppressStatusMessages" type="Boolean">False</Property>
+                <Object Class="TFBFileSetObject" XMLID="{0718A53E-0F0C-4BA9-AB92-D7DD782E6864}"><Property MultiValue="0" name="BaseDirectory" type="string">%ROOTPATH%</Property>
+                  <Property name="ExcludePatternList" type="IFBFileSetPatternList" XMLID="{A72A14FF-F212-4332-B5D8-004B96EA40FF}"/>
+                  <Property name="FilterList" type="IFBFileSetFilterList" XMLID="{323A7F40-A5DC-4245-8E38-DEDAF9CFD32F}"/>
+                  <Property MultiValue="0" name="Name" type="string">RemovableFiles</Property>
+                  <Property name="OutputQuoting" type="TFileSetQuoteType">qtDouble</Property>
+                  <Property name="OutputSeparator" type="TFileSetSepType">spNone</Property>
+                  <Property name="PatternList" type="IFBFileSetPatternList" XMLID="{1A64558B-48C7-4189-A1EB-9F4131F30AA2}"/>
+                  <Object Class="TFBFileSetPatternList" XMLID="{1A64558B-48C7-4189-A1EB-9F4131F30AA2}"><Property MultiValue="0" name="Name" type="string">PATTERNLIST</Property>
+                    <Object Class="TFBFileSetPattern" XMLID="{A0C0FCB4-698C-4CF8-935F-C76CD5FF5037}"><Property MultiValue="0" name="Comment" type="string"></Property>
+                      <Property name="IsRegExpr" type="Boolean">False</Property>
+                      <Property MultiValue="0" name="Item" type="string">*.dcu</Property>
+                      <Property name="Recurse" type="Boolean">True</Property>
+                      </Object>
+                    <Object Class="TFBFileSetPattern" XMLID="{2BD4BEF5-06E2-4CB8-A82B-6446FD341DAF}"><Property MultiValue="0" name="Comment" type="string"></Property>
+                      <Property name="IsRegExpr" type="Boolean">False</Property>
+                      <Property MultiValue="0" name="Item" type="string">*.drc</Property>
+                      <Property name="Recurse" type="Boolean">True</Property>
+                      </Object>
+                    <Object Class="TFBFileSetPattern" XMLID="{72E2EABE-9C6C-4556-84B3-7830CC01226A}"><Property MultiValue="0" name="Comment" type="string"></Property>
+                      <Property name="IsRegExpr" type="Boolean">False</Property>
+                      <Property MultiValue="0" name="Item" type="string">*.~*</Property>
+                      <Property name="Recurse" type="Boolean">True</Property>
+                      </Object>
+                    <Object Class="TFBFileSetPattern" XMLID="{0BF6FB53-5CC6-4789-AC25-62096C55BB80}"><Property MultiValue="0" name="Comment" type="string"></Property>
+                      <Property name="IsRegExpr" type="Boolean">False</Property>
+                      <Property MultiValue="0" name="Item" type="string">*.drc</Property>
+                      <Property name="Recurse" type="Boolean">True</Property>
+                      </Object>
+                    <Object Class="TFBFileSetPattern" XMLID="{79EA3DD8-C130-4342-BE2C-9C321D48B965}"><Property MultiValue="0" name="Comment" type="string"></Property>
+                      <Property name="IsRegExpr" type="Boolean">False</Property>
+                      <Property MultiValue="0" name="Item" type="string">*.cfg</Property>
+                      <Property name="Recurse" type="Boolean">True</Property>
+                      </Object>
+                    <Object Class="TFBFileSetPattern" XMLID="{49B67E87-9739-4B2E-BE54-D7C5F6C53C73}"><Property MultiValue="0" name="Comment" type="string"></Property>
+                      <Property name="IsRegExpr" type="Boolean">False</Property>
+                      <Property MultiValue="0" name="Item" type="string">*.ddp</Property>
+                      <Property name="Recurse" type="Boolean">True</Property>
+                      </Object>
+                    <Object Class="TFBFileSetPattern" XMLID="{B80CA3FE-BE8B-408A-9A74-C68A9DF2C633}"><Property MultiValue="0" name="Comment" type="string"></Property>
+                      <Property name="IsRegExpr" type="Boolean">False</Property>
+                      <Property MultiValue="0" name="Item" type="string">*.dsk</Property>
+                      <Property name="Recurse" type="Boolean">True</Property>
+                      </Object>
+                    <Object Class="TFBFileSetPattern" XMLID="{F5E375A0-41A6-4C1A-BA01-5476889FADA6}"><Property MultiValue="0" name="Comment" type="string"></Property>
+                      <Property name="IsRegExpr" type="Boolean">False</Property>
+                      <Property MultiValue="0" name="Item" type="string"> .#*</Property>
+                      <Property name="Recurse" type="Boolean">True</Property>
+                      </Object>
+                    <Object Class="TFBFileSetPattern" XMLID="{982BC3DB-5EAD-4DFA-BB74-6BBE1B96F92F}"><Property MultiValue="0" name="Comment" type="string"></Property>
+                      <Property name="IsRegExpr" type="Boolean">False</Property>
+                      <Property MultiValue="0" name="Item" type="string">*.rsm</Property>
+                      <Property name="Recurse" type="Boolean">True</Property>
+                      </Object>
+                    <Object Class="TFBFileSetPattern" XMLID="{7D105084-5818-4BC5-BBA5-34B899D3B250}"><Property MultiValue="0" name="Comment" type="string"></Property>
+                      <Property name="IsRegExpr" type="Boolean">False</Property>
+                      <Property MultiValue="0" name="Item" type="string">*.rsb</Property>
+                      <Property name="Recurse" type="Boolean">True</Property>
+                      </Object>
+                    <Object Class="TFBFileSetPattern" XMLID="{F7F80166-6966-4F80-960E-15CDB04FCE2C}"><Property MultiValue="0" name="Comment" type="string"></Property>
+                      <Property name="IsRegExpr" type="Boolean">False</Property>
+                      <Property MultiValue="0" name="Item" type="string">*.used</Property>
+                      <Property name="Recurse" type="Boolean">True</Property>
+                      </Object>
+                    <Object Class="TFBFileSetPattern" XMLID="{B6491159-98CB-42F3-BA29-E42EAA405CE4}"><Property MultiValue="0" name="Comment" type="string"></Property>
+                      <Property name="IsRegExpr" type="Boolean">False</Property>
+                      <Property MultiValue="0" name="Item" type="string">*.identcache</Property>
+                      <Property name="Recurse" type="Boolean">True</Property>
+                      </Object>
+                    <Object Class="TFBFileSetPattern" XMLID="{4462295A-8B5F-4E40-A889-E2B4190EE6ED}"><Property MultiValue="0" name="Comment" type="string"></Property>
+                      <Property name="IsRegExpr" type="Boolean">False</Property>
+                      <Property MultiValue="0" name="Item" type="string">*.dll</Property>
+                      <Property name="Recurse" type="Boolean">True</Property>
+                      </Object>
+                    <Object Class="TFBFileSetPattern" XMLID="{CE415BBB-B711-43FB-8D1A-9E4913B59C5F}"><Property MultiValue="0" name="Comment" type="string"></Property>
+                      <Property name="IsRegExpr" type="Boolean">False</Property>
+                      <Property MultiValue="0" name="Item" type="string">*.map</Property>
+                      <Property name="Recurse" type="Boolean">True</Property>
+                      </Object>
+                    <Object Class="TFBFileSetPattern" XMLID="{C662638F-4EB0-41BD-90FE-4B466C439494}"><Property MultiValue="0" name="Comment" type="string"></Property>
+                      <Property name="IsRegExpr" type="Boolean">False</Property>
+                      <Property MultiValue="0" name="Item" type="string">*.exe</Property>
+                      <Property name="Recurse" type="Boolean">True</Property>
+                      </Object>
+                    <Object Class="TFBFileSetPattern" XMLID="{249558AF-6113-4CF7-8E37-51C88096D189}"><Property MultiValue="0" name="Comment" type="string"></Property>
+                      <Property name="IsRegExpr" type="Boolean">False</Property>
+                      <Property MultiValue="0" name="Item" type="string">*.rc</Property>
+                      <Property name="Recurse" type="Boolean">True</Property>
+                      </Object>
+                    </Object>
+                  <Object Class="TFBFileSetPatternList" XMLID="{A72A14FF-F212-4332-B5D8-004B96EA40FF}"><Property MultiValue="0" name="Name" type="string">EXCLUDEPATTERNLIST</Property>
+                    <Object Class="TFBFileSetPattern" XMLID="{DF9C795F-A76A-486D-A872-8D466E47D231}"><Property MultiValue="0" name="Comment" type="string"></Property>
+                      <Property name="IsRegExpr" type="Boolean">False</Property>
+                      <Property MultiValue="0" name="Item" type="string">mainicon.ico</Property>
+                      <Property name="Recurse" type="Boolean">True</Property>
+                      </Object>
+                    <Object Class="TFBFileSetPattern" XMLID="{2F9C3B0F-2885-48BA-999D-765E2B184F5F}"><Property MultiValue="0" name="Comment" type="string"></Property>
+                      <Property name="IsRegExpr" type="Boolean">False</Property>
+                      <Property MultiValue="0" name="Item" type="string">manifest.rc</Property>
+                      <Property name="Recurse" type="Boolean">True</Property>
+                      </Object>
+                    <Object Class="TFBFileSetPattern" XMLID="{98BCEC7E-72D9-4EFB-976D-A7287DA1F863}"><Property MultiValue="0" name="Comment" type="string"></Property>
+                      <Property name="IsRegExpr" type="Boolean">False</Property>
+                      <Property MultiValue="0" name="Item" type="string">includes.rc</Property>
+                      <Property name="Recurse" type="Boolean">True</Property>
+                      </Object>
+                    </Object>
+                  <Object Class="TFBFileSetFilterList" XMLID="{323A7F40-A5DC-4245-8E38-DEDAF9CFD32F}"/>
+                  </Object>
+                </Object>
+              <Object Class="TFBFileSetDeleteAction" XMLID="{8782BF20-04E7-4B0B-A081-AF5417F83346}"><Property MultiValue="0" name="ActionComment" type="string"></Property>
+                <Property name="ActionTextColor" type="Cardinal">0</Property>
+                <Property MultiValue="0" name="ActionTypeID" type="string"></Property>
+                <Property MultiValue="0" name="Description" type="string">Delete temp files</Property>
+                <Property name="Enabled" type="WordBool">True</Property>
+                <Property name="ExpandActionLogTitle" type="Boolean">True</Property>
+                <Property MultiValue="0" name="FileSetName" type="string">RemovableFiles</Property>
+                <Property name="IgnoreDeleteFailures" type="Boolean">True</Property>
+                <Property name="IgnoreFailure" type="WordBool">False</Property>
+                <Property name="IsAction" type="Boolean">True</Property>
+                <Property name="IsBreakPoint" type="WordBool">False</Property>
+                <Property name="LogEachFileDelete" type="Boolean">True</Property>
+                <Property MultiValue="0" name="LogToVariable" type="string"></Property>
+                <Property name="MaxRetryAttempts" type="Cardinal">0</Property>
+                <Property name="NodeCollapsed" type="Boolean">False</Property>
+                <Property name="PauseInterval" type="Cardinal">0</Property>
+                <Property name="RetryPauseInterval" type="Cardinal">1000</Property>
+                <Property name="SuppressStatusMessages" type="Boolean">False</Property>
+                </Object>
+              <Object Class="TBuildScript" XMLID="{8E9BA724-FBA5-4BEB-A832-76866D40EF4C}"><Property MultiValue="0" name="BreakPointsStore" type="string"></Property>
+                <Property MultiValue="0" name="Name" type="string">Condition</Property>
+                <Property MultiValue="0" name="Script" type="string">VCSCHECKOUT = false</Property>
+                <Property MultiValue="0" name="ScriptLanguage" type="string">VBScript</Property>
+                </Object>
+              </Object>
             <Object Class="TFBSubversionCheckout" XMLID="{FD18A0BC-F0EC-4DD8-96E6-6D6E1857E9BB}"><Property MultiValue="0" name="ActionComment" type="string"></Property>
               <Property name="ActionTextColor" type="Cardinal">0</Property>
               <Property MultiValue="0" name="ActionTypeID" type="string"></Property>
@@ -351,7 +517,7 @@ SRCPATH = ROOTPATH &amp; "src\"
               <Property name="IsBreakPoint" type="WordBool">False</Property>
               <Property MultiValue="0" name="LogToVariable" type="string"></Property>
               <Property name="MaxRetryAttempts" type="Cardinal">0</Property>
-              <Property name="NodeCollapsed" type="Boolean">True</Property>
+              <Property name="NodeCollapsed" type="Boolean">False</Property>
               <Property name="PauseInterval" type="Cardinal">0</Property>
               <Property name="RetryPauseInterval" type="Cardinal">1000</Property>
               <Property name="SuppressStatusMessages" type="Boolean">False</Property>
@@ -378,7 +544,7 @@ SRCPATH = ROOTPATH &amp; "src\"
                   <Property name="AutoIncBuild" type="WordBool">False</Property>
                   <Property name="AutoUpdateFileVersion" type="Boolean">True</Property>
                   <Property name="BuildAll" type="WordBool">True</Property>
-                  <Property name="BuildVersion" type="Integer">44</Property>
+                  <Property name="BuildVersion" type="Integer">50</Property>
                   <Property name="CodePage" type="Integer">1252</Property>
                   <Property name="CompilerVersion" type="Integer">4</Property>
                   <Property name="DebugVersionNumbers" type="Boolean">False</Property>
@@ -424,13 +590,13 @@ SRCPATH = ROOTPATH &amp; "src\"
                   <Property name="UseVersionFromDOF" type="Boolean">False</Property>
                   <Property MultiValue="1" name="VersionInfoKeys" type="WideString"><![CDATA[CompanyName=Peter Thörnqvist
 FileDescription=Ini Language Translator
-FileVersion=1.9.0.44
+FileVersion=1.9.0.50
 InternalName=translator.exe
 LegalCopyright=Copyright (c) 2003-2006 by Peter Thörnqvist; all rights reserved
 LegalTrademarks=
 OriginalFilename=translator.exe
 ProductName=Ini Translator
-ProductVersion=1.9.0.44
+ProductVersion=1.9.0.50
 Webpage=http://initranslator.sourceforge.net
 License=Mozilla Public License 1.1
 Comments=Latest version at http://initranslator.sourceforge.net
@@ -516,7 +682,7 @@ Action.SetVersionInfoKey("ProductVersion",Action.GetVersionInfoKey("FileVersion"
                   <Property name="AutoIncBuild" type="WordBool">False</Property>
                   <Property name="AutoUpdateFileVersion" type="Boolean">True</Property>
                   <Property name="BuildAll" type="WordBool">True</Property>
-                  <Property name="BuildVersion" type="Integer">44</Property>
+                  <Property name="BuildVersion" type="Integer">50</Property>
                   <Property name="CodePage" type="Integer">1252</Property>
                   <Property name="CompilerVersion" type="Integer">4</Property>
                   <Property name="DebugVersionNumbers" type="Boolean">False</Property>
@@ -562,13 +728,13 @@ Action.SetVersionInfoKey("ProductVersion",Action.GetVersionInfoKey("FileVersion"
                   <Property name="UseVersionFromDOF" type="Boolean">False</Property>
                   <Property MultiValue="1" name="VersionInfoKeys" type="WideString"><![CDATA[CompanyName=Peter Thörnqvist
 FileDescription=MsDictBuild
-FileVersion=1.9.0.44
+FileVersion=1.9.0.50
 InternalName=MsDictBuild.exe
 LegalCopyright=Copyright (c) 2003-2004 by Peter Thörnqvist; all rights reserved
 LegalTrademarks=
 OriginalFilename=MsDictBuild.exe
 ProductName=MsDictBuild
-ProductVersion=1.9.0.44
+ProductVersion=1.9.0.50
 Webpage=http://initranslator.sourceforge.net
 License=Mozilla Public License 1.1
 Comments=Latest version at http://initranslator.sourceforge.net
@@ -653,7 +819,7 @@ Action.SetVersionInfoKey("ProductVersion",Action.GetVersionInfoKey("FileVersion"
                   <Property name="AutoIncBuild" type="WordBool">False</Property>
                   <Property name="AutoUpdateFileVersion" type="Boolean">True</Property>
                   <Property name="BuildAll" type="WordBool">True</Property>
-                  <Property name="BuildVersion" type="Integer">44</Property>
+                  <Property name="BuildVersion" type="Integer">50</Property>
                   <Property name="CodePage" type="Integer">1252</Property>
                   <Property name="CompilerVersion" type="Integer">4</Property>
                   <Property name="DebugVersionNumbers" type="Boolean">False</Property>
@@ -699,13 +865,13 @@ Action.SetVersionInfoKey("ProductVersion",Action.GetVersionInfoKey("FileVersion"
                   <Property name="UseVersionFromDOF" type="Boolean">False</Property>
                   <Property MultiValue="1" name="VersionInfoKeys" type="WideString"><![CDATA[CompanyName=Peter Thörnqvist
 FileDescription=MsTermBuild
-FileVersion=1.9.0.44
+FileVersion=1.9.0.50
 InternalName=MsTermBuild.exe
 LegalCopyright=Copyright (c) 2003-2006 by Peter Thörnqvist; all rights reserved
 LegalTrademarks=
 OriginalFilename=MsTermBuild.exe
 ProductName=MsTermBuild
-ProductVersion=1.9.0.44
+ProductVersion=1.9.0.50
 Webpage=http://initranslator.sourceforge.net
 License=Mozilla Public License 1.1
 Comments=Latest version at http://initranslator.sourceforge.net
@@ -782,6 +948,143 @@ Action.SetVersionInfoKey("ProductVersion",Action.GetVersionInfoKey("FileVersion"
                     <Property name="VarStringChecks" type="WordBool">True</Property>
                     </Object>
                   </Object>
+                <Object Class="TDelphiCompilerAction" XMLID="{E5E41F41-F029-472D-967B-5199894D6815}"><Property MultiValue="0" name="ActionComment" type="string"></Property>
+                  <Property name="ActionTextColor" type="Cardinal">0</Property>
+                  <Property MultiValue="0" name="ActionTypeID" type="string"></Property>
+                  <Property name="AllowImplicitImport" type="Boolean">True</Property>
+                  <Property name="AlwaysUseConditionalsFromDOF" type="WordBool">False</Property>
+                  <Property name="AutoIncBuild" type="WordBool">False</Property>
+                  <Property name="AutoUpdateFileVersion" type="Boolean">True</Property>
+                  <Property name="BuildAll" type="WordBool">True</Property>
+                  <Property name="BuildVersion" type="Integer">50</Property>
+                  <Property name="CodePage" type="Integer">1252</Property>
+                  <Property name="CompilerVersion" type="Integer">4</Property>
+                  <Property name="DebugVersionNumbers" type="Boolean">False</Property>
+                  <Property MultiValue="0" name="Description" type="string">SDFSplit</Property>
+                  <Property name="Enabled" type="WordBool">True</Property>
+                  <Property name="ExpandActionLogTitle" type="Boolean">True</Property>
+                  <Property MultiValue="0" name="ExtraCommandline" type="WideString"></Property>
+                  <Property name="HintsAsError" type="Boolean">False</Property>
+                  <Property MultiValue="0" name="IconFile" type="WideString">%SRCPATH%mainicon.ico</Property>
+                  <Property name="IgnoreFailure" type="WordBool">False</Property>
+                  <Property name="IncludeCompileDate" type="WordBool">True</Property>
+                  <Property name="IncludeVerInfo" type="WordBool">True</Property>
+                  <Property name="IsAction" type="Boolean">True</Property>
+                  <Property name="IsBreakPoint" type="WordBool">False</Property>
+                  <Property name="IsDebug" type="WordBool">False</Property>
+                  <Property name="IsDLL" type="WordBool">False</Property>
+                  <Property name="IsPreRelease" type="WordBool">False</Property>
+                  <Property name="IsPrivate" type="WordBool">False</Property>
+                  <Property name="IsSpecial" type="WordBool">False</Property>
+                  <Property name="KeepCFG" type="Boolean">False</Property>
+                  <Property name="LinkProductVersionToFileVersion" type="Boolean">False</Property>
+                  <Property name="Locale" type="Integer">1033</Property>
+                  <Property MultiValue="0" name="LogToVariable" type="string"></Property>
+                  <Property name="MajorVersion" type="Integer">1</Property>
+                  <Property name="MaxRetryAttempts" type="Cardinal">0</Property>
+                  <Property name="MinorVersion" type="Integer">9</Property>
+                  <Property name="NodeCollapsed" type="Boolean">False</Property>
+                  <Property name="PauseInterval" type="Cardinal">0</Property>
+                  <Property MultiValue="0" name="ProjectFile" type="WideString">%SRCPATH%SDFSplit\SDFSplit.dpr</Property>
+                  <Property name="RegenerateResource" type="WordBool">True</Property>
+                  <Property name="ReleaseVersion" type="Integer">0</Property>
+                  <Property MultiValue="0" name="ResourceCompilerOptions" type="string"></Property>
+                  <Property MultiValue="0" name="ResourceCompilerPath" type="string"></Property>
+                  <Property name="ResourceCompilerType" type="TFBDelphiResourceCompiler">rcBorland</Property>
+                  <Property name="RetryPauseInterval" type="Cardinal">1000</Property>
+                  <Property MultiValue="0" name="StartingDir" type="WideString">%SRCPATH%SDFSplit\</Property>
+                  <Property name="SuppressStatusMessages" type="Boolean">False</Property>
+                  <Property name="UpdateDofFile" type="Boolean">False</Property>
+                  <Property name="UpdatePackageSource" type="Boolean">False</Property>
+                  <Property name="UseEurekaLogCompiler" type="Boolean">False</Property>
+                  <Property name="UseProjectSettings" type="TFBUseProjectSettings">[]</Property>
+                  <Property name="UsePropertySet" type="Boolean">False</Property>
+                  <Property name="UseVersionFromDOF" type="Boolean">False</Property>
+                  <Property MultiValue="1" name="VersionInfoKeys" type="WideString"><![CDATA[CompanyName=Peter Thörnqvist
+FileDescription=SDF Split
+FileVersion=1.9.0.50
+InternalName=SDFSplit.exe
+LegalCopyright=Copyright (c) 2003-2006 by Peter Thörnqvist; all rights reserved
+LegalTrademarks=
+OriginalFilename=SDFSplit.exe
+ProductName=SDFSplit
+ProductVersion=1.9.0.50
+Webpage=http://initranslator.sourceforge.net
+License=Mozilla Public License 1.1
+Comments=Latest version at http://initranslator.sourceforge.net
+]]>
+                    </Property>
+                  <Property MultiValue="0" name="VersionInfoPropertySetName" type="string"></Property>
+                  <Property name="WarningsAsError" type="Boolean">False</Property>
+                  <Property name="WorkAroundD5Bug" type="WordBool">False</Property>
+                  <Object Class="TBuildScript" XMLID="{E65DF9F6-ABED-4A7E-9E0F-E4F084A2A4A5}"><Property MultiValue="0" name="BreakPointsStore" type="string"></Property>
+                    <Property MultiValue="0" name="Name" type="string">BeforeAction</Property>
+                    <Property MultiValue="1" name="Script" type="string"><![CDATA[Action.MajorVersion   = VERSION_MAJOR;
+Action.MinorVersion   = VERSION_MINOR;
+Action.ReleaseVersion = VERSION_RELEASE;
+Action.BuildVersion   = VERSION_BUILD;
+Action.SetVersionInfoKey("ProductVersion",Action.GetVersionInfoKey("FileVersion"))
+]]>
+                      </Property>
+                    <Property MultiValue="0" name="ScriptLanguage" type="string">JavaScript</Property>
+                    </Object>
+                  <Object Class="TDelphiCompilerOptions" XMLID="{386D6E8E-A94F-4AC5-B1B2-88878E2082E6}"><Property name="AlwaysUseConditionalsFromDOF" type="WordBool">False</Property>
+                    <Property name="AlwaysUseDelphiLibraryPath" type="WordBool">True</Property>
+                    <Property name="AlwaysUseDOFSearchPath" type="WordBool">False</Property>
+                    <Property name="Assertions" type="WordBool">True</Property>
+                    <Property name="AssignableConst" type="WordBool">False</Property>
+                    <Property name="BoolEval" type="WordBool">False</Property>
+                    <Property MultiValue="0" name="BPLOutputDir" type="WideString"></Property>
+                    <Property name="CompilerWarnings" type="TStrings"><![CDATA[-w-UNSAFE_TYPE=0
+-w-UNSAFE_CODE=0
+-w-UNSAFE_CAST=0
+]]>
+                      </Property>
+                    <Property MultiValue="0" name="Conditionals" type="WideString"></Property>
+                    <Property name="ConsoleApp" type="WordBool">False</Property>
+                    <Property MultiValue="0" name="DCPOutputDir" type="WideString"></Property>
+                    <Property name="DebugInfo" type="WordBool">True</Property>
+                    <Property MultiValue="0" name="DefaultNamespace" type="string"></Property>
+                    <Property name="DefinitionsOnly" type="WordBool">True</Property>
+                    <Property MultiValue="0" name="ExeDescription" type="WideString"></Property>
+                    <Property name="ExportAllSymbols" type="WordBool">False</Property>
+                    <Property name="ExtendedSyntax" type="WordBool">True</Property>
+                    <Property name="GenerateDocumentation" type="Boolean">False</Property>
+                    <Property name="GenerateHPP" type="WordBool">False</Property>
+                    <Property name="HugeStrings" type="WordBool">True</Property>
+                    <Property name="ImageBase" type="Cardinal">4194304</Property>
+                    <Property name="IncludeNamespaces" type="WordBool">False</Property>
+                    <Property name="IncludeRemoteSymbols" type="WordBool">False</Property>
+                    <Property name="IncludeTD32" type="WordBool">False</Property>
+                    <Property name="IOChecking" type="WordBool">True</Property>
+                    <Property MultiValue="0" name="LibraryPath" type="WideString">$(DELPHI)\Lib;$(DELPHI)\Bin;$(DELPHI)\Imports;$(DELPHI)\Projects\Bpl;$(DELPHI)\Rave5\Lib;F:\Program\Borland\Add\JEDI\JCL\source;F:\Program\Borland\Add\JEDI\dev\JVCL3\common;F:\Program\Borland\Add\JEDI\dev\JVCL3\run;F:\Program\Borland\Add\dunit\src;F:\Program\Borland\Add\Others;F:\Program\Borland\Add\Utils;F:\Program\Borland\Add\tntunicode</Property>
+                    <Property name="LinkerOutput" type="Integer">3</Property>
+                    <Property name="LocalSymbols" type="WordBool">True</Property>
+                    <Property name="Mapfile" type="Integer">0</Property>
+                    <Property name="MaxStackSize" type="Cardinal">1048576</Property>
+                    <Property name="MinStackSize" type="Cardinal">16384</Property>
+                    <Property MultiValue="0" name="NamespacePrefixes" type="string"></Property>
+                    <Property name="OpenStrings" type="WordBool">True</Property>
+                    <Property name="Optimisation" type="WordBool">True</Property>
+                    <Property MultiValue="0" name="OutputDir" type="WideString">..\..\bin</Property>
+                    <Property name="OverflowChecking" type="WordBool">False</Property>
+                    <Property MultiValue="0" name="Packages" type="WideString"></Property>
+                    <Property name="RangeChecking" type="WordBool">False</Property>
+                    <Property name="RecordFieldAlign" type="TFieldAlign">fa8</Property>
+                    <Property name="ReferenceInfo" type="WordBool">True</Property>
+                    <Property name="SafeDivide" type="WordBool">False</Property>
+                    <Property MultiValue="0" name="SearchPath" type="WideString"></Property>
+                    <Property name="ShowHints" type="WordBool">True</Property>
+                    <Property name="ShowWarnings" type="WordBool">True</Property>
+                    <Property name="StackFrames" type="WordBool">False</Property>
+                    <Property name="TypedPointers" type="WordBool">False</Property>
+                    <Property MultiValue="0" name="UnitAliases" type="WideString">WinTypes=Windows;WinProcs=Windows;DbiTypes=BDE;DbiProcs=BDE;DbiErrs=BDE;</Property>
+                    <Property MultiValue="0" name="UnitOutputDir" type="WideString">..\..\dcu</Property>
+                    <Property name="UseDebugDCU" type="WordBool">False</Property>
+                    <Property name="UsePackages" type="WordBool">False</Property>
+                    <Property name="VarStringChecks" type="WordBool">True</Property>
+                    </Object>
+                  </Object>
                 </Object>
               <Object Class="TGroupAction" XMLID="{E1FA3259-044D-4710-B904-40F18F69AC4B}"><Property MultiValue="0" name="ActionComment" type="string"></Property>
                 <Property name="ActionTextColor" type="Cardinal">0</Property>
@@ -803,14 +1106,150 @@ Action.SetVersionInfoKey("ProductVersion",Action.GetVersionInfoKey("FileVersion"
                   <Property MultiValue="0" name="ActionTypeID" type="string"></Property>
                   <Property name="AllowImplicitImport" type="Boolean">True</Property>
                   <Property name="AlwaysUseConditionalsFromDOF" type="WordBool">False</Property>
-                  <Property name="AutoIncBuild" type="WordBool">False</Property>
+                  <Property name="AutoIncBuild" type="WordBool">True</Property>
                   <Property name="AutoUpdateFileVersion" type="Boolean">True</Property>
                   <Property name="BuildAll" type="WordBool">True</Property>
-                  <Property name="BuildVersion" type="Integer">44</Property>
+                  <Property name="BuildVersion" type="Integer">51</Property>
                   <Property name="CodePage" type="Integer">1252</Property>
                   <Property name="CompilerVersion" type="Integer">4</Property>
                   <Property name="DebugVersionNumbers" type="Boolean">False</Property>
-                  <Property MultiValue="0" name="Description" type="string">Foxit DLL</Property>
+                  <Property MultiValue="0" name="Description" type="string">DCPPPlugin</Property>
+                  <Property name="Enabled" type="WordBool">True</Property>
+                  <Property name="ExpandActionLogTitle" type="Boolean">True</Property>
+                  <Property MultiValue="0" name="ExtraCommandline" type="WideString"></Property>
+                  <Property name="HintsAsError" type="Boolean">False</Property>
+                  <Property MultiValue="0" name="IconFile" type="WideString"></Property>
+                  <Property name="IgnoreFailure" type="WordBool">False</Property>
+                  <Property name="IncludeCompileDate" type="WordBool">True</Property>
+                  <Property name="IncludeVerInfo" type="WordBool">True</Property>
+                  <Property name="IsAction" type="Boolean">True</Property>
+                  <Property name="IsBreakPoint" type="WordBool">False</Property>
+                  <Property name="IsDebug" type="WordBool">False</Property>
+                  <Property name="IsDLL" type="WordBool">True</Property>
+                  <Property name="IsPreRelease" type="WordBool">False</Property>
+                  <Property name="IsPrivate" type="WordBool">False</Property>
+                  <Property name="IsSpecial" type="WordBool">False</Property>
+                  <Property name="KeepCFG" type="Boolean">False</Property>
+                  <Property name="LinkProductVersionToFileVersion" type="Boolean">False</Property>
+                  <Property name="Locale" type="Integer">1033</Property>
+                  <Property MultiValue="0" name="LogToVariable" type="string"></Property>
+                  <Property name="MajorVersion" type="Integer">1</Property>
+                  <Property name="MaxRetryAttempts" type="Cardinal">0</Property>
+                  <Property name="MinorVersion" type="Integer">9</Property>
+                  <Property name="NodeCollapsed" type="Boolean">False</Property>
+                  <Property name="PauseInterval" type="Cardinal">0</Property>
+                  <Property MultiValue="0" name="ProjectFile" type="WideString">%SRCPATH%DCPPPlugin\DCPPParser.dpr</Property>
+                  <Property name="RegenerateResource" type="WordBool">True</Property>
+                  <Property name="ReleaseVersion" type="Integer">0</Property>
+                  <Property MultiValue="0" name="ResourceCompilerOptions" type="string"></Property>
+                  <Property MultiValue="0" name="ResourceCompilerPath" type="string"></Property>
+                  <Property name="ResourceCompilerType" type="TFBDelphiResourceCompiler">rcBorland</Property>
+                  <Property name="RetryPauseInterval" type="Cardinal">1000</Property>
+                  <Property MultiValue="0" name="StartingDir" type="WideString">%SRCPATH%DCPPPlugin\</Property>
+                  <Property name="SuppressStatusMessages" type="Boolean">False</Property>
+                  <Property name="UpdateDofFile" type="Boolean">False</Property>
+                  <Property name="UpdatePackageSource" type="Boolean">False</Property>
+                  <Property name="UseEurekaLogCompiler" type="Boolean">False</Property>
+                  <Property name="UseProjectSettings" type="TFBUseProjectSettings">[]</Property>
+                  <Property name="UsePropertySet" type="Boolean">False</Property>
+                  <Property name="UseVersionFromDOF" type="Boolean">False</Property>
+                  <Property MultiValue="1" name="VersionInfoKeys" type="WideString"><![CDATA[CompanyName=IniTranslator
+FileDescription=DC++ language file plugin for IniTranslator
+FileVersion=1.9.0.51
+InternalName=DCPPParser.dll
+LegalCopyright=Copyright (c) 2006 by Peter Thörnqvist; all rights reserved
+LegalTrademarks=
+OriginalFilename=DCPPParser.dll
+ProductName=IniTranslator
+ProductVersion=1.9.0.50
+Comments=Latest version at http://initranslator.sourceforge.net
+CompileDate=den 23 december 2006 13:20
+]]>
+                    </Property>
+                  <Property MultiValue="0" name="VersionInfoPropertySetName" type="string"></Property>
+                  <Property name="WarningsAsError" type="Boolean">False</Property>
+                  <Property name="WorkAroundD5Bug" type="WordBool">False</Property>
+                  <Object Class="TBuildScript" XMLID="{0430C40F-8AD9-4CE9-8995-3DB118434942}"><Property MultiValue="0" name="BreakPointsStore" type="string"></Property>
+                    <Property MultiValue="0" name="Name" type="string">BeforeAction</Property>
+                    <Property MultiValue="1" name="Script" type="string"><![CDATA[Action.MajorVersion   = VERSION_MAJOR;
+Action.MinorVersion   = VERSION_MINOR;
+Action.ReleaseVersion = VERSION_RELEASE;
+Action.BuildVersion   = VERSION_BUILD;
+Action.SetVersionInfoKey("ProductVersion",Action.GetVersionInfoKey("FileVersion"))
+]]>
+                      </Property>
+                    <Property MultiValue="0" name="ScriptLanguage" type="string">JavaScript</Property>
+                    </Object>
+                  <Object Class="TDelphiCompilerOptions" XMLID="{FA904FD7-931A-4FCA-A7A3-6F949A7BA378}"><Property name="AlwaysUseConditionalsFromDOF" type="WordBool">False</Property>
+                    <Property name="AlwaysUseDelphiLibraryPath" type="WordBool">True</Property>
+                    <Property name="AlwaysUseDOFSearchPath" type="WordBool">False</Property>
+                    <Property name="Assertions" type="WordBool">True</Property>
+                    <Property name="AssignableConst" type="WordBool">False</Property>
+                    <Property name="BoolEval" type="WordBool">False</Property>
+                    <Property MultiValue="0" name="BPLOutputDir" type="WideString"></Property>
+                    <Property name="CompilerWarnings" type="TStrings"><![CDATA[-w-UNSAFE_TYPE=0
+-w-UNSAFE_CODE=0
+-w-UNSAFE_CAST=0
+]]>
+                      </Property>
+                    <Property MultiValue="0" name="Conditionals" type="WideString"></Property>
+                    <Property name="ConsoleApp" type="WordBool">False</Property>
+                    <Property MultiValue="0" name="DCPOutputDir" type="WideString"></Property>
+                    <Property name="DebugInfo" type="WordBool">True</Property>
+                    <Property MultiValue="0" name="DefaultNamespace" type="string"></Property>
+                    <Property name="DefinitionsOnly" type="WordBool">True</Property>
+                    <Property MultiValue="0" name="ExeDescription" type="WideString"></Property>
+                    <Property name="ExportAllSymbols" type="WordBool">False</Property>
+                    <Property name="ExtendedSyntax" type="WordBool">True</Property>
+                    <Property name="GenerateDocumentation" type="Boolean">False</Property>
+                    <Property name="GenerateHPP" type="WordBool">False</Property>
+                    <Property name="HugeStrings" type="WordBool">True</Property>
+                    <Property name="ImageBase" type="Cardinal">4194304</Property>
+                    <Property name="IncludeNamespaces" type="WordBool">False</Property>
+                    <Property name="IncludeRemoteSymbols" type="WordBool">True</Property>
+                    <Property name="IncludeTD32" type="WordBool">False</Property>
+                    <Property name="IOChecking" type="WordBool">True</Property>
+                    <Property MultiValue="0" name="LibraryPath" type="WideString">$(DELPHI)\Lib;$(DELPHI)\Bin;$(DELPHI)\Imports;$(DELPHI)\Projects\Bpl;$(DELPHI)\Rave5\Lib;F:\Program\Borland\Add\JEDI\JCL\source;F:\Program\Borland\Add\JEDI\dev\JVCL3\common;F:\Program\Borland\Add\JEDI\dev\JVCL3\run;F:\Program\Borland\Add\dunit\src;F:\Program\Borland\Add\Others;F:\Program\Borland\Add\Utils;f:\program\borland\projects\work\eq plan\eq plan 2.0\eqplan</Property>
+                    <Property name="LinkerOutput" type="Integer">3</Property>
+                    <Property name="LocalSymbols" type="WordBool">True</Property>
+                    <Property name="Mapfile" type="Integer">3</Property>
+                    <Property name="MaxStackSize" type="Cardinal">1048576</Property>
+                    <Property name="MinStackSize" type="Cardinal">16384</Property>
+                    <Property MultiValue="0" name="NamespacePrefixes" type="string"></Property>
+                    <Property name="OpenStrings" type="WordBool">True</Property>
+                    <Property name="Optimisation" type="WordBool">True</Property>
+                    <Property MultiValue="0" name="OutputDir" type="WideString">..\..\bin\plugins</Property>
+                    <Property name="OverflowChecking" type="WordBool">False</Property>
+                    <Property MultiValue="0" name="Packages" type="WideString">vcl;rtl;vclx;addict3_d7;tntunicodevcl_r70;vcldb;addict3db_d7;vclactnband;dbrtl;adortl;dbexpress;vclie;xmlrtl;inet;inetdbbde;inetdbxpress;dsnap;vclsmp;soaprtl;dragdropd7;easynsed7;gr32_d7;gr32_dsgn_d7;embeddedwebbrowser_d7;jclvcl;jcl;jvcored7r;jvstdctrlsd7r;jvsystemd7r;jvcustomd7r;jvdlgsd7r;jvcmpd7r;jvpagecompsd7r;jvprintpreviewd7r;jvvalidatorsd7r;jvctrlsd7r;jvwizardd7r;pngcomponentsd7;png_d7;vclshlctrls;synedit_r7;sptbxlib_d7;tb2k_d7;virtualexplorerlistviewexd7;virtualshelltoolsd7;virtualtreesd7</Property>
+                    <Property name="RangeChecking" type="WordBool">False</Property>
+                    <Property name="RecordFieldAlign" type="TFieldAlign">fa8</Property>
+                    <Property name="ReferenceInfo" type="WordBool">True</Property>
+                    <Property name="SafeDivide" type="WordBool">False</Property>
+                    <Property MultiValue="0" name="SearchPath" type="WideString"></Property>
+                    <Property name="ShowHints" type="WordBool">True</Property>
+                    <Property name="ShowWarnings" type="WordBool">True</Property>
+                    <Property name="StackFrames" type="WordBool">False</Property>
+                    <Property name="TypedPointers" type="WordBool">False</Property>
+                    <Property MultiValue="0" name="UnitAliases" type="WideString">WinTypes=Windows;WinProcs=Windows;DbiTypes=BDE;DbiProcs=BDE;DbiErrs=BDE;</Property>
+                    <Property MultiValue="0" name="UnitOutputDir" type="WideString">..\..\dcu</Property>
+                    <Property name="UseDebugDCU" type="WordBool">False</Property>
+                    <Property name="UsePackages" type="WordBool">False</Property>
+                    <Property name="VarStringChecks" type="WordBool">True</Property>
+                    </Object>
+                  </Object>
+                <Object Class="TDelphiCompilerAction" XMLID="{597F3A74-7283-455C-B280-D643208CFC8C}"><Property MultiValue="0" name="ActionComment" type="string"></Property>
+                  <Property name="ActionTextColor" type="Cardinal">0</Property>
+                  <Property MultiValue="0" name="ActionTypeID" type="string"></Property>
+                  <Property name="AllowImplicitImport" type="Boolean">True</Property>
+                  <Property name="AlwaysUseConditionalsFromDOF" type="WordBool">False</Property>
+                  <Property name="AutoIncBuild" type="WordBool">False</Property>
+                  <Property name="AutoUpdateFileVersion" type="Boolean">True</Property>
+                  <Property name="BuildAll" type="WordBool">True</Property>
+                  <Property name="BuildVersion" type="Integer">50</Property>
+                  <Property name="CodePage" type="Integer">1252</Property>
+                  <Property name="CompilerVersion" type="Integer">4</Property>
+                  <Property name="DebugVersionNumbers" type="Boolean">False</Property>
+                  <Property MultiValue="0" name="Description" type="string">FoxitPlugin</Property>
                   <Property name="Enabled" type="WordBool">True</Property>
                   <Property name="ExpandActionLogTitle" type="Boolean">True</Property>
                   <Property MultiValue="0" name="ExtraCommandline" type="WideString"></Property>
@@ -852,13 +1291,13 @@ Action.SetVersionInfoKey("ProductVersion",Action.GetVersionInfoKey("FileVersion"
                   <Property name="UseVersionFromDOF" type="Boolean">False</Property>
                   <Property MultiValue="1" name="VersionInfoKeys" type="WideString"><![CDATA[CompanyName=IniTranslator
 FileDescription=Foxit Plugin for IniTranslator
-FileVersion=1.9.0.44
+FileVersion=1.9.0.50
 InternalName=FoxitParser.dll
 LegalCopyright=Copyright (c) 2006 by Peter Thörnqvist; all rights reserved
 LegalTrademarks=
 OriginalFilename=FoxitParser.dll
 ProductName=Foxit Plugin for IniTranslator
-ProductVersion=1.9.0.44
+ProductVersion=1.9.0.50
 Comments=Latest version at http://initranslator.sourceforge.net
 CompileDate=den 25 november 2006 16:58
 ]]>
@@ -866,7 +1305,7 @@ CompileDate=den 25 november 2006 16:58
                   <Property MultiValue="0" name="VersionInfoPropertySetName" type="string"></Property>
                   <Property name="WarningsAsError" type="Boolean">False</Property>
                   <Property name="WorkAroundD5Bug" type="WordBool">False</Property>
-                  <Object Class="TBuildScript" XMLID="{0430C40F-8AD9-4CE9-8995-3DB118434942}"><Property MultiValue="0" name="BreakPointsStore" type="string"></Property>
+                  <Object Class="TBuildScript" XMLID="{2E9E75C5-79D0-412B-8441-A831637BFC06}"><Property MultiValue="0" name="BreakPointsStore" type="string"></Property>
                     <Property MultiValue="0" name="Name" type="string">BeforeAction</Property>
                     <Property MultiValue="1" name="Script" type="string"><![CDATA[Action.MajorVersion   = VERSION_MAJOR;
 Action.MinorVersion   = VERSION_MINOR;
@@ -877,7 +1316,7 @@ Action.SetVersionInfoKey("ProductVersion",Action.GetVersionInfoKey("FileVersion"
                       </Property>
                     <Property MultiValue="0" name="ScriptLanguage" type="string">JavaScript</Property>
                     </Object>
-                  <Object Class="TDelphiCompilerOptions" XMLID="{FA904FD7-931A-4FCA-A7A3-6F949A7BA378}"><Property name="AlwaysUseConditionalsFromDOF" type="WordBool">False</Property>
+                  <Object Class="TDelphiCompilerOptions" XMLID="{82EA1C08-D67F-4DE9-A9D0-AAE583400ABD}"><Property name="AlwaysUseConditionalsFromDOF" type="WordBool">False</Property>
                     <Property name="AlwaysUseDelphiLibraryPath" type="WordBool">True</Property>
                     <Property name="AlwaysUseDOFSearchPath" type="WordBool">False</Property>
                     <Property name="Assertions" type="WordBool">True</Property>
@@ -934,141 +1373,6 @@ Action.SetVersionInfoKey("ProductVersion",Action.GetVersionInfoKey("FileVersion"
                     <Property name="VarStringChecks" type="WordBool">True</Property>
                     </Object>
                   </Object>
-                <Object Class="TDelphiCompilerAction" XMLID="{FDE2BA24-EBB2-49C2-A0E2-A76639985215}"><Property MultiValue="0" name="ActionComment" type="string"></Property>
-                  <Property name="ActionTextColor" type="Cardinal">0</Property>
-                  <Property MultiValue="0" name="ActionTypeID" type="string"></Property>
-                  <Property name="AllowImplicitImport" type="Boolean">True</Property>
-                  <Property name="AlwaysUseConditionalsFromDOF" type="WordBool">False</Property>
-                  <Property name="AutoIncBuild" type="WordBool">False</Property>
-                  <Property name="AutoUpdateFileVersion" type="Boolean">True</Property>
-                  <Property name="BuildAll" type="WordBool">True</Property>
-                  <Property name="BuildVersion" type="Integer">44</Property>
-                  <Property name="CodePage" type="Integer">1252</Property>
-                  <Property name="CompilerVersion" type="Integer">4</Property>
-                  <Property name="DebugVersionNumbers" type="Boolean">False</Property>
-                  <Property MultiValue="0" name="Description" type="string">Generic php DLL</Property>
-                  <Property name="Enabled" type="WordBool">True</Property>
-                  <Property name="ExpandActionLogTitle" type="Boolean">True</Property>
-                  <Property MultiValue="0" name="ExtraCommandline" type="WideString"></Property>
-                  <Property name="HintsAsError" type="Boolean">False</Property>
-                  <Property MultiValue="0" name="IconFile" type="WideString"></Property>
-                  <Property name="IgnoreFailure" type="WordBool">False</Property>
-                  <Property name="IncludeCompileDate" type="WordBool">True</Property>
-                  <Property name="IncludeVerInfo" type="WordBool">True</Property>
-                  <Property name="IsAction" type="Boolean">True</Property>
-                  <Property name="IsBreakPoint" type="WordBool">False</Property>
-                  <Property name="IsDebug" type="WordBool">False</Property>
-                  <Property name="IsDLL" type="WordBool">True</Property>
-                  <Property name="IsPreRelease" type="WordBool">False</Property>
-                  <Property name="IsPrivate" type="WordBool">False</Property>
-                  <Property name="IsSpecial" type="WordBool">False</Property>
-                  <Property name="KeepCFG" type="Boolean">False</Property>
-                  <Property name="LinkProductVersionToFileVersion" type="Boolean">False</Property>
-                  <Property name="Locale" type="Integer">1033</Property>
-                  <Property MultiValue="0" name="LogToVariable" type="string"></Property>
-                  <Property name="MajorVersion" type="Integer">1</Property>
-                  <Property name="MaxRetryAttempts" type="Cardinal">0</Property>
-                  <Property name="MinorVersion" type="Integer">9</Property>
-                  <Property name="NodeCollapsed" type="Boolean">False</Property>
-                  <Property name="PauseInterval" type="Cardinal">0</Property>
-                  <Property MultiValue="0" name="ProjectFile" type="WideString">%SRCPATH%PHPPlugin\PHPParser.dpr</Property>
-                  <Property name="RegenerateResource" type="WordBool">True</Property>
-                  <Property name="ReleaseVersion" type="Integer">0</Property>
-                  <Property MultiValue="0" name="ResourceCompilerOptions" type="string"></Property>
-                  <Property MultiValue="0" name="ResourceCompilerPath" type="string"></Property>
-                  <Property name="ResourceCompilerType" type="TFBDelphiResourceCompiler">rcBorland</Property>
-                  <Property name="RetryPauseInterval" type="Cardinal">1000</Property>
-                  <Property MultiValue="0" name="StartingDir" type="WideString">%SRCPATH%PHPPlugin\</Property>
-                  <Property name="SuppressStatusMessages" type="Boolean">False</Property>
-                  <Property name="UpdateDofFile" type="Boolean">False</Property>
-                  <Property name="UpdatePackageSource" type="Boolean">False</Property>
-                  <Property name="UseEurekaLogCompiler" type="Boolean">False</Property>
-                  <Property name="UseProjectSettings" type="TFBUseProjectSettings">[]</Property>
-                  <Property name="UsePropertySet" type="Boolean">False</Property>
-                  <Property name="UseVersionFromDOF" type="Boolean">False</Property>
-                  <Property MultiValue="1" name="VersionInfoKeys" type="WideString"><![CDATA[CompanyName=IniTranslator
-FileDescription=PHP Plugin for IniTranslator
-FileVersion=1.9.0.44
-InternalName=PHPParser.dll
-LegalCopyright=Copyright (c) 2003-2004 by Peter Thornqvist; all rights reserved
-LegalTrademarks=
-OriginalFilename=PHPParser.dll
-ProductName=PHP Plugin for IniTranslator
-ProductVersion=1.9.0.44
-Comments=Latest version at http://initranslator.sourceforge.net
-]]>
-                    </Property>
-                  <Property MultiValue="0" name="VersionInfoPropertySetName" type="string"></Property>
-                  <Property name="WarningsAsError" type="Boolean">False</Property>
-                  <Property name="WorkAroundD5Bug" type="WordBool">False</Property>
-                  <Object Class="TBuildScript" XMLID="{547F5D0C-849F-48EA-9311-762F60D9E047}"><Property MultiValue="0" name="BreakPointsStore" type="string"></Property>
-                    <Property MultiValue="0" name="Name" type="string">BeforeAction</Property>
-                    <Property MultiValue="1" name="Script" type="string"><![CDATA[Action.MajorVersion   = VERSION_MAJOR;
-Action.MinorVersion   = VERSION_MINOR;
-Action.ReleaseVersion = VERSION_RELEASE;
-Action.BuildVersion   = VERSION_BUILD;
-Action.SetVersionInfoKey("ProductVersion",Action.GetVersionInfoKey("FileVersion"))
-]]>
-                      </Property>
-                    <Property MultiValue="0" name="ScriptLanguage" type="string">JavaScript</Property>
-                    </Object>
-                  <Object Class="TDelphiCompilerOptions" XMLID="{1CBF7ACE-25E9-4F44-8104-A5FBF035C6AF}"><Property name="AlwaysUseConditionalsFromDOF" type="WordBool">False</Property>
-                    <Property name="AlwaysUseDelphiLibraryPath" type="WordBool">True</Property>
-                    <Property name="AlwaysUseDOFSearchPath" type="WordBool">False</Property>
-                    <Property name="Assertions" type="WordBool">True</Property>
-                    <Property name="AssignableConst" type="WordBool">False</Property>
-                    <Property name="BoolEval" type="WordBool">False</Property>
-                    <Property MultiValue="0" name="BPLOutputDir" type="WideString"></Property>
-                    <Property name="CompilerWarnings" type="TStrings"><![CDATA[-w-UNSAFE_TYPE=0
--w-UNSAFE_CODE=0
--w-UNSAFE_CAST=0
-]]>
-                      </Property>
-                    <Property MultiValue="0" name="Conditionals" type="WideString"></Property>
-                    <Property name="ConsoleApp" type="WordBool">False</Property>
-                    <Property MultiValue="0" name="DCPOutputDir" type="WideString"></Property>
-                    <Property name="DebugInfo" type="WordBool">True</Property>
-                    <Property MultiValue="0" name="DefaultNamespace" type="string"></Property>
-                    <Property name="DefinitionsOnly" type="WordBool">True</Property>
-                    <Property MultiValue="0" name="ExeDescription" type="WideString">PHP Plugin for IniTranslator</Property>
-                    <Property name="ExportAllSymbols" type="WordBool">False</Property>
-                    <Property name="ExtendedSyntax" type="WordBool">True</Property>
-                    <Property name="GenerateDocumentation" type="Boolean">False</Property>
-                    <Property name="GenerateHPP" type="WordBool">False</Property>
-                    <Property name="HugeStrings" type="WordBool">True</Property>
-                    <Property name="ImageBase" type="Cardinal">28901376</Property>
-                    <Property name="IncludeNamespaces" type="WordBool">False</Property>
-                    <Property name="IncludeRemoteSymbols" type="WordBool">False</Property>
-                    <Property name="IncludeTD32" type="WordBool">False</Property>
-                    <Property name="IOChecking" type="WordBool">True</Property>
-                    <Property MultiValue="0" name="LibraryPath" type="WideString">$(DELPHI)\Lib;$(DELPHI)\Bin;$(DELPHI)\Imports;$(DELPHI)\Projects\Bpl;$(DELPHI)\Rave5\Lib;F:\Program\Borland\Add\JEDI\JCL\source;F:\Program\Borland\Add\JEDI\dev\JVCL3\common;F:\Program\Borland\Add\JEDI\dev\JVCL3\run;F:\Program\Borland\Add\dunit\src;F:\Program\Borland\Add\Others;F:\Program\Borland\Add\Utils;f:\program\borland\projects\work\eq plan\eq plan 2.0\eqplan</Property>
-                    <Property name="LinkerOutput" type="Integer">0</Property>
-                    <Property name="LocalSymbols" type="WordBool">True</Property>
-                    <Property name="Mapfile" type="Integer">3</Property>
-                    <Property name="MaxStackSize" type="Cardinal">1048576</Property>
-                    <Property name="MinStackSize" type="Cardinal">16384</Property>
-                    <Property MultiValue="0" name="NamespacePrefixes" type="string"></Property>
-                    <Property name="OpenStrings" type="WordBool">True</Property>
-                    <Property name="Optimisation" type="WordBool">True</Property>
-                    <Property MultiValue="0" name="OutputDir" type="WideString">..\..\bin\plugins</Property>
-                    <Property name="OverflowChecking" type="WordBool">False</Property>
-                    <Property MultiValue="0" name="Packages" type="WideString"></Property>
-                    <Property name="RangeChecking" type="WordBool">False</Property>
-                    <Property name="RecordFieldAlign" type="TFieldAlign">fa8</Property>
-                    <Property name="ReferenceInfo" type="WordBool">True</Property>
-                    <Property name="SafeDivide" type="WordBool">False</Property>
-                    <Property MultiValue="0" name="SearchPath" type="WideString"></Property>
-                    <Property name="ShowHints" type="WordBool">True</Property>
-                    <Property name="ShowWarnings" type="WordBool">True</Property>
-                    <Property name="StackFrames" type="WordBool">False</Property>
-                    <Property name="TypedPointers" type="WordBool">False</Property>
-                    <Property MultiValue="0" name="UnitAliases" type="WideString">WinTypes=Windows;WinProcs=Windows;DbiTypes=BDE;DbiProcs=BDE;DbiErrs=BDE;</Property>
-                    <Property MultiValue="0" name="UnitOutputDir" type="WideString">..\..\dcu</Property>
-                    <Property name="UseDebugDCU" type="WordBool">False</Property>
-                    <Property name="UsePackages" type="WordBool">False</Property>
-                    <Property name="VarStringChecks" type="WordBool">True</Property>
-                    </Object>
-                  </Object>
                 <Object Class="TDelphiCompilerAction" XMLID="{0C8B71C5-0028-48D5-B38E-13854BFB795E}"><Property MultiValue="0" name="ActionComment" type="string"></Property>
                   <Property name="ActionTextColor" type="Cardinal">0</Property>
                   <Property MultiValue="0" name="ActionTypeID" type="string"></Property>
@@ -1077,11 +1381,11 @@ Action.SetVersionInfoKey("ProductVersion",Action.GetVersionInfoKey("FileVersion"
                   <Property name="AutoIncBuild" type="WordBool">False</Property>
                   <Property name="AutoUpdateFileVersion" type="Boolean">True</Property>
                   <Property name="BuildAll" type="WordBool">True</Property>
-                  <Property name="BuildVersion" type="Integer">44</Property>
+                  <Property name="BuildVersion" type="Integer">50</Property>
                   <Property name="CodePage" type="Integer">1252</Property>
                   <Property name="CompilerVersion" type="Integer">4</Property>
                   <Property name="DebugVersionNumbers" type="Boolean">False</Property>
-                  <Property MultiValue="0" name="Description" type="string">IBForums DLL</Property>
+                  <Property MultiValue="0" name="Description" type="string">IBForumsPlugin</Property>
                   <Property name="Enabled" type="WordBool">True</Property>
                   <Property name="ExpandActionLogTitle" type="Boolean">True</Property>
                   <Property MultiValue="0" name="ExtraCommandline" type="WideString"></Property>
@@ -1123,13 +1427,13 @@ Action.SetVersionInfoKey("ProductVersion",Action.GetVersionInfoKey("FileVersion"
                   <Property name="UseVersionFromDOF" type="Boolean">False</Property>
                   <Property MultiValue="1" name="VersionInfoKeys" type="WideString"><![CDATA[CompanyName=IniTranslator
 FileDescription=IB Forums Plugin for IniTranslator
-FileVersion=1.9.0.44
+FileVersion=1.9.0.50
 InternalName=IBForumsParser.dll
 LegalCopyright=Copyright (c) 2003-2004 by Peter Thornqvist; all rights reserved
 LegalTrademarks=
 OriginalFilename=IBForumsParser.dll
 ProductName=IB Forums Plugin for IniTranslator
-ProductVersion=1.9.0.44
+ProductVersion=1.9.0.50
 Comments=Latest version at http://initranslator.sourceforge.net
 ]]>
                     </Property>
@@ -1204,6 +1508,142 @@ Action.SetVersionInfoKey("ProductVersion",Action.GetVersionInfoKey("FileVersion"
                     <Property name="VarStringChecks" type="WordBool">True</Property>
                     </Object>
                   </Object>
+                <Object Class="TDelphiCompilerAction" XMLID="{A62070F2-0D69-4DF2-AD1E-05AD936423F2}"><Property MultiValue="0" name="ActionComment" type="string"></Property>
+                  <Property name="ActionTextColor" type="Cardinal">0</Property>
+                  <Property MultiValue="0" name="ActionTypeID" type="string"></Property>
+                  <Property name="AllowImplicitImport" type="Boolean">True</Property>
+                  <Property name="AlwaysUseConditionalsFromDOF" type="WordBool">False</Property>
+                  <Property name="AutoIncBuild" type="WordBool">False</Property>
+                  <Property name="AutoUpdateFileVersion" type="Boolean">True</Property>
+                  <Property name="BuildAll" type="WordBool">True</Property>
+                  <Property name="BuildVersion" type="Integer">50</Property>
+                  <Property name="CodePage" type="Integer">1252</Property>
+                  <Property name="CompilerVersion" type="Integer">4</Property>
+                  <Property name="DebugVersionNumbers" type="Boolean">False</Property>
+                  <Property MultiValue="0" name="Description" type="string">KeePassPlugin</Property>
+                  <Property name="Enabled" type="WordBool">True</Property>
+                  <Property name="ExpandActionLogTitle" type="Boolean">True</Property>
+                  <Property MultiValue="0" name="ExtraCommandline" type="WideString"></Property>
+                  <Property name="HintsAsError" type="Boolean">False</Property>
+                  <Property MultiValue="0" name="IconFile" type="WideString"></Property>
+                  <Property name="IgnoreFailure" type="WordBool">False</Property>
+                  <Property name="IncludeCompileDate" type="WordBool">True</Property>
+                  <Property name="IncludeVerInfo" type="WordBool">True</Property>
+                  <Property name="IsAction" type="Boolean">True</Property>
+                  <Property name="IsBreakPoint" type="WordBool">False</Property>
+                  <Property name="IsDebug" type="WordBool">False</Property>
+                  <Property name="IsDLL" type="WordBool">True</Property>
+                  <Property name="IsPreRelease" type="WordBool">False</Property>
+                  <Property name="IsPrivate" type="WordBool">False</Property>
+                  <Property name="IsSpecial" type="WordBool">False</Property>
+                  <Property name="KeepCFG" type="Boolean">False</Property>
+                  <Property name="LinkProductVersionToFileVersion" type="Boolean">False</Property>
+                  <Property name="Locale" type="Integer">1033</Property>
+                  <Property MultiValue="0" name="LogToVariable" type="string"></Property>
+                  <Property name="MajorVersion" type="Integer">1</Property>
+                  <Property name="MaxRetryAttempts" type="Cardinal">0</Property>
+                  <Property name="MinorVersion" type="Integer">9</Property>
+                  <Property name="NodeCollapsed" type="Boolean">False</Property>
+                  <Property name="PauseInterval" type="Cardinal">0</Property>
+                  <Property MultiValue="0" name="ProjectFile" type="WideString">%SRCPATH%KeePassPlugin\KeePassParser.dpr</Property>
+                  <Property name="RegenerateResource" type="WordBool">True</Property>
+                  <Property name="ReleaseVersion" type="Integer">0</Property>
+                  <Property MultiValue="0" name="ResourceCompilerOptions" type="string"></Property>
+                  <Property MultiValue="0" name="ResourceCompilerPath" type="string"></Property>
+                  <Property name="ResourceCompilerType" type="TFBDelphiResourceCompiler">rcBorland</Property>
+                  <Property name="RetryPauseInterval" type="Cardinal">1000</Property>
+                  <Property MultiValue="0" name="StartingDir" type="WideString">%SRCPATH%KeePassPlugin\</Property>
+                  <Property name="SuppressStatusMessages" type="Boolean">False</Property>
+                  <Property name="UpdateDofFile" type="Boolean">False</Property>
+                  <Property name="UpdatePackageSource" type="Boolean">False</Property>
+                  <Property name="UseEurekaLogCompiler" type="Boolean">False</Property>
+                  <Property name="UseProjectSettings" type="TFBUseProjectSettings">[]</Property>
+                  <Property name="UsePropertySet" type="Boolean">False</Property>
+                  <Property name="UseVersionFromDOF" type="Boolean">False</Property>
+                  <Property MultiValue="1" name="VersionInfoKeys" type="WideString"><![CDATA[CompanyName=IniTranslator
+FileDescription=KeePass Plugin for IniTranslator
+FileVersion=1.9.0.50
+InternalName=KeePassParser.dll
+LegalCopyright=Copyright (c) 2006 by Peter Thörnqvist; all rights reserved
+LegalTrademarks=
+OriginalFilename=KeePassParser.dll
+ProductName=KeePass Plugin for IniTranslator
+ProductVersion=1.9.0.50
+Comments=Latest version at http://initranslator.sourceforge.net
+CompileDate=den 25 november 2006 16:58
+]]>
+                    </Property>
+                  <Property MultiValue="0" name="VersionInfoPropertySetName" type="string"></Property>
+                  <Property name="WarningsAsError" type="Boolean">False</Property>
+                  <Property name="WorkAroundD5Bug" type="WordBool">False</Property>
+                  <Object Class="TBuildScript" XMLID="{FC51DE2F-D186-46D5-808A-7B80F63BA5BF}"><Property MultiValue="0" name="BreakPointsStore" type="string"></Property>
+                    <Property MultiValue="0" name="Name" type="string">BeforeAction</Property>
+                    <Property MultiValue="1" name="Script" type="string"><![CDATA[Action.MajorVersion   = VERSION_MAJOR;
+Action.MinorVersion   = VERSION_MINOR;
+Action.ReleaseVersion = VERSION_RELEASE;
+Action.BuildVersion   = VERSION_BUILD;
+Action.SetVersionInfoKey("ProductVersion",Action.GetVersionInfoKey("FileVersion"))
+]]>
+                      </Property>
+                    <Property MultiValue="0" name="ScriptLanguage" type="string">JavaScript</Property>
+                    </Object>
+                  <Object Class="TDelphiCompilerOptions" XMLID="{F8ED0CD6-A301-4FB3-BE6E-C7E2DBC05D7F}"><Property name="AlwaysUseConditionalsFromDOF" type="WordBool">False</Property>
+                    <Property name="AlwaysUseDelphiLibraryPath" type="WordBool">True</Property>
+                    <Property name="AlwaysUseDOFSearchPath" type="WordBool">False</Property>
+                    <Property name="Assertions" type="WordBool">True</Property>
+                    <Property name="AssignableConst" type="WordBool">False</Property>
+                    <Property name="BoolEval" type="WordBool">False</Property>
+                    <Property MultiValue="0" name="BPLOutputDir" type="WideString"></Property>
+                    <Property name="CompilerWarnings" type="TStrings"><![CDATA[-w-UNSAFE_TYPE=0
+-w-UNSAFE_CODE=0
+-w-UNSAFE_CAST=0
+]]>
+                      </Property>
+                    <Property MultiValue="0" name="Conditionals" type="WideString"></Property>
+                    <Property name="ConsoleApp" type="WordBool">False</Property>
+                    <Property MultiValue="0" name="DCPOutputDir" type="WideString"></Property>
+                    <Property name="DebugInfo" type="WordBool">True</Property>
+                    <Property MultiValue="0" name="DefaultNamespace" type="string"></Property>
+                    <Property name="DefinitionsOnly" type="WordBool">True</Property>
+                    <Property MultiValue="0" name="ExeDescription" type="WideString"></Property>
+                    <Property name="ExportAllSymbols" type="WordBool">False</Property>
+                    <Property name="ExtendedSyntax" type="WordBool">True</Property>
+                    <Property name="GenerateDocumentation" type="Boolean">False</Property>
+                    <Property name="GenerateHPP" type="WordBool">False</Property>
+                    <Property name="HugeStrings" type="WordBool">True</Property>
+                    <Property name="ImageBase" type="Cardinal">4194304</Property>
+                    <Property name="IncludeNamespaces" type="WordBool">False</Property>
+                    <Property name="IncludeRemoteSymbols" type="WordBool">True</Property>
+                    <Property name="IncludeTD32" type="WordBool">False</Property>
+                    <Property name="IOChecking" type="WordBool">True</Property>
+                    <Property MultiValue="0" name="LibraryPath" type="WideString">$(DELPHI)\Lib;$(DELPHI)\Bin;$(DELPHI)\Imports;$(DELPHI)\Projects\Bpl;$(DELPHI)\Rave5\Lib;F:\Program\Borland\Add\JEDI\JCL\source;F:\Program\Borland\Add\JEDI\dev\JVCL3\common;F:\Program\Borland\Add\JEDI\dev\JVCL3\run;F:\Program\Borland\Add\dunit\src;F:\Program\Borland\Add\Others;F:\Program\Borland\Add\Utils;f:\program\borland\projects\work\eq plan\eq plan 2.0\eqplan</Property>
+                    <Property name="LinkerOutput" type="Integer">3</Property>
+                    <Property name="LocalSymbols" type="WordBool">True</Property>
+                    <Property name="Mapfile" type="Integer">3</Property>
+                    <Property name="MaxStackSize" type="Cardinal">1048576</Property>
+                    <Property name="MinStackSize" type="Cardinal">16384</Property>
+                    <Property MultiValue="0" name="NamespacePrefixes" type="string"></Property>
+                    <Property name="OpenStrings" type="WordBool">True</Property>
+                    <Property name="Optimisation" type="WordBool">True</Property>
+                    <Property MultiValue="0" name="OutputDir" type="WideString">..\..\bin\plugins</Property>
+                    <Property name="OverflowChecking" type="WordBool">False</Property>
+                    <Property MultiValue="0" name="Packages" type="WideString"></Property>
+                    <Property name="RangeChecking" type="WordBool">False</Property>
+                    <Property name="RecordFieldAlign" type="TFieldAlign">fa8</Property>
+                    <Property name="ReferenceInfo" type="WordBool">True</Property>
+                    <Property name="SafeDivide" type="WordBool">False</Property>
+                    <Property MultiValue="0" name="SearchPath" type="WideString"></Property>
+                    <Property name="ShowHints" type="WordBool">True</Property>
+                    <Property name="ShowWarnings" type="WordBool">True</Property>
+                    <Property name="StackFrames" type="WordBool">False</Property>
+                    <Property name="TypedPointers" type="WordBool">False</Property>
+                    <Property MultiValue="0" name="UnitAliases" type="WideString">WinTypes=Windows;WinProcs=Windows;DbiTypes=BDE;DbiProcs=BDE;DbiErrs=BDE;</Property>
+                    <Property MultiValue="0" name="UnitOutputDir" type="WideString">..\..\dcu</Property>
+                    <Property name="UseDebugDCU" type="WordBool">False</Property>
+                    <Property name="UsePackages" type="WordBool">False</Property>
+                    <Property name="VarStringChecks" type="WordBool">True</Property>
+                    </Object>
+                  </Object>
                 <Object Class="TDelphiCompilerAction" XMLID="{A5E729E5-43E4-4000-BCF4-6BB2CA8D4515}"><Property MultiValue="0" name="ActionComment" type="string"></Property>
                   <Property name="ActionTextColor" type="Cardinal">0</Property>
                   <Property MultiValue="0" name="ActionTypeID" type="string"></Property>
@@ -1212,11 +1652,11 @@ Action.SetVersionInfoKey("ProductVersion",Action.GetVersionInfoKey("FileVersion"
                   <Property name="AutoIncBuild" type="WordBool">False</Property>
                   <Property name="AutoUpdateFileVersion" type="Boolean">True</Property>
                   <Property name="BuildAll" type="WordBool">True</Property>
-                  <Property name="BuildVersion" type="Integer">44</Property>
+                  <Property name="BuildVersion" type="Integer">50</Property>
                   <Property name="CodePage" type="Integer">1252</Property>
                   <Property name="CompilerVersion" type="Integer">4</Property>
                   <Property name="DebugVersionNumbers" type="Boolean">False</Property>
-                  <Property MultiValue="0" name="Description" type="string">Mozilla DTD DLL</Property>
+                  <Property MultiValue="0" name="Description" type="string">MozillaDTDPlugin</Property>
                   <Property name="Enabled" type="WordBool">True</Property>
                   <Property name="ExpandActionLogTitle" type="Boolean">True</Property>
                   <Property MultiValue="0" name="ExtraCommandline" type="WideString"></Property>
@@ -1258,13 +1698,13 @@ Action.SetVersionInfoKey("ProductVersion",Action.GetVersionInfoKey("FileVersion"
                   <Property name="UseVersionFromDOF" type="Boolean">False</Property>
                   <Property MultiValue="1" name="VersionInfoKeys" type="WideString"><![CDATA[CompanyName=IniTranslator
 FileDescription=Mozilla DTD Plugin for IniTranslator
-FileVersion=1.9.0.44
+FileVersion=1.9.0.50
 InternalName=MozillaDTDParser.dll
 LegalCopyright=Copyright (c) 2003-2004 by Peter Thornqvist; all rights reserved
 LegalTrademarks=
 OriginalFilename=MozillaDTDParser.dll
 ProductName=Mozilla DTD Plugin for IniTranslator
-ProductVersion=1.9.0.44
+ProductVersion=1.9.0.50
 Comments=Latest version at http://initranslator.sourceforge.net
 ]]>
                     </Property>
@@ -1347,11 +1787,11 @@ Action.SetVersionInfoKey("ProductVersion",Action.GetVersionInfoKey("FileVersion"
                   <Property name="AutoIncBuild" type="WordBool">False</Property>
                   <Property name="AutoUpdateFileVersion" type="Boolean">True</Property>
                   <Property name="BuildAll" type="WordBool">True</Property>
-                  <Property name="BuildVersion" type="Integer">44</Property>
+                  <Property name="BuildVersion" type="Integer">50</Property>
                   <Property name="CodePage" type="Integer">1252</Property>
                   <Property name="CompilerVersion" type="Integer">4</Property>
                   <Property name="DebugVersionNumbers" type="Boolean">False</Property>
-                  <Property MultiValue="0" name="Description" type="string">Mozilla Properties DLL</Property>
+                  <Property MultiValue="0" name="Description" type="string">MozillaPropertiesPlugin</Property>
                   <Property name="Enabled" type="WordBool">True</Property>
                   <Property name="ExpandActionLogTitle" type="Boolean">True</Property>
                   <Property MultiValue="0" name="ExtraCommandline" type="WideString"></Property>
@@ -1393,13 +1833,13 @@ Action.SetVersionInfoKey("ProductVersion",Action.GetVersionInfoKey("FileVersion"
                   <Property name="UseVersionFromDOF" type="Boolean">False</Property>
                   <Property MultiValue="1" name="VersionInfoKeys" type="WideString"><![CDATA[CompanyName=IniTranslator
 FileDescription=Mozilla Properties Plugin for IniTranslator
-FileVersion=1.9.0.44
+FileVersion=1.9.0.50
 InternalName=MozillaPropsParser.dll
 LegalCopyright=Copyright (c) 2003-2004 by Peter Thornqvist; all rights reserved
 LegalTrademarks=
 OriginalFilename=MozillaPropsParser.dll
 ProductName=Mozilla Properties Plugin for IniTranslator
-ProductVersion=1.9.0.44
+ProductVersion=1.9.0.50
 Comments=Latest version at http://initranslator.sourceforge.net
 ]]>
                     </Property>
@@ -1474,6 +1914,141 @@ Action.SetVersionInfoKey("ProductVersion",Action.GetVersionInfoKey("FileVersion"
                     <Property name="VarStringChecks" type="WordBool">True</Property>
                     </Object>
                   </Object>
+                <Object Class="TDelphiCompilerAction" XMLID="{FDE2BA24-EBB2-49C2-A0E2-A76639985215}"><Property MultiValue="0" name="ActionComment" type="string"></Property>
+                  <Property name="ActionTextColor" type="Cardinal">0</Property>
+                  <Property MultiValue="0" name="ActionTypeID" type="string"></Property>
+                  <Property name="AllowImplicitImport" type="Boolean">True</Property>
+                  <Property name="AlwaysUseConditionalsFromDOF" type="WordBool">False</Property>
+                  <Property name="AutoIncBuild" type="WordBool">False</Property>
+                  <Property name="AutoUpdateFileVersion" type="Boolean">True</Property>
+                  <Property name="BuildAll" type="WordBool">True</Property>
+                  <Property name="BuildVersion" type="Integer">50</Property>
+                  <Property name="CodePage" type="Integer">1252</Property>
+                  <Property name="CompilerVersion" type="Integer">4</Property>
+                  <Property name="DebugVersionNumbers" type="Boolean">False</Property>
+                  <Property MultiValue="0" name="Description" type="string">MsDictPlugin</Property>
+                  <Property name="Enabled" type="WordBool">True</Property>
+                  <Property name="ExpandActionLogTitle" type="Boolean">True</Property>
+                  <Property MultiValue="0" name="ExtraCommandline" type="WideString"></Property>
+                  <Property name="HintsAsError" type="Boolean">False</Property>
+                  <Property MultiValue="0" name="IconFile" type="WideString"></Property>
+                  <Property name="IgnoreFailure" type="WordBool">False</Property>
+                  <Property name="IncludeCompileDate" type="WordBool">True</Property>
+                  <Property name="IncludeVerInfo" type="WordBool">True</Property>
+                  <Property name="IsAction" type="Boolean">True</Property>
+                  <Property name="IsBreakPoint" type="WordBool">False</Property>
+                  <Property name="IsDebug" type="WordBool">False</Property>
+                  <Property name="IsDLL" type="WordBool">True</Property>
+                  <Property name="IsPreRelease" type="WordBool">False</Property>
+                  <Property name="IsPrivate" type="WordBool">False</Property>
+                  <Property name="IsSpecial" type="WordBool">False</Property>
+                  <Property name="KeepCFG" type="Boolean">False</Property>
+                  <Property name="LinkProductVersionToFileVersion" type="Boolean">False</Property>
+                  <Property name="Locale" type="Integer">1033</Property>
+                  <Property MultiValue="0" name="LogToVariable" type="string"></Property>
+                  <Property name="MajorVersion" type="Integer">1</Property>
+                  <Property name="MaxRetryAttempts" type="Cardinal">0</Property>
+                  <Property name="MinorVersion" type="Integer">9</Property>
+                  <Property name="NodeCollapsed" type="Boolean">False</Property>
+                  <Property name="PauseInterval" type="Cardinal">0</Property>
+                  <Property MultiValue="0" name="ProjectFile" type="WideString">%SRCPATH%MSDictPlugin\MSDictParser.dpr</Property>
+                  <Property name="RegenerateResource" type="WordBool">True</Property>
+                  <Property name="ReleaseVersion" type="Integer">0</Property>
+                  <Property MultiValue="0" name="ResourceCompilerOptions" type="string"></Property>
+                  <Property MultiValue="0" name="ResourceCompilerPath" type="string"></Property>
+                  <Property name="ResourceCompilerType" type="TFBDelphiResourceCompiler">rcBorland</Property>
+                  <Property name="RetryPauseInterval" type="Cardinal">1000</Property>
+                  <Property MultiValue="0" name="StartingDir" type="WideString">%SRCPATH%MSDictPlugin\</Property>
+                  <Property name="SuppressStatusMessages" type="Boolean">False</Property>
+                  <Property name="UpdateDofFile" type="Boolean">False</Property>
+                  <Property name="UpdatePackageSource" type="Boolean">False</Property>
+                  <Property name="UseEurekaLogCompiler" type="Boolean">False</Property>
+                  <Property name="UseProjectSettings" type="TFBUseProjectSettings">[]</Property>
+                  <Property name="UsePropertySet" type="Boolean">False</Property>
+                  <Property name="UseVersionFromDOF" type="Boolean">False</Property>
+                  <Property MultiValue="1" name="VersionInfoKeys" type="WideString"><![CDATA[CompanyName=IniTranslator
+FileDescription=MS Glossary Plugin for IniTranslator
+FileVersion=1.9.0.50
+InternalName=
+LegalCopyright=Copyright (c) 2004 by Peter Thörnqvist; all rights reserved
+LegalTrademarks=
+OriginalFilename=
+ProductName=MS Glossary Plugin for IniTranslator
+ProductVersion=1.9.0.50
+Comments=Latest version at http://initranslator.sourceforge.net
+]]>
+                    </Property>
+                  <Property MultiValue="0" name="VersionInfoPropertySetName" type="string"></Property>
+                  <Property name="WarningsAsError" type="Boolean">False</Property>
+                  <Property name="WorkAroundD5Bug" type="WordBool">False</Property>
+                  <Object Class="TBuildScript" XMLID="{547F5D0C-849F-48EA-9311-762F60D9E047}"><Property MultiValue="0" name="BreakPointsStore" type="string"></Property>
+                    <Property MultiValue="0" name="Name" type="string">BeforeAction</Property>
+                    <Property MultiValue="1" name="Script" type="string"><![CDATA[Action.MajorVersion   = VERSION_MAJOR;
+Action.MinorVersion   = VERSION_MINOR;
+Action.ReleaseVersion = VERSION_RELEASE;
+Action.BuildVersion   = VERSION_BUILD;
+Action.SetVersionInfoKey("ProductVersion",Action.GetVersionInfoKey("FileVersion"))
+]]>
+                      </Property>
+                    <Property MultiValue="0" name="ScriptLanguage" type="string">JavaScript</Property>
+                    </Object>
+                  <Object Class="TDelphiCompilerOptions" XMLID="{1CBF7ACE-25E9-4F44-8104-A5FBF035C6AF}"><Property name="AlwaysUseConditionalsFromDOF" type="WordBool">False</Property>
+                    <Property name="AlwaysUseDelphiLibraryPath" type="WordBool">True</Property>
+                    <Property name="AlwaysUseDOFSearchPath" type="WordBool">False</Property>
+                    <Property name="Assertions" type="WordBool">True</Property>
+                    <Property name="AssignableConst" type="WordBool">False</Property>
+                    <Property name="BoolEval" type="WordBool">False</Property>
+                    <Property MultiValue="0" name="BPLOutputDir" type="WideString"></Property>
+                    <Property name="CompilerWarnings" type="TStrings"><![CDATA[-w-UNSAFE_TYPE=0
+-w-UNSAFE_CODE=0
+-w-UNSAFE_CAST=0
+]]>
+                      </Property>
+                    <Property MultiValue="0" name="Conditionals" type="WideString"></Property>
+                    <Property name="ConsoleApp" type="WordBool">False</Property>
+                    <Property MultiValue="0" name="DCPOutputDir" type="WideString"></Property>
+                    <Property name="DebugInfo" type="WordBool">True</Property>
+                    <Property MultiValue="0" name="DefaultNamespace" type="string"></Property>
+                    <Property name="DefinitionsOnly" type="WordBool">True</Property>
+                    <Property MultiValue="0" name="ExeDescription" type="WideString">MS Glossary Plugin for IniTranslator</Property>
+                    <Property name="ExportAllSymbols" type="WordBool">False</Property>
+                    <Property name="ExtendedSyntax" type="WordBool">True</Property>
+                    <Property name="GenerateDocumentation" type="Boolean">False</Property>
+                    <Property name="GenerateHPP" type="WordBool">False</Property>
+                    <Property name="HugeStrings" type="WordBool">True</Property>
+                    <Property name="ImageBase" type="Cardinal">37748736</Property>
+                    <Property name="IncludeNamespaces" type="WordBool">False</Property>
+                    <Property name="IncludeRemoteSymbols" type="WordBool">False</Property>
+                    <Property name="IncludeTD32" type="WordBool">False</Property>
+                    <Property name="IOChecking" type="WordBool">True</Property>
+                    <Property MultiValue="0" name="LibraryPath" type="WideString">$(DELPHI)\Lib;$(DELPHI)\Bin;$(DELPHI)\Imports;$(DELPHI)\Projects\Bpl;$(DELPHI)\Rave5\Lib;F:\Program\Borland\Add\JEDI\JCL\source;F:\Program\Borland\Add\JEDI\dev\JVCL3\common;F:\Program\Borland\Add\JEDI\dev\JVCL3\run;F:\Program\Borland\Add\dunit\src;F:\Program\Borland\Add\Others;F:\Program\Borland\Add\Utils;f:\program\borland\projects\work\eq plan\eq plan 2.0\eqplan</Property>
+                    <Property name="LinkerOutput" type="Integer">3</Property>
+                    <Property name="LocalSymbols" type="WordBool">True</Property>
+                    <Property name="Mapfile" type="Integer">0</Property>
+                    <Property name="MaxStackSize" type="Cardinal">1048576</Property>
+                    <Property name="MinStackSize" type="Cardinal">16384</Property>
+                    <Property MultiValue="0" name="NamespacePrefixes" type="string"></Property>
+                    <Property name="OpenStrings" type="WordBool">True</Property>
+                    <Property name="Optimisation" type="WordBool">True</Property>
+                    <Property MultiValue="0" name="OutputDir" type="WideString">..\..\bin\plugins</Property>
+                    <Property name="OverflowChecking" type="WordBool">False</Property>
+                    <Property MultiValue="0" name="Packages" type="WideString"></Property>
+                    <Property name="RangeChecking" type="WordBool">False</Property>
+                    <Property name="RecordFieldAlign" type="TFieldAlign">fa8</Property>
+                    <Property name="ReferenceInfo" type="WordBool">True</Property>
+                    <Property name="SafeDivide" type="WordBool">False</Property>
+                    <Property MultiValue="0" name="SearchPath" type="WideString"></Property>
+                    <Property name="ShowHints" type="WordBool">True</Property>
+                    <Property name="ShowWarnings" type="WordBool">True</Property>
+                    <Property name="StackFrames" type="WordBool">False</Property>
+                    <Property name="TypedPointers" type="WordBool">False</Property>
+                    <Property MultiValue="0" name="UnitAliases" type="WideString">WinTypes=Windows;WinProcs=Windows;DbiTypes=BDE;DbiProcs=BDE;DbiErrs=BDE;</Property>
+                    <Property MultiValue="0" name="UnitOutputDir" type="WideString">..\..\dcu</Property>
+                    <Property name="UseDebugDCU" type="WordBool">False</Property>
+                    <Property name="UsePackages" type="WordBool">False</Property>
+                    <Property name="VarStringChecks" type="WordBool">True</Property>
+                    </Object>
+                  </Object>
                 <Object Class="TDelphiCompilerAction" XMLID="{6145DE73-8F4D-42D5-8C18-B89C15DAC5AD}"><Property MultiValue="0" name="ActionComment" type="string"></Property>
                   <Property name="ActionTextColor" type="Cardinal">0</Property>
                   <Property MultiValue="0" name="ActionTypeID" type="string"></Property>
@@ -1482,11 +2057,11 @@ Action.SetVersionInfoKey("ProductVersion",Action.GetVersionInfoKey("FileVersion"
                   <Property name="AutoIncBuild" type="WordBool">False</Property>
                   <Property name="AutoUpdateFileVersion" type="Boolean">True</Property>
                   <Property name="BuildAll" type="WordBool">True</Property>
-                  <Property name="BuildVersion" type="Integer">44</Property>
+                  <Property name="BuildVersion" type="Integer">50</Property>
                   <Property name="CodePage" type="Integer">1252</Property>
                   <Property name="CompilerVersion" type="Integer">4</Property>
                   <Property name="DebugVersionNumbers" type="Boolean">False</Property>
-                  <Property MultiValue="0" name="Description" type="string">Oleg DLL</Property>
+                  <Property MultiValue="0" name="Description" type="string">OlegPlugin</Property>
                   <Property name="Enabled" type="WordBool">True</Property>
                   <Property name="ExpandActionLogTitle" type="Boolean">True</Property>
                   <Property MultiValue="0" name="ExtraCommandline" type="WideString"></Property>
@@ -1528,13 +2103,13 @@ Action.SetVersionInfoKey("ProductVersion",Action.GetVersionInfoKey("FileVersion"
                   <Property name="UseVersionFromDOF" type="Boolean">False</Property>
                   <Property MultiValue="1" name="VersionInfoKeys" type="WideString"><![CDATA[CompanyName=IniTranslator
 FileDescription=Oleg Translator Plugin for IniTranslator
-FileVersion=1.9.0.44
+FileVersion=1.9.0.50
 InternalName=OlegParser.dll
 LegalCopyright=Copyright (c) 2003-2004 by Peter Thornqvist; all rights reserved
 LegalTrademarks=
 OriginalFilename=OlegParser.dll
 ProductName=Oleg Translator Plugin for IniTranslator
-ProductVersion=1.9.0.44
+ProductVersion=1.9.0.50
 Comments=Latest version at http://initranslator.sourceforge.net
 ]]>
                     </Property>
@@ -1609,6 +2184,141 @@ Action.SetVersionInfoKey("ProductVersion",Action.GetVersionInfoKey("FileVersion"
                     <Property name="VarStringChecks" type="WordBool">True</Property>
                     </Object>
                   </Object>
+                <Object Class="TDelphiCompilerAction" XMLID="{625F18B4-1631-4C08-89D3-074715C90646}"><Property MultiValue="0" name="ActionComment" type="string"></Property>
+                  <Property name="ActionTextColor" type="Cardinal">0</Property>
+                  <Property MultiValue="0" name="ActionTypeID" type="string"></Property>
+                  <Property name="AllowImplicitImport" type="Boolean">True</Property>
+                  <Property name="AlwaysUseConditionalsFromDOF" type="WordBool">False</Property>
+                  <Property name="AutoIncBuild" type="WordBool">False</Property>
+                  <Property name="AutoUpdateFileVersion" type="Boolean">True</Property>
+                  <Property name="BuildAll" type="WordBool">True</Property>
+                  <Property name="BuildVersion" type="Integer">50</Property>
+                  <Property name="CodePage" type="Integer">1252</Property>
+                  <Property name="CompilerVersion" type="Integer">4</Property>
+                  <Property name="DebugVersionNumbers" type="Boolean">False</Property>
+                  <Property MultiValue="0" name="Description" type="string">OOGSIPlugin</Property>
+                  <Property name="Enabled" type="WordBool">True</Property>
+                  <Property name="ExpandActionLogTitle" type="Boolean">True</Property>
+                  <Property MultiValue="0" name="ExtraCommandline" type="WideString"></Property>
+                  <Property name="HintsAsError" type="Boolean">False</Property>
+                  <Property MultiValue="0" name="IconFile" type="WideString"></Property>
+                  <Property name="IgnoreFailure" type="WordBool">False</Property>
+                  <Property name="IncludeCompileDate" type="WordBool">True</Property>
+                  <Property name="IncludeVerInfo" type="WordBool">True</Property>
+                  <Property name="IsAction" type="Boolean">True</Property>
+                  <Property name="IsBreakPoint" type="WordBool">False</Property>
+                  <Property name="IsDebug" type="WordBool">False</Property>
+                  <Property name="IsDLL" type="WordBool">True</Property>
+                  <Property name="IsPreRelease" type="WordBool">False</Property>
+                  <Property name="IsPrivate" type="WordBool">False</Property>
+                  <Property name="IsSpecial" type="WordBool">False</Property>
+                  <Property name="KeepCFG" type="Boolean">False</Property>
+                  <Property name="LinkProductVersionToFileVersion" type="Boolean">False</Property>
+                  <Property name="Locale" type="Integer">1033</Property>
+                  <Property MultiValue="0" name="LogToVariable" type="string"></Property>
+                  <Property name="MajorVersion" type="Integer">1</Property>
+                  <Property name="MaxRetryAttempts" type="Cardinal">0</Property>
+                  <Property name="MinorVersion" type="Integer">9</Property>
+                  <Property name="NodeCollapsed" type="Boolean">False</Property>
+                  <Property name="PauseInterval" type="Cardinal">0</Property>
+                  <Property MultiValue="0" name="ProjectFile" type="WideString">%SRCPATH%OpenOfficeGSIPlugin\OOGSIParser.dpr</Property>
+                  <Property name="RegenerateResource" type="WordBool">True</Property>
+                  <Property name="ReleaseVersion" type="Integer">0</Property>
+                  <Property MultiValue="0" name="ResourceCompilerOptions" type="string"></Property>
+                  <Property MultiValue="0" name="ResourceCompilerPath" type="string"></Property>
+                  <Property name="ResourceCompilerType" type="TFBDelphiResourceCompiler">rcBorland</Property>
+                  <Property name="RetryPauseInterval" type="Cardinal">1000</Property>
+                  <Property MultiValue="0" name="StartingDir" type="WideString">%SRCPATH%OpenOfficeGSIPlugin\</Property>
+                  <Property name="SuppressStatusMessages" type="Boolean">False</Property>
+                  <Property name="UpdateDofFile" type="Boolean">False</Property>
+                  <Property name="UpdatePackageSource" type="Boolean">False</Property>
+                  <Property name="UseEurekaLogCompiler" type="Boolean">False</Property>
+                  <Property name="UseProjectSettings" type="TFBUseProjectSettings">[]</Property>
+                  <Property name="UsePropertySet" type="Boolean">False</Property>
+                  <Property name="UseVersionFromDOF" type="Boolean">False</Property>
+                  <Property MultiValue="1" name="VersionInfoKeys" type="WideString"><![CDATA[CompanyName=IniTranslator
+FileDescription=OpenOffice GSI Plugin for IniTranslator
+FileVersion=1.9.0.50
+InternalName=OOGSIParser.dll
+LegalCopyright=Copyright (c) 2003-2007 by Peter Thornqvist; all rights reserved
+LegalTrademarks=
+OriginalFilename=OOGSIParser.dll
+ProductName=OpenOffice GSI Plugin for IniTranslator
+ProductVersion=1.9.0.50
+Comments=Latest version at http://initranslator.sourceforge.net
+]]>
+                    </Property>
+                  <Property MultiValue="0" name="VersionInfoPropertySetName" type="string"></Property>
+                  <Property name="WarningsAsError" type="Boolean">False</Property>
+                  <Property name="WorkAroundD5Bug" type="WordBool">False</Property>
+                  <Object Class="TBuildScript" XMLID="{96921AC9-7955-407E-A01B-CD99EFF1914F}"><Property MultiValue="0" name="BreakPointsStore" type="string"></Property>
+                    <Property MultiValue="0" name="Name" type="string">BeforeAction</Property>
+                    <Property MultiValue="1" name="Script" type="string"><![CDATA[Action.MajorVersion   = VERSION_MAJOR;
+Action.MinorVersion   = VERSION_MINOR;
+Action.ReleaseVersion = VERSION_RELEASE;
+Action.BuildVersion   = VERSION_BUILD;
+Action.SetVersionInfoKey("ProductVersion",Action.GetVersionInfoKey("FileVersion"))
+]]>
+                      </Property>
+                    <Property MultiValue="0" name="ScriptLanguage" type="string">JavaScript</Property>
+                    </Object>
+                  <Object Class="TDelphiCompilerOptions" XMLID="{347BDE55-975B-4002-A45D-591E6394EB34}"><Property name="AlwaysUseConditionalsFromDOF" type="WordBool">False</Property>
+                    <Property name="AlwaysUseDelphiLibraryPath" type="WordBool">True</Property>
+                    <Property name="AlwaysUseDOFSearchPath" type="WordBool">False</Property>
+                    <Property name="Assertions" type="WordBool">True</Property>
+                    <Property name="AssignableConst" type="WordBool">False</Property>
+                    <Property name="BoolEval" type="WordBool">False</Property>
+                    <Property MultiValue="0" name="BPLOutputDir" type="WideString"></Property>
+                    <Property name="CompilerWarnings" type="TStrings"><![CDATA[-w-UNSAFE_TYPE=0
+-w-UNSAFE_CODE=0
+-w-UNSAFE_CAST=0
+]]>
+                      </Property>
+                    <Property MultiValue="0" name="Conditionals" type="WideString"></Property>
+                    <Property name="ConsoleApp" type="WordBool">False</Property>
+                    <Property MultiValue="0" name="DCPOutputDir" type="WideString"></Property>
+                    <Property name="DebugInfo" type="WordBool">True</Property>
+                    <Property MultiValue="0" name="DefaultNamespace" type="string"></Property>
+                    <Property name="DefinitionsOnly" type="WordBool">True</Property>
+                    <Property MultiValue="0" name="ExeDescription" type="WideString">OpenOffice GSI Plugin for IniTranslator</Property>
+                    <Property name="ExportAllSymbols" type="WordBool">False</Property>
+                    <Property name="ExtendedSyntax" type="WordBool">True</Property>
+                    <Property name="GenerateDocumentation" type="Boolean">False</Property>
+                    <Property name="GenerateHPP" type="WordBool">False</Property>
+                    <Property name="HugeStrings" type="WordBool">True</Property>
+                    <Property name="ImageBase" type="Cardinal">28901376</Property>
+                    <Property name="IncludeNamespaces" type="WordBool">False</Property>
+                    <Property name="IncludeRemoteSymbols" type="WordBool">True</Property>
+                    <Property name="IncludeTD32" type="WordBool">False</Property>
+                    <Property name="IOChecking" type="WordBool">True</Property>
+                    <Property MultiValue="0" name="LibraryPath" type="WideString">$(DELPHI)\Lib;$(DELPHI)\Bin;$(DELPHI)\Imports;$(DELPHI)\Projects\Bpl;$(DELPHI)\Rave5\Lib;F:\Program\Borland\Add\JEDI\JCL\source;F:\Program\Borland\Add\JEDI\dev\JVCL3\common;F:\Program\Borland\Add\JEDI\dev\JVCL3\run;F:\Program\Borland\Add\dunit\src;F:\Program\Borland\Add\Others;F:\Program\Borland\Add\Utils;f:\program\borland\projects\work\eq plan\eq plan 2.0\eqplan</Property>
+                    <Property name="LinkerOutput" type="Integer">3</Property>
+                    <Property name="LocalSymbols" type="WordBool">True</Property>
+                    <Property name="Mapfile" type="Integer">3</Property>
+                    <Property name="MaxStackSize" type="Cardinal">1048576</Property>
+                    <Property name="MinStackSize" type="Cardinal">16384</Property>
+                    <Property MultiValue="0" name="NamespacePrefixes" type="string"></Property>
+                    <Property name="OpenStrings" type="WordBool">True</Property>
+                    <Property name="Optimisation" type="WordBool">True</Property>
+                    <Property MultiValue="0" name="OutputDir" type="WideString">..\..\bin\plugins</Property>
+                    <Property name="OverflowChecking" type="WordBool">False</Property>
+                    <Property MultiValue="0" name="Packages" type="WideString"></Property>
+                    <Property name="RangeChecking" type="WordBool">False</Property>
+                    <Property name="RecordFieldAlign" type="TFieldAlign">fa8</Property>
+                    <Property name="ReferenceInfo" type="WordBool">True</Property>
+                    <Property name="SafeDivide" type="WordBool">False</Property>
+                    <Property MultiValue="0" name="SearchPath" type="WideString"></Property>
+                    <Property name="ShowHints" type="WordBool">True</Property>
+                    <Property name="ShowWarnings" type="WordBool">True</Property>
+                    <Property name="StackFrames" type="WordBool">False</Property>
+                    <Property name="TypedPointers" type="WordBool">False</Property>
+                    <Property MultiValue="0" name="UnitAliases" type="WideString">WinTypes=Windows;WinProcs=Windows;DbiTypes=BDE;DbiProcs=BDE;DbiErrs=BDE;</Property>
+                    <Property MultiValue="0" name="UnitOutputDir" type="WideString">..\..\dcu</Property>
+                    <Property name="UseDebugDCU" type="WordBool">False</Property>
+                    <Property name="UsePackages" type="WordBool">False</Property>
+                    <Property name="VarStringChecks" type="WordBool">True</Property>
+                    </Object>
+                  </Object>
                 <Object Class="TDelphiCompilerAction" XMLID="{54E7ED35-0300-4DA4-A32C-79AC1CF64D39}"><Property MultiValue="0" name="ActionComment" type="string"></Property>
                   <Property name="ActionTextColor" type="Cardinal">0</Property>
                   <Property MultiValue="0" name="ActionTypeID" type="string"></Property>
@@ -1617,11 +2327,11 @@ Action.SetVersionInfoKey("ProductVersion",Action.GetVersionInfoKey("FileVersion"
                   <Property name="AutoIncBuild" type="WordBool">False</Property>
                   <Property name="AutoUpdateFileVersion" type="Boolean">True</Property>
                   <Property name="BuildAll" type="WordBool">True</Property>
-                  <Property name="BuildVersion" type="Integer">44</Property>
+                  <Property name="BuildVersion" type="Integer">50</Property>
                   <Property name="CodePage" type="Integer">1252</Property>
                   <Property name="CompilerVersion" type="Integer">4</Property>
                   <Property name="DebugVersionNumbers" type="Boolean">False</Property>
-                  <Property MultiValue="0" name="Description" type="string">phpNuke DLL</Property>
+                  <Property MultiValue="0" name="Description" type="string">PHPNukePlugin</Property>
                   <Property name="Enabled" type="WordBool">True</Property>
                   <Property name="ExpandActionLogTitle" type="Boolean">True</Property>
                   <Property MultiValue="0" name="ExtraCommandline" type="WideString"></Property>
@@ -1663,13 +2373,13 @@ Action.SetVersionInfoKey("ProductVersion",Action.GetVersionInfoKey("FileVersion"
                   <Property name="UseVersionFromDOF" type="Boolean">False</Property>
                   <Property MultiValue="1" name="VersionInfoKeys" type="WideString"><![CDATA[CompanyName=IniTranslator
 FileDescription=phpNuke Plugin for IniTranslator
-FileVersion=1.9.0.44
+FileVersion=1.9.0.50
 InternalName=phpNukeParser.dll
 LegalCopyright=Copyright (c) 2003-2004 by Peter Thornqvist; all rights reserved
 LegalTrademarks=
 OriginalFilename=phpNukeParser.dll
 ProductName=phpNuke Plugin for IniTranslator
-ProductVersion=1.9.0.44
+ProductVersion=1.9.0.50
 Comments=Latest version at http://initranslator.sourceforge.net
 ]]>
                     </Property>
@@ -1744,6 +2454,276 @@ Action.SetVersionInfoKey("ProductVersion",Action.GetVersionInfoKey("FileVersion"
                     <Property name="VarStringChecks" type="WordBool">True</Property>
                     </Object>
                   </Object>
+                <Object Class="TDelphiCompilerAction" XMLID="{69D601DB-DDEB-4CFF-A387-F21D7037DF81}"><Property MultiValue="0" name="ActionComment" type="string"></Property>
+                  <Property name="ActionTextColor" type="Cardinal">0</Property>
+                  <Property MultiValue="0" name="ActionTypeID" type="string"></Property>
+                  <Property name="AllowImplicitImport" type="Boolean">True</Property>
+                  <Property name="AlwaysUseConditionalsFromDOF" type="WordBool">False</Property>
+                  <Property name="AutoIncBuild" type="WordBool">False</Property>
+                  <Property name="AutoUpdateFileVersion" type="Boolean">True</Property>
+                  <Property name="BuildAll" type="WordBool">True</Property>
+                  <Property name="BuildVersion" type="Integer">50</Property>
+                  <Property name="CodePage" type="Integer">1252</Property>
+                  <Property name="CompilerVersion" type="Integer">4</Property>
+                  <Property name="DebugVersionNumbers" type="Boolean">False</Property>
+                  <Property MultiValue="0" name="Description" type="string">PHPPlugin</Property>
+                  <Property name="Enabled" type="WordBool">True</Property>
+                  <Property name="ExpandActionLogTitle" type="Boolean">True</Property>
+                  <Property MultiValue="0" name="ExtraCommandline" type="WideString"></Property>
+                  <Property name="HintsAsError" type="Boolean">False</Property>
+                  <Property MultiValue="0" name="IconFile" type="WideString"></Property>
+                  <Property name="IgnoreFailure" type="WordBool">False</Property>
+                  <Property name="IncludeCompileDate" type="WordBool">True</Property>
+                  <Property name="IncludeVerInfo" type="WordBool">True</Property>
+                  <Property name="IsAction" type="Boolean">True</Property>
+                  <Property name="IsBreakPoint" type="WordBool">False</Property>
+                  <Property name="IsDebug" type="WordBool">False</Property>
+                  <Property name="IsDLL" type="WordBool">True</Property>
+                  <Property name="IsPreRelease" type="WordBool">False</Property>
+                  <Property name="IsPrivate" type="WordBool">False</Property>
+                  <Property name="IsSpecial" type="WordBool">False</Property>
+                  <Property name="KeepCFG" type="Boolean">False</Property>
+                  <Property name="LinkProductVersionToFileVersion" type="Boolean">False</Property>
+                  <Property name="Locale" type="Integer">1033</Property>
+                  <Property MultiValue="0" name="LogToVariable" type="string"></Property>
+                  <Property name="MajorVersion" type="Integer">1</Property>
+                  <Property name="MaxRetryAttempts" type="Cardinal">0</Property>
+                  <Property name="MinorVersion" type="Integer">9</Property>
+                  <Property name="NodeCollapsed" type="Boolean">False</Property>
+                  <Property name="PauseInterval" type="Cardinal">0</Property>
+                  <Property MultiValue="0" name="ProjectFile" type="WideString">%SRCPATH%PHPPlugin\PHPParser.dpr</Property>
+                  <Property name="RegenerateResource" type="WordBool">True</Property>
+                  <Property name="ReleaseVersion" type="Integer">0</Property>
+                  <Property MultiValue="0" name="ResourceCompilerOptions" type="string"></Property>
+                  <Property MultiValue="0" name="ResourceCompilerPath" type="string"></Property>
+                  <Property name="ResourceCompilerType" type="TFBDelphiResourceCompiler">rcBorland</Property>
+                  <Property name="RetryPauseInterval" type="Cardinal">1000</Property>
+                  <Property MultiValue="0" name="StartingDir" type="WideString">%SRCPATH%PHPPlugin\</Property>
+                  <Property name="SuppressStatusMessages" type="Boolean">False</Property>
+                  <Property name="UpdateDofFile" type="Boolean">False</Property>
+                  <Property name="UpdatePackageSource" type="Boolean">False</Property>
+                  <Property name="UseEurekaLogCompiler" type="Boolean">False</Property>
+                  <Property name="UseProjectSettings" type="TFBUseProjectSettings">[]</Property>
+                  <Property name="UsePropertySet" type="Boolean">False</Property>
+                  <Property name="UseVersionFromDOF" type="Boolean">False</Property>
+                  <Property MultiValue="1" name="VersionInfoKeys" type="WideString"><![CDATA[CompanyName=IniTranslator
+FileDescription=PHP Plugin for IniTranslator
+FileVersion=1.9.0.50
+InternalName=PHPParser.dll
+LegalCopyright=Copyright (c) 2003-2004 by Peter Thornqvist; all rights reserved
+LegalTrademarks=
+OriginalFilename=PHPParser.dll
+ProductName=PHP Plugin for IniTranslator
+ProductVersion=1.9.0.50
+Comments=Latest version at http://initranslator.sourceforge.net
+]]>
+                    </Property>
+                  <Property MultiValue="0" name="VersionInfoPropertySetName" type="string"></Property>
+                  <Property name="WarningsAsError" type="Boolean">False</Property>
+                  <Property name="WorkAroundD5Bug" type="WordBool">False</Property>
+                  <Object Class="TBuildScript" XMLID="{C50E58A9-CE22-46D1-AEAA-13406355C339}"><Property MultiValue="0" name="BreakPointsStore" type="string"></Property>
+                    <Property MultiValue="0" name="Name" type="string">BeforeAction</Property>
+                    <Property MultiValue="1" name="Script" type="string"><![CDATA[Action.MajorVersion   = VERSION_MAJOR;
+Action.MinorVersion   = VERSION_MINOR;
+Action.ReleaseVersion = VERSION_RELEASE;
+Action.BuildVersion   = VERSION_BUILD;
+Action.SetVersionInfoKey("ProductVersion",Action.GetVersionInfoKey("FileVersion"))
+]]>
+                      </Property>
+                    <Property MultiValue="0" name="ScriptLanguage" type="string">JavaScript</Property>
+                    </Object>
+                  <Object Class="TDelphiCompilerOptions" XMLID="{F5022FA8-7866-4273-9CB0-C079B08328B1}"><Property name="AlwaysUseConditionalsFromDOF" type="WordBool">False</Property>
+                    <Property name="AlwaysUseDelphiLibraryPath" type="WordBool">True</Property>
+                    <Property name="AlwaysUseDOFSearchPath" type="WordBool">False</Property>
+                    <Property name="Assertions" type="WordBool">True</Property>
+                    <Property name="AssignableConst" type="WordBool">False</Property>
+                    <Property name="BoolEval" type="WordBool">False</Property>
+                    <Property MultiValue="0" name="BPLOutputDir" type="WideString"></Property>
+                    <Property name="CompilerWarnings" type="TStrings"><![CDATA[-w-UNSAFE_TYPE=0
+-w-UNSAFE_CODE=0
+-w-UNSAFE_CAST=0
+]]>
+                      </Property>
+                    <Property MultiValue="0" name="Conditionals" type="WideString"></Property>
+                    <Property name="ConsoleApp" type="WordBool">False</Property>
+                    <Property MultiValue="0" name="DCPOutputDir" type="WideString"></Property>
+                    <Property name="DebugInfo" type="WordBool">True</Property>
+                    <Property MultiValue="0" name="DefaultNamespace" type="string"></Property>
+                    <Property name="DefinitionsOnly" type="WordBool">True</Property>
+                    <Property MultiValue="0" name="ExeDescription" type="WideString">PHP Plugin for IniTranslator</Property>
+                    <Property name="ExportAllSymbols" type="WordBool">False</Property>
+                    <Property name="ExtendedSyntax" type="WordBool">True</Property>
+                    <Property name="GenerateDocumentation" type="Boolean">False</Property>
+                    <Property name="GenerateHPP" type="WordBool">False</Property>
+                    <Property name="HugeStrings" type="WordBool">True</Property>
+                    <Property name="ImageBase" type="Cardinal">28901376</Property>
+                    <Property name="IncludeNamespaces" type="WordBool">False</Property>
+                    <Property name="IncludeRemoteSymbols" type="WordBool">False</Property>
+                    <Property name="IncludeTD32" type="WordBool">False</Property>
+                    <Property name="IOChecking" type="WordBool">True</Property>
+                    <Property MultiValue="0" name="LibraryPath" type="WideString">$(DELPHI)\Lib;$(DELPHI)\Bin;$(DELPHI)\Imports;$(DELPHI)\Projects\Bpl;$(DELPHI)\Rave5\Lib;F:\Program\Borland\Add\JEDI\JCL\source;F:\Program\Borland\Add\JEDI\dev\JVCL3\common;F:\Program\Borland\Add\JEDI\dev\JVCL3\run;F:\Program\Borland\Add\dunit\src;F:\Program\Borland\Add\Others;F:\Program\Borland\Add\Utils;f:\program\borland\projects\work\eq plan\eq plan 2.0\eqplan</Property>
+                    <Property name="LinkerOutput" type="Integer">0</Property>
+                    <Property name="LocalSymbols" type="WordBool">True</Property>
+                    <Property name="Mapfile" type="Integer">3</Property>
+                    <Property name="MaxStackSize" type="Cardinal">1048576</Property>
+                    <Property name="MinStackSize" type="Cardinal">16384</Property>
+                    <Property MultiValue="0" name="NamespacePrefixes" type="string"></Property>
+                    <Property name="OpenStrings" type="WordBool">True</Property>
+                    <Property name="Optimisation" type="WordBool">True</Property>
+                    <Property MultiValue="0" name="OutputDir" type="WideString">..\..\bin\plugins</Property>
+                    <Property name="OverflowChecking" type="WordBool">False</Property>
+                    <Property MultiValue="0" name="Packages" type="WideString"></Property>
+                    <Property name="RangeChecking" type="WordBool">False</Property>
+                    <Property name="RecordFieldAlign" type="TFieldAlign">fa8</Property>
+                    <Property name="ReferenceInfo" type="WordBool">True</Property>
+                    <Property name="SafeDivide" type="WordBool">False</Property>
+                    <Property MultiValue="0" name="SearchPath" type="WideString"></Property>
+                    <Property name="ShowHints" type="WordBool">True</Property>
+                    <Property name="ShowWarnings" type="WordBool">True</Property>
+                    <Property name="StackFrames" type="WordBool">False</Property>
+                    <Property name="TypedPointers" type="WordBool">False</Property>
+                    <Property MultiValue="0" name="UnitAliases" type="WideString">WinTypes=Windows;WinProcs=Windows;DbiTypes=BDE;DbiProcs=BDE;DbiErrs=BDE;</Property>
+                    <Property MultiValue="0" name="UnitOutputDir" type="WideString">..\..\dcu</Property>
+                    <Property name="UseDebugDCU" type="WordBool">False</Property>
+                    <Property name="UsePackages" type="WordBool">False</Property>
+                    <Property name="VarStringChecks" type="WordBool">True</Property>
+                    </Object>
+                  </Object>
+                <Object Class="TDelphiCompilerAction" XMLID="{32748F25-370C-4827-A8D5-0F9B12A3DF18}"><Property MultiValue="0" name="ActionComment" type="string"></Property>
+                  <Property name="ActionTextColor" type="Cardinal">0</Property>
+                  <Property MultiValue="0" name="ActionTypeID" type="string"></Property>
+                  <Property name="AllowImplicitImport" type="Boolean">True</Property>
+                  <Property name="AlwaysUseConditionalsFromDOF" type="WordBool">False</Property>
+                  <Property name="AutoIncBuild" type="WordBool">False</Property>
+                  <Property name="AutoUpdateFileVersion" type="Boolean">True</Property>
+                  <Property name="BuildAll" type="WordBool">True</Property>
+                  <Property name="BuildVersion" type="Integer">50</Property>
+                  <Property name="CodePage" type="Integer">1252</Property>
+                  <Property name="CompilerVersion" type="Integer">4</Property>
+                  <Property name="DebugVersionNumbers" type="Boolean">False</Property>
+                  <Property MultiValue="0" name="Description" type="string">PolyglotPlugin</Property>
+                  <Property name="Enabled" type="WordBool">True</Property>
+                  <Property name="ExpandActionLogTitle" type="Boolean">True</Property>
+                  <Property MultiValue="0" name="ExtraCommandline" type="WideString"></Property>
+                  <Property name="HintsAsError" type="Boolean">False</Property>
+                  <Property MultiValue="0" name="IconFile" type="WideString"></Property>
+                  <Property name="IgnoreFailure" type="WordBool">False</Property>
+                  <Property name="IncludeCompileDate" type="WordBool">True</Property>
+                  <Property name="IncludeVerInfo" type="WordBool">True</Property>
+                  <Property name="IsAction" type="Boolean">True</Property>
+                  <Property name="IsBreakPoint" type="WordBool">False</Property>
+                  <Property name="IsDebug" type="WordBool">False</Property>
+                  <Property name="IsDLL" type="WordBool">True</Property>
+                  <Property name="IsPreRelease" type="WordBool">False</Property>
+                  <Property name="IsPrivate" type="WordBool">False</Property>
+                  <Property name="IsSpecial" type="WordBool">False</Property>
+                  <Property name="KeepCFG" type="Boolean">False</Property>
+                  <Property name="LinkProductVersionToFileVersion" type="Boolean">False</Property>
+                  <Property name="Locale" type="Integer">1033</Property>
+                  <Property MultiValue="0" name="LogToVariable" type="string"></Property>
+                  <Property name="MajorVersion" type="Integer">1</Property>
+                  <Property name="MaxRetryAttempts" type="Cardinal">0</Property>
+                  <Property name="MinorVersion" type="Integer">9</Property>
+                  <Property name="NodeCollapsed" type="Boolean">False</Property>
+                  <Property name="PauseInterval" type="Cardinal">0</Property>
+                  <Property MultiValue="0" name="ProjectFile" type="WideString">%SRCPATH%PolyglotPlugin\PolyGlotParser.dpr</Property>
+                  <Property name="RegenerateResource" type="WordBool">True</Property>
+                  <Property name="ReleaseVersion" type="Integer">0</Property>
+                  <Property MultiValue="0" name="ResourceCompilerOptions" type="string"></Property>
+                  <Property MultiValue="0" name="ResourceCompilerPath" type="string"></Property>
+                  <Property name="ResourceCompilerType" type="TFBDelphiResourceCompiler">rcBorland</Property>
+                  <Property name="RetryPauseInterval" type="Cardinal">1000</Property>
+                  <Property MultiValue="0" name="StartingDir" type="WideString">%SRCPATH%PolyglotPlugin\</Property>
+                  <Property name="SuppressStatusMessages" type="Boolean">False</Property>
+                  <Property name="UpdateDofFile" type="Boolean">False</Property>
+                  <Property name="UpdatePackageSource" type="Boolean">False</Property>
+                  <Property name="UseEurekaLogCompiler" type="Boolean">False</Property>
+                  <Property name="UseProjectSettings" type="TFBUseProjectSettings">[]</Property>
+                  <Property name="UsePropertySet" type="Boolean">False</Property>
+                  <Property name="UseVersionFromDOF" type="Boolean">False</Property>
+                  <Property MultiValue="1" name="VersionInfoKeys" type="WideString"><![CDATA[CompanyName=IniTranslator
+FileDescription=PolyGlotTranslator Plugin for IniTranslator
+FileVersion=1.9.0.50
+InternalName=PolyGlotParser.dll
+LegalCopyright=Copyright (c) 2004 by Chris Thornton; all rights reserved
+LegalTrademarks=
+OriginalFilename=PolyGlotParser.dll
+ProductName=PolyGlotTranslator Plugin for IniTranslator
+ProductVersion=1.9.0.50
+Comments=Latest version at http://initranslator.sourceforge.net
+]]>
+                    </Property>
+                  <Property MultiValue="0" name="VersionInfoPropertySetName" type="string"></Property>
+                  <Property name="WarningsAsError" type="Boolean">False</Property>
+                  <Property name="WorkAroundD5Bug" type="WordBool">False</Property>
+                  <Object Class="TBuildScript" XMLID="{172865EF-CE7A-4915-BAB6-11015F775AB1}"><Property MultiValue="0" name="BreakPointsStore" type="string"></Property>
+                    <Property MultiValue="0" name="Name" type="string">BeforeAction</Property>
+                    <Property MultiValue="1" name="Script" type="string"><![CDATA[Action.MajorVersion   = VERSION_MAJOR;
+Action.MinorVersion   = VERSION_MINOR;
+Action.ReleaseVersion = VERSION_RELEASE;
+Action.BuildVersion   = VERSION_BUILD;
+Action.SetVersionInfoKey("ProductVersion",Action.GetVersionInfoKey("FileVersion"))
+]]>
+                      </Property>
+                    <Property MultiValue="0" name="ScriptLanguage" type="string">JavaScript</Property>
+                    </Object>
+                  <Object Class="TDelphiCompilerOptions" XMLID="{2C768D00-473C-4315-8C57-9F7FF255D118}"><Property name="AlwaysUseConditionalsFromDOF" type="WordBool">False</Property>
+                    <Property name="AlwaysUseDelphiLibraryPath" type="WordBool">True</Property>
+                    <Property name="AlwaysUseDOFSearchPath" type="WordBool">False</Property>
+                    <Property name="Assertions" type="WordBool">True</Property>
+                    <Property name="AssignableConst" type="WordBool">False</Property>
+                    <Property name="BoolEval" type="WordBool">False</Property>
+                    <Property MultiValue="0" name="BPLOutputDir" type="WideString"></Property>
+                    <Property name="CompilerWarnings" type="TStrings"><![CDATA[-w-UNSAFE_TYPE=0
+-w-UNSAFE_CODE=0
+-w-UNSAFE_CAST=0
+]]>
+                      </Property>
+                    <Property MultiValue="0" name="Conditionals" type="WideString"></Property>
+                    <Property name="ConsoleApp" type="WordBool">True</Property>
+                    <Property MultiValue="0" name="DCPOutputDir" type="WideString"></Property>
+                    <Property name="DebugInfo" type="WordBool">True</Property>
+                    <Property MultiValue="0" name="DefaultNamespace" type="string"></Property>
+                    <Property name="DefinitionsOnly" type="WordBool">True</Property>
+                    <Property MultiValue="0" name="ExeDescription" type="WideString"></Property>
+                    <Property name="ExportAllSymbols" type="WordBool">False</Property>
+                    <Property name="ExtendedSyntax" type="WordBool">True</Property>
+                    <Property name="GenerateDocumentation" type="Boolean">False</Property>
+                    <Property name="GenerateHPP" type="WordBool">False</Property>
+                    <Property name="HugeStrings" type="WordBool">True</Property>
+                    <Property name="ImageBase" type="Cardinal">4194304</Property>
+                    <Property name="IncludeNamespaces" type="WordBool">False</Property>
+                    <Property name="IncludeRemoteSymbols" type="WordBool">False</Property>
+                    <Property name="IncludeTD32" type="WordBool">True</Property>
+                    <Property name="IOChecking" type="WordBool">True</Property>
+                    <Property MultiValue="0" name="LibraryPath" type="WideString">$(DELPHI)\Lib;$(DELPHI)\Bin;$(DELPHI)\Imports;$(DELPHI)\Projects\Bpl;$(DELPHI)\Rave5\Lib;F:\Program\Borland\Add\JEDI\JCL\source;F:\Program\Borland\Add\JEDI\dev\JVCL3\common;F:\Program\Borland\Add\JEDI\dev\JVCL3\run;F:\Program\Borland\Add\dunit\src;F:\Program\Borland\Add\Others;F:\Program\Borland\Add\Utils;f:\program\borland\projects\work\eq plan\eq plan 2.0\eqplan</Property>
+                    <Property name="LinkerOutput" type="Integer">3</Property>
+                    <Property name="LocalSymbols" type="WordBool">True</Property>
+                    <Property name="Mapfile" type="Integer">0</Property>
+                    <Property name="MaxStackSize" type="Cardinal">1048576</Property>
+                    <Property name="MinStackSize" type="Cardinal">16384</Property>
+                    <Property MultiValue="0" name="NamespacePrefixes" type="string"></Property>
+                    <Property name="OpenStrings" type="WordBool">True</Property>
+                    <Property name="Optimisation" type="WordBool">True</Property>
+                    <Property MultiValue="0" name="OutputDir" type="WideString">..\..\bin\plugins</Property>
+                    <Property name="OverflowChecking" type="WordBool">False</Property>
+                    <Property MultiValue="0" name="Packages" type="WideString"></Property>
+                    <Property name="RangeChecking" type="WordBool">False</Property>
+                    <Property name="RecordFieldAlign" type="TFieldAlign">fa8</Property>
+                    <Property name="ReferenceInfo" type="WordBool">True</Property>
+                    <Property name="SafeDivide" type="WordBool">False</Property>
+                    <Property MultiValue="0" name="SearchPath" type="WideString"></Property>
+                    <Property name="ShowHints" type="WordBool">True</Property>
+                    <Property name="ShowWarnings" type="WordBool">True</Property>
+                    <Property name="StackFrames" type="WordBool">False</Property>
+                    <Property name="TypedPointers" type="WordBool">False</Property>
+                    <Property MultiValue="0" name="UnitAliases" type="WideString">WinTypes=Windows;WinProcs=Windows;DbiTypes=BDE;DbiProcs=BDE;DbiErrs=BDE;</Property>
+                    <Property MultiValue="0" name="UnitOutputDir" type="WideString">..\..\dcu</Property>
+                    <Property name="UseDebugDCU" type="WordBool">False</Property>
+                    <Property name="UsePackages" type="WordBool">False</Property>
+                    <Property name="VarStringChecks" type="WordBool">True</Property>
+                    </Object>
+                  </Object>
                 <Object Class="TDelphiCompilerAction" XMLID="{1BB815B4-9377-45AC-9786-B1E0A85AD217}"><Property MultiValue="0" name="ActionComment" type="string"></Property>
                   <Property name="ActionTextColor" type="Cardinal">0</Property>
                   <Property MultiValue="0" name="ActionTypeID" type="string"></Property>
@@ -1752,11 +2732,11 @@ Action.SetVersionInfoKey("ProductVersion",Action.GetVersionInfoKey("FileVersion"
                   <Property name="AutoIncBuild" type="WordBool">False</Property>
                   <Property name="AutoUpdateFileVersion" type="Boolean">True</Property>
                   <Property name="BuildAll" type="WordBool">True</Property>
-                  <Property name="BuildVersion" type="Integer">44</Property>
+                  <Property name="BuildVersion" type="Integer">50</Property>
                   <Property name="CodePage" type="Integer">1252</Property>
                   <Property name="CompilerVersion" type="Integer">4</Property>
                   <Property name="DebugVersionNumbers" type="Boolean">False</Property>
-                  <Property MultiValue="0" name="Description" type="string">PO DLL</Property>
+                  <Property MultiValue="0" name="Description" type="string">POPlugin</Property>
                   <Property name="Enabled" type="WordBool">True</Property>
                   <Property name="ExpandActionLogTitle" type="Boolean">True</Property>
                   <Property MultiValue="0" name="ExtraCommandline" type="WideString"></Property>
@@ -1798,13 +2778,13 @@ Action.SetVersionInfoKey("ProductVersion",Action.GetVersionInfoKey("FileVersion"
                   <Property name="UseVersionFromDOF" type="Boolean">False</Property>
                   <Property MultiValue="1" name="VersionInfoKeys" type="WideString"><![CDATA[CompanyName=IniTranslator
 FileDescription=PO Plugin for IniTranslator
-FileVersion=1.9.0.44
+FileVersion=1.9.0.50
 InternalName=POParser.dll
 LegalCopyright=Copyright (c) 2003-2004 by Peter Thornqvist; all rights reserved
 LegalTrademarks=
 OriginalFilename=POParser.dll
 ProductName=PO Plugin for IniTranslator
-ProductVersion=1.9.0.44
+ProductVersion=1.9.0.50
 Comments=Latest version at http://initranslator.sourceforge.net
 ]]>
                     </Property>
@@ -1887,11 +2867,11 @@ Action.SetVersionInfoKey("ProductVersion",Action.GetVersionInfoKey("FileVersion"
                   <Property name="AutoIncBuild" type="WordBool">False</Property>
                   <Property name="AutoUpdateFileVersion" type="Boolean">True</Property>
                   <Property name="BuildAll" type="WordBool">True</Property>
-                  <Property name="BuildVersion" type="Integer">44</Property>
+                  <Property name="BuildVersion" type="Integer">50</Property>
                   <Property name="CodePage" type="Integer">1252</Property>
                   <Property name="CompilerVersion" type="Integer">4</Property>
                   <Property name="DebugVersionNumbers" type="Boolean">False</Property>
-                  <Property MultiValue="0" name="Description" type="string">SciTE DLL</Property>
+                  <Property MultiValue="0" name="Description" type="string">SciTEPlugin</Property>
                   <Property name="Enabled" type="WordBool">True</Property>
                   <Property name="ExpandActionLogTitle" type="Boolean">True</Property>
                   <Property MultiValue="0" name="ExtraCommandline" type="WideString"></Property>
@@ -1933,13 +2913,13 @@ Action.SetVersionInfoKey("ProductVersion",Action.GetVersionInfoKey("FileVersion"
                   <Property name="UseVersionFromDOF" type="Boolean">False</Property>
                   <Property MultiValue="1" name="VersionInfoKeys" type="WideString"><![CDATA[CompanyName=IniTranslator
 FileDescription=SciTE Plugin for IniTranslator
-FileVersion=1.9.0.44
+FileVersion=1.9.0.50
 InternalName=SciTEParser.dll
 LegalCopyright=Copyright (c) 2003-2004 by Peter Thornqvist; all rights reserved
 LegalTrademarks=
 OriginalFilename=SciTEParser.dll
 ProductName=SciTE Plugin for IniTranslator
-ProductVersion=1.9.0.44
+ProductVersion=1.9.0.50
 Comments=Latest version at http://initranslator.sourceforge.net
 ]]>
                     </Property>
@@ -2022,11 +3002,11 @@ Action.SetVersionInfoKey("ProductVersion",Action.GetVersionInfoKey("FileVersion"
                   <Property name="AutoIncBuild" type="WordBool">False</Property>
                   <Property name="AutoUpdateFileVersion" type="Boolean">True</Property>
                   <Property name="BuildAll" type="WordBool">True</Property>
-                  <Property name="BuildVersion" type="Integer">44</Property>
+                  <Property name="BuildVersion" type="Integer">50</Property>
                   <Property name="CodePage" type="Integer">1252</Property>
                   <Property name="CompilerVersion" type="Integer">4</Property>
                   <Property name="DebugVersionNumbers" type="Boolean">False</Property>
-                  <Property MultiValue="0" name="Description" type="string">TMX DLL</Property>
+                  <Property MultiValue="0" name="Description" type="string">TMXPlugin</Property>
                   <Property name="Enabled" type="WordBool">True</Property>
                   <Property name="ExpandActionLogTitle" type="Boolean">True</Property>
                   <Property MultiValue="0" name="ExtraCommandline" type="WideString"></Property>
@@ -2068,13 +3048,13 @@ Action.SetVersionInfoKey("ProductVersion",Action.GetVersionInfoKey("FileVersion"
                   <Property name="UseVersionFromDOF" type="Boolean">False</Property>
                   <Property MultiValue="1" name="VersionInfoKeys" type="WideString"><![CDATA[CompanyName=IniTranslator
 FileDescription=TMX Plugin for IniTranslator
-FileVersion=1.9.0.44
+FileVersion=1.9.0.50
 InternalName=TMXParser.dll
 LegalCopyright=Copyright (c) 2006 by Peter Thörnqvist; all rights reserved
 LegalTrademarks=
 OriginalFilename=TMXParser.dll
 ProductName=TMX Plugin for IniTranslator
-ProductVersion=1.9.0.44
+ProductVersion=1.9.0.50
 Comments=Latest version at http://initranslator.sourceforge.net
 ]]>
                     </Property>
@@ -2149,19 +3129,19 @@ Action.SetVersionInfoKey("ProductVersion",Action.GetVersionInfoKey("FileVersion"
                     <Property name="VarStringChecks" type="WordBool">True</Property>
                     </Object>
                   </Object>
-                <Object Class="TDelphiCompilerAction" XMLID="{0671E562-8056-4722-89F8-1E26A364260E}"><Property MultiValue="0" name="ActionComment" type="string"></Property>
+                <Object Class="TDelphiCompilerAction" XMLID="{0F86276C-7042-4A6C-9004-E5F7E116F4B5}"><Property MultiValue="0" name="ActionComment" type="string"></Property>
                   <Property name="ActionTextColor" type="Cardinal">0</Property>
                   <Property MultiValue="0" name="ActionTypeID" type="string"></Property>
                   <Property name="AllowImplicitImport" type="Boolean">True</Property>
                   <Property name="AlwaysUseConditionalsFromDOF" type="WordBool">False</Property>
-                  <Property name="AutoIncBuild" type="WordBool">False</Property>
+                  <Property name="AutoIncBuild" type="WordBool">True</Property>
                   <Property name="AutoUpdateFileVersion" type="Boolean">True</Property>
                   <Property name="BuildAll" type="WordBool">True</Property>
-                  <Property name="BuildVersion" type="Integer">44</Property>
+                  <Property name="BuildVersion" type="Integer">51</Property>
                   <Property name="CodePage" type="Integer">1252</Property>
                   <Property name="CompilerVersion" type="Integer">4</Property>
                   <Property name="DebugVersionNumbers" type="Boolean">False</Property>
-                  <Property MultiValue="0" name="Description" type="string">XiliSoft DLL</Property>
+                  <Property MultiValue="0" name="Description" type="string">WixPlugin</Property>
                   <Property name="Enabled" type="WordBool">True</Property>
                   <Property name="ExpandActionLogTitle" type="Boolean">True</Property>
                   <Property MultiValue="0" name="ExtraCommandline" type="WideString"></Property>
@@ -2173,27 +3153,27 @@ Action.SetVersionInfoKey("ProductVersion",Action.GetVersionInfoKey("FileVersion"
                   <Property name="IsAction" type="Boolean">True</Property>
                   <Property name="IsBreakPoint" type="WordBool">False</Property>
                   <Property name="IsDebug" type="WordBool">False</Property>
-                  <Property name="IsDLL" type="WordBool">False</Property>
+                  <Property name="IsDLL" type="WordBool">True</Property>
                   <Property name="IsPreRelease" type="WordBool">False</Property>
                   <Property name="IsPrivate" type="WordBool">False</Property>
                   <Property name="IsSpecial" type="WordBool">False</Property>
                   <Property name="KeepCFG" type="Boolean">False</Property>
                   <Property name="LinkProductVersionToFileVersion" type="Boolean">False</Property>
-                  <Property name="Locale" type="Integer">1033</Property>
+                  <Property name="Locale" type="Integer">1053</Property>
                   <Property MultiValue="0" name="LogToVariable" type="string"></Property>
                   <Property name="MajorVersion" type="Integer">1</Property>
                   <Property name="MaxRetryAttempts" type="Cardinal">0</Property>
                   <Property name="MinorVersion" type="Integer">9</Property>
                   <Property name="NodeCollapsed" type="Boolean">False</Property>
                   <Property name="PauseInterval" type="Cardinal">0</Property>
-                  <Property MultiValue="0" name="ProjectFile" type="WideString">%SRCPATH%XilisoftPlugin\XilisoftParser.dpr</Property>
+                  <Property MultiValue="0" name="ProjectFile" type="WideString">%SRCPATH%WixPlugin\WixParser.dpr</Property>
                   <Property name="RegenerateResource" type="WordBool">True</Property>
                   <Property name="ReleaseVersion" type="Integer">0</Property>
                   <Property MultiValue="0" name="ResourceCompilerOptions" type="string"></Property>
                   <Property MultiValue="0" name="ResourceCompilerPath" type="string"></Property>
                   <Property name="ResourceCompilerType" type="TFBDelphiResourceCompiler">rcBorland</Property>
                   <Property name="RetryPauseInterval" type="Cardinal">1000</Property>
-                  <Property MultiValue="0" name="StartingDir" type="WideString">%SRCPATH%XilisoftPlugin\</Property>
+                  <Property MultiValue="0" name="StartingDir" type="WideString">%SRCPATH%WixPlugin\</Property>
                   <Property name="SuppressStatusMessages" type="Boolean">False</Property>
                   <Property name="UpdateDofFile" type="Boolean">False</Property>
                   <Property name="UpdatePackageSource" type="Boolean">False</Property>
@@ -2202,21 +3182,21 @@ Action.SetVersionInfoKey("ProductVersion",Action.GetVersionInfoKey("FileVersion"
                   <Property name="UsePropertySet" type="Boolean">False</Property>
                   <Property name="UseVersionFromDOF" type="Boolean">False</Property>
                   <Property MultiValue="1" name="VersionInfoKeys" type="WideString"><![CDATA[CompanyName=IniTranslator
-FileDescription=XiliSoft Plugin for IniTranslator
-FileVersion=1.9.0.44
-InternalName=XiliSoftParser.dll
-LegalCopyright=Copyright (c) 2006 by Alexander Kornienko; all rights reserved
+FileDescription=Wix localization file plugin for IniTranslator
+FileVersion=1.9.0.51
+InternalName=WixParser.dll
+LegalCopyright=Copyright (c) 2006 by Peter Thörnqvist; all rights reserved
 LegalTrademarks=
-OriginalFilename=XiliSoftParser.DLL
-ProductName=XiliSoft Plugin for IniTranslator
-ProductVersion=1.9.0.44
+OriginalFilename=WixParser.dll
+ProductName=IniTranslator
+ProductVersion=1.9.0.50
 Comments=Latest version at http://initranslator.sourceforge.net
 ]]>
                     </Property>
                   <Property MultiValue="0" name="VersionInfoPropertySetName" type="string"></Property>
                   <Property name="WarningsAsError" type="Boolean">False</Property>
                   <Property name="WorkAroundD5Bug" type="WordBool">False</Property>
-                  <Object Class="TBuildScript" XMLID="{858DC413-E943-47D5-AA8B-48DD8B8684C5}"><Property MultiValue="0" name="BreakPointsStore" type="string"></Property>
+                  <Object Class="TBuildScript" XMLID="{FF01A4DC-4C57-48B8-93FE-EA7447E75242}"><Property MultiValue="0" name="BreakPointsStore" type="string"></Property>
                     <Property MultiValue="0" name="Name" type="string">BeforeAction</Property>
                     <Property MultiValue="1" name="Script" type="string"><![CDATA[Action.MajorVersion   = VERSION_MAJOR;
 Action.MinorVersion   = VERSION_MINOR;
@@ -2227,7 +3207,7 @@ Action.SetVersionInfoKey("ProductVersion",Action.GetVersionInfoKey("FileVersion"
                       </Property>
                     <Property MultiValue="0" name="ScriptLanguage" type="string">JavaScript</Property>
                     </Object>
-                  <Object Class="TDelphiCompilerOptions" XMLID="{C9EA8D47-6466-429D-A8EB-7D7D817DEEEA}"><Property name="AlwaysUseConditionalsFromDOF" type="WordBool">False</Property>
+                  <Object Class="TDelphiCompilerOptions" XMLID="{184DC17A-8BE3-4451-99D4-9913FE260BFF}"><Property name="AlwaysUseConditionalsFromDOF" type="WordBool">False</Property>
                     <Property name="AlwaysUseDelphiLibraryPath" type="WordBool">True</Property>
                     <Property name="AlwaysUseDOFSearchPath" type="WordBool">False</Property>
                     <Property name="Assertions" type="WordBool">True</Property>
@@ -2253,7 +3233,7 @@ Action.SetVersionInfoKey("ProductVersion",Action.GetVersionInfoKey("FileVersion"
                     <Property name="HugeStrings" type="WordBool">True</Property>
                     <Property name="ImageBase" type="Cardinal">4194304</Property>
                     <Property name="IncludeNamespaces" type="WordBool">False</Property>
-                    <Property name="IncludeRemoteSymbols" type="WordBool">False</Property>
+                    <Property name="IncludeRemoteSymbols" type="WordBool">True</Property>
                     <Property name="IncludeTD32" type="WordBool">False</Property>
                     <Property name="IOChecking" type="WordBool">True</Property>
                     <Property MultiValue="0" name="LibraryPath" type="WideString">$(DELPHI)\Lib;$(DELPHI)\Bin;$(DELPHI)\Imports;$(DELPHI)\Projects\Bpl;$(DELPHI)\Rave5\Lib;F:\Program\Borland\Add\JEDI\JCL\source;F:\Program\Borland\Add\JEDI\dev\JVCL3\common;F:\Program\Borland\Add\JEDI\dev\JVCL3\run;F:\Program\Borland\Add\dunit\src;F:\Program\Borland\Add\Others;F:\Program\Borland\Add\Utils;f:\program\borland\projects\work\eq plan\eq plan 2.0\eqplan</Property>
@@ -2292,11 +3272,11 @@ Action.SetVersionInfoKey("ProductVersion",Action.GetVersionInfoKey("FileVersion"
                   <Property name="AutoIncBuild" type="WordBool">False</Property>
                   <Property name="AutoUpdateFileVersion" type="Boolean">True</Property>
                   <Property name="BuildAll" type="WordBool">True</Property>
-                  <Property name="BuildVersion" type="Integer">44</Property>
+                  <Property name="BuildVersion" type="Integer">50</Property>
                   <Property name="CodePage" type="Integer">1252</Property>
                   <Property name="CompilerVersion" type="Integer">4</Property>
                   <Property name="DebugVersionNumbers" type="Boolean">False</Property>
-                  <Property MultiValue="0" name="Description" type="string">XLIFF DLL</Property>
+                  <Property MultiValue="0" name="Description" type="string">XLIFFPlugin</Property>
                   <Property name="Enabled" type="WordBool">True</Property>
                   <Property name="ExpandActionLogTitle" type="Boolean">True</Property>
                   <Property MultiValue="0" name="ExtraCommandline" type="WideString"></Property>
@@ -2338,13 +3318,13 @@ Action.SetVersionInfoKey("ProductVersion",Action.GetVersionInfoKey("FileVersion"
                   <Property name="UseVersionFromDOF" type="Boolean">False</Property>
                   <Property MultiValue="1" name="VersionInfoKeys" type="WideString"><![CDATA[CompanyName=IniTranslator
 FileDescription=XLIFF Plugin for IniTranslator
-FileVersion=1.9.0.44
+FileVersion=1.9.0.50
 InternalName=XLIFFPlugin.dll
 LegalCopyright=Copyright (c) 2006 by Peter Thörnqvist; all rights reserved
 LegalTrademarks=
 OriginalFilename=XLIFFPlugin.dll
 ProductName=XLIFF Plugin for IniTranslator
-ProductVersion=1.9.0.44
+ProductVersion=1.9.0.50
 Comments=Latest version at http://initranslator.sourceforge.net
 ]]>
                     </Property>
@@ -2419,23 +3399,7 @@ Action.SetVersionInfoKey("ProductVersion",Action.GetVersionInfoKey("FileVersion"
                     <Property name="VarStringChecks" type="WordBool">True</Property>
                     </Object>
                   </Object>
-                </Object>
-              <Object Class="TGroupAction" XMLID="{20E8BAD0-623C-47ED-8EED-21779B60898E}"><Property MultiValue="0" name="ActionComment" type="string"></Property>
-                <Property name="ActionTextColor" type="Cardinal">0</Property>
-                <Property MultiValue="0" name="ActionTypeID" type="string"></Property>
-                <Property MultiValue="0" name="Description" type="string">Tool plugins</Property>
-                <Property name="Enabled" type="WordBool">True</Property>
-                <Property name="ExpandActionLogTitle" type="Boolean">True</Property>
-                <Property name="IgnoreFailure" type="WordBool">False</Property>
-                <Property name="IsAction" type="Boolean">True</Property>
-                <Property name="IsBreakPoint" type="WordBool">False</Property>
-                <Property MultiValue="0" name="LogToVariable" type="string"></Property>
-                <Property name="MaxRetryAttempts" type="Cardinal">0</Property>
-                <Property name="NodeCollapsed" type="Boolean">False</Property>
-                <Property name="PauseInterval" type="Cardinal">0</Property>
-                <Property name="RetryPauseInterval" type="Cardinal">1000</Property>
-                <Property name="SuppressStatusMessages" type="Boolean">False</Property>
-                <Object Class="TDelphiCompilerAction" XMLID="{F70D4CFC-27E8-48F5-9934-748900820D76}"><Property MultiValue="0" name="ActionComment" type="string"></Property>
+                <Object Class="TDelphiCompilerAction" XMLID="{0671E562-8056-4722-89F8-1E26A364260E}"><Property MultiValue="0" name="ActionComment" type="string"></Property>
                   <Property name="ActionTextColor" type="Cardinal">0</Property>
                   <Property MultiValue="0" name="ActionTypeID" type="string"></Property>
                   <Property name="AllowImplicitImport" type="Boolean">True</Property>
@@ -2443,11 +3407,11 @@ Action.SetVersionInfoKey("ProductVersion",Action.GetVersionInfoKey("FileVersion"
                   <Property name="AutoIncBuild" type="WordBool">False</Property>
                   <Property name="AutoUpdateFileVersion" type="Boolean">True</Property>
                   <Property name="BuildAll" type="WordBool">True</Property>
-                  <Property name="BuildVersion" type="Integer">44</Property>
+                  <Property name="BuildVersion" type="Integer">50</Property>
                   <Property name="CodePage" type="Integer">1252</Property>
                   <Property name="CompilerVersion" type="Integer">4</Property>
                   <Property name="DebugVersionNumbers" type="Boolean">False</Property>
-                  <Property MultiValue="0" name="Description" type="string">ToolListView DLL</Property>
+                  <Property MultiValue="0" name="Description" type="string">XiliSoftPlugin</Property>
                   <Property name="Enabled" type="WordBool">True</Property>
                   <Property name="ExpandActionLogTitle" type="Boolean">True</Property>
                   <Property MultiValue="0" name="ExtraCommandline" type="WideString"></Property>
@@ -2459,7 +3423,7 @@ Action.SetVersionInfoKey("ProductVersion",Action.GetVersionInfoKey("FileVersion"
                   <Property name="IsAction" type="Boolean">True</Property>
                   <Property name="IsBreakPoint" type="WordBool">False</Property>
                   <Property name="IsDebug" type="WordBool">False</Property>
-                  <Property name="IsDLL" type="WordBool">True</Property>
+                  <Property name="IsDLL" type="WordBool">False</Property>
                   <Property name="IsPreRelease" type="WordBool">False</Property>
                   <Property name="IsPrivate" type="WordBool">False</Property>
                   <Property name="IsSpecial" type="WordBool">False</Property>
@@ -2472,14 +3436,14 @@ Action.SetVersionInfoKey("ProductVersion",Action.GetVersionInfoKey("FileVersion"
                   <Property name="MinorVersion" type="Integer">9</Property>
                   <Property name="NodeCollapsed" type="Boolean">False</Property>
                   <Property name="PauseInterval" type="Cardinal">0</Property>
-                  <Property MultiValue="0" name="ProjectFile" type="WideString">%SRCPATH%ToolListEdit\ToolListEdit.dpr</Property>
+                  <Property MultiValue="0" name="ProjectFile" type="WideString">%SRCPATH%XilisoftPlugin\XilisoftParser.dpr</Property>
                   <Property name="RegenerateResource" type="WordBool">True</Property>
                   <Property name="ReleaseVersion" type="Integer">0</Property>
                   <Property MultiValue="0" name="ResourceCompilerOptions" type="string"></Property>
                   <Property MultiValue="0" name="ResourceCompilerPath" type="string"></Property>
                   <Property name="ResourceCompilerType" type="TFBDelphiResourceCompiler">rcBorland</Property>
                   <Property name="RetryPauseInterval" type="Cardinal">1000</Property>
-                  <Property MultiValue="0" name="StartingDir" type="WideString">%SRCPATH%ToolListEdit</Property>
+                  <Property MultiValue="0" name="StartingDir" type="WideString">%SRCPATH%XilisoftPlugin\</Property>
                   <Property name="SuppressStatusMessages" type="Boolean">False</Property>
                   <Property name="UpdateDofFile" type="Boolean">False</Property>
                   <Property name="UpdatePackageSource" type="Boolean">False</Property>
@@ -2488,21 +3452,21 @@ Action.SetVersionInfoKey("ProductVersion",Action.GetVersionInfoKey("FileVersion"
                   <Property name="UsePropertySet" type="Boolean">False</Property>
                   <Property name="UseVersionFromDOF" type="Boolean">False</Property>
                   <Property MultiValue="1" name="VersionInfoKeys" type="WideString"><![CDATA[CompanyName=IniTranslator
-FileDescription=ListView Plugin for IniTranslator
-FileVersion=1.9.0.44
-InternalName=ToolListEdit.dll
-LegalCopyright=Copyright (c) 2003-2006 by Peter Thornqvist; all rights reserved
+FileDescription=XiliSoft Plugin for IniTranslator
+FileVersion=1.9.0.50
+InternalName=XiliSoftParser.dll
+LegalCopyright=Copyright (c) 2006 by Alexander Kornienko; all rights reserved
 LegalTrademarks=
-OriginalFilename=ToolListEdit.dll
-ProductName=ListView Plugin for IniTranslator
-ProductVersion=1.9.0.44
+OriginalFilename=XiliSoftParser.DLL
+ProductName=XiliSoft Plugin for IniTranslator
+ProductVersion=1.9.0.50
 Comments=Latest version at http://initranslator.sourceforge.net
 ]]>
                     </Property>
                   <Property MultiValue="0" name="VersionInfoPropertySetName" type="string"></Property>
                   <Property name="WarningsAsError" type="Boolean">False</Property>
                   <Property name="WorkAroundD5Bug" type="WordBool">False</Property>
-                  <Object Class="TBuildScript" XMLID="{12BD3B21-8CAE-4995-B93D-C95F9968EA0B}"><Property MultiValue="0" name="BreakPointsStore" type="string"></Property>
+                  <Object Class="TBuildScript" XMLID="{858DC413-E943-47D5-AA8B-48DD8B8684C5}"><Property MultiValue="0" name="BreakPointsStore" type="string"></Property>
                     <Property MultiValue="0" name="Name" type="string">BeforeAction</Property>
                     <Property MultiValue="1" name="Script" type="string"><![CDATA[Action.MajorVersion   = VERSION_MAJOR;
 Action.MinorVersion   = VERSION_MINOR;
@@ -2513,7 +3477,7 @@ Action.SetVersionInfoKey("ProductVersion",Action.GetVersionInfoKey("FileVersion"
                       </Property>
                     <Property MultiValue="0" name="ScriptLanguage" type="string">JavaScript</Property>
                     </Object>
-                  <Object Class="TDelphiCompilerOptions" XMLID="{45E4BC9D-55B1-4C49-BB6C-EECC301F8A85}"><Property name="AlwaysUseConditionalsFromDOF" type="WordBool">False</Property>
+                  <Object Class="TDelphiCompilerOptions" XMLID="{C9EA8D47-6466-429D-A8EB-7D7D817DEEEA}"><Property name="AlwaysUseConditionalsFromDOF" type="WordBool">False</Property>
                     <Property name="AlwaysUseDelphiLibraryPath" type="WordBool">True</Property>
                     <Property name="AlwaysUseDOFSearchPath" type="WordBool">False</Property>
                     <Property name="Assertions" type="WordBool">True</Property>
@@ -2531,19 +3495,19 @@ Action.SetVersionInfoKey("ProductVersion",Action.GetVersionInfoKey("FileVersion"
                     <Property name="DebugInfo" type="WordBool">True</Property>
                     <Property MultiValue="0" name="DefaultNamespace" type="string"></Property>
                     <Property name="DefinitionsOnly" type="WordBool">True</Property>
-                    <Property MultiValue="0" name="ExeDescription" type="WideString">ListView Plugin for IniTranslator</Property>
+                    <Property MultiValue="0" name="ExeDescription" type="WideString"></Property>
                     <Property name="ExportAllSymbols" type="WordBool">False</Property>
                     <Property name="ExtendedSyntax" type="WordBool">True</Property>
                     <Property name="GenerateDocumentation" type="Boolean">False</Property>
                     <Property name="GenerateHPP" type="WordBool">False</Property>
                     <Property name="HugeStrings" type="WordBool">True</Property>
-                    <Property name="ImageBase" type="Cardinal">28901376</Property>
+                    <Property name="ImageBase" type="Cardinal">4194304</Property>
                     <Property name="IncludeNamespaces" type="WordBool">False</Property>
                     <Property name="IncludeRemoteSymbols" type="WordBool">False</Property>
                     <Property name="IncludeTD32" type="WordBool">False</Property>
                     <Property name="IOChecking" type="WordBool">True</Property>
                     <Property MultiValue="0" name="LibraryPath" type="WideString">$(DELPHI)\Lib;$(DELPHI)\Bin;$(DELPHI)\Imports;$(DELPHI)\Projects\Bpl;$(DELPHI)\Rave5\Lib;F:\Program\Borland\Add\JEDI\JCL\source;F:\Program\Borland\Add\JEDI\dev\JVCL3\common;F:\Program\Borland\Add\JEDI\dev\JVCL3\run;F:\Program\Borland\Add\dunit\src;F:\Program\Borland\Add\Others;F:\Program\Borland\Add\Utils;f:\program\borland\projects\work\eq plan\eq plan 2.0\eqplan</Property>
-                    <Property name="LinkerOutput" type="Integer">0</Property>
+                    <Property name="LinkerOutput" type="Integer">3</Property>
                     <Property name="LocalSymbols" type="WordBool">True</Property>
                     <Property name="Mapfile" type="Integer">3</Property>
                     <Property name="MaxStackSize" type="Cardinal">1048576</Property>
@@ -2570,6 +3534,22 @@ Action.SetVersionInfoKey("ProductVersion",Action.GetVersionInfoKey("FileVersion"
                     <Property name="VarStringChecks" type="WordBool">True</Property>
                     </Object>
                   </Object>
+                </Object>
+              <Object Class="TGroupAction" XMLID="{20E8BAD0-623C-47ED-8EED-21779B60898E}"><Property MultiValue="0" name="ActionComment" type="string"></Property>
+                <Property name="ActionTextColor" type="Cardinal">0</Property>
+                <Property MultiValue="0" name="ActionTypeID" type="string"></Property>
+                <Property MultiValue="0" name="Description" type="string">Tool plugins</Property>
+                <Property name="Enabled" type="WordBool">True</Property>
+                <Property name="ExpandActionLogTitle" type="Boolean">True</Property>
+                <Property name="IgnoreFailure" type="WordBool">False</Property>
+                <Property name="IsAction" type="Boolean">True</Property>
+                <Property name="IsBreakPoint" type="WordBool">False</Property>
+                <Property MultiValue="0" name="LogToVariable" type="string"></Property>
+                <Property name="MaxRetryAttempts" type="Cardinal">0</Property>
+                <Property name="NodeCollapsed" type="Boolean">False</Property>
+                <Property name="PauseInterval" type="Cardinal">0</Property>
+                <Property name="RetryPauseInterval" type="Cardinal">1000</Property>
+                <Property name="SuppressStatusMessages" type="Boolean">False</Property>
                 <Object Class="TDelphiCompilerAction" XMLID="{31F16573-3169-4BFC-A056-61CE78F87F89}"><Property MultiValue="0" name="ActionComment" type="string"></Property>
                   <Property name="ActionTextColor" type="Cardinal">0</Property>
                   <Property MultiValue="0" name="ActionTypeID" type="string"></Property>
@@ -2578,11 +3558,11 @@ Action.SetVersionInfoKey("ProductVersion",Action.GetVersionInfoKey("FileVersion"
                   <Property name="AutoIncBuild" type="WordBool">False</Property>
                   <Property name="AutoUpdateFileVersion" type="Boolean">True</Property>
                   <Property name="BuildAll" type="WordBool">True</Property>
-                  <Property name="BuildVersion" type="Integer">44</Property>
+                  <Property name="BuildVersion" type="Integer">50</Property>
                   <Property name="CodePage" type="Integer">1252</Property>
                   <Property name="CompilerVersion" type="Integer">4</Property>
                   <Property name="DebugVersionNumbers" type="Boolean">False</Property>
-                  <Property MultiValue="0" name="Description" type="string">ToolConsistency DLL</Property>
+                  <Property MultiValue="0" name="Description" type="string">ToolConsistencyPlugin</Property>
                   <Property name="Enabled" type="WordBool">True</Property>
                   <Property name="ExpandActionLogTitle" type="Boolean">True</Property>
                   <Property MultiValue="0" name="ExtraCommandline" type="WideString"></Property>
@@ -2624,13 +3604,13 @@ Action.SetVersionInfoKey("ProductVersion",Action.GetVersionInfoKey("FileVersion"
                   <Property name="UseVersionFromDOF" type="Boolean">False</Property>
                   <Property MultiValue="1" name="VersionInfoKeys" type="WideString"><![CDATA[CompanyName=IniTranslator
 FileDescription=Tool Consistency Checker Plugin for IniTranslator
-FileVersion=1.9.0.44
+FileVersion=1.9.0.50
 InternalName=ToolConsistency.dll
 LegalCopyright=Copyright (c) 2006 by Peter Thörnqvist; all rights reserved
 LegalTrademarks=
 OriginalFilename=ToolConsistency.dll
 ProductName=Tool Consistency Checker Plugin for IniTranslator
-ProductVersion=1.9.0.44
+ProductVersion=1.9.0.50
 Comments=Latest version available at http://initranslator.sourceforge.net
 ]]>
                     </Property>
@@ -2705,6 +3685,276 @@ Action.SetVersionInfoKey("ProductVersion",Action.GetVersionInfoKey("FileVersion"
                     <Property name="VarStringChecks" type="WordBool">True</Property>
                     </Object>
                   </Object>
+                <Object Class="TDelphiCompilerAction" XMLID="{F70D4CFC-27E8-48F5-9934-748900820D76}"><Property MultiValue="0" name="ActionComment" type="string"></Property>
+                  <Property name="ActionTextColor" type="Cardinal">0</Property>
+                  <Property MultiValue="0" name="ActionTypeID" type="string"></Property>
+                  <Property name="AllowImplicitImport" type="Boolean">True</Property>
+                  <Property name="AlwaysUseConditionalsFromDOF" type="WordBool">False</Property>
+                  <Property name="AutoIncBuild" type="WordBool">True</Property>
+                  <Property name="AutoUpdateFileVersion" type="Boolean">True</Property>
+                  <Property name="BuildAll" type="WordBool">True</Property>
+                  <Property name="BuildVersion" type="Integer">51</Property>
+                  <Property name="CodePage" type="Integer">1252</Property>
+                  <Property name="CompilerVersion" type="Integer">4</Property>
+                  <Property name="DebugVersionNumbers" type="Boolean">False</Property>
+                  <Property MultiValue="0" name="Description" type="string">ToolKeyCheckPlugin</Property>
+                  <Property name="Enabled" type="WordBool">True</Property>
+                  <Property name="ExpandActionLogTitle" type="Boolean">True</Property>
+                  <Property MultiValue="0" name="ExtraCommandline" type="WideString"></Property>
+                  <Property name="HintsAsError" type="Boolean">False</Property>
+                  <Property MultiValue="0" name="IconFile" type="WideString"></Property>
+                  <Property name="IgnoreFailure" type="WordBool">False</Property>
+                  <Property name="IncludeCompileDate" type="WordBool">True</Property>
+                  <Property name="IncludeVerInfo" type="WordBool">True</Property>
+                  <Property name="IsAction" type="Boolean">True</Property>
+                  <Property name="IsBreakPoint" type="WordBool">False</Property>
+                  <Property name="IsDebug" type="WordBool">False</Property>
+                  <Property name="IsDLL" type="WordBool">True</Property>
+                  <Property name="IsPreRelease" type="WordBool">False</Property>
+                  <Property name="IsPrivate" type="WordBool">False</Property>
+                  <Property name="IsSpecial" type="WordBool">False</Property>
+                  <Property name="KeepCFG" type="Boolean">False</Property>
+                  <Property name="LinkProductVersionToFileVersion" type="Boolean">False</Property>
+                  <Property name="Locale" type="Integer">1053</Property>
+                  <Property MultiValue="0" name="LogToVariable" type="string"></Property>
+                  <Property name="MajorVersion" type="Integer">1</Property>
+                  <Property name="MaxRetryAttempts" type="Cardinal">0</Property>
+                  <Property name="MinorVersion" type="Integer">9</Property>
+                  <Property name="NodeCollapsed" type="Boolean">False</Property>
+                  <Property name="PauseInterval" type="Cardinal">0</Property>
+                  <Property MultiValue="0" name="ProjectFile" type="WideString">%SRCPATH%ToolKeyCheck\ToolKeyCheck.dpr</Property>
+                  <Property name="RegenerateResource" type="WordBool">True</Property>
+                  <Property name="ReleaseVersion" type="Integer">0</Property>
+                  <Property MultiValue="0" name="ResourceCompilerOptions" type="string"></Property>
+                  <Property MultiValue="0" name="ResourceCompilerPath" type="string"></Property>
+                  <Property name="ResourceCompilerType" type="TFBDelphiResourceCompiler">rcBorland</Property>
+                  <Property name="RetryPauseInterval" type="Cardinal">1000</Property>
+                  <Property MultiValue="0" name="StartingDir" type="WideString">%SRCPATH%ToolKeyCheck\</Property>
+                  <Property name="SuppressStatusMessages" type="Boolean">False</Property>
+                  <Property name="UpdateDofFile" type="Boolean">False</Property>
+                  <Property name="UpdatePackageSource" type="Boolean">False</Property>
+                  <Property name="UseEurekaLogCompiler" type="Boolean">False</Property>
+                  <Property name="UseProjectSettings" type="TFBUseProjectSettings">[]</Property>
+                  <Property name="UsePropertySet" type="Boolean">False</Property>
+                  <Property name="UseVersionFromDOF" type="Boolean">False</Property>
+                  <Property MultiValue="1" name="VersionInfoKeys" type="WideString"><![CDATA[CompanyName=Peter Thörnqvist
+FileDescription=Tool Key Check plugin for IniTranslator
+FileVersion=1.9.0.51
+InternalName=ToolKeyCheck.dll
+LegalCopyright=Copyright (c) 2003-2006 by Peter Thörnqvist; all rights reserved
+LegalTrademarks=
+OriginalFilename=ToolKeyCheck.dll
+ProductName=IniTranslator
+ProductVersion=1.9.0.50
+Comments=Latest version from http://initranslator.sourceforge.net
+]]>
+                    </Property>
+                  <Property MultiValue="0" name="VersionInfoPropertySetName" type="string"></Property>
+                  <Property name="WarningsAsError" type="Boolean">False</Property>
+                  <Property name="WorkAroundD5Bug" type="WordBool">False</Property>
+                  <Object Class="TBuildScript" XMLID="{12BD3B21-8CAE-4995-B93D-C95F9968EA0B}"><Property MultiValue="0" name="BreakPointsStore" type="string"></Property>
+                    <Property MultiValue="0" name="Name" type="string">BeforeAction</Property>
+                    <Property MultiValue="1" name="Script" type="string"><![CDATA[Action.MajorVersion   = VERSION_MAJOR;
+Action.MinorVersion   = VERSION_MINOR;
+Action.ReleaseVersion = VERSION_RELEASE;
+Action.BuildVersion   = VERSION_BUILD;
+Action.SetVersionInfoKey("ProductVersion",Action.GetVersionInfoKey("FileVersion"))
+]]>
+                      </Property>
+                    <Property MultiValue="0" name="ScriptLanguage" type="string">JavaScript</Property>
+                    </Object>
+                  <Object Class="TDelphiCompilerOptions" XMLID="{45E4BC9D-55B1-4C49-BB6C-EECC301F8A85}"><Property name="AlwaysUseConditionalsFromDOF" type="WordBool">False</Property>
+                    <Property name="AlwaysUseDelphiLibraryPath" type="WordBool">True</Property>
+                    <Property name="AlwaysUseDOFSearchPath" type="WordBool">False</Property>
+                    <Property name="Assertions" type="WordBool">True</Property>
+                    <Property name="AssignableConst" type="WordBool">False</Property>
+                    <Property name="BoolEval" type="WordBool">False</Property>
+                    <Property MultiValue="0" name="BPLOutputDir" type="WideString"></Property>
+                    <Property name="CompilerWarnings" type="TStrings"><![CDATA[-w-UNSAFE_TYPE=0
+-w-UNSAFE_CODE=0
+-w-UNSAFE_CAST=0
+]]>
+                      </Property>
+                    <Property MultiValue="0" name="Conditionals" type="WideString"></Property>
+                    <Property name="ConsoleApp" type="WordBool">False</Property>
+                    <Property MultiValue="0" name="DCPOutputDir" type="WideString"></Property>
+                    <Property name="DebugInfo" type="WordBool">True</Property>
+                    <Property MultiValue="0" name="DefaultNamespace" type="string"></Property>
+                    <Property name="DefinitionsOnly" type="WordBool">True</Property>
+                    <Property MultiValue="0" name="ExeDescription" type="WideString"></Property>
+                    <Property name="ExportAllSymbols" type="WordBool">False</Property>
+                    <Property name="ExtendedSyntax" type="WordBool">True</Property>
+                    <Property name="GenerateDocumentation" type="Boolean">False</Property>
+                    <Property name="GenerateHPP" type="WordBool">False</Property>
+                    <Property name="HugeStrings" type="WordBool">True</Property>
+                    <Property name="ImageBase" type="Cardinal">4194304</Property>
+                    <Property name="IncludeNamespaces" type="WordBool">False</Property>
+                    <Property name="IncludeRemoteSymbols" type="WordBool">True</Property>
+                    <Property name="IncludeTD32" type="WordBool">False</Property>
+                    <Property name="IOChecking" type="WordBool">True</Property>
+                    <Property MultiValue="0" name="LibraryPath" type="WideString">$(DELPHI)\Lib;$(DELPHI)\Bin;$(DELPHI)\Imports;$(DELPHI)\Projects\Bpl;$(DELPHI)\Rave5\Lib;F:\Program\Borland\Add\JEDI\JCL\source;F:\Program\Borland\Add\JEDI\dev\JVCL3\common;F:\Program\Borland\Add\JEDI\dev\JVCL3\run;F:\Program\Borland\Add\dunit\src;F:\Program\Borland\Add\Others;F:\Program\Borland\Add\Utils;f:\program\borland\projects\work\eq plan\eq plan 2.0\eqplan</Property>
+                    <Property name="LinkerOutput" type="Integer">3</Property>
+                    <Property name="LocalSymbols" type="WordBool">True</Property>
+                    <Property name="Mapfile" type="Integer">3</Property>
+                    <Property name="MaxStackSize" type="Cardinal">1048576</Property>
+                    <Property name="MinStackSize" type="Cardinal">16384</Property>
+                    <Property MultiValue="0" name="NamespacePrefixes" type="string"></Property>
+                    <Property name="OpenStrings" type="WordBool">True</Property>
+                    <Property name="Optimisation" type="WordBool">True</Property>
+                    <Property MultiValue="0" name="OutputDir" type="WideString">..\..\bin\plugins</Property>
+                    <Property name="OverflowChecking" type="WordBool">False</Property>
+                    <Property MultiValue="0" name="Packages" type="WideString"></Property>
+                    <Property name="RangeChecking" type="WordBool">False</Property>
+                    <Property name="RecordFieldAlign" type="TFieldAlign">fa8</Property>
+                    <Property name="ReferenceInfo" type="WordBool">True</Property>
+                    <Property name="SafeDivide" type="WordBool">False</Property>
+                    <Property MultiValue="0" name="SearchPath" type="WideString"></Property>
+                    <Property name="ShowHints" type="WordBool">True</Property>
+                    <Property name="ShowWarnings" type="WordBool">True</Property>
+                    <Property name="StackFrames" type="WordBool">False</Property>
+                    <Property name="TypedPointers" type="WordBool">False</Property>
+                    <Property MultiValue="0" name="UnitAliases" type="WideString">WinTypes=Windows;WinProcs=Windows;DbiTypes=BDE;DbiProcs=BDE;DbiErrs=BDE;</Property>
+                    <Property MultiValue="0" name="UnitOutputDir" type="WideString">..\..\dcu</Property>
+                    <Property name="UseDebugDCU" type="WordBool">False</Property>
+                    <Property name="UsePackages" type="WordBool">False</Property>
+                    <Property name="VarStringChecks" type="WordBool">True</Property>
+                    </Object>
+                  </Object>
+                <Object Class="TDelphiCompilerAction" XMLID="{C297B76A-F22D-4CCA-BED3-29FD5AC8B557}"><Property MultiValue="0" name="ActionComment" type="string"></Property>
+                  <Property name="ActionTextColor" type="Cardinal">0</Property>
+                  <Property MultiValue="0" name="ActionTypeID" type="string"></Property>
+                  <Property name="AllowImplicitImport" type="Boolean">True</Property>
+                  <Property name="AlwaysUseConditionalsFromDOF" type="WordBool">False</Property>
+                  <Property name="AutoIncBuild" type="WordBool">False</Property>
+                  <Property name="AutoUpdateFileVersion" type="Boolean">True</Property>
+                  <Property name="BuildAll" type="WordBool">True</Property>
+                  <Property name="BuildVersion" type="Integer">50</Property>
+                  <Property name="CodePage" type="Integer">1252</Property>
+                  <Property name="CompilerVersion" type="Integer">4</Property>
+                  <Property name="DebugVersionNumbers" type="Boolean">False</Property>
+                  <Property MultiValue="0" name="Description" type="string">ToolListEditPlugin</Property>
+                  <Property name="Enabled" type="WordBool">True</Property>
+                  <Property name="ExpandActionLogTitle" type="Boolean">True</Property>
+                  <Property MultiValue="0" name="ExtraCommandline" type="WideString"></Property>
+                  <Property name="HintsAsError" type="Boolean">False</Property>
+                  <Property MultiValue="0" name="IconFile" type="WideString"></Property>
+                  <Property name="IgnoreFailure" type="WordBool">False</Property>
+                  <Property name="IncludeCompileDate" type="WordBool">True</Property>
+                  <Property name="IncludeVerInfo" type="WordBool">True</Property>
+                  <Property name="IsAction" type="Boolean">True</Property>
+                  <Property name="IsBreakPoint" type="WordBool">False</Property>
+                  <Property name="IsDebug" type="WordBool">False</Property>
+                  <Property name="IsDLL" type="WordBool">True</Property>
+                  <Property name="IsPreRelease" type="WordBool">False</Property>
+                  <Property name="IsPrivate" type="WordBool">False</Property>
+                  <Property name="IsSpecial" type="WordBool">False</Property>
+                  <Property name="KeepCFG" type="Boolean">False</Property>
+                  <Property name="LinkProductVersionToFileVersion" type="Boolean">False</Property>
+                  <Property name="Locale" type="Integer">1033</Property>
+                  <Property MultiValue="0" name="LogToVariable" type="string"></Property>
+                  <Property name="MajorVersion" type="Integer">1</Property>
+                  <Property name="MaxRetryAttempts" type="Cardinal">0</Property>
+                  <Property name="MinorVersion" type="Integer">9</Property>
+                  <Property name="NodeCollapsed" type="Boolean">False</Property>
+                  <Property name="PauseInterval" type="Cardinal">0</Property>
+                  <Property MultiValue="0" name="ProjectFile" type="WideString">%SRCPATH%ToolListEdit\ToolListEdit.dpr</Property>
+                  <Property name="RegenerateResource" type="WordBool">True</Property>
+                  <Property name="ReleaseVersion" type="Integer">0</Property>
+                  <Property MultiValue="0" name="ResourceCompilerOptions" type="string"></Property>
+                  <Property MultiValue="0" name="ResourceCompilerPath" type="string"></Property>
+                  <Property name="ResourceCompilerType" type="TFBDelphiResourceCompiler">rcBorland</Property>
+                  <Property name="RetryPauseInterval" type="Cardinal">1000</Property>
+                  <Property MultiValue="0" name="StartingDir" type="WideString">%SRCPATH%ToolListEdit</Property>
+                  <Property name="SuppressStatusMessages" type="Boolean">False</Property>
+                  <Property name="UpdateDofFile" type="Boolean">False</Property>
+                  <Property name="UpdatePackageSource" type="Boolean">False</Property>
+                  <Property name="UseEurekaLogCompiler" type="Boolean">False</Property>
+                  <Property name="UseProjectSettings" type="TFBUseProjectSettings">[]</Property>
+                  <Property name="UsePropertySet" type="Boolean">False</Property>
+                  <Property name="UseVersionFromDOF" type="Boolean">False</Property>
+                  <Property MultiValue="1" name="VersionInfoKeys" type="WideString"><![CDATA[CompanyName=IniTranslator
+FileDescription=ListView Plugin for IniTranslator
+FileVersion=1.9.0.50
+InternalName=ToolListEdit.dll
+LegalCopyright=Copyright (c) 2003-2006 by Peter Thornqvist; all rights reserved
+LegalTrademarks=
+OriginalFilename=ToolListEdit.dll
+ProductName=ListView Plugin for IniTranslator
+ProductVersion=1.9.0.50
+Comments=Latest version at http://initranslator.sourceforge.net
+]]>
+                    </Property>
+                  <Property MultiValue="0" name="VersionInfoPropertySetName" type="string"></Property>
+                  <Property name="WarningsAsError" type="Boolean">False</Property>
+                  <Property name="WorkAroundD5Bug" type="WordBool">False</Property>
+                  <Object Class="TBuildScript" XMLID="{5B7E7E0A-264B-4115-8B35-3AA09F0EF828}"><Property MultiValue="0" name="BreakPointsStore" type="string"></Property>
+                    <Property MultiValue="0" name="Name" type="string">BeforeAction</Property>
+                    <Property MultiValue="1" name="Script" type="string"><![CDATA[Action.MajorVersion   = VERSION_MAJOR;
+Action.MinorVersion   = VERSION_MINOR;
+Action.ReleaseVersion = VERSION_RELEASE;
+Action.BuildVersion   = VERSION_BUILD;
+Action.SetVersionInfoKey("ProductVersion",Action.GetVersionInfoKey("FileVersion"))
+]]>
+                      </Property>
+                    <Property MultiValue="0" name="ScriptLanguage" type="string">JavaScript</Property>
+                    </Object>
+                  <Object Class="TDelphiCompilerOptions" XMLID="{6AA3BCF0-C566-434C-8CF8-8D7A1BE967F9}"><Property name="AlwaysUseConditionalsFromDOF" type="WordBool">False</Property>
+                    <Property name="AlwaysUseDelphiLibraryPath" type="WordBool">True</Property>
+                    <Property name="AlwaysUseDOFSearchPath" type="WordBool">False</Property>
+                    <Property name="Assertions" type="WordBool">True</Property>
+                    <Property name="AssignableConst" type="WordBool">False</Property>
+                    <Property name="BoolEval" type="WordBool">False</Property>
+                    <Property MultiValue="0" name="BPLOutputDir" type="WideString"></Property>
+                    <Property name="CompilerWarnings" type="TStrings"><![CDATA[-w-UNSAFE_TYPE=0
+-w-UNSAFE_CODE=0
+-w-UNSAFE_CAST=0
+]]>
+                      </Property>
+                    <Property MultiValue="0" name="Conditionals" type="WideString"></Property>
+                    <Property name="ConsoleApp" type="WordBool">False</Property>
+                    <Property MultiValue="0" name="DCPOutputDir" type="WideString"></Property>
+                    <Property name="DebugInfo" type="WordBool">True</Property>
+                    <Property MultiValue="0" name="DefaultNamespace" type="string"></Property>
+                    <Property name="DefinitionsOnly" type="WordBool">True</Property>
+                    <Property MultiValue="0" name="ExeDescription" type="WideString">ListView Plugin for IniTranslator</Property>
+                    <Property name="ExportAllSymbols" type="WordBool">False</Property>
+                    <Property name="ExtendedSyntax" type="WordBool">True</Property>
+                    <Property name="GenerateDocumentation" type="Boolean">False</Property>
+                    <Property name="GenerateHPP" type="WordBool">False</Property>
+                    <Property name="HugeStrings" type="WordBool">True</Property>
+                    <Property name="ImageBase" type="Cardinal">28901376</Property>
+                    <Property name="IncludeNamespaces" type="WordBool">False</Property>
+                    <Property name="IncludeRemoteSymbols" type="WordBool">False</Property>
+                    <Property name="IncludeTD32" type="WordBool">False</Property>
+                    <Property name="IOChecking" type="WordBool">True</Property>
+                    <Property MultiValue="0" name="LibraryPath" type="WideString">$(DELPHI)\Lib;$(DELPHI)\Bin;$(DELPHI)\Imports;$(DELPHI)\Projects\Bpl;$(DELPHI)\Rave5\Lib;F:\Program\Borland\Add\JEDI\JCL\source;F:\Program\Borland\Add\JEDI\dev\JVCL3\common;F:\Program\Borland\Add\JEDI\dev\JVCL3\run;F:\Program\Borland\Add\dunit\src;F:\Program\Borland\Add\Others;F:\Program\Borland\Add\Utils;f:\program\borland\projects\work\eq plan\eq plan 2.0\eqplan</Property>
+                    <Property name="LinkerOutput" type="Integer">0</Property>
+                    <Property name="LocalSymbols" type="WordBool">True</Property>
+                    <Property name="Mapfile" type="Integer">3</Property>
+                    <Property name="MaxStackSize" type="Cardinal">1048576</Property>
+                    <Property name="MinStackSize" type="Cardinal">16384</Property>
+                    <Property MultiValue="0" name="NamespacePrefixes" type="string"></Property>
+                    <Property name="OpenStrings" type="WordBool">True</Property>
+                    <Property name="Optimisation" type="WordBool">True</Property>
+                    <Property MultiValue="0" name="OutputDir" type="WideString">..\..\bin\plugins</Property>
+                    <Property name="OverflowChecking" type="WordBool">False</Property>
+                    <Property MultiValue="0" name="Packages" type="WideString"></Property>
+                    <Property name="RangeChecking" type="WordBool">False</Property>
+                    <Property name="RecordFieldAlign" type="TFieldAlign">fa8</Property>
+                    <Property name="ReferenceInfo" type="WordBool">True</Property>
+                    <Property name="SafeDivide" type="WordBool">False</Property>
+                    <Property MultiValue="0" name="SearchPath" type="WideString"></Property>
+                    <Property name="ShowHints" type="WordBool">True</Property>
+                    <Property name="ShowWarnings" type="WordBool">True</Property>
+                    <Property name="StackFrames" type="WordBool">False</Property>
+                    <Property name="TypedPointers" type="WordBool">False</Property>
+                    <Property MultiValue="0" name="UnitAliases" type="WideString">WinTypes=Windows;WinProcs=Windows;DbiTypes=BDE;DbiProcs=BDE;DbiErrs=BDE;</Property>
+                    <Property MultiValue="0" name="UnitOutputDir" type="WideString">..\..\dcu</Property>
+                    <Property name="UseDebugDCU" type="WordBool">False</Property>
+                    <Property name="UsePackages" type="WordBool">False</Property>
+                    <Property name="VarStringChecks" type="WordBool">True</Property>
+                    </Object>
+                  </Object>
                 <Object Class="TDelphiCompilerAction" XMLID="{4AED673C-240D-4230-B1E7-5326F6436CF3}"><Property MultiValue="0" name="ActionComment" type="string"></Property>
                   <Property name="ActionTextColor" type="Cardinal">0</Property>
                   <Property MultiValue="0" name="ActionTypeID" type="string"></Property>
@@ -2713,11 +3963,11 @@ Action.SetVersionInfoKey("ProductVersion",Action.GetVersionInfoKey("FileVersion"
                   <Property name="AutoIncBuild" type="WordBool">False</Property>
                   <Property name="AutoUpdateFileVersion" type="Boolean">True</Property>
                   <Property name="BuildAll" type="WordBool">True</Property>
-                  <Property name="BuildVersion" type="Integer">44</Property>
+                  <Property name="BuildVersion" type="Integer">50</Property>
                   <Property name="CodePage" type="Integer">1252</Property>
                   <Property name="CompilerVersion" type="Integer">4</Property>
                   <Property name="DebugVersionNumbers" type="Boolean">False</Property>
-                  <Property MultiValue="0" name="Description" type="string">ToolPropertiesView DLL</Property>
+                  <Property MultiValue="0" name="Description" type="string">ToolPropertiesViewPlugin</Property>
                   <Property name="Enabled" type="WordBool">True</Property>
                   <Property name="ExpandActionLogTitle" type="Boolean">True</Property>
                   <Property MultiValue="0" name="ExtraCommandline" type="WideString"></Property>
@@ -2759,13 +4009,13 @@ Action.SetVersionInfoKey("ProductVersion",Action.GetVersionInfoKey("FileVersion"
                   <Property name="UseVersionFromDOF" type="Boolean">False</Property>
                   <Property MultiValue="1" name="VersionInfoKeys" type="WideString"><![CDATA[CompanyName=IniTranslator
 FileDescription=Tool Property Viewer Plugin for IniTranslator
-FileVersion=1.9.0.44
+FileVersion=1.9.0.50
 InternalName=ToolPropertiesView.dll
 LegalCopyright=Copyright (c) 2006 by Peter Thörnqvist; all rights reserved
 LegalTrademarks=
 OriginalFilename=ToolPropertiesView.dll
 ProductName=Tool Property Viewer Plugin for IniTranslator
-ProductVersion=1.9.0.44
+ProductVersion=1.9.0.50
 Commments=Latest version available at http://initranslator.sourceforge.net
 ]]>
                     </Property>
@@ -2848,11 +4098,11 @@ Action.SetVersionInfoKey("ProductVersion",Action.GetVersionInfoKey("FileVersion"
                   <Property name="AutoIncBuild" type="WordBool">False</Property>
                   <Property name="AutoUpdateFileVersion" type="Boolean">True</Property>
                   <Property name="BuildAll" type="WordBool">True</Property>
-                  <Property name="BuildVersion" type="Integer">44</Property>
+                  <Property name="BuildVersion" type="Integer">50</Property>
                   <Property name="CodePage" type="Integer">1252</Property>
                   <Property name="CompilerVersion" type="Integer">4</Property>
                   <Property name="DebugVersionNumbers" type="Boolean">False</Property>
-                  <Property MultiValue="0" name="Description" type="string">ToolTreeView DLL</Property>
+                  <Property MultiValue="0" name="Description" type="string">ToolTreeViewPlugin</Property>
                   <Property name="Enabled" type="WordBool">True</Property>
                   <Property name="ExpandActionLogTitle" type="Boolean">True</Property>
                   <Property MultiValue="0" name="ExtraCommandline" type="WideString"></Property>
@@ -2894,13 +4144,13 @@ Action.SetVersionInfoKey("ProductVersion",Action.GetVersionInfoKey("FileVersion"
                   <Property name="UseVersionFromDOF" type="Boolean">False</Property>
                   <Property MultiValue="1" name="VersionInfoKeys" type="WideString"><![CDATA[CompanyName=IniTranslator
 FileDescription=TreeView Plugin for IniTranslator
-FileVersion=1.9.0.44
+FileVersion=1.9.0.50
 InternalName=ToolTreeview.dll
 LegalCopyright=Copyright (c) 2003-2006 by Peter Thornqvist; all rights reserved
 LegalTrademarks=
 OriginalFilename=ToolTreeView.dll
 ProductName=TreeView Plugin for IniTranslator
-ProductVersion=1.9.0.44
+ProductVersion=1.9.0.50
 Comments=Latest version at http://initranslator.sourceforge.net
 ]]>
                     </Property>
@@ -2983,11 +4233,11 @@ Action.SetVersionInfoKey("ProductVersion",Action.GetVersionInfoKey("FileVersion"
                   <Property name="AutoIncBuild" type="WordBool">False</Property>
                   <Property name="AutoUpdateFileVersion" type="Boolean">True</Property>
                   <Property name="BuildAll" type="WordBool">True</Property>
-                  <Property name="BuildVersion" type="Integer">44</Property>
+                  <Property name="BuildVersion" type="Integer">50</Property>
                   <Property name="CodePage" type="Integer">1252</Property>
                   <Property name="CompilerVersion" type="Integer">4</Property>
                   <Property name="DebugVersionNumbers" type="Boolean">False</Property>
-                  <Property MultiValue="0" name="Description" type="string">ToolTrim DLL</Property>
+                  <Property MultiValue="0" name="Description" type="string">ToolTrimPlugin</Property>
                   <Property name="Enabled" type="WordBool">True</Property>
                   <Property name="ExpandActionLogTitle" type="Boolean">True</Property>
                   <Property MultiValue="0" name="ExtraCommandline" type="WideString"></Property>
@@ -3029,13 +4279,13 @@ Action.SetVersionInfoKey("ProductVersion",Action.GetVersionInfoKey("FileVersion"
                   <Property name="UseVersionFromDOF" type="Boolean">False</Property>
                   <Property MultiValue="1" name="VersionInfoKeys" type="WideString"><![CDATA[CompanyName=IniTranslator
 FileDescription=Tool Trim Plugin for IniTranslator
-FileVersion=1.9.0.44
+FileVersion=1.9.0.50
 InternalName=ToolTrim.dll
 LegalCopyright=Copyright (c) 2006 by Peter Thörnqvist; all rights reserved
 LegalTrademarks=
 OriginalFilename=ToolTrim.dll
 ProductName=Tool Trim Plugin for IniTranslator
-ProductVersion=1.9.0.44
+ProductVersion=1.9.0.50
 Comments=Latest version available at http://initranslator.sourceforge.net
 ]]>
                     </Property>
@@ -3330,7 +4580,7 @@ Action.SetVersionInfoKey("ProductVersion",Action.GetVersionInfoKey("FileVersion"
               <Property name="IsBreakPoint" type="WordBool">False</Property>
               <Property MultiValue="0" name="LogToVariable" type="string"></Property>
               <Property name="MaxRetryAttempts" type="Cardinal">0</Property>
-              <Property name="NodeCollapsed" type="Boolean">False</Property>
+              <Property name="NodeCollapsed" type="Boolean">True</Property>
               <Property name="PauseInterval" type="Cardinal">0</Property>
               <Property name="RetryPauseInterval" type="Cardinal">1000</Property>
               <Property name="SuppressStatusMessages" type="Boolean">False</Property>
@@ -3375,7 +4625,7 @@ Action.SetVersionInfoKey("ProductVersion",Action.GetVersionInfoKey("FileVersion"
               <Object Class="TRunDosCMDAction" XMLID="{68673FE2-D6D1-4B8F-97FC-5D14BD6251F4}"><Property MultiValue="0" name="ActionComment" type="string"></Property>
                 <Property name="ActionTextColor" type="Cardinal">0</Property>
                 <Property MultiValue="0" name="ActionTypeID" type="string"></Property>
-                <Property MultiValue="0" name="Command" type="WideString">.\Output\ftpupload.bat</Property>
+                <Property MultiValue="0" name="Command" type="WideString">"%ROOTPATH%\setup\Output\ftpupload.bat"</Property>
                 <Property MultiValue="0" name="Description" type="string">Run ftpupload batch</Property>
                 <Property name="Enabled" type="WordBool">True</Property>
                 <Property name="EnableLiveCapture" type="Boolean">True</Property>
@@ -3395,7 +4645,7 @@ Action.SetVersionInfoKey("ProductVersion",Action.GetVersionInfoKey("FileVersion"
                 <Property MultiValue="0" name="LogToVariable" type="string"></Property>
                 <Property name="MaxRetryAttempts" type="Cardinal">0</Property>
                 <Property name="NodeCollapsed" type="Boolean">False</Property>
-                <Property MultiValue="0" name="Params" type="WideString">.\Output\ftpupload.bat</Property>
+                <Property MultiValue="0" name="Params" type="WideString">"%ROOTPATH%\setup\Output\ftpupload.bat"</Property>
                 <Property name="PauseInterval" type="Cardinal">0</Property>
                 <Property name="ProcessorAffinity" type="Cardinal">0</Property>
                 <Property name="ProcessPriority" type="TFBExecuteThreadPriority">tpNormal</Property>
@@ -3403,7 +4653,7 @@ Action.SetVersionInfoKey("ProductVersion",Action.GetVersionInfoKey("FileVersion"
                 <Property name="RetryPauseInterval" type="Cardinal">1000</Property>
                 <Property name="ReturnCodeComparator" type="TFBRunReturnCodeComparator">rcLessThanEqualTo</Property>
                 <Property name="ReturnCodeToCheck" type="Integer">0</Property>
-                <Property MultiValue="0" name="StartInDir" type="WideString">.\Output</Property>
+                <Property MultiValue="0" name="StartInDir" type="WideString">%ROOTPATH%\setup\Output</Property>
                 <Property name="SuppressStatusMessages" type="Boolean">False</Property>
                 <Property name="TerminateOnTimeout" type="Boolean">True</Property>
                 <Property name="TimeoutLength" type="Cardinal">1</Property>
@@ -3426,7 +4676,7 @@ Action.SetVersionInfoKey("ProductVersion",Action.GetVersionInfoKey("FileVersion"
               <Property name="IsBreakPoint" type="WordBool">False</Property>
               <Property MultiValue="0" name="LogToVariable" type="string"></Property>
               <Property name="MaxRetryAttempts" type="Cardinal">0</Property>
-              <Property name="NodeCollapsed" type="Boolean">False</Property>
+              <Property name="NodeCollapsed" type="Boolean">True</Property>
               <Property name="PauseInterval" type="Cardinal">0</Property>
               <Property name="RetryPauseInterval" type="Cardinal">1000</Property>
               <Property name="SuppressStatusMessages" type="Boolean">False</Property>

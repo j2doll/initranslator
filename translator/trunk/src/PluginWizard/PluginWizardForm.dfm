@@ -29,6 +29,7 @@ object frmTranslatorPluginWizard: TfrmTranslatorPluginWizard
     Default = True
     ModalResult = 1
     TabOrder = 1
+    OnClick = btnOKClick
   end
   object btnCancel: TTntButton
     Left = 347
@@ -129,7 +130,9 @@ object frmTranslatorPluginWizard: TfrmTranslatorPluginWizard
   end
   object odTransIntf: TTntOpenDialog
     DefaultExt = 'pas'
-    Filter = 'Source files (*.pas)|*.pas|All files (*.*)|*.*'
+    Filter = 
+      'TransIntf file|TRansIntf.pas|Source files (*.pas)|*.pas|All file' +
+      's (*.*)|*.*'
     InitialDir = '.'
     Left = 308
     Top = 70

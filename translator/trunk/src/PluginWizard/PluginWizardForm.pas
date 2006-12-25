@@ -3,8 +3,8 @@ unit PluginWizardForm;
 interface
 
 uses
-  Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
-  Dialogs, StdCtrls, TntStdCtrls, PluginOptions, TntDialogs;
+  Windows, Messages, SysUtils, Classes, Graphics, Controls, Forms,
+  Dialogs, StdCtrls, PluginOptions, TntStdCtrls, TntDialogs;
 
 type
   TfrmTranslatorPluginWizard = class(TForm)
@@ -22,8 +22,10 @@ type
     TntButton1: TTntButton;
     odTransIntf: TTntOpenDialog;
     procedure TntButton1Click(Sender: TObject);
+    procedure btnOKClick(Sender: TObject);
   private
     { Private declarations }
+    function Validate: boolean;
   public
     { Public declarations }
     class function Execute(Options: TPluginOptions): boolean;
@@ -63,6 +65,35 @@ begin
   odTransIntf.FileName := edTransIntfPath.Text;
   if odTransIntf.Execute then
     edTransIntfPath.Text := odTransIntf.FileName;
+end;
+
+procedure TfrmTranslatorPluginWizard.btnOKClick(Sender: TObject);
+begin
+  if not Validate then
+    ModalResult := mrNone;
+end;
+
+function TfrmTranslatorPluginWizard.Validate: boolean;
+begin
+  Result := false;
+  if edClassName.Text = '' then
+  begin
+    MessageDlg('Specify a class name', mtWarning, [mbOK], 0);
+    Exit;
+  end;
+
+  if edTitle.Text = '' then
+  begin
+    MessageDlg('Specify a title', mtWarning, [mbOK], 0);
+    Exit;
+  end;
+
+  if not FileExists(edTransIntfPath.Text) then
+  begin
+    MessageDlg('Specify path to TransIntf.pas', mtWarning, [mbOK], 0);
+    Exit;
+  end;
+  Result := true;
 end;
 
 end.

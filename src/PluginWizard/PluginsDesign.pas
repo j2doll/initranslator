@@ -5,7 +5,9 @@ uses
   Classes, DesignIntf, ToolsAPI;
 
 type
-  TPluginWizard = class(TNotifierobject, IOTAWizard, IOTARepositoryWizard, IOTAProjectWizard)
+  // creates a repository wizard for IniTranslator plugins.
+  // The wizard can be access from the "New" tab in the Repository
+  TPluginWizard = class(TNotifierObject, IInterface, IOTANotifier, IOTAWizard, IOTARepositoryWizard, IOTARepositoryWizard60, IOTAProjectWizard)
   public
     { IOTAWizard }
     function GetIDString: string;
@@ -32,34 +34,24 @@ begin
   RegisterPackageWizard(TPluginWizard.Create);
 end;
 
+var
+  FModuleServices:IOTAModuleServices = nil;
+
 function ModuleServices: IOTAModuleServices;
 begin
-  Result := (BorlandIDEServices as IOTAModuleServices);
+  if FModuleServices = nil then
+    FModuleServices := (BorlandIDEServices as IOTAModuleServices);
+  Result := FModuleServices;
 end;
 
 function GetActiveProjectGroup: IOTAProjectGroup;
 var
-  ModuleServices: IOTAModuleServices;
   i: Integer;
 begin
+  for i := 0 to ModuleServices.ModuleCount - 1 do
+    if Supports(ModuleServices.Modules[i], IOTAProjectGroup, Result) then
+      Exit;
   Result := nil;
-  if Assigned(BorlandIDEServices) then
-  begin
-    ModuleServices := BorlandIDEServices as IOTAModuleServices;
-    for i := 0 to ModuleServices.ModuleCount - 1 do
-      if Supports(ModuleServices.Modules[i], IOTAProjectGroup, Result) then
-        Break;
-  end;
-end;
-
-function GetActiveProject: IOTAProject;
-var
-  ProjectGroup: IOTAProjectGroup;
-begin
-  Result := nil;
-  ProjectGroup := GetActiveProjectGroup;
-  if ProjectGroup <> nil then
-    Result := ProjectGroup.ActiveProject;
 end;
 
 function LoadResourceText(const ResID:string):string;
@@ -84,6 +76,7 @@ begin
 end;
 
 type
+  // sets up the project for creation
   TPluginCreator = class(TInterfacedObject, IInterface, IOTACreator, IOTAProjectCreator)
   private
     FOptions: TPluginOptions;
@@ -104,7 +97,7 @@ type
     function NewProjectSource(const ProjectName: string): IOTAFile;
     constructor Create(Options: TPluginOptions);
   end;
-
+  // creates the project file
   TProjectFile = class(TInterfacedObject, IInterface, IOTAFile)
   private
     FOptions: TPluginOptions;
@@ -113,10 +106,10 @@ type
     function GetAge: TDateTime;
     function GetSource: string;
   end;
-
+  // sets up the implementation file for creation
   TUnitCreator = class(TInterfacedObject, IInterface, IOTACreator, IOTAModuleCreator)
   private
-    FModule: IOTAModule;
+    FOwner: IOTAModule;
     FOptions: TPluginOptions;
   public
     procedure FormCreated(const FormEditor: IOTAFormEditor);
@@ -138,16 +131,17 @@ type
       const FormIdent: string; const AncestorIdent: string): IOTAFile;
     function NewIntfSource(const ModuleIdent: string;
       const FormIdent: string; const AncestorIdent: string): IOTAFile;
-    constructor Create(const Module: IOTAModule; Options: TPluginOptions);
+    constructor Create(const Owner: IOTAModule; Options: TPluginOptions);
   end;
 
+  // creates implementation file
   TUnitFile = class(TInterfacedObject, IInterface, IOTAFile)
   private
     FOptions: TPluginOptions;
   public
     function GetAge: TDateTime;
     function GetSource: string;
-    constructor Create(Options: TPluginOptions; ModuleIdent: string);
+    constructor Create(Options: TPluginOptions; const ModuleIdent: string);
   end;
 
 { TPluginWizard }
@@ -162,7 +156,7 @@ begin
     if TfrmTranslatorPluginWizard.Execute(Options) then
     begin
       Module := ModuleServices.CreateModule(TPluginCreator.Create(Options));
-      Module := ModuleServices.CreateModule(TUnitCreator.Create(Module, Options));
+      ModuleServices.CreateModule(TUnitCreator.Create(Module, Options));
     end;
   finally
     FreeAndNil(Options);
@@ -191,7 +185,7 @@ end;
 
 function TPluginWizard.GetName: string;
 begin
-  Result := 'Create IniTranslator Plugin';
+  Result := 'IniTranslator Plugin';
 end;
 
 function TPluginWizard.GetPage: string;
@@ -238,6 +232,7 @@ end;
 
 function TPluginCreator.GetOwner: IOTAModule;
 begin
+  // TODO 5 -cBUG: Even if we return a valid project group here, Delphi still creates a new project group for the project...Why?
   Result := GetActiveProjectGroup;
 end;
 
@@ -295,10 +290,9 @@ end;
 
 { TUnitCreator }
 
-constructor TUnitCreator.Create(const Module: IOTAModule;
-  Options: TPluginOptions);
+constructor TUnitCreator.Create(const Owner: IOTAModule; Options: TPluginOptions);
 begin
-  FModule := Module;
+  FOwner := Owner;
   FOptions := Options;
 end;
 
@@ -349,7 +343,7 @@ end;
 
 function TUnitCreator.GetOwner: IOTAModule;
 begin
-  Result := FModule;
+  Result := FOwner;
 end;
 
 function TUnitCreator.GetShowForm: Boolean;
@@ -385,7 +379,7 @@ end;
 
 { TUnitFile }
 
-constructor TUnitFile.Create(Options: TPluginOptions; ModuleIdent: string);
+constructor TUnitFile.Create(Options: TPluginOptions; const ModuleIdent: string);
 begin
   FOptions := Options;
   FOptions.UnitName := ModuleIdent;

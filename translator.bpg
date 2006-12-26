@@ -9,8 +9,8 @@ MAKE = $(ROOT)\bin\make.exe -$(MAKEFLAGS) -f$**
 DCC = $(ROOT)\bin\dcc32.exe $**
 BRCC = $(ROOT)\bin\brcc32.exe $**
 #------------------------------------------------------------------------------
-PROJECTS = DCPPParser.dll FoxitParser.dll IBForumsParser.dll \
-  IniTranslatorPluginWizard.bpl KeePassParser.dll MozillaDTDParser.dll \
+PROJECTS = IniTranslatorPluginWizard.bpl DCPPParser.dll FoxitParser.dll \
+  IBForumsParser.dll KeePassParser.dll MozillaDTDParser.dll \
   MozillaPropsParser.dll MSDictBuild.exe MSDictParser.dll MsTermBuild.exe \
   OlegParser.dll OOGSIParser.dll PHPNukeParser.dll PHPParser.dll \
   PolyGlotParser.dll POParser.dll SciTEParser.dll TMXParser.dll \

@@ -1,3 +1,5 @@
+[FileVersion]
+Version=7.0
 [Compiler]
 UnsafeType=0
 UnsafeCode=0
@@ -15,6 +17,19 @@ ExeDescription=
 [Directories]
 OutputDir=..\..\bin
 UnitOutputDir=..\..\dcu
+PackageDLLOutputDir=
+PackageDCPOutputDir=
+SearchPath=
+Packages=
+Conditionals=
+DebugSourceDirs=
+UsePackages=0
+[Parameters]
+RunParams=
+HostApplication=
+Launcher=
+UseLauncher=0
+DebugCWD=
 [Version Info]
 IncludeVerInfo=1
 AutoIncBuild=0

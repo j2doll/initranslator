@@ -17,6 +17,19 @@ ExeDescription=Mozilla DTD Plugin for IniTranslator
 [Directories]
 OutputDir=..\..\bin\plugins
 UnitOutputDir=..\..\dcu
+PackageDLLOutputDir=
+PackageDCPOutputDir=
+SearchPath=
+Packages=
+Conditionals=
+DebugSourceDirs=
+UsePackages=0
+[Parameters]
+RunParams=
+HostApplication=
+Launcher=
+UseLauncher=0
+DebugCWD=
 [Version Info]
 IncludeVerInfo=1
 AutoIncBuild=0

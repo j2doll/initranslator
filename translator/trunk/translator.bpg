@@ -9,9 +9,10 @@ MAKE = $(ROOT)\bin\make.exe -$(MAKEFLAGS) -f$**
 DCC = $(ROOT)\bin\dcc32.exe $**
 BRCC = $(ROOT)\bin\brcc32.exe $**
 #------------------------------------------------------------------------------
-PROJECTS = DCPPParser.dll FoxitParser.dll IBForumsParser.dll KeePassParser.dll \
-  MozillaDTDParser.dll MozillaPropsParser.dll MSDictBuild.exe MSDictParser.dll \
-  MsTermBuild.exe OlegParser.dll OOGSIParser.dll PHPNukeParser.dll PHPParser.dll \
+PROJECTS = DCPPParser.dll FoxitParser.dll IBForumsParser.dll \
+  IniTranslatorPluginWizard.bpl KeePassParser.dll MozillaDTDParser.dll \
+  MozillaPropsParser.dll MSDictBuild.exe MSDictParser.dll MsTermBuild.exe \
+  OlegParser.dll OOGSIParser.dll PHPNukeParser.dll PHPParser.dll \
   PolyGlotParser.dll POParser.dll SciTEParser.dll TMXParser.dll \
   ToolConsistency.dll ToolKeyCheck.dll ToolListEdit.dll ToolPropertiesView.dll \
   ToolTreeView.dll ToolTrim.dll WixParser.dll XLIFFParser.dll XilisoftParser.dll \
@@ -102,6 +103,9 @@ WixParser.dll: src\WixPlugin\WixParser.dpr
   $(DCC)
 
 DCPPParser.dll: src\DCPPPlugin\DCPPParser.dpr
+  $(DCC)
+
+IniTranslatorPluginWizard.bpl: src\PluginWizard\IniTranslatorPluginWizard.dpk
   $(DCC)
 
 

@@ -23,24 +23,24 @@ interface
 
 uses
   Windows, Messages, SysUtils, Classes, Graphics, Controls, Forms,
-  Dialogs, StdCtrls, PluginOptions, TntStdCtrls, TntDialogs;
+  Dialogs, StdCtrls, PluginOptions;
 
 type
   TfrmTranslatorPluginWizard = class(TForm)
-    btnOK: TTntButton;
-    btnCancel: TTntButton;
-    TntGroupBox1: TTntGroupBox;
-    TntLabel1: TTntLabel;
-    edClassName: TTntEdit;
-    rbFileParser: TTntRadioButton;
-    rbToolPlugin: TTntRadioButton;
-    TntLabel2: TTntLabel;
-    edTitle: TTntEdit;
-    TntLabel3: TTntLabel;
-    edTransIntfPath: TTntEdit;
-    TntButton1: TTntButton;
-    odTransIntf: TTntOpenDialog;
-    procedure TntButton1Click(Sender: TObject);
+    btnOK: TButton;
+    btnCancel: TButton;
+    GroupBox1: TGroupBox;
+    Label1: TLabel;
+    edClassName: TEdit;
+    rbFileParser: TRadioButton;
+    rbToolPlugin: TRadioButton;
+    Label2: TLabel;
+    edTitle: TEdit;
+    Label3: TLabel;
+    edTransIntfPath: TEdit;
+    btnBrowse: TButton;
+    odTransIntf: TOpenDialog;
+    procedure btnBrowseClick(Sender: TObject);
     procedure btnOKClick(Sender: TObject);
   private
     { Private declarations }
@@ -79,7 +79,7 @@ begin
   end;
 end;
 
-procedure TfrmTranslatorPluginWizard.TntButton1Click(Sender: TObject);
+procedure TfrmTranslatorPluginWizard.btnBrowseClick(Sender: TObject);
 begin
   odTransIntf.FileName := edTransIntfPath.Text;
   if odTransIntf.Execute then

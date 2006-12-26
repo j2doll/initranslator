@@ -19,7 +19,7 @@ object frmTranslatorPluginWizard: TfrmTranslatorPluginWizard
     247)
   PixelsPerInch = 96
   TextHeight = 13
-  object btnOK: TTntButton
+  object btnOK: TButton
     Left = 256
     Top = 211
     Width = 75
@@ -31,7 +31,7 @@ object frmTranslatorPluginWizard: TfrmTranslatorPluginWizard
     TabOrder = 1
     OnClick = btnOKClick
   end
-  object btnCancel: TTntButton
+  object btnCancel: TButton
     Left = 347
     Top = 211
     Width = 75
@@ -42,7 +42,7 @@ object frmTranslatorPluginWizard: TfrmTranslatorPluginWizard
     ModalResult = 2
     TabOrder = 2
   end
-  object TntGroupBox1: TTntGroupBox
+  object GroupBox1: TGroupBox
     Left = 7
     Top = 7
     Width = 433
@@ -54,28 +54,28 @@ object frmTranslatorPluginWizard: TfrmTranslatorPluginWizard
     DesignSize = (
       433
       195)
-    object TntLabel1: TTntLabel
+    object Label1: TLabel
       Left = 16
       Top = 28
       Width = 84
       Height = 13
       Caption = '&Plugin classname:'
     end
-    object TntLabel2: TTntLabel
+    object Label2: TLabel
       Left = 16
       Top = 98
       Width = 24
       Height = 13
       Caption = 'Title:'
     end
-    object TntLabel3: TTntLabel
+    object Label3: TLabel
       Left = 16
       Top = 140
       Width = 108
       Height = 13
       Caption = 'Transintf.pas location:'
     end
-    object edClassName: TTntEdit
+    object edClassName: TEdit
       Left = 16
       Top = 42
       Width = 380
@@ -83,7 +83,7 @@ object frmTranslatorPluginWizard: TfrmTranslatorPluginWizard
       Anchors = [akLeft, akTop, akRight]
       TabOrder = 0
     end
-    object rbFileParser: TTntRadioButton
+    object rbFileParser: TRadioButton
       Left = 32
       Top = 70
       Width = 113
@@ -93,7 +93,7 @@ object frmTranslatorPluginWizard: TfrmTranslatorPluginWizard
       TabOrder = 1
       TabStop = True
     end
-    object rbToolPlugin: TTntRadioButton
+    object rbToolPlugin: TRadioButton
       Left = 168
       Top = 70
       Width = 113
@@ -101,7 +101,7 @@ object frmTranslatorPluginWizard: TfrmTranslatorPluginWizard
       Caption = 'IToolPlugin'
       TabOrder = 2
     end
-    object edTitle: TTntEdit
+    object edTitle: TEdit
       Left = 16
       Top = 112
       Width = 380
@@ -109,7 +109,7 @@ object frmTranslatorPluginWizard: TfrmTranslatorPluginWizard
       Anchors = [akLeft, akTop, akRight]
       TabOrder = 3
     end
-    object edTransIntfPath: TTntEdit
+    object edTransIntfPath: TEdit
       Left = 16
       Top = 154
       Width = 380
@@ -117,7 +117,7 @@ object frmTranslatorPluginWizard: TfrmTranslatorPluginWizard
       Anchors = [akLeft, akTop, akRight]
       TabOrder = 4
     end
-    object TntButton1: TTntButton
+    object btnBrowse: TButton
       Left = 402
       Top = 154
       Width = 21
@@ -125,16 +125,16 @@ object frmTranslatorPluginWizard: TfrmTranslatorPluginWizard
       Anchors = [akTop, akRight]
       Caption = '...'
       TabOrder = 5
-      OnClick = TntButton1Click
+      OnClick = btnBrowseClick
     end
   end
-  object odTransIntf: TTntOpenDialog
+  object odTransIntf: TOpenDialog
     DefaultExt = 'pas'
     Filter = 
-      'TransIntf file|TRansIntf.pas|Source files (*.pas)|*.pas|All file' +
+      'TransIntf file|TransIntf.pas|Source files (*.pas)|*.pas|All file' +
       's (*.*)|*.*'
     InitialDir = '.'
-    Left = 308
-    Top = 70
+    Left = 182
+    Top = 28
   end
 end

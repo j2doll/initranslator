@@ -25,8 +25,14 @@ uses
 type
   // creates a repository wizard for IniTranslator plugins.
   // The wizard can be access from the "New" tab in the Repository
-  TPluginWizard = class(TNotifierObject, IInterface, IOTANotifier, IOTAWizard, IOTARepositoryWizard, IOTARepositoryWizard60, IOTAProjectWizard)
+  TPluginWizard = class(TInterfacedObject, IInterface, IOTANotifier,
+    IOTAWizard, IOTARepositoryWizard, IOTAProjectWizard)
   public
+    { IOTANotifier }
+    procedure AfterSave;
+    procedure BeforeSave;
+    procedure Destroyed;
+    procedure Modified;
     { IOTAWizard }
     function GetIDString: string;
     function GetName: string;
@@ -164,6 +170,21 @@ type
 
 { TPluginWizard }
 
+procedure TPluginWizard.AfterSave;
+begin
+  // do nothing
+end;
+
+procedure TPluginWizard.BeforeSave;
+begin
+  // do nothing
+end;
+
+procedure TPluginWizard.Destroyed;
+begin
+  // do nothing
+end;
+
 procedure TPluginWizard.Execute;
 var
   Module: IOTAModule;
@@ -214,6 +235,11 @@ end;
 function TPluginWizard.GetState: TWizardState;
 begin
   Result := [wsEnabled];
+end;
+
+procedure TPluginWizard.Modified;
+begin
+  // do nothing
 end;
 
 { TPluginCreator }

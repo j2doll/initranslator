@@ -258,7 +258,7 @@ SRCPATH = ROOTPATH &amp; "src\"
             <Property name="SuppressStatusMessages" type="Boolean">False</Property>
             <Object Class="TBuildScript" XMLID="{A519CFB9-657C-494A-B0F8-F02B46F0E3EC}"><Property MultiValue="0" name="BreakPointsStore" type="string"></Property>
               <Property MultiValue="0" name="Name" type="string">Condition</Property>
-              <Property MultiValue="0" name="Script" type="string">VCSCHECKOUT</Property>
+              <Property MultiValue="0" name="Script" type="string">VCSCHECKOUT and DELETE_FOLDER</Property>
               <Property MultiValue="0" name="ScriptLanguage" type="string">VBScript</Property>
               </Object>
             </Object>
@@ -629,7 +629,7 @@ Action.SetVersionInfoKey("ProductVersion",Action.GetVersionInfoKey("FileVersion"
 -w-UNSAFE_CAST=0
 ]]>
                       </Property>
-                    <Property MultiValue="0" name="Conditionals" type="WideString">USEADDICTSPELLCHECKER,USEOLDTBX</Property>
+                    <Property MultiValue="0" name="Conditionals" type="WideString">USEADDICTSPELLCHECKER,USEOLDTBX,Release</Property>
                     <Property name="ConsoleApp" type="WordBool">False</Property>
                     <Property MultiValue="0" name="DCPOutputDir" type="WideString"></Property>
                     <Property name="DebugInfo" type="WordBool">True</Property>

@@ -130,14 +130,3 @@ OriginalFilename=KeePassParser.dll
 ProductName=KeePass Plugin for IniTranslator
 ProductVersion=1.9.0.41
 Comments=Latest version at http://initranslator.sourceforge.net
-[HistoryLists\hlUnitAliases]
-Count=1
-Item0=WinTypes=Windows;WinProcs=Windows;DbiTypes=BDE;DbiProcs=BDE;DbiErrs=BDE;
-[HistoryLists\hlUnitOutputDirectory]
-Count=2
-Item0=..\dcu
-Item1=..\..\dcu
-[HistoryLists\hlOutputDirectorry]
-Count=2
-Item0=..\bin
-Item1=..\..\bin\plugins

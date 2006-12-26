@@ -20,11 +20,13 @@ UnitOutputDir=..\..\dcu
 PackageDLLOutputDir=
 PackageDCPOutputDir=
 SearchPath=
+Packages=
 Conditionals=
 DebugSourceDirs=
 UsePackages=0
 [Parameters]
 RunParams=
+HostApplication=
 Launcher=
 UseLauncher=0
 DebugCWD=

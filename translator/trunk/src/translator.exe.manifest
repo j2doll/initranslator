@@ -7,4 +7,12 @@
          <assemblyIdentity type="win32" name="Microsoft.Windows.Common-Controls" version="6.0.0.0" processorArchitecture="X86" publicKeyToken="6595b64144ccf1df" language="*"/>
       </dependentAssembly>
     </dependency>
+  <!-- this is for Vista -->
+  <ms_asmv3:trustInfo xmlns:ms_asmv3="urn:schemas-microsoft-com:asm.v3"> 
+    <ms_asmv3:security xmlns:ms_asmv3="urn:schemas-microsoft-com:asm.v3"> 
+      <requestedPrivileges> 
+        <requestedExecutionLevel level="asInvoker" uiAccess="true"></requestedExecutionLevel> 
+      </requestedPrivileges> 
+    </ms_asmv3:security> 
+  </ms_asmv3:trustInfo> 
 </assembly>

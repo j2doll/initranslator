@@ -1,4 +1,4 @@
-{@abstract(Utility functions and procedures) }
+{@abstract(Application specific utility functions and procedures) }
 {
   Copyright © 2003-2006 by Peter Thornqvist; all rights reserved
 
@@ -28,19 +28,16 @@ procedure TBMRULoadFromIni(MRU: TTBXMRUList);
 procedure TBMRUSaveToIni(MRU: TTBXMRUList);
 procedure TBMRULoadFromReg(MRU: TTBXMRUList; RootKey: Cardinal; const Path: WideString);
 procedure TBMRUSaveToReg(MRU: TTBXMRUList; RootKey: Cardinal; const Path: WideString);
-// "Fuzzy" in this context just means "remove all white space and control characters before comparing SubStr and Str"
+
 function DetectEncoding(const FileName: WideString): TEncoding;
 function GetAppVersion: WideString;
 function GetCurrentYear: Integer;
-
-// TODO: add JvCreateProcess from JVCL to add support for capturing output?
 
 function ActionShortCutInUse(AM: TActionList; ShortCut: Word): boolean;
 function FindActionShortCut(AM: TActionList; ShortCut: Word): TCustomAction;
 function RemoveActionShortCut(AM: TActionList; ShortCut: Word): integer;
 function _(const ASection, AMsg: WideString): WideString;
 function MyShortCutToText(ShortCut: TShortCut): WideString;
-function BinarySearch(AList: TList; L, R: integer; CompareItem: Pointer; CompareFunc: TListSortCompare; var Index: integer): boolean;
 
 function GlobalLanguageFile: TAppLanguage;
 function GlobalAppOptions: TAppOptions;
@@ -49,29 +46,15 @@ function GlobalApplicationServices: IApplicationServices;
 function GetUserAppDataFolder(const Default: WideString): WideString;
 function GetUserShortcutFile: WideString;
 function GetUserAppOptionsFile: WideString;
-
 procedure HandleFileCreateException(Sender: TObject; E: Exception; const Filename: WideString);
-function GetSpecialFolderLocation(const Folder: Integer): WideString;
+
 function GetAppStoragePath: WideString;
 function AutoDetectCharacterSet(Stream: TStream): TEncoding; overload;
 function AutoDetectCharacterSet(const Filename: WideString): TEncoding; overload;
 function FileCharSetToEncoding(CharSet: TTntStreamCharSet): TEncoding;
 
-function WideStartsText(const ASubText, AText: WideString): Boolean;
-function WideEndsText(const ASubText, AText: WideString): Boolean;
-
-// for Delphi 6
-function ValueFromIndex(S: TTntStrings; i: integer): WideString; overload;
-function ValueFromIndex(S: TStrings; i: integer): AnsiString; overload;
-function strtok(Search, Delim: WideString): WideString;
-
-//procedure SetXPComboStyle(AControl: TControl);
 procedure FixXPStyles(AControl: TWinControl);
-
 function GetPluginsFolder: WideString;
-
-function GetClipboardString(const Section, Name, Value: WideString): WideString;
-function ParseClipboardString(const Str: WideString; out Section, Name, Value: WideString): boolean;
 
 type
   TApplicationServicesFunc = function: IApplicationServices;
@@ -82,8 +65,9 @@ var
 implementation
 uses
   Windows, Forms, Dialogs, Math, Registry, StdCtrls, ExtCtrls, TypInfo,
-  WideIniFiles, Menus, Consts, ShFolder, StrUtils,
-  CommonUtils, ShlObj, ActiveX, TbxUxThemes,
+  Menus, Consts, StrUtils, ShFolder,
+  CommonUtils, WideIniFiles,
+  TbxUxThemes,
   TntWindows, TntSysUtils, TntWideStrUtils;
 
 var
@@ -125,30 +109,6 @@ begin
   end;
 end;
 
-function WideStartsText(const ASubText, AText: WideString): Boolean;
-begin
-  if (ASubText <> '') and (AText <> '') then
-    Result := WideSameText(ASubText, Copy(AText, 1, Length(ASubText)))
-  else
-    Result := false;
-end;
-
-function WideEndsText(const ASubText, AText: WideString): Boolean;
-var
-  L: integer;
-begin
-  if not Win32PlatformIsUnicode then
-    Result := AnsiEndsText(ASubText, AText)
-  else
-  begin
-    L := Length(AText) - Length(ASubText);
-    if (L > 0) and (ASubText <> '') then
-      Result := WideSameText(ASubText, Copy(AText, L + 1, MaxInt))
-    else
-      Result := false;
-  end;
-end;
-
 function GlobalLanguageFile: TAppLanguage;
 begin
   if FLanguageFile = nil then
@@ -169,24 +129,6 @@ begin
     Result := GlobalApplicationServicesFunc
   else
     Result := nil;
-end;
-
-function SHGetFolderPathW2(hwnd: HWND; csidl: Integer; hToken: THandle; dwFlags: DWord; pszPath: PWideChar): HRESULT; stdcall; external 'SHFolder.dll' name 'SHGetFolderPathW';
-
-function WideSHGetFolderPath(hwnd: HWND; csidl: Integer; hToken: THandle; dwFlags: DWord; pszPath: PWideChar): HRESULT;
-var
-  AnsiBuff: AnsiString;
-begin
-  if Win32PlatformIsUnicode then
-    Result := SHGetFolderPathW2(hwnd, csidl, hToken, dwFlags, pszPath)
-  else
-  begin
-    SetLength(AnsiBuff, MAX_PATH * 2);
-    Result := SHGetFolderPathA(hwnd, csidl, hToken, dwFlags, PAnsiChar(AnsiBuff));
-    AnsiBuff := AnsiString(PAnsiChar(AnsiBuff));
-    // pszPath :=
-    WStrPLCopy(pszPath, AnsiBuff, Length(AnsiBuff));
-  end;
 end;
 
 function GetUserAppDataFolder(const Default: WideString): WideString;
@@ -432,77 +374,12 @@ begin
   end;
 end;
 
-function BinarySearch(AList: TList; L, R: integer; CompareItem: Pointer; CompareFunc: TListSortCompare; var Index: integer): boolean;
-var
-  M: integer;
-  CompareResult: integer;
-begin
-  while L <= R do
-  begin
-    M := (L + R) div 2;
-    CompareResult := CompareFunc(AList[M], CompareItem);
-    if (CompareResult < 0) then
-      L := M + 1
-    else if (CompareResult > 0) then
-      R := M - 1
-    else
-    begin
-      Index := M;
-      Result := true;
-      Exit;
-    end;
-  end;
-  // not found, should be located here:
-  Result := false;
-  Index := L;
-end;
-
 procedure HandleFileCreateException(Sender: TObject; E: Exception; const Filename: WideString);
 begin
   if E is EFCreateError then
     ErrMsg(WideFormat(_(Sender.ClassName, SFmtErrCreateFile), [Filename]), _(Sender.ClassName, SErrorCaption))
   else
     Application.HandleException(Sender);
-end;
-
-function PidlFree(var IdList: PItemIdList): Boolean;
-var
-  Malloc: IMalloc;
-begin
-  Result := False;
-  if IdList = nil then
-    Result := True
-  else
-  begin
-    if Succeeded(SHGetMalloc(Malloc)) and (Malloc.DidAlloc(IdList) > 0) then
-    begin
-      Malloc.Free(IdList);
-      IdList := nil;
-      Result := True;
-    end;
-  end;
-end;
-
-function PidlToPath(IdList: PItemIdList): WideString;
-begin
-  SetLength(Result, MAX_PATH);
-  if Tnt_SHGetPathFromIDListW(IdList, PWideChar(Result)) then
-    Result := WideString(PWideChar(Result))
-  else
-    Result := '';
-end;
-
-function GetSpecialFolderLocation(const Folder: Integer): WideString;
-var
-  FolderPidl: PItemIdList;
-begin
-  if Succeeded(SHGetSpecialFolderLocation(0, Folder, FolderPidl)) then
-  begin
-    Result := PidlToPath(FolderPidl);
-    PidlFree(FolderPidl);
-  end
-  else
-    Result := '';
 end;
 
 function GetAppStoragePath: WideString;
@@ -517,87 +394,8 @@ begin
   WideForceDirectories(Result);
 end;
 
-function ValueFromIndex(S: TTntStrings; i: integer): WideString;
-begin
-  if (i >= 0) and (i < S.Count) then
-  begin
-    Result := S[i];
-    i := Pos('=', Result);
-    if i > 0 then
-      Result := Copy(Result, i + 1, MaxInt)
-    else
-      Result := '';
-  end;
-end;
-
-function ValueFromIndex(S: TStrings; i: integer): AnsiString;
-var
-  tmp: TTntStringlist;
-begin
-  tmp := TTntStringlist.Create;
-  try
-    tmp.Assign(S);
-    Result := ValueFromIndex(tmp, i);
-  finally
-    tmp.Free;
-  end;
-end;
-
-{$IFOPT J+}
-{$DEFINE JOPTSET}
-{$ENDIF}
-{$J+ }
-
-function strtok(Search, Delim: WideString): WideString;
-const
-
-  I: integer = 1;
-  Len: integer = 0;
-  PrvStr: WideString = '';
-begin
-  Result := '';
-  if Search <> '' then
-  begin
-    I := 1;
-    PrvStr := Search;
-    Len := Length(PrvStr);
-  end;
-  if PrvStr = '' then
-    Exit;
-  while (i <= Len) and (Pos(PrvStr[i], Delim) > 0) do
-    Inc(I);
-  while (i <= Len) and (Pos(PrvStr[i], Delim) = 0) do
-  begin
-    Result := Result + PrvStr[i];
-    Inc(i);
-  end;
-end;
-{$IFDEF JOPTSET}
-{$J- }
-{$ENDIF JOPTSET}
-{$UNDEF JOPTSET}
-
 type
   TAccessComboBox = class(TCustomComboBox);
-
-procedure SetXPComboStyle(AControl: TControl);
-var
-  i: integer;
-begin
-  if (AControl is TWinControl) then
-    for i := 0 to TWinControl(AControl).ControlCount - 1 do
-    begin
-      if TWinControl(AControl).Controls[i] is TCustomComboBox then
-      begin
-        if Assigned(IsAppThemed) and IsAppThemed {Win32PlatformIsXP} then
-          TAccessComboBox(TWinControl(AControl).Controls[i]).BevelKind := bkNone
-        else
-          TAccessComboBox(TWinControl(AControl).Controls[i]).BevelKind := bkFlat;
-      end;
-      if TWinControl(AControl).Controls[i] is TWinControl then
-        SetXPComboStyle(TWinControl(TWinControl(AControl).Controls[i]));
-    end;
-end;
 
 procedure FixXPStyles(AControl: TWInControl);
 var
@@ -627,45 +425,6 @@ begin
   Result := WideIncludeTrailingPathDelimiter(WideExtractFilePath(Application.ExeName)) + 'plugins';
 end;
 
-function GetClipboardString(const Section, Name, Value: WideString): WideString;
-var
-  S: TTntStringlist;
-begin
-  S := TTntStringlist.Create;
-  try
-    S.Add(Section);
-    S.Add(Name);
-    S.Add(Value);
-    Result := S.CommaText;
-  finally
-    S.Free;
-  end;
-end;
-
-function ParseClipboardString(const Str: WideString; out Section, Name, Value: WideString): boolean;
-var
-  S: TTntStringlist;
-begin
-  S := TTntStringlist.Create;
-  try
-    S.CommaText := Str;
-    if S.Count > 0 then
-      Section := S[0]
-    else
-      Section := '';
-    if S.Count > 1 then
-      Name := S[1]
-    else
-      Name := '';
-    if S.Count > 2 then
-      Value := S[2]
-    else
-      Value := '';
-    Result := S.Count > 2;
-  finally
-    S.Free;
-  end;
-end;
 
 procedure SaveAndFreeOptions;
 begin

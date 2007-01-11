@@ -20,7 +20,7 @@ unit PluginsDesign;
 
 interface
 uses
-  Classes, DesignIntf, ToolsAPI;
+  Classes, ToolsAPI;
 
 type
   // creates a repository wizard for IniTranslator plugins.

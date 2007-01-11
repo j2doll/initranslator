@@ -223,7 +223,7 @@ type
 
 implementation
 uses
-  StrUtils, AppConsts, AppUtils, TntSysUtils;
+  StrUtils, AppConsts, AppUtils, CommonUtils, TntSysUtils;
 
 function StrToFontStyles(const S: WideString): TFontStyles;
 begin

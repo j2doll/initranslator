@@ -45,14 +45,17 @@ function strBetween(const S: WideString; StartChar, EndChar: WideChar): WideStri
 function StrDefault(const S, Default: WideString): WideString;
 
 function MyWideDequotedStr(const S: WideString; Quote: WideChar): WideString;
-function AutoWideDequotedStr(const S: WideString):WideString;
+function AutoWideDequotedStr(const S: WideString): WideString;
 function MyWideQuotedStr(const S: WideString; Quote: WideChar): WideString;
 
 function GetMinimizedFilename(const AFilename: WideString; Minimize: boolean): WideString;
 function DoubleQuoteString(const S: WideString; CheckString: boolean = true): WideString;
-
 function RunProcess(const Filename, Params: WideString; WorkingDir: WideString;
   const WaitUntilTerminated, WaitUntilIdle: Boolean; const ShowCmd: Integer; var ResultCode: Cardinal): Boolean;
+function GetSpecialFolderLocation(const Folder: Integer): WideString;
+function WideSHGetFolderPath(hwnd: HWND; csidl: Integer; hToken: THandle; dwFlags: DWord; pszPath: PWideChar): HRESULT;
+function IsFileOpen(const Filename: WideString): boolean;
+
 function SubStrCount(const SubStr, Str: WideString): integer;
 function WideContainsChar(Ch: WideChar; const S: WideString): boolean;
 function IsCharPunct(const S: WideChar): boolean;
@@ -65,15 +68,29 @@ function IsCharBlank(const S: WideChar): boolean;
 function IsCharHex(const S: WideChar): boolean;
 function IsCharAlpha(const S: WideChar): boolean;
 
+function GetClipboardString(const Section, Name, Value: WideString): WideString;
+function ParseClipboardString(const Str: WideString; out Section, Name, Value: WideString): boolean;
+
+// for Delphi 6
+function ValueFromIndex(S: TTntStrings; i: integer): WideString; overload;
+function ValueFromIndex(S: TStrings; i: integer): AnsiString; overload;
+function strtok(Search, Delim: WideString): WideString;
+
+function WideStartsText(const ASubText, AText: WideString): Boolean;
+function WideEndsText(const ASubText, AText: WideString): Boolean;
+
+function BinarySearch(AList: TList; L, R: integer; CompareItem: Pointer; CompareFunc: TListSortCompare; var Index: integer): boolean;
+
 implementation
 uses
   Forms, Dialogs, Math, Registry, StrUtils,
+  ShlObj, ActiveX, ShFolder,
   TntWindows, TntSysUtils, TntWideStrUtils;
 
-function AutoWideDequotedStr(const S: WideString):WideString;
+function AutoWideDequotedStr(const S: WideString): WideString;
 begin
   if (Length(S) > 1) and (S[1] in [WideChar(''''), WideChar('"')]) and
-    (S[Length(S)] in [WideChar(''''), WideChar('"')]) then
+  (S[Length(S)] in [WideChar(''''), WideChar('"')]) then
     Result := MyWideDequotedStr(S, S[1])
   else
     Result := S;
@@ -489,6 +506,92 @@ begin
   Result := True;
 end;
 
+function PidlFree(var IdList: PItemIdList): Boolean;
+var
+  Malloc: IMalloc;
+begin
+  Result := False;
+  if IdList = nil then
+    Result := True
+  else
+  begin
+    if Succeeded(SHGetMalloc(Malloc)) and (Malloc.DidAlloc(IdList) > 0) then
+    begin
+      Malloc.Free(IdList);
+      IdList := nil;
+      Result := True;
+    end;
+  end;
+end;
+
+function PidlToPath(IdList: PItemIdList): WideString;
+begin
+  SetLength(Result, MAX_PATH);
+  if Tnt_SHGetPathFromIDListW(IdList, PWideChar(Result)) then
+    Result := WideString(PWideChar(Result))
+  else
+    Result := '';
+end;
+
+function GetSpecialFolderLocation(const Folder: Integer): WideString;
+var
+  FolderPidl: PItemIdList;
+begin
+  if Succeeded(SHGetSpecialFolderLocation(0, Folder, FolderPidl)) then
+  begin
+    Result := PidlToPath(FolderPidl);
+    PidlFree(FolderPidl);
+  end
+  else
+    Result := '';
+end;
+
+function SHGetFolderPathW2(hwnd: HWND; csidl: Integer; hToken: THandle; dwFlags: DWord; pszPath: PWideChar): HRESULT; stdcall; external 'SHFolder.dll' name 'SHGetFolderPathW';
+
+function WideSHGetFolderPath(hwnd: HWND; csidl: Integer; hToken: THandle; dwFlags: DWord; pszPath: PWideChar): HRESULT;
+var
+  AnsiBuff: AnsiString;
+begin
+  if Win32PlatformIsUnicode then
+    Result := SHGetFolderPathW2(hwnd, csidl, hToken, dwFlags, pszPath)
+  else
+  begin
+    SetLength(AnsiBuff, MAX_PATH * 2);
+    Result := SHGetFolderPathA(hwnd, csidl, hToken, dwFlags, PAnsiChar(AnsiBuff));
+    AnsiBuff := AnsiString(PAnsiChar(AnsiBuff));
+    WStrPLCopy(pszPath, AnsiBuff, Length(AnsiBuff));
+  end;
+end;
+
+function IsFileOpen(const Filename: WideString): boolean;
+var
+  hFile: THandle;
+  aLastError, aOldErrorMode: DWORD;
+begin
+  Result := false;
+  // don't display dialog when accessing removable drives without media
+  aOldErrorMode := SetErrorMode(SEM_FAILCRITICALERRORS);
+  try
+    hFile := Tnt_CreateFileW(PWideChar(Filename), OPEN_EXISTING, 0, nil, 0, 0, 0);
+    try
+      if hFile = INVALID_HANDLE_VALUE then
+      begin
+        // get error...
+        aLastError := GetLastError;
+        // check error...
+        Result := aLastError = ERROR_SHARING_VIOLATION;
+        // restore error
+        SetLastError(aLastError);
+      end;
+    finally
+      if hFile <> INVALID_HANDLE_VALUE then
+        CloseHandle(hFile);
+    end;
+  finally
+    SetErrorMode(aOldErrorMode);
+  end;
+end;
+
 function SubStrCount(const SubStr, Str: WideString): integer;
 var tmp: PWideChar;
 begin
@@ -569,6 +672,155 @@ end;
 function IsCharAlpha(const S: WideChar): boolean;
 begin
   Result := IsCharType(S, CT_CTYPE1, C1_ALPHA);
+end;
+
+function GetClipboardString(const Section, Name, Value: WideString): WideString;
+var
+  S: TTntStringlist;
+begin
+  S := TTntStringlist.Create;
+  try
+    S.Add(Section);
+    S.Add(Name);
+    S.Add(Value);
+    Result := S.CommaText;
+  finally
+    S.Free;
+  end;
+end;
+
+function ParseClipboardString(const Str: WideString; out Section, Name, Value: WideString): boolean;
+var
+  S: TTntStringlist;
+begin
+  S := TTntStringlist.Create;
+  try
+    S.CommaText := Str;
+    if S.Count > 0 then
+      Section := S[0]
+    else
+      Section := '';
+    if S.Count > 1 then
+      Name := S[1]
+    else
+      Name := '';
+    if S.Count > 2 then
+      Value := S[2]
+    else
+      Value := '';
+    Result := S.Count > 2;
+  finally
+    S.Free;
+  end;
+end;
+
+function ValueFromIndex(S: TTntStrings; i: integer): WideString;
+begin
+  if (i >= 0) and (i < S.Count) then
+  begin
+    Result := S[i];
+    i := Pos('=', Result);
+    if i > 0 then
+      Result := Copy(Result, i + 1, MaxInt)
+    else
+      Result := '';
+  end;
+end;
+
+function ValueFromIndex(S: TStrings; i: integer): AnsiString;
+var
+  tmp: TTntStringlist;
+begin
+  tmp := TTntStringlist.Create;
+  try
+    tmp.Assign(S);
+    Result := ValueFromIndex(tmp, i);
+  finally
+    tmp.Free;
+  end;
+end;
+
+{$IFOPT J+}
+{$DEFINE JOPTSET}
+{$ENDIF}
+{$J+ }
+
+function strtok(Search, Delim: WideString): WideString;
+const
+
+  I: integer = 1;
+  Len: integer = 0;
+  PrvStr: WideString = '';
+begin
+  Result := '';
+  if Search <> '' then
+  begin
+    I := 1;
+    PrvStr := Search;
+    Len := Length(PrvStr);
+  end;
+  if PrvStr = '' then
+    Exit;
+  while (i <= Len) and (Pos(PrvStr[i], Delim) > 0) do
+    Inc(I);
+  while (i <= Len) and (Pos(PrvStr[i], Delim) = 0) do
+  begin
+    Result := Result + PrvStr[i];
+    Inc(i);
+  end;
+end;
+{$IFDEF JOPTSET}
+{$J- }
+{$ENDIF JOPTSET}
+{$UNDEF JOPTSET}
+
+function WideStartsText(const ASubText, AText: WideString): Boolean;
+begin
+  if (ASubText <> '') and (AText <> '') then
+    Result := WideSameText(ASubText, Copy(AText, 1, Length(ASubText)))
+  else
+    Result := false;
+end;
+
+function WideEndsText(const ASubText, AText: WideString): Boolean;
+var
+  L: integer;
+begin
+  if not Win32PlatformIsUnicode then
+    Result := AnsiEndsText(ASubText, AText)
+  else
+  begin
+    L := Length(AText) - Length(ASubText);
+    if (L > 0) and (ASubText <> '') then
+      Result := WideSameText(ASubText, Copy(AText, L + 1, MaxInt))
+    else
+      Result := false;
+  end;
+end;
+
+function BinarySearch(AList: TList; L, R: integer; CompareItem: Pointer; CompareFunc: TListSortCompare; var Index: integer): boolean;
+var
+  M: integer;
+  CompareResult: integer;
+begin
+  while L <= R do
+  begin
+    M := (L + R) div 2;
+    CompareResult := CompareFunc(AList[M], CompareItem);
+    if (CompareResult < 0) then
+      L := M + 1
+    else if (CompareResult > 0) then
+      R := M - 1
+    else
+    begin
+      Index := M;
+      Result := true;
+      Exit;
+    end;
+  end;
+  // not found, should be located here:
+  Result := false;
+  Index := L;
 end;
 
 end.

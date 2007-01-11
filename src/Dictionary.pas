@@ -55,6 +55,7 @@ type
     FItems: TList;
     FIgnorePunctuation: WordBool;
     FModified: WordBool;
+    FAutoRemoveQuotes: boolean;
     function GetCount: integer;
     function GetItems(Index: integer): TDictionaryItem;
     {IDictionaryItems}
@@ -71,6 +72,8 @@ type
   public
     procedure Invert;
     procedure Assign(Source: TPersistent); override;
+    procedure LoadFromFile(const Filename: WideString);
+    procedure SaveToFile(const Filename: WideString);
     function Add(const AOriginal: WideString): TDictionaryItem; overload;
     function Add(var Item: TDictionaryItem): integer; overload;
     procedure Delete(Index: integer);
@@ -82,11 +85,10 @@ type
     procedure TrimTranslations; // removes empty translations
     constructor Create;
     destructor Destroy; override;
+    property AutoRemoveQuotes: boolean read FAutoRemoveQuotes write FAutoRemoveQuotes default true;
     property Items[Index: integer]: TDictionaryItem read GetItems; default;
     property Count: integer read GetCount;
     property Modified: WordBool read GetModified write SetModified;
-    procedure LoadFromFile(const Filename: WideString);
-    procedure SaveToFile(const Filename: WideString);
     property IgnorePunctuation: WordBool read GetIgnorePunctuation write SetIgnorePunctuation;
   end;
 
@@ -267,6 +269,7 @@ constructor TDictionaryItems.Create;
 begin
   inherited Create;
   FItems := TList.Create;
+  FAutoRemoveQuotes := true;
 end;
 
 procedure TDictionaryItems.Delete(Index: integer);
@@ -367,23 +370,34 @@ end;
 procedure TDictionaryItems.LoadFromFile(const Filename: WideString);
 var
   AFile, AValues: TTntStringlist;
-  i: integer;
+  i, j: integer;
   AItem: TDictionaryItem;
+
+  function DoDequote(const S: WideString): WideString;
+  begin
+    if AutoRemoveQuotes then
+      Result := AutoWideDequotedStr(S)
+    else
+      Result := S;
+  end;
 begin
   // format:
   // original=translation, translation, translation[,translation]
   Clear;
   AFile := TTntStringlist.Create;
-  AValues := TTNtStringlist.Create;
+  AValues := TTntStringlist.Create;
   try
     AFile.LoadFromFile(Filename);
     for i := 0 to AFile.Count - 1 do
     begin
-      if AFile.Names[i] <> '' then
+      if DoDequote(AFile.Names[i]) <> '' then
       begin
         AItem := TDictionaryItem.Create;
-        AItem.Original := AFile.Names[i];
+        AItem.Original := DoDequote(AFile.Names[i]);
         AValues.CommaText := ValueFromIndex(AFile, i);
+        if AutoRemoveQuotes then
+          for j := 0 to AValues.Count - 1 do
+            AValues[j] := AutoWideDequotedStr(AValues[j]);
         AItem.Translations := AValues;
         Add(AItem);
       end;
@@ -406,7 +420,7 @@ begin
   i := 0;
   while true do
   begin
-    while (i < Count) and WideSameText(ACurrentOriginal, Items[i].Original) do
+    while (i > 0) and (i < Count) and WideSameText(ACurrentOriginal, Items[i].Original) do
     begin
       // Since ACurrentOriginal is the same as the current item, it means that
       // we've already seen this item, i.e it's the same as the previous one (the list is sorted),
@@ -471,3 +485,4 @@ begin
 end;
 
 end.
+

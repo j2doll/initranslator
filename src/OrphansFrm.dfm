@@ -24,7 +24,7 @@ object frmOrphans: TfrmOrphans
     Left = 0
     Top = 64
     Width = 433
-    Height = 219
+    Height = 223
     Align = alClient
     BevelInner = bvNone
     BevelOuter = bvRaised
@@ -45,6 +45,7 @@ object frmOrphans: TfrmOrphans
     ReadOnly = True
     RowSelect = True
     ParentShowHint = False
+    PopupMenu = popList
     ShowHint = True
     TabOrder = 0
     ViewStyle = vsReport
@@ -54,7 +55,7 @@ object frmOrphans: TfrmOrphans
   end
   object StatusBar1: TTntStatusBar
     Left = 0
-    Top = 283
+    Top = 287
     Width = 433
     Height = 19
     Panels = <>
@@ -129,6 +130,10 @@ object frmOrphans: TfrmOrphans
         end
         object SpTBXSeparatorItem3: TSpTBXSeparatorItem
         end
+        object SpTBXItem1: TSpTBXItem
+          Action = acAdd
+          CaptionW = 'Add to main list'
+        end
         object SpTBXItem17: TSpTBXItem
           Action = acCopy
           CaptionW = 'Copy'
@@ -166,8 +171,12 @@ object frmOrphans: TfrmOrphans
   end
   object alOrphans: TTntActionList
     OnUpdate = alOrphansUpdate
-    Left = 194
-    Top = 148
+    Left = 42
+    Top = 100
+    object acAdd: TTntAction
+      Caption = 'Add to main list'
+      OnExecute = acAddExecute
+    end
     object acCopy: TTntAction
       Caption = 'Copy'
       ShortCut = 16451
@@ -211,6 +220,38 @@ object frmOrphans: TfrmOrphans
       Caption = 'Find Next'
       ShortCut = 114
       OnExecute = acFindNextExecute
+    end
+  end
+  object popList: TSpTBXPopupMenu
+    Left = 86
+    Top = 102
+    object SpTBXItem2: TSpTBXItem
+      Action = acAdd
+      CaptionW = 'Add to main list'
+    end
+    object SpTBXItem7: TSpTBXItem
+      Action = acCopy
+      CaptionW = 'Copy'
+    end
+    object SpTBXItem6: TSpTBXItem
+      Action = acRemove
+      CaptionW = 'Remove'
+    end
+    object SpTBXSeparatorItem1: TSpTBXSeparatorItem
+    end
+    object SpTBXItem5: TSpTBXItem
+      Action = acPaste
+      CaptionW = 'Paste into current item'
+    end
+    object SpTBXSeparatorItem2: TSpTBXSeparatorItem
+    end
+    object SpTBXItem3: TSpTBXItem
+      Action = acFindItem
+      CaptionW = 'Find Item'
+    end
+    object SpTBXItem8: TSpTBXItem
+      Action = acFindNext
+      CaptionW = 'Find Next'
     end
   end
 end

@@ -18,6 +18,7 @@
 // $Id$
 
 unit MainFrm;
+{$I ..\TRANSLATOR.INC}
 
 interface
 
@@ -66,7 +67,8 @@ var
 
 implementation
 uses
-  IniFiles, ShellAPI, ShFolder, TntWideStrUtils;
+  IniFiles, ShellAPI, ShFolder,
+  {$IFDEF COMPILER_9_UP}WideStrUtils{$ELSE}TntWideStrUtils{$ENDIF};
 
 {$R *.dfm}
 

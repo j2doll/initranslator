@@ -63,6 +63,17 @@ type
     SpTBXSeparatorItem3: TSpTBXSeparatorItem;
     SpTBXSeparatorItem4: TSpTBXSeparatorItem;
     SpTBXSeparatorItem5: TSpTBXSeparatorItem;
+    popList: TSpTBXPopupMenu;
+    SpTBXItem3: TSpTBXItem;
+    SpTBXItem5: TSpTBXItem;
+    SpTBXItem6: TSpTBXItem;
+    SpTBXItem7: TSpTBXItem;
+    SpTBXItem8: TSpTBXItem;
+    SpTBXSeparatorItem1: TSpTBXSeparatorItem;
+    SpTBXSeparatorItem2: TSpTBXSeparatorItem;
+    acAdd: TTntAction;
+    SpTBXItem1: TSpTBXItem;
+    SpTBXItem2: TSpTBXItem;
     procedure lvOrphanedResize(Sender: TObject);
     procedure acCopyExecute(Sender: TObject);
     procedure alOrphansUpdate(Action: TBasicAction; var Handled: Boolean);
@@ -78,13 +89,15 @@ type
     procedure acPasteExecute(Sender: TObject);
     procedure acFindItemExecute(Sender: TObject);
     procedure acFindNextExecute(Sender: TObject);
+    procedure acAddExecute(Sender: TObject);
   private
+    { Private declarations }
     FAppServices: IApplicationServices;
     FOnMerge: TNotifyEvent;
     procedure SaveToFile(const FileName: WideString);
     procedure ShowError(Count: integer);
     function SelectedItem: ITranslationItem;
-    { Private declarations }
+    function SelectedIndex: integer;
   public
     { Public declarations }
     class function Edit(const ApplicationServices: IApplicationServices; CanMerge: boolean; OnMerge: TNotifyEvent): boolean;
@@ -107,6 +120,7 @@ begin
     frmOrphans.lvOrphaned.Items.Count := ApplicationServices.Orphans.Count;
     frmOrphans.acSave.Enabled := ApplicationServices.Orphans.Count > 0;
     frmOrphans.acMerge.Enabled := Assigned(OnMerge) and CanMerge and (ApplicationServices.Orphans.Count > 0);
+    frmOrphans.acAdd.Enabled := frmOrphans.acMerge.Enabled;
     Result := frmOrphans.ShowModal = mrOK;
   finally
     frmOrphans.Free;
@@ -256,6 +270,26 @@ begin
     FAppServices.SelectedItem.Translation := SelectedItem.Translation;
 end;
 
+procedure TfrmOrphans.acAddExecute(Sender: TObject);
+var i:integer;
+begin
+  if (SelectedItem <> nil) then
+  begin
+    FAppServices.BeginUpdate;
+    lvOrphaned.Items.BeginUpdate;
+    try
+      i := SelectedIndex;
+      FAppServices.Items.Add(SelectedItem);
+      FAppServices.Orphans.Delete(i);
+      lvOrphaned.Items.Count := FAppServices.Orphans.Count;
+      lvOrphaned.Invalidate;
+    finally
+      FAppServices.EndUpdate;
+      lvOrphaned.Items.EndUpdate;
+    end;
+  end;
+end;
+
 procedure TfrmOrphans.acFindItemExecute(Sender: TObject);
 var
   i: integer;
@@ -310,6 +344,17 @@ begin
   else
     Result := nil;
 end;
+
+function TfrmOrphans.SelectedIndex: integer;
+begin
+  if lvOrphaned.Selected <> nil then
+    Result := lvOrphaned.Selected.Index
+  else
+    Result := -1;
+end;
+
+
+
 
 end.
 

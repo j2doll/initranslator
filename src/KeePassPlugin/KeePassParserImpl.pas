@@ -18,6 +18,7 @@ keepass.sourceforge.net
 // $Id$
 
 unit KeePassParserImpl;
+{$I ..\TRANSLATOR.INC}
 
 interface
 uses
@@ -48,8 +49,8 @@ type
 implementation
 uses
   Windows, SysUtils, Forms,
-  TntWideStrUtils, WideIniFiles,
-  SingleImportFrm, PreviewExportFrm, 
+  {$IFDEF COMPILER_9_UP}WideStrUtils{$ELSE}TntWideStrUtils{$ENDIF},
+  WideIniFiles, SingleImportFrm, PreviewExportFrm, 
   KeePassParserLang;
 
 { TKeePassParser }

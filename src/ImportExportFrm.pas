@@ -210,6 +210,7 @@ begin
   Result := 0;
   APath := WideIncludeTrailingPathDelimiter(PluginFolder);
 {$WARN SYMBOL_PLATFORM OFF}
+{$WARN SYMBOL_DEPRECATED OFF}
   if WideFindFirst(APath + '*.dll', faAnyFile and not (faDirectory or faVolumeID), F) = 0 then
   try
     repeat
@@ -234,6 +235,8 @@ begin
   finally
     WideFindClose(F);
   end;
+{$WARN SYMBOL_PLATFORM ON}
+{$WARN SYMBOL_DEPRECATED ON}
   if lvItems.Items.Count = 0 then
   begin
 //    lvItems.Enabled := false;

@@ -142,3 +142,56 @@ Name: PLUGINS; Description: Available Plugins; Types: custom full
 Name: DEBUGFILES; Description: Debug map files; Types: custom full
 Name: MSDICTBUILDINSTALL; Description: MS Dictionary Converters; Types: custom full
 Name: DEFAULT_TOOLS; Description: Install default tools; Types: custom full compact
+
+[Code]
+const
+  SEM_FAILCRITICALERRORS = 1;
+  INVALID_HANDLE_VALUE = -1;
+  OPEN_EXISTING = 3;
+  ERROR_SHARING_VIOLATION = $20;
+
+function SetErrorMode(uMode: UINT): UINT;
+external 'SetErrorMode@kernel32.dll stdcall';
+
+function CreateFile(lpFileName: string; dwDesiredAccess, dwShareMode: Cardinal;
+  lpSecurityAttributes: Cardinal; dwCreationDisposition, dwFlagsAndAttributes: Cardinal;
+  hTemplateFile: Cardinal): Cardinal;
+external 'CreateFileA@kernel32.dll stdcall';
+
+function GetLastError:Cardinal;
+external 'GetLastError@kernel32.dll stdcall';
+
+procedure SetLastError(Value:Cardinal);
+external 'SetLastError@kernel32.dll stdcall';
+
+procedure CloseHandle(Value:Cardinal);
+external 'CloseHandle@kernel32.dll stdcall';
+
+function IsFileOpen(const Filename: string): boolean;
+var
+  hFile: Cardinal;
+  aLastError, aOldErrorMode: Cardinal;
+begin
+  Result := false;
+  // don't display dialog when accessing removable drives without media
+  aOldErrorMode := SetErrorMode(SEM_FAILCRITICALERRORS);
+  try
+    hFile := CreateFile(Filename, OPEN_EXISTING, 0, 0, 0, 0, 0);
+    try
+      if hFile = INVALID_HANDLE_VALUE then
+      begin
+        // get error...
+        aLastError := GetLastError;
+        // check error...
+        Result := aLastError = ERROR_SHARING_VIOLATION;
+        // restore error
+        SetLastError(aLastError);
+      end;
+    finally
+      if hFile <> INVALID_HANDLE_VALUE then
+        CloseHandle(hFile);
+    end;
+  finally
+    SetErrorMode(aOldErrorMode);
+  end;
+end;

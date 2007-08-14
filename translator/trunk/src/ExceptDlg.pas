@@ -44,80 +44,80 @@ const
 type
   TSimpleExceptionLog = class(TObject)
   private
-    FLogFileHandle: THandle;
-    FLogFileName: WideString;
-    FLogWasEmpty: Boolean;
-    function GetLogOpen: Boolean;
+    FLogFileHandle:THandle;
+    FLogFileName:WideString;
+    FLogWasEmpty:Boolean;
+    function GetLogOpen:Boolean;
   protected
-    function CreateDefaultFileName: WideString;
+    function CreateDefaultFileName:WideString;
   public
-    constructor Create(const ALogFileName: WideString = '');
+    constructor Create(const ALogFileName:WideString = '');
     destructor Destroy; override;
     procedure CloseLog;
     procedure OpenLog;
-    procedure Write(const Text: WideString; Indent: Integer = 0); overload;
-    procedure Write(Strings: TTntStrings; Indent: Integer = 0); overload;
-    procedure WriteStamp(SeparatorLen: Integer = 0);
-    property LogFileName: WideString read FLogFileName;
-    property LogOpen: Boolean read GetLogOpen;
+    procedure Write(const Text:WideString; Indent:Integer = 0); overload;
+    procedure Write(Strings:TTntStrings; Indent:Integer = 0); overload;
+    procedure WriteStamp(SeparatorLen:Integer = 0);
+    property LogFileName:WideString read FLogFileName;
+    property LogOpen:Boolean read GetLogOpen;
   end;
 
   TExcDialogSystemInfo = (siStackList, siOsInfo, siModuleList, siActiveControls);
   TExcDialogSystemInfos = set of TExcDialogSystemInfo;
 
   TExceptionDialog = class(Tfrmbase)
-    OkBtn: TTntButton;
-    DetailsMemo: TTntRichEdit;
-    DetailsBtn: TTntButton;
-    Bevel1: TBevel;
-    pnlTop: TTntPanel;
-    Label1: TTntLabel;
-    Label2: TTntLabel;
-    TextLabel: TTntRichEdit;
-    Label3: TTntLabel;
-    Bevel2: TBevel;
-    procedure FormPaint(Sender: TObject);
-    procedure FormCreate(Sender: TObject);
-    procedure FormShow(Sender: TObject);
-    procedure DetailsBtnClick(Sender: TObject);
-    procedure FormKeyDown(Sender: TObject; var Key: Word; Shift: TShiftState);
-    procedure FormDestroy(Sender: TObject);
-    procedure FormResize(Sender: TObject);
+    OkBtn:TTntButton;
+    DetailsMemo:TTntRichEdit;
+    DetailsBtn:TTntButton;
+    Bevel1:TBevel;
+    pnlTop:TTntPanel;
+    Label1:TTntLabel;
+    Label2:TTntLabel;
+    TextLabel:TTntRichEdit;
+    Label3:TTntLabel;
+    Bevel2:TBevel;
+    procedure FormPaint(Sender:TObject);
+    procedure FormCreate(Sender:TObject);
+    procedure FormShow(Sender:TObject);
+    procedure DetailsBtnClick(Sender:TObject);
+    procedure FormKeyDown(Sender:TObject; var Key:Word; Shift:TShiftState);
+    procedure FormDestroy(Sender:TObject);
+    procedure FormResize(Sender:TObject);
   private
-    FDetailsVisible: Boolean;
-    FIsMainThead: Boolean;
-    FLastActiveControl: TWinControl;
-    FNonDetailsHeight: Integer;
-    FFullHeight: Integer;
-    FSimpleLog: TSimpleExceptionLog;
+    FDetailsVisible:Boolean;
+    FIsMainThead:Boolean;
+    FLastActiveControl:TWinControl;
+    FNonDetailsHeight:Integer;
+    FFullHeight:Integer;
+    FSimpleLog:TSimpleExceptionLog;
     procedure CreateDetails;
-    function GetReportAsText: WideString;
+    function GetReportAsText:WideString;
     procedure ReportToLog;
-    procedure SetDetailsVisible(const Value: Boolean);
-    procedure UMCreateDetails(var Message: TMessage); message UM_CREATEDETAILS;
+    procedure SetDetailsVisible(const Value:Boolean);
+    procedure UMCreateDetails(var Message:TMessage); message UM_CREATEDETAILS;
   protected
     procedure AfterCreateDetails; dynamic;
     procedure BeforeCreateDetails; dynamic;
     procedure CreateDetailInfo; dynamic;
-    procedure CreateReport(const SystemInfo: TExcDialogSystemInfos);
-    function ReportMaxColumns: Integer; virtual;
-    function ReportNewBlockDelimiterChar: Char; virtual;
+    procedure CreateReport(const SystemInfo:TExcDialogSystemInfos);
+    function ReportMaxColumns:Integer; virtual;
+    function ReportNewBlockDelimiterChar:Char; virtual;
     procedure NextDetailBlock;
     procedure UpdateTextLabelScrollbars;
   public
     procedure CopyReportToClipboard;
-    class procedure ExceptionHandler(Sender: TObject; E: Exception);
-    class procedure ExceptionThreadHandler(Thread: TJclDebugThread);
-    class procedure ShowException(E: Exception; Thread: TJclDebugThread);
-    property DetailsVisible: Boolean read FDetailsVisible write SetDetailsVisible;
-    property ReportAsText: WideString read GetReportAsText;
-    property SimpleLog: TSimpleExceptionLog read FSimpleLog;
+    class procedure ExceptionHandler(Sender:TObject; E:Exception);
+    class procedure ExceptionThreadHandler(Thread:TJclDebugThread);
+    class procedure ShowException(E:Exception; Thread:TJclDebugThread);
+    property DetailsVisible:Boolean read FDetailsVisible write SetDetailsVisible;
+    property ReportAsText:WideString read GetReportAsText;
+    property SimpleLog:TSimpleExceptionLog read FSimpleLog;
   end;
 
   TExceptionDialogClass = class of TExceptionDialog;
 
 var
-  ExceptionDialogClass: TExceptionDialogClass = TExceptionDialog;
+  ExceptionDialogClass:TExceptionDialogClass = TExceptionDialog;
 
 implementation
 
@@ -142,15 +142,15 @@ resourcestring
   RsMissingVersionInfo = '(no version info)';
 
 var
-  ExceptionDialog: TExceptionDialog;
+  ExceptionDialog:TExceptionDialog;
 
 //==================================================================================================
 // Helper routines
 //==================================================================================================
 
-function GetBPP: Integer;
+function GetBPP:Integer;
 var
-  DC: HDC;
+  DC:HDC;
 begin
   DC := GetDC(0);
   Result := GetDeviceCaps(DC, BITSPIXEL) * GetDeviceCaps(DC, PLANES);
@@ -159,7 +159,7 @@ end;
 
 //--------------------------------------------------------------------------------------------------
 
-function SortModulesListByAddressCompare(List: TTntStringList; Index1, Index2: Integer): Integer;
+function SortModulesListByAddressCompare(List:TTntStringList; Index1, Index2:Integer):Integer;
 begin
   Result := Integer(List.Objects[Index1]) - Integer(List.Objects[Index2]);
 end;
@@ -174,7 +174,7 @@ end;
 //    SysUtils.ShowException(ExceptObject, ExceptAddr);
 // end;
 
-procedure HookShowException(ExceptObject: TObject; ExceptAddr: Pointer);
+procedure HookShowException(ExceptObject:TObject; ExceptAddr:Pointer);
 begin
   if JclValidateModuleAddress(ExceptAddr) and (ExceptObject.InstanceSize >= Exception.InstanceSize) then
     TExceptionDialog.ExceptionHandler(nil, Exception(ExceptObject))
@@ -184,23 +184,23 @@ end;
 
 //--------------------------------------------------------------------------------------------------
 
-function HookTApplicationHandleException: Boolean;
+function HookTApplicationHandleException:Boolean;
 const
   CallOffset = $86;
   CallOffsetDebug = $94;
 type
   PCALLInstruction = ^TCALLInstruction;
   TCALLInstruction = packed record
-    Call: Byte;
-    Address: Integer;
+    Call:Byte;
+    Address:Integer;
   end;
 var
-  TApplicationHandleExceptionAddr, SysUtilsShowExceptionAddr: Pointer;
-  CALLInstruction: TCALLInstruction;
-  CallAddress: Pointer;
-  NW: DWORD;
+  TApplicationHandleExceptionAddr, SysUtilsShowExceptionAddr:Pointer;
+  CALLInstruction:TCALLInstruction;
+  CallAddress:Pointer;
+  NW:DWORD;
 
-  function CheckAddressForOffset(Offset: Cardinal): Boolean;
+  function CheckAddressForOffset(Offset:Cardinal):Boolean;
   begin
     try
       CallAddress := Pointer(Cardinal(TApplicationHandleExceptionAddr) + Offset);
@@ -247,7 +247,7 @@ end;
 
 //--------------------------------------------------------------------------------------------------
 
-constructor TSimpleExceptionLog.Create(const ALogFileName: WideString);
+constructor TSimpleExceptionLog.Create(const ALogFileName:WideString);
 begin
   if ALogFileName = '' then
     FLogFileName := CreateDefaultFileName
@@ -258,7 +258,7 @@ end;
 
 //--------------------------------------------------------------------------------------------------
 
-function TSimpleExceptionLog.CreateDefaultFileName: WideString;
+function TSimpleExceptionLog.CreateDefaultFileName:WideString;
 begin
 
   Result := WideIncludeTrailingPathDelimiter(WideExtractFileDir(WideParamStr(0))) +
@@ -276,7 +276,7 @@ end;
 
 //--------------------------------------------------------------------------------------------------
 
-function TSimpleExceptionLog.GetLogOpen: Boolean;
+function TSimpleExceptionLog.GetLogOpen:Boolean;
 begin
   Result := FLogFileHandle <> INVALID_HANDLE_VALUE;
 end;
@@ -298,11 +298,11 @@ end;
 
 //--------------------------------------------------------------------------------------------------
 
-procedure TSimpleExceptionLog.Write(const Text: WideString; Indent: Integer);
+procedure TSimpleExceptionLog.Write(const Text:WideString; Indent:Integer);
 var
-  S: WideString;
-  SL: TTntStringList;
-  I: Integer;
+  S:WideString;
+  SL:TTntStringList;
+  I:Integer;
 begin
   if LogOpen then
   begin
@@ -322,9 +322,9 @@ end;
 
 //--------------------------------------------------------------------------------------------------
 
-procedure TSimpleExceptionLog.Write(Strings: TTntStrings; Indent: Integer);
+procedure TSimpleExceptionLog.Write(Strings:TTntStrings; Indent:Integer);
 var
-  I: Integer;
+  I:Integer;
 begin
   for I := 0 to Strings.Count - 1 do
     Write(Strings[I], Indent);
@@ -332,7 +332,7 @@ end;
 
 //--------------------------------------------------------------------------------------------------
 
-procedure TSimpleExceptionLog.WriteStamp(SeparatorLen: Integer);
+procedure TSimpleExceptionLog.WriteStamp(SeparatorLen:Integer);
 begin
   if SeparatorLen = 0 then
     SeparatorLen := 100;
@@ -350,7 +350,7 @@ end;
 //==================================================================================================
 
 var
-  ExceptionShowing: Boolean;
+  ExceptionShowing:Boolean;
 
 { TExceptionDialog }
 
@@ -401,20 +401,20 @@ end;
 
 //--------------------------------------------------------------------------------------------------
 
-procedure TExceptionDialog.CreateReport(const SystemInfo: TExcDialogSystemInfos);
+procedure TExceptionDialog.CreateReport(const SystemInfo:TExcDialogSystemInfos);
 const
-  MMXText: array[Boolean] of PWideChar = ('', 'MMX');
-  FDIVText: array[Boolean] of PWideChar = (' [FDIV Bug]', '');
+  MMXText:array[Boolean] of PWideChar = ('', 'MMX');
+  FDIVText:array[Boolean] of PWideChar = (' [FDIV Bug]', '');
 var
-  SL: TTntStringList;
-  I: Integer;
-  ModuleName: TFileName;
-  CpuInfo: TCpuInfo;
-  C: TWinControl;
-  NtHeaders: PImageNtHeaders;
-  ModuleBase: Cardinal;
-  ImageBaseStr: WideString;
-  StackList: TJclStackInfoList;
+  SL:TTntStringList;
+  I:Integer;
+  ModuleName:TFileName;
+  CpuInfo:TCpuInfo;
+  C:TWinControl;
+  NtHeaders:PImageNtHeaders;
+  ModuleBase:Cardinal;
+  ImageBaseStr:WideString;
+  StackList:TJclStackInfoList;
 begin
   SL := TTntStringList.Create;
   try
@@ -494,14 +494,14 @@ end;
 
 //--------------------------------------------------------------------------------------------------
 
-procedure TExceptionDialog.DetailsBtnClick(Sender: TObject);
+procedure TExceptionDialog.DetailsBtnClick(Sender:TObject);
 begin
   DetailsVisible := not DetailsVisible;
 end;
 
 //--------------------------------------------------------------------------------------------------
 
-class procedure TExceptionDialog.ExceptionHandler(Sender: TObject; E: Exception);
+class procedure TExceptionDialog.ExceptionHandler(Sender:TObject; E:Exception);
 begin
   if ExceptionShowing then
     Application.ShowException(E)
@@ -518,7 +518,7 @@ end;
 
 //--------------------------------------------------------------------------------------------------
 
-class procedure TExceptionDialog.ExceptionThreadHandler(Thread: TJclDebugThread);
+class procedure TExceptionDialog.ExceptionThreadHandler(Thread:TJclDebugThread);
 begin
   if ExceptionShowing then
     Application.ShowException(Thread.SyncException as Exception)
@@ -535,7 +535,7 @@ end;
 
 //--------------------------------------------------------------------------------------------------
 
-procedure TExceptionDialog.FormCreate(Sender: TObject);
+procedure TExceptionDialog.FormCreate(Sender:TObject);
 begin
   FSimpleLog := TSimpleExceptionLog.Create;
   FFullHeight := ClientHeight;
@@ -545,14 +545,14 @@ end;
 
 //--------------------------------------------------------------------------------------------------
 
-procedure TExceptionDialog.FormDestroy(Sender: TObject);
+procedure TExceptionDialog.FormDestroy(Sender:TObject);
 begin
   FreeAndNil(FSimpleLog);
 end;
 
 //--------------------------------------------------------------------------------------------------
 
-procedure TExceptionDialog.FormKeyDown(Sender: TObject; var Key: Word; Shift: TShiftState);
+procedure TExceptionDialog.FormKeyDown(Sender:TObject; var Key:Word; Shift:TShiftState);
 begin
   if (Key = Ord('C')) and (ssCtrl in Shift) then
   begin
@@ -563,7 +563,7 @@ end;
 
 //--------------------------------------------------------------------------------------------------
 
-procedure TExceptionDialog.FormPaint(Sender: TObject);
+procedure TExceptionDialog.FormPaint(Sender:TObject);
 begin
   DrawIcon(Canvas.Handle, TextLabel.Left - GetSystemMetrics(SM_CXICON) - 15,
     TextLabel.Top, LoadIcon(0, IDI_ERROR));
@@ -571,14 +571,14 @@ end;
 
 //--------------------------------------------------------------------------------------------------
 
-procedure TExceptionDialog.FormResize(Sender: TObject);
+procedure TExceptionDialog.FormResize(Sender:TObject);
 begin
   UpdateTextLabelScrollbars;
 end;
 
 //--------------------------------------------------------------------------------------------------
 
-procedure TExceptionDialog.FormShow(Sender: TObject);
+procedure TExceptionDialog.FormShow(Sender:TObject);
 begin
   BeforeCreateDetails;
   MessageBeep(MB_ICONERROR);
@@ -590,9 +590,9 @@ end;
 
 //--------------------------------------------------------------------------------------------------
 
-function StrEnsureSuffix(const Suffix, Text: WideString): WideString;
+function StrEnsureSuffix(const Suffix, Text:WideString):WideString;
 var
-  SuffixLen: Integer;
+  SuffixLen:Integer;
 begin
   SuffixLen := Length(Suffix);
   if Copy(Text, Length(Text) - SuffixLen + 1, SuffixLen) = Suffix then
@@ -601,7 +601,7 @@ begin
     Result := Text + Suffix;
 end;
 
-function TExceptionDialog.GetReportAsText: WideString;
+function TExceptionDialog.GetReportAsText:WideString;
 begin
   Result := StrEnsureSuffix(sLineBreak, TextLabel.Text) + sLineBreak + DetailsMemo.Text;
 end;
@@ -615,14 +615,14 @@ end;
 
 //--------------------------------------------------------------------------------------------------
 
-function TExceptionDialog.ReportMaxColumns: Integer;
+function TExceptionDialog.ReportMaxColumns:Integer;
 begin
   Result := 100;
 end;
 
 //--------------------------------------------------------------------------------------------------
 
-function TExceptionDialog.ReportNewBlockDelimiterChar: Char;
+function TExceptionDialog.ReportNewBlockDelimiterChar:Char;
 begin
   Result := '-';
 end;
@@ -644,9 +644,9 @@ end;
 
 //--------------------------------------------------------------------------------------------------
 
-procedure TExceptionDialog.SetDetailsVisible(const Value: Boolean);
+procedure TExceptionDialog.SetDetailsVisible(const Value:Boolean);
 var
-  DetailsCaption: WideString;
+  DetailsCaption:WideString;
 begin
   FDetailsVisible := Value;
   DetailsCaption := Trim(StrRemoveChars(DetailsBtn.Caption, ['<', '>']));
@@ -678,7 +678,7 @@ end;
 
 //--------------------------------------------------------------------------------------------------
 
-class procedure TExceptionDialog.ShowException(E: Exception; Thread: TJclDebugThread);
+class procedure TExceptionDialog.ShowException(E:Exception; Thread:TJclDebugThread);
 begin
   if ExceptionDialog = nil then
     ExceptionDialog := ExceptionDialogClass.Create(Application);
@@ -704,7 +704,7 @@ end;
 
 //--------------------------------------------------------------------------------------------------
 
-procedure TExceptionDialog.UMCreateDetails(var Message: TMessage);
+procedure TExceptionDialog.UMCreateDetails(var Message:TMessage);
 begin
   Update;
   CreateDetails;

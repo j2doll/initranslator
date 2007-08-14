@@ -29,131 +29,131 @@ uses
   TBX, TntExtCtrls, SpTBXItem;
 
 type
-  TTestToolItemClickEvent = procedure(Sender: TObject; ToolItem: TToolItem) of object;
+  TTestToolItemClickEvent = procedure(Sender:TObject; ToolItem:TToolItem) of object;
   TfrmTools = class(TfrmBase)
-    Label1: TTntLabel;
-    lbContents: TTntListBox;
-    btnOK: TTntButton;
-    btnCancel: TTntButton;
-    btnAdd: TTntButton;
-    btnDelete: TTntButton;
-    btnUp: TTntButton;
-    btnDown: TTntButton;
-    odCommand: TTntOpenDialog;
-    popArguments: TSpTBXPopupMenu;
-    OriginalLine1: TSpTBXItem;
-    OriginalText1: TSpTBXItem;
-    OriginalPath1: TSpTBXItem;
-    OriginalDirectory1: TSpTBXItem;
-    OriginalName1: TSpTBXItem;
-    OriginalExtension1: TSpTBXItem;
-    N1: TSpTBXSeparatorItem;
-    ranslationLine1: TSpTBXItem;
-    ranslationText1: TSpTBXItem;
-    ranslationPath1: TSpTBXItem;
-    ranslationDirectory1: TSpTBXItem;
-    ranslationName1: TSpTBXItem;
-    ranslationExtension1: TSpTBXItem;
-    N2: TSpTBXSeparatorItem;
-    DictionaryPath1: TSpTBXItem;
-    DictionaryDirectory1: TSpTBXItem;
-    DictionaryName1: TSpTBXItem;
-    DictionaryExtension1: TSpTBXItem;
-    popInitialDir: TSpTBXPopupMenu;
-    OriginalPath2: TSpTBXItem;
-    ranslationPath2: TSpTBXItem;
-    DictionaryPath2: TSpTBXItem;
-    ApplicationPath1: TSpTBXItem;
-    TBXSeparatorItem1: TSpTBXSeparatorItem;
-    TBXItem1: TSpTBXItem;
-    TBXItem2: TSpTBXItem;
-    TBXSeparatorItem2: TSpTBXSeparatorItem;
-    TBXItem3: TSpTBXItem;
-    TBXItem4: TSpTBXItem;
-    pnlEditTool: TTntPanel;
-    Label2: TTntLabel;
-    Label3: TTntLabel;
-    Label4: TTntLabel;
-    Label5: TTntLabel;
-    edTitle: TTntEdit;
-    edCommand: TTntEdit;
-    edArguments: TTntEdit;
-    edInitialDir: TTntEdit;
-    btnCommand: TTntButton;
-    btnArguments: TTntBitBtn;
-    btnInitDir: TTntBitBtn;
-    chkPrompt: TTntCheckBox;
-    chkWait: TTntCheckBox;
-    chkShell: TTntCheckBox;
-    btnTest: TTntButton;
-    TBItem1: TSpTBXItem;
-    lblShortCut: TTntLabel;
-    btnClear: TTntButton;
-    alTools: TTntActionList;
-    acAdd: TTntAction;
-    acDelete: TTntAction;
-    acMoveUp: TTntAction;
-    acMoveDown: TTntAction;
-    acCommand: TTntAction;
-    acClear: TTntAction;
-    acUseShellexecute: TTntAction;
-    acPrompt: TTntAction;
-    acWait: TTntAction;
-    acTest: TTntAction;
-    acArgs: TTntAction;
-    acDir: TTntAction;
-    ilTools: TImageList;
-    popContents: TSpTBXPopupMenu;
-    TBXItem5: TSpTBXItem;
-    TBXItem6: TSpTBXItem;
-    TBXSeparatorItem3: TSpTBXSeparatorItem;
-    TBXItem7: TSpTBXItem;
-    TBXItem8: TSpTBXItem;
-    Bevel1: TBevel;
-    procedure ArgumentsClick(Sender: TObject);
-    procedure InitialDirClick(Sender: TObject);
-    procedure lbContentsClick(Sender: TObject);
-    procedure edTitleChange(Sender: TObject);
-    procedure btnOKClick(Sender: TObject);
-    procedure acAddExecute(Sender: TObject);
-    procedure acDeleteExecute(Sender: TObject);
-    procedure acMoveUpExecute(Sender: TObject);
-    procedure acMoveDownExecute(Sender: TObject);
-    procedure acCommandExecute(Sender: TObject);
-    procedure acClearExecute(Sender: TObject);
-    procedure acUseShellexecuteExecute(Sender: TObject);
-    procedure acPromptExecute(Sender: TObject);
-    procedure acWaitExecute(Sender: TObject);
-    procedure acTestExecute(Sender: TObject);
-    procedure acArgsExecute(Sender: TObject);
-    procedure acDirExecute(Sender: TObject);
-    procedure alToolsUpdate(Action: TBasicAction; var Handled: Boolean);
-    function lbContentsDataFind(Control: TWinControl;
-      FindString: string): Integer;
-    procedure lbContentsData(Control: TWinControl; Index: Integer;
-      var Data: WideString);
-    procedure lbContentsDrawItem(Control: TWinControl; Index: Integer;
-      Rect: TRect; State: TOwnerDrawState);
+    Label1:TTntLabel;
+    lbContents:TTntListBox;
+    btnOK:TTntButton;
+    btnCancel:TTntButton;
+    btnAdd:TTntButton;
+    btnDelete:TTntButton;
+    btnUp:TTntButton;
+    btnDown:TTntButton;
+    odCommand:TTntOpenDialog;
+    popArguments:TSpTBXPopupMenu;
+    OriginalLine1:TSpTBXItem;
+    OriginalText1:TSpTBXItem;
+    OriginalPath1:TSpTBXItem;
+    OriginalDirectory1:TSpTBXItem;
+    OriginalName1:TSpTBXItem;
+    OriginalExtension1:TSpTBXItem;
+    N1:TSpTBXSeparatorItem;
+    ranslationLine1:TSpTBXItem;
+    ranslationText1:TSpTBXItem;
+    ranslationPath1:TSpTBXItem;
+    ranslationDirectory1:TSpTBXItem;
+    ranslationName1:TSpTBXItem;
+    ranslationExtension1:TSpTBXItem;
+    N2:TSpTBXSeparatorItem;
+    DictionaryPath1:TSpTBXItem;
+    DictionaryDirectory1:TSpTBXItem;
+    DictionaryName1:TSpTBXItem;
+    DictionaryExtension1:TSpTBXItem;
+    popInitialDir:TSpTBXPopupMenu;
+    OriginalPath2:TSpTBXItem;
+    ranslationPath2:TSpTBXItem;
+    DictionaryPath2:TSpTBXItem;
+    ApplicationPath1:TSpTBXItem;
+    TBXSeparatorItem1:TSpTBXSeparatorItem;
+    TBXItem1:TSpTBXItem;
+    TBXItem2:TSpTBXItem;
+    TBXSeparatorItem2:TSpTBXSeparatorItem;
+    TBXItem3:TSpTBXItem;
+    TBXItem4:TSpTBXItem;
+    pnlEditTool:TTntPanel;
+    Label2:TTntLabel;
+    Label3:TTntLabel;
+    Label4:TTntLabel;
+    Label5:TTntLabel;
+    edTitle:TTntEdit;
+    edCommand:TTntEdit;
+    edArguments:TTntEdit;
+    edInitialDir:TTntEdit;
+    btnCommand:TTntButton;
+    btnArguments:TTntBitBtn;
+    btnInitDir:TTntBitBtn;
+    chkPrompt:TTntCheckBox;
+    chkWait:TTntCheckBox;
+    chkShell:TTntCheckBox;
+    btnTest:TTntButton;
+    TBItem1:TSpTBXItem;
+    lblShortCut:TTntLabel;
+    btnClear:TTntButton;
+    alTools:TTntActionList;
+    acAdd:TTntAction;
+    acDelete:TTntAction;
+    acMoveUp:TTntAction;
+    acMoveDown:TTntAction;
+    acCommand:TTntAction;
+    acClear:TTntAction;
+    acUseShellexecute:TTntAction;
+    acPrompt:TTntAction;
+    acWait:TTntAction;
+    acTest:TTntAction;
+    acArgs:TTntAction;
+    acDir:TTntAction;
+    ilTools:TImageList;
+    popContents:TSpTBXPopupMenu;
+    TBXItem5:TSpTBXItem;
+    TBXItem6:TSpTBXItem;
+    TBXSeparatorItem3:TSpTBXSeparatorItem;
+    TBXItem7:TSpTBXItem;
+    TBXItem8:TSpTBXItem;
+    Bevel1:TBevel;
+    procedure ArgumentsClick(Sender:TObject);
+    procedure InitialDirClick(Sender:TObject);
+    procedure lbContentsClick(Sender:TObject);
+    procedure edTitleChange(Sender:TObject);
+    procedure btnOKClick(Sender:TObject);
+    procedure acAddExecute(Sender:TObject);
+    procedure acDeleteExecute(Sender:TObject);
+    procedure acMoveUpExecute(Sender:TObject);
+    procedure acMoveDownExecute(Sender:TObject);
+    procedure acCommandExecute(Sender:TObject);
+    procedure acClearExecute(Sender:TObject);
+    procedure acUseShellexecuteExecute(Sender:TObject);
+    procedure acPromptExecute(Sender:TObject);
+    procedure acWaitExecute(Sender:TObject);
+    procedure acTestExecute(Sender:TObject);
+    procedure acArgsExecute(Sender:TObject);
+    procedure acDirExecute(Sender:TObject);
+    procedure alToolsUpdate(Action:TBasicAction; var Handled:Boolean);
+    function lbContentsDataFind(Control:TWinControl;
+      FindString:string):Integer;
+    procedure lbContentsData(Control:TWinControl; Index:Integer;
+      var Data:WideString);
+    procedure lbContentsDrawItem(Control:TWinControl; Index:Integer;
+      Rect:TRect; State:TOwnerDrawState);
   private
     { Private declarations }
-    FLastItemIndex: integer;
-    FTools: TToolItems;
-    FOnTestClick: TTestToolItemClickEvent;
-    FMainActionList: TactionList;
-    edShortCut: TShortCutEdit;
+    FLastItemIndex:integer;
+    FTools:TToolItems;
+    FOnTestClick:TTestToolItemClickEvent;
+    FMainActionList:TactionList;
+    edShortCut:TShortCutEdit;
     procedure SaveCurrentTool;
     procedure LoadCurrentTool;
-    function NewToolTitle: WideString;
+    function NewToolTitle:WideString;
   public
     { Public declarations }
-    class function Edit(Options: TAppOptions; MainActionList: TActionList; TestClickEvent: TTestToolItemClickEvent): boolean;
-    procedure LoadOptions(Options: TAppOptions);
-    procedure SaveOptions(Options: TAppOptions);
+    class function Edit(Options:TAppOptions; MainActionList:TActionList; TestClickEvent:TTestToolItemClickEvent):boolean;
+    procedure LoadOptions(Options:TAppOptions);
+    procedure SaveOptions(Options:TAppOptions);
     procedure ClearToolList;
 
-    constructor Create(AOwner: TComponent); override;
+    constructor Create(AOwner:TComponent); override;
     destructor Destroy; override;
-    property OnTestClick: TTestToolItemClickEvent read FOnTestClick write FOnTestClick;
+    property OnTestClick:TTestToolItemClickEvent read FOnTestClick write FOnTestClick;
   end;
 
 implementation
@@ -177,9 +177,9 @@ begin
   inherited;
 end;
 
-class function TfrmTools.Edit(Options: TAppOptions; MainActionList: TActionList; TestClickEvent: TTestToolItemClickEvent): boolean;
+class function TfrmTools.Edit(Options:TAppOptions; MainActionList:TActionList; TestClickEvent:TTestToolItemClickEvent):boolean;
 var
-  frmTools: TfrmTools;
+  frmTools:TfrmTools;
 begin
   frmTools := Self.Create(Application);
   try
@@ -197,7 +197,7 @@ begin
   end;
 end;
 
-procedure TfrmTools.LoadOptions(Options: TAppOptions);
+procedure TfrmTools.LoadOptions(Options:TAppOptions);
 begin
   ClearToolList;
   FTools.Assign(Options.Tools);
@@ -205,23 +205,23 @@ begin
   lbContents.ItemIndex := 0;
 end;
 
-procedure TfrmTools.SaveOptions(Options: TAppOptions);
+procedure TfrmTools.SaveOptions(Options:TAppOptions);
 begin
   SaveCurrentTool;
   Options.Tools.Assign(FTools);
 end;
 
-procedure TfrmTools.ArgumentsClick(Sender: TObject);
+procedure TfrmTools.ArgumentsClick(Sender:TObject);
 begin
   edArguments.SelText := cArgsMacros[TMenuItem(Sender).Tag];
 end;
 
-procedure TfrmTools.InitialDirClick(Sender: TObject);
+procedure TfrmTools.InitialDirClick(Sender:TObject);
 begin
   edInitialDir.SelText := cDirMacros[TMenuItem(Sender).Tag];
 end;
 
-procedure TfrmTools.lbContentsClick(Sender: TObject);
+procedure TfrmTools.lbContentsClick(Sender:TObject);
 begin
   SaveCurrentTool;
   LoadCurrentTool;
@@ -230,8 +230,8 @@ end;
 
 procedure TfrmTools.LoadCurrentTool;
 var
-  ATool: TToolItem;
-  I: integer;
+  ATool:TToolItem;
+  I:integer;
 begin
   I := lbContents.ItemIndex;
   if (I >= 0) and (I < FTools.Count) then
@@ -263,7 +263,8 @@ begin
 end;
 
 procedure TfrmTools.SaveCurrentTool;
-var ATool: TToolItem;
+var
+  ATool:TToolItem;
 begin
   if (FLastItemIndex >= 0) and (FLastItemIndex < FTools.Count) then
   begin
@@ -280,7 +281,7 @@ begin
   end;
 end;
 
-constructor TfrmTools.Create(AOwner: TComponent);
+constructor TfrmTools.Create(AOwner:TComponent);
 begin
   inherited;
   FLastItemIndex := -1;
@@ -300,10 +301,10 @@ begin
   lblShortCut.FocusControl := edShortCut;
 end;
 
-function TfrmTools.NewToolTitle: WideString;
+function TfrmTools.NewToolTitle:WideString;
 var
-  i: integer;
-  S: WideString;
+  i:integer;
+  S:WideString;
 begin
   i := 1;
   S := _(Application.MainForm.ClassName, SFmtNewToolName);
@@ -315,7 +316,7 @@ begin
   end;
 end;
 
-procedure TfrmTools.edTitleChange(Sender: TObject);
+procedure TfrmTools.edTitleChange(Sender:TObject);
 begin
   with lbContents do
     if (ItemIndex >= 0) and (ItemIndex < FTools.Count) then
@@ -325,14 +326,15 @@ begin
     end;
 end;
 
-procedure TfrmTools.btnOKClick(Sender: TObject);
+procedure TfrmTools.btnOKClick(Sender:TObject);
 begin
   FLastItemIndex := lbContents.ItemIndex;
   SaveCurrentTool;
 end;
 
-procedure TfrmTools.acAddExecute(Sender: TObject);
-var ATool: TToolItem;
+procedure TfrmTools.acAddExecute(Sender:TObject);
+var
+  ATool:TToolItem;
 begin
   SaveCurrentTool;
   ATool := FTools.Add;
@@ -344,8 +346,9 @@ begin
     edTitle.SetFocus;
 end;
 
-procedure TfrmTools.acDeleteExecute(Sender: TObject);
-var i: integer;
+procedure TfrmTools.acDeleteExecute(Sender:TObject);
+var
+  i:integer;
 begin
   with lbContents do
   begin
@@ -362,8 +365,9 @@ begin
   end;
 end;
 
-procedure TfrmTools.acMoveUpExecute(Sender: TObject);
-var i: integer;
+procedure TfrmTools.acMoveUpExecute(Sender:TObject);
+var
+  i:integer;
 begin
   SaveCurrentTool;
   with lbContents do
@@ -379,8 +383,9 @@ begin
   end;
 end;
 
-procedure TfrmTools.acMoveDownExecute(Sender: TObject);
-var i: integer;
+procedure TfrmTools.acMoveDownExecute(Sender:TObject);
+var
+  i:integer;
 begin
   SaveCurrentTool;
   with lbContents do
@@ -396,34 +401,34 @@ begin
   end;
 end;
 
-procedure TfrmTools.acCommandExecute(Sender: TObject);
+procedure TfrmTools.acCommandExecute(Sender:TObject);
 begin
   odCommand.Filename := edCommand.Text;
   if odCommand.Execute then
     edCommand.Text := odCommand.Filename;
 end;
 
-procedure TfrmTools.acClearExecute(Sender: TObject);
+procedure TfrmTools.acClearExecute(Sender:TObject);
 begin
   edShortCut.ShortCut := 0;
 end;
 
-procedure TfrmTools.acUseShellexecuteExecute(Sender: TObject);
+procedure TfrmTools.acUseShellexecuteExecute(Sender:TObject);
 begin
   acUseShellexecute.Checked := not acUseShellexecute.Checked;
 end;
 
-procedure TfrmTools.acPromptExecute(Sender: TObject);
+procedure TfrmTools.acPromptExecute(Sender:TObject);
 begin
   acPrompt.Checked := not acPrompt.Checked;
 end;
 
-procedure TfrmTools.acWaitExecute(Sender: TObject);
+procedure TfrmTools.acWaitExecute(Sender:TObject);
 begin
   acWait.Checked := not acWait.Checked;
 end;
 
-procedure TfrmTools.acTestExecute(Sender: TObject);
+procedure TfrmTools.acTestExecute(Sender:TObject);
 begin
   with lbContents do
     if (ItemIndex >= 0) and (ItemIndex < FTools.Count) and Assigned(FOnTestClick) then
@@ -433,27 +438,30 @@ begin
     end;
 end;
 
-procedure TfrmTools.acArgsExecute(Sender: TObject);
-var P: TPoint;
+procedure TfrmTools.acArgsExecute(Sender:TObject);
+var
+  P:TPoint;
 begin
   P := btnArguments.ClientOrigin;
   Inc(P.X, btnArguments.Width);
   popArguments.Popup(P.X, P.Y);
 end;
 
-procedure TfrmTools.acDirExecute(Sender: TObject);
-var P: TPoint;
+procedure TfrmTools.acDirExecute(Sender:TObject);
+var
+  P:TPoint;
 begin
   P := btnInitDir.ClientOrigin;
   Inc(P.X, btnInitDir.Width);
   popInitialDir.Popup(P.X, P.Y);
 end;
 
-procedure TfrmTools.alToolsUpdate(Action: TBasicAction;
-  var Handled: Boolean);
+procedure TfrmTools.alToolsUpdate(Action:TBasicAction;
+  var Handled:Boolean);
 
-  procedure PropagateEnabled(AWinControl: TWinControl; Enabled: boolean);
-  var i: integer;
+  procedure PropagateEnabled(AWinControl:TWinControl; Enabled:boolean);
+  var
+    i:integer;
   begin
     if AWinControl.Tag <> -1 then // leave these alone
       AWinControl.Enabled := Enabled;
@@ -473,14 +481,14 @@ begin
   acWait.Enabled := not acUseShellexecute.Checked;
 end;
 
-function TfrmTools.lbContentsDataFind(Control: TWinControl;
-  FindString: string): Integer;
+function TfrmTools.lbContentsDataFind(Control:TWinControl;
+  FindString:string):Integer;
 begin
   Result := FTools.IndexOf(FindString);
 end;
 
-procedure TfrmTools.lbContentsData(Control: TWinControl; Index: Integer;
-  var Data: WideString);
+procedure TfrmTools.lbContentsData(Control:TWinControl; Index:Integer;
+  var Data:WideString);
 // var Action: TCustomAction;
 begin
   Data := '';
@@ -492,23 +500,23 @@ begin
   }
 end;
 
-procedure TfrmTools.lbContentsDrawItem(Control: TWinControl;
-  Index: Integer; Rect: TRect; State: TOwnerDrawState);
+procedure TfrmTools.lbContentsDrawItem(Control:TWinControl;
+  Index:Integer; Rect:TRect; State:TOwnerDrawState);
 var
   tmp:WideString;
-  Action: TCustomAction;
+  Action:TCustomAction;
 begin
   if (Index >= 0) and (Index < FTools.Count) then
-  with lbContents.Canvas do
-  begin
-    FillRect(Rect);
-    OffsetRect(Rect, 3, 0);
-    tmp := FTools[Index].Title;
-    Action := FindActionShortCut(FMainActionList, FTools[Index].ShortCut);
-    if Action <> nil then
-      tmp := '!>  ' + tmp + '  <!';
-    Tnt_DrawTextW(Handle, PWideChar(tmp), -1, Rect, DT_SINGLELINE or DT_VCENTER or DT_EXPANDTABS);
-  end;
+    with lbContents.Canvas do
+    begin
+      FillRect(Rect);
+      OffsetRect(Rect, 3, 0);
+      tmp := FTools[Index].Title;
+      Action := FindActionShortCut(FMainActionList, FTools[Index].ShortCut);
+      if Action <> nil then
+        tmp := '!>  ' + tmp + '  <!';
+      Tnt_DrawTextW(Handle, PWideChar(tmp), -1, Rect, DT_SINGLELINE or DT_VCENTER or DT_EXPANDTABS);
+    end;
 end;
 
 end.

@@ -26,53 +26,53 @@ uses
 
 type
   TfrmDictEdit = class(TfrmBase)
-    cbOriginal: TTntComboBox;
-    TntLabel1: TTntLabel;
-    btnAddOriginal: TTntButton;
-    btnRemoveOriginal: TTntButton;
-    lbTranslations: TTntListBox;
-    TntLabel2: TTntLabel;
-    edTranslation: TTntEdit;
-    btnAddTranslation: TTntButton;
-    btnRemoveTranslation: TTntButton;
-    btnOK: TTntButton;
-    btnCancel: TTntButton;
-    TntBevel1: TTntBevel;
-    alDictEdit: TTntActionList;
-    acAddOriginal: TTntAction;
-    acRemoveOriginal: TTntAction;
-    acAddTranslation: TTntAction;
-    acRemoveTranslation: TTntAction;
-    TntLabel3: TTntLabel;
-    cbFilter: TTntComboBox;
-    acMakeDefault: TTntAction;
-    popTranslations: TTntPopupMenu;
-    MakeDefault1: TTntMenuItem;
-    procedure cbOriginalChange(Sender: TObject);
-    procedure alDictEditUpdate(Action: TBasicAction; var Handled: Boolean);
-    procedure acAddOriginalExecute(Sender: TObject);
-    procedure acRemoveOriginalExecute(Sender: TObject);
-    procedure acAddTranslationExecute(Sender: TObject);
-    procedure acRemoveTranslationExecute(Sender: TObject);
-    procedure lbTranslationsClick(Sender: TObject);
-    procedure cbFilterChange(Sender: TObject);
-    procedure lbTranslationsDblClick(Sender: TObject);
-    procedure lbTranslationsDrawItem(Control: TWinControl; Index: Integer;
-      Rect: TRect; State: TOwnerDrawState);
-    procedure acMakeDefaultExecute(Sender: TObject);
+    cbOriginal:TTntComboBox;
+    TntLabel1:TTntLabel;
+    btnAddOriginal:TTntButton;
+    btnRemoveOriginal:TTntButton;
+    lbTranslations:TTntListBox;
+    TntLabel2:TTntLabel;
+    edTranslation:TTntEdit;
+    btnAddTranslation:TTntButton;
+    btnRemoveTranslation:TTntButton;
+    btnOK:TTntButton;
+    btnCancel:TTntButton;
+    TntBevel1:TTntBevel;
+    alDictEdit:TTntActionList;
+    acAddOriginal:TTntAction;
+    acRemoveOriginal:TTntAction;
+    acAddTranslation:TTntAction;
+    acRemoveTranslation:TTntAction;
+    TntLabel3:TTntLabel;
+    cbFilter:TTntComboBox;
+    acMakeDefault:TTntAction;
+    popTranslations:TTntPopupMenu;
+    MakeDefault1:TTntMenuItem;
+    procedure cbOriginalChange(Sender:TObject);
+    procedure alDictEditUpdate(Action:TBasicAction; var Handled:Boolean);
+    procedure acAddOriginalExecute(Sender:TObject);
+    procedure acRemoveOriginalExecute(Sender:TObject);
+    procedure acAddTranslationExecute(Sender:TObject);
+    procedure acRemoveTranslationExecute(Sender:TObject);
+    procedure lbTranslationsClick(Sender:TObject);
+    procedure cbFilterChange(Sender:TObject);
+    procedure lbTranslationsDblClick(Sender:TObject);
+    procedure lbTranslationsDrawItem(Control:TWinControl; Index:Integer;
+      Rect:TRect; State:TOwnerDrawState);
+    procedure acMakeDefaultExecute(Sender:TObject);
   private
     { Private declarations }
-    FItems: TDictionaryItems;
-    procedure SetItems(const Value: TDictionaryItems);
-    function GetItems: TDictionaryItems;
-    function CurrentItem: TDictionaryItem;
+    FItems:TDictionaryItems;
+    procedure SetItems(const Value:TDictionaryItems);
+    function GetItems:TDictionaryItems;
+    function CurrentItem:TDictionaryItem;
     procedure UpdateUI;
   public
     { Public declarations }
-    constructor Create(AOwner: TComponent); override;
+    constructor Create(AOwner:TComponent); override;
     destructor Destroy; override;
-    property Items: TDictionaryItems read GetItems write SetItems;
-    class function Edit(Items: TDictionaryItems): boolean;
+    property Items:TDictionaryItems read GetItems write SetItems;
+    class function Edit(Items:TDictionaryItems):boolean;
   end;
 
 implementation
@@ -83,7 +83,7 @@ uses
 
 { TfrmDictEdit }
 
-constructor TfrmDictEdit.Create(AOwner: TComponent);
+constructor TfrmDictEdit.Create(AOwner:TComponent);
 begin
   inherited Create(AOwner);
   FItems := TDictionaryItems.Create;
@@ -95,9 +95,9 @@ begin
   inherited Destroy;
 end;
 
-class function TfrmDictEdit.Edit(Items: TDictionaryItems): boolean;
+class function TfrmDictEdit.Edit(Items:TDictionaryItems):boolean;
 var
-  frm: TfrmDictEdit;
+  frm:TfrmDictEdit;
 begin
   frm := self.Create(Application);
   try
@@ -115,12 +115,12 @@ begin
   end;
 end;
 
-function TfrmDictEdit.GetItems: TDictionaryItems;
+function TfrmDictEdit.GetItems:TDictionaryItems;
 begin
   Result := FItems;
 end;
 
-procedure TfrmDictEdit.SetItems(const Value: TDictionaryItems);
+procedure TfrmDictEdit.SetItems(const Value:TDictionaryItems);
 begin
   FItems.Assign(Value);
   cbOriginal.Items.Clear;
@@ -128,9 +128,9 @@ begin
   cbFilterChange(nil);
 end;
 
-procedure TfrmDictEdit.cbOriginalChange(Sender: TObject);
+procedure TfrmDictEdit.cbOriginalChange(Sender:TObject);
 var
-  D: TDictionaryItem;
+  D:TDictionaryItem;
 begin
 
   lbTranslations.Count := 0;
@@ -143,11 +143,11 @@ begin
   UpdateUI;
 end;
 
-procedure TfrmDictEdit.alDictEditUpdate(Action: TBasicAction;
-  var Handled: Boolean);
+procedure TfrmDictEdit.alDictEditUpdate(Action:TBasicAction;
+  var Handled:Boolean);
 var
-  i: integer;
-  D: TDictionaryItem;
+  i:integer;
+  D:TDictionaryItem;
 begin
   D := CurrentItem;
   acAddOriginal.Enabled := (cbOriginal.Text <> '') and (D = nil);
@@ -167,9 +167,9 @@ begin
   end;
 end;
 
-procedure TfrmDictEdit.acAddOriginalExecute(Sender: TObject);
+procedure TfrmDictEdit.acAddOriginalExecute(Sender:TObject);
 var
-  D: TDictionaryItem;
+  D:TDictionaryItem;
 begin
   if (cbOriginal.Text <> '') and (CurrentItem <> nil) then
   begin
@@ -189,8 +189,9 @@ begin
   cbFilterChange(Sender);
 end;
 
-procedure TfrmDictEdit.acRemoveOriginalExecute(Sender: TObject);
-var i: integer;
+procedure TfrmDictEdit.acRemoveOriginalExecute(Sender:TObject);
+var
+  i:integer;
 begin
   i := FItems.IndexOf(cbOriginal.Text);
   if i >= 0 then
@@ -208,8 +209,9 @@ begin
   cbOriginal.SetFocus;
 end;
 
-procedure TfrmDictEdit.acAddTranslationExecute(Sender: TObject);
-var i: integer;
+procedure TfrmDictEdit.acAddTranslationExecute(Sender:TObject);
+var
+  i:integer;
 begin
   if edTranslation.Text = '' then
     Exit;
@@ -223,9 +225,9 @@ begin
   end;
 end;
 
-procedure TfrmDictEdit.acRemoveTranslationExecute(Sender: TObject);
+procedure TfrmDictEdit.acRemoveTranslationExecute(Sender:TObject);
 var
-  D: TDictionaryItem;
+  D:TDictionaryItem;
 begin
   D := CurrentItem;
   if (D <> nil) then
@@ -238,7 +240,7 @@ begin
   end;
 end;
 
-procedure TfrmDictEdit.lbTranslationsClick(Sender: TObject);
+procedure TfrmDictEdit.lbTranslationsClick(Sender:TObject);
 begin
   with lbTranslations do
     if ItemIndex >= 0 then
@@ -251,8 +253,9 @@ begin
   alDictEdit.UpdateAction(nil);
 end;
 
-procedure TfrmDictEdit.cbFilterChange(Sender: TObject);
-var i: integer;
+procedure TfrmDictEdit.cbFilterChange(Sender:TObject);
+var
+  i:integer;
 begin
   cbOriginal.Text := '';
   cbOriginal.Items.Clear;
@@ -278,13 +281,14 @@ begin
   cbOriginalChange(Sender);
 end;
 
-procedure TfrmDictEdit.lbTranslationsDblClick(Sender: TObject);
+procedure TfrmDictEdit.lbTranslationsDblClick(Sender:TObject);
 begin
   acMakeDefault.Execute;
 end;
 
-function TfrmDictEdit.CurrentItem: TDictionaryItem;
-var i: integer;
+function TfrmDictEdit.CurrentItem:TDictionaryItem;
+var
+  i:integer;
 begin
   i := Items.IndexOf(cbOriginal.Text);
   if i >= 0 then
@@ -293,11 +297,11 @@ begin
     Result := nil;
 end;
 
-procedure TfrmDictEdit.lbTranslationsDrawItem(Control: TWinControl;
-  Index: Integer; Rect: TRect; State: TOwnerDrawState);
+procedure TfrmDictEdit.lbTranslationsDrawItem(Control:TWinControl;
+  Index:Integer; Rect:TRect; State:TOwnerDrawState);
 var
-  D: TDictionaryItem;
-  C: TCanvas;
+  D:TDictionaryItem;
+  C:TCanvas;
 begin
   C := lbTranslations.Canvas;
   C.Font := lbTranslations.Font;
@@ -315,9 +319,9 @@ begin
   end;
 end;
 
-procedure TfrmDictEdit.acMakeDefaultExecute(Sender: TObject);
+procedure TfrmDictEdit.acMakeDefaultExecute(Sender:TObject);
 var
-  D: TDictionaryItem;
+  D:TDictionaryItem;
 begin
   // set the selected item as the default translation
   D := CurrentItem;

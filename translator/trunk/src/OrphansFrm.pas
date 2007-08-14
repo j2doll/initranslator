@@ -33,74 +33,74 @@ uses
 
 type
   TfrmOrphans = class(TfrmBase)
-    lvOrphaned: TTntListView;
-    StatusBar1: TTntStatusBar;
-    Panel1: TTntPanel;
-    Panel2: TTntPanel;
-    lblSection: TTntLabel;
-    alOrphans: TTntActionList;
-    acCopy: TTntAction;
-    acSave: TTntAction;
-    acMerge: TTntAction;
-    acClear: TTntAction;
-    acClose: TTntAction;
-    acRemove: TTntAction;
-    acPaste: TTntAction;
-    acFindItem: TTntAction;
-    acFindNext: TTntAction;
-    TopDock: TSpTBXDock;
-    tbMenu: TSpTBXToolbar;
-    Actions1: TSpTBXSubmenuItem;
-    SpTBXItem10: TSpTBXItem;
-    SpTBXItem12: TSpTBXItem;
-    SpTBXItem13: TSpTBXItem;
-    SpTBXItem14: TSpTBXItem;
-    SpTBXItem15: TSpTBXItem;
-    SpTBXItem16: TSpTBXItem;
-    SpTBXItem17: TSpTBXItem;
-    SpTBXItem18: TSpTBXItem;
-    SpTBXItem19: TSpTBXItem;
-    SpTBXSeparatorItem3: TSpTBXSeparatorItem;
-    SpTBXSeparatorItem4: TSpTBXSeparatorItem;
-    SpTBXSeparatorItem5: TSpTBXSeparatorItem;
-    popList: TSpTBXPopupMenu;
-    SpTBXItem3: TSpTBXItem;
-    SpTBXItem5: TSpTBXItem;
-    SpTBXItem6: TSpTBXItem;
-    SpTBXItem7: TSpTBXItem;
-    SpTBXItem8: TSpTBXItem;
-    SpTBXSeparatorItem1: TSpTBXSeparatorItem;
-    SpTBXSeparatorItem2: TSpTBXSeparatorItem;
-    acAdd: TTntAction;
-    SpTBXItem1: TSpTBXItem;
-    SpTBXItem2: TSpTBXItem;
-    procedure lvOrphanedResize(Sender: TObject);
-    procedure acCopyExecute(Sender: TObject);
-    procedure alOrphansUpdate(Action: TBasicAction; var Handled: Boolean);
-    procedure lvOrphanedChange(Sender: TObject; Item: TListItem;
-      Change: TItemChange);
-    procedure FormShow(Sender: TObject);
-    procedure acMergeExecute(Sender: TObject);
-    procedure lvOrphanedData(Sender: TObject; Item: TListItem);
-    procedure acSaveExecute(Sender: TObject);
-    procedure acCloseExecute(Sender: TObject);
-    procedure acClearExecute(Sender: TObject);
-    procedure acRemoveExecute(Sender: TObject);
-    procedure acPasteExecute(Sender: TObject);
-    procedure acFindItemExecute(Sender: TObject);
-    procedure acFindNextExecute(Sender: TObject);
-    procedure acAddExecute(Sender: TObject);
+    lvOrphaned:TTntListView;
+    StatusBar1:TTntStatusBar;
+    Panel1:TTntPanel;
+    Panel2:TTntPanel;
+    lblSection:TTntLabel;
+    alOrphans:TTntActionList;
+    acCopy:TTntAction;
+    acSave:TTntAction;
+    acMerge:TTntAction;
+    acClear:TTntAction;
+    acClose:TTntAction;
+    acRemove:TTntAction;
+    acPaste:TTntAction;
+    acFindItem:TTntAction;
+    acFindNext:TTntAction;
+    TopDock:TSpTBXDock;
+    tbMenu:TSpTBXToolbar;
+    Actions1:TSpTBXSubmenuItem;
+    SpTBXItem10:TSpTBXItem;
+    SpTBXItem12:TSpTBXItem;
+    SpTBXItem13:TSpTBXItem;
+    SpTBXItem14:TSpTBXItem;
+    SpTBXItem15:TSpTBXItem;
+    SpTBXItem16:TSpTBXItem;
+    SpTBXItem17:TSpTBXItem;
+    SpTBXItem18:TSpTBXItem;
+    SpTBXItem19:TSpTBXItem;
+    SpTBXSeparatorItem3:TSpTBXSeparatorItem;
+    SpTBXSeparatorItem4:TSpTBXSeparatorItem;
+    SpTBXSeparatorItem5:TSpTBXSeparatorItem;
+    popList:TSpTBXPopupMenu;
+    SpTBXItem3:TSpTBXItem;
+    SpTBXItem5:TSpTBXItem;
+    SpTBXItem6:TSpTBXItem;
+    SpTBXItem7:TSpTBXItem;
+    SpTBXItem8:TSpTBXItem;
+    SpTBXSeparatorItem1:TSpTBXSeparatorItem;
+    SpTBXSeparatorItem2:TSpTBXSeparatorItem;
+    acAdd:TTntAction;
+    SpTBXItem1:TSpTBXItem;
+    SpTBXItem2:TSpTBXItem;
+    procedure lvOrphanedResize(Sender:TObject);
+    procedure acCopyExecute(Sender:TObject);
+    procedure alOrphansUpdate(Action:TBasicAction; var Handled:Boolean);
+    procedure lvOrphanedChange(Sender:TObject; Item:TListItem;
+      Change:TItemChange);
+    procedure FormShow(Sender:TObject);
+    procedure acMergeExecute(Sender:TObject);
+    procedure lvOrphanedData(Sender:TObject; Item:TListItem);
+    procedure acSaveExecute(Sender:TObject);
+    procedure acCloseExecute(Sender:TObject);
+    procedure acClearExecute(Sender:TObject);
+    procedure acRemoveExecute(Sender:TObject);
+    procedure acPasteExecute(Sender:TObject);
+    procedure acFindItemExecute(Sender:TObject);
+    procedure acFindNextExecute(Sender:TObject);
+    procedure acAddExecute(Sender:TObject);
   private
     { Private declarations }
-    FAppServices: IApplicationServices;
-    FOnMerge: TNotifyEvent;
-    procedure SaveToFile(const FileName: WideString);
-    procedure ShowError(Count: integer);
-    function SelectedItem: ITranslationItem;
-    function SelectedIndex: integer;
+    FAppServices:IApplicationServices;
+    FOnMerge:TNotifyEvent;
+    procedure SaveToFile(const FileName:WideString);
+    procedure ShowError(Count:integer);
+    function SelectedItem:ITranslationItem;
+    function SelectedIndex:integer;
   public
     { Public declarations }
-    class function Edit(const ApplicationServices: IApplicationServices; CanMerge: boolean; OnMerge: TNotifyEvent): boolean;
+    class function Edit(const ApplicationServices:IApplicationServices; CanMerge:boolean; OnMerge:TNotifyEvent):boolean;
   end;
 
 implementation
@@ -109,9 +109,9 @@ uses
 
 {$R *.dfm}
 
-class function TfrmOrphans.Edit(const ApplicationServices: IApplicationServices; CanMerge: boolean; OnMerge: TNotifyEvent): boolean;
+class function TfrmOrphans.Edit(const ApplicationServices:IApplicationServices; CanMerge:boolean; OnMerge:TNotifyEvent):boolean;
 var
-  frmOrphans: TfrmOrphans;
+  frmOrphans:TfrmOrphans;
 begin
   frmOrphans := self.Create(Application);
   try
@@ -127,14 +127,15 @@ begin
   end;
 end;
 
-procedure TfrmOrphans.lvOrphanedResize(Sender: TObject);
+procedure TfrmOrphans.lvOrphanedResize(Sender:TObject);
 begin
   lvOrphaned.Columns[0].Width := lvOrphaned.ClientWidth div 2;
   lvOrphaned.Columns[1].Width := lvOrphaned.ClientWidth - lvOrphaned.Columns[0].Width;
 end;
 
-procedure TfrmOrphans.acCopyExecute(Sender: TObject);
-var S: WideString;
+procedure TfrmOrphans.acCopyExecute(Sender:TObject);
+var
+  S:WideString;
 begin
   with lvOrphaned.Selected do
   begin
@@ -149,9 +150,10 @@ begin
   end;
 end;
 
-procedure TfrmOrphans.alOrphansUpdate(Action: TBasicAction;
-  var Handled: Boolean);
-var AItem: ITranslationItem;
+procedure TfrmOrphans.alOrphansUpdate(Action:TBasicAction;
+  var Handled:Boolean);
+var
+  AItem:ITranslationItem;
 begin
   acCopy.Enabled := (lvOrphaned.Selected <> nil)
     and ((lvOrphaned.Selected.Caption <> '') or (lvOrphaned.Selected.SubItems[0] <> ''));
@@ -163,8 +165,8 @@ begin
   acFindNext.Enabled := acFindItem.Enabled;
 end;
 
-procedure TfrmOrphans.lvOrphanedChange(Sender: TObject; Item: TListItem;
-  Change: TItemChange);
+procedure TfrmOrphans.lvOrphanedChange(Sender:TObject; Item:TListItem;
+  Change:TItemChange);
 begin
   if (SelectedItem <> nil) then
     lblSection.Caption := '[' + SelectedItem.Section + '] ' + SelectedItem.Name
@@ -172,7 +174,7 @@ begin
     lblSection.Caption := '[]';
 end;
 
-procedure TfrmOrphans.FormShow(Sender: TObject);
+procedure TfrmOrphans.FormShow(Sender:TObject);
 begin
   if (lvOrphaned.Selected = nil) and (lvOrphaned.Items.Count > 0) then
     lvOrphaned.Selected := lvOrphaned.Items[0];
@@ -180,8 +182,9 @@ begin
     lvOrphaned.Selected.Focused := true;
 end;
 
-procedure TfrmOrphans.SaveToFile(const FileName: WideString);
-var i, iError: integer;
+procedure TfrmOrphans.SaveToFile(const FileName:WideString);
+var
+  i, iError:integer;
 begin
   with TWideMemIniFile.Create(Filename) do
   try
@@ -200,7 +203,7 @@ begin
   end;
 end;
 
-procedure TfrmOrphans.acMergeExecute(Sender: TObject);
+procedure TfrmOrphans.acMergeExecute(Sender:TObject);
 begin
   if Assigned(FOnMerge) then
   begin
@@ -213,7 +216,7 @@ begin
   lvOrphanedChange(nil, nil, ctState);
 end;
 
-procedure TfrmOrphans.lvOrphanedData(Sender: TObject; Item: TListItem);
+procedure TfrmOrphans.lvOrphanedData(Sender:TObject; Item:TListItem);
 begin
   if (Item <> nil) and (Item.Index >= 0) and (Item.Index < FAppServices.Orphans.Count) then
   begin
@@ -222,7 +225,7 @@ begin
   end;
 end;
 
-procedure TfrmOrphans.acSaveExecute(Sender: TObject);
+procedure TfrmOrphans.acSaveExecute(Sender:TObject);
 begin
   with TTntSaveDialog.Create(nil) do
   try
@@ -236,25 +239,26 @@ begin
   end;
 end;
 
-procedure TfrmOrphans.ShowError(Count: integer);
+procedure TfrmOrphans.ShowError(Count:integer);
 begin
   ErrMsg(WideFormat(SFmtSaveItemsNoName, [Count]), SErrorCaption);
 end;
 
-procedure TfrmOrphans.acCloseExecute(Sender: TObject);
+procedure TfrmOrphans.acCloseExecute(Sender:TObject);
 begin
   Close;
 end;
 
-procedure TfrmOrphans.acClearExecute(Sender: TObject);
+procedure TfrmOrphans.acClearExecute(Sender:TObject);
 begin
   lvOrphaned.Items.Count := 0;
   FAppServices.Orphans.Clear;
   lvOrphaned.Invalidate;
 end;
 
-procedure TfrmOrphans.acRemoveExecute(Sender: TObject);
-var i: integer;
+procedure TfrmOrphans.acRemoveExecute(Sender:TObject);
+var
+  i:integer;
 begin
   i := FAppServices.Orphans.IndexOf(SelectedItem);
   if i >= 0 then
@@ -264,14 +268,15 @@ begin
   lvOrphaned.Invalidate;
 end;
 
-procedure TfrmOrphans.acPasteExecute(Sender: TObject);
+procedure TfrmOrphans.acPasteExecute(Sender:TObject);
 begin
   if (SelectedItem <> nil) and (FAppServices.SelectedItem <> nil) then
     FAppServices.SelectedItem.Translation := SelectedItem.Translation;
 end;
 
-procedure TfrmOrphans.acAddExecute(Sender: TObject);
-var i:integer;
+procedure TfrmOrphans.acAddExecute(Sender:TObject);
+var
+  i:integer;
 begin
   if (SelectedItem <> nil) then
   begin
@@ -290,10 +295,10 @@ begin
   end;
 end;
 
-procedure TfrmOrphans.acFindItemExecute(Sender: TObject);
+procedure TfrmOrphans.acFindItemExecute(Sender:TObject);
 var
-  i: integer;
-  AItem: ITranslationItem;
+  i:integer;
+  AItem:ITranslationItem;
 begin
   if SelectedItem <> nil then
   begin
@@ -310,10 +315,10 @@ begin
   end;
 end;
 
-procedure TfrmOrphans.acFindNextExecute(Sender: TObject);
+procedure TfrmOrphans.acFindNextExecute(Sender:TObject);
 var
-  i, j: integer;
-  AItem: ITranslationItem;
+  i, j:integer;
+  AItem:ITranslationItem;
 begin
   if SelectedItem <> nil then
   begin
@@ -337,7 +342,7 @@ begin
   end;
 end;
 
-function TfrmOrphans.SelectedItem: ITranslationItem;
+function TfrmOrphans.SelectedItem:ITranslationItem;
 begin
   if lvOrphaned.Selected <> nil then
     Result := FAppServices.Orphans[lvOrphaned.Selected.Index]
@@ -345,7 +350,7 @@ begin
     Result := nil;
 end;
 
-function TfrmOrphans.SelectedIndex: integer;
+function TfrmOrphans.SelectedIndex:integer;
 begin
   if lvOrphaned.Selected <> nil then
     Result := lvOrphaned.Selected.Index
@@ -357,4 +362,3 @@ end;
 
 
 end.
-

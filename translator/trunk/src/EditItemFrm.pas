@@ -27,35 +27,35 @@ uses
 
 type
   TfrmEditItem = class(TfrmBase)
-    btnOK: TTntButton;
-    btnCancel: TTntButton;
-    Label1: TTntLabel;
-    cbSections: TTntComboBox;
-    Label2: TTntLabel;
-    edOriginal: TTntRichEdit;
-    Label3: TTntLabel;
-    edTranslation: TTntRichEdit;
-    Label6: TTntLabel;
-    edName: TTntEdit;
-    pcComments: TTntPageControl;
-    tabOriginal: TTntTabSheet;
-    tabTranslation: TTntTabSheet;
-    edOrigComments: TTntRichEdit;
-    edTransComment: TTntRichEdit;
-    procedure TntFormCreate(Sender: TObject);
-    procedure DoKeyDown(Sender: TObject; var Key: Word;
-      Shift: TShiftState);
-    procedure TntFormShow(Sender: TObject);
+    btnOK:TTntButton;
+    btnCancel:TTntButton;
+    Label1:TTntLabel;
+    cbSections:TTntComboBox;
+    Label2:TTntLabel;
+    edOriginal:TTntRichEdit;
+    Label3:TTntLabel;
+    edTranslation:TTntRichEdit;
+    Label6:TTntLabel;
+    edName:TTntEdit;
+    pcComments:TTntPageControl;
+    tabOriginal:TTntTabSheet;
+    tabTranslation:TTntTabSheet;
+    edOrigComments:TTntRichEdit;
+    edTransComment:TTntRichEdit;
+    procedure TntFormCreate(Sender:TObject);
+    procedure DoKeyDown(Sender:TObject; var Key:Word;
+      Shift:TShiftState);
+    procedure TntFormShow(Sender:TObject);
   private
     { Private declarations }
   public
     { Public declarations }
-    class function Edit(const ACaption: WideString;
-      Sections: TTntStringlist; const AItem: ITranslationItem; IsNewItem: boolean): boolean;
+    class function Edit(const ACaption:WideString;
+      Sections:TTntStringlist; const AItem:ITranslationItem; IsNewItem:boolean):boolean;
   end;
 
 var
-  frmEditItem: TfrmEditItem;
+  frmEditItem:TfrmEditItem;
 
 implementation
 uses
@@ -65,9 +65,10 @@ uses
 
 { TfrmEditItem }
 
-class function TfrmEditItem.Edit(const ACaption: WideString; Sections: TTntStringlist;
-  const AItem: ITranslationItem; IsNewItem: boolean): boolean;
-var frm: TfrmEditItem;
+class function TfrmEditItem.Edit(const ACaption:WideString; Sections:TTntStringlist;
+  const AItem:ITranslationItem; IsNewItem:boolean):boolean;
+var
+  frm:TfrmEditItem;
 begin
   frm := self.Create(Application);
   try
@@ -104,20 +105,20 @@ begin
   end;
 end;
 
-procedure TfrmEditItem.TntFormCreate(Sender: TObject);
+procedure TfrmEditItem.TntFormCreate(Sender:TObject);
 begin
   inherited;
   pcComments.ActivePageIndex := 0;
 end;
 
-procedure TfrmEditItem.DoKeyDown(Sender: TObject; var Key: Word;
-  Shift: TShiftState);
+procedure TfrmEditItem.DoKeyDown(Sender:TObject; var Key:Word;
+  Shift:TShiftState);
 begin
   if Key = VK_RETURN then
     Key := 0;
 end;
 
-procedure TfrmEditItem.TntFormShow(Sender: TObject);
+procedure TfrmEditItem.TntFormShow(Sender:TObject);
 begin
   if (ActiveControl = edTranslation) and edTranslation.CanFocus then
   begin

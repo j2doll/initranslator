@@ -24,80 +24,81 @@ uses
 type
   TDictionaryItem = class(TInterfacedObject, IInterface, IDictionaryItem)
   private
-    FTranslations: TTntStrings;
-    FOriginal: WideString;
-    FDefaultIndex: integer;
-    FOnChange: TNotifyEvent;
-    procedure SetTranslations(const Value: TTntStrings);
+    FTranslations:TTntStrings;
+    FOriginal:WideString;
+    FDefaultIndex:integer;
+    FOnChange:TNotifyEvent;
+    procedure SetTranslations(const Value:TTntStrings);
     procedure Change;
     {IDictionaryItem}
-    procedure SetOriginal(const Value: WideString);
-    function GetOriginal: WideString;
-    function TranslationCount: integer;
-    function GetTranslation(Index: Integer): WideString;
-    procedure SetTranslation(Index: integer; const Value: WideString);
-    function Add(const Translation: WideString): Integer;
-    procedure Delete(Index: integer);
-    function IndexOf(const Translation: WideString): integer;
+    procedure SetOriginal(const Value:WideString);
+    function GetOriginal:WideString;
+    function TranslationCount:integer;
+    function GetTranslation(Index:Integer):WideString;
+    procedure SetTranslation(Index:integer; const Value:WideString);
+    function Add(const Translation:WideString):Integer;
+    procedure Delete(Index:integer);
+    function IndexOf(const Translation:WideString):integer;
     procedure Clear;
   public
     constructor Create;
     destructor Destroy; override;
-    function DefaultTranslation: WideString;
-    property Original: WideString read GetOriginal write SetOriginal;
-    property Translations: TTntStrings read FTranslations write SetTranslations;
-    property DefaultIndex: integer read FDefaultIndex write FDefaultIndex;
-    property OnChange: TNotifyEvent read FOnChange write FOnChange;
+    function DefaultTranslation:WideString;
+    property Original:WideString read GetOriginal write SetOriginal;
+    property Translations:TTntStrings read FTranslations write SetTranslations;
+    property DefaultIndex:integer read FDefaultIndex write FDefaultIndex;
+    property OnChange:TNotifyEvent read FOnChange write FOnChange;
   end;
 
   TDictionaryItems = class(TInterfacedPersistent, IInterface, IDictionaryItems)
   private
-    FItems: TList;
-    FIgnorePunctuation: WordBool;
-    FModified: WordBool;
-    FAutoRemoveQuotes: boolean;
-    function GetCount: integer;
-    function GetItems(Index: integer): TDictionaryItem;
+    FItems:TList;
+    FIgnorePunctuation:WordBool;
+    FModified:WordBool;
+    FAutoRemoveQuotes:boolean;
+    function GetCount:integer;
+    function GetItems(Index:integer):TDictionaryItem;
     {IDictionaryItems}
     function IDictionaryItems.Add = DictAdd;
-    function GetModified: WordBool;
-    procedure SetModified(Value: WordBool);
-    function GetItem(Index: integer): IDictionaryItem;
-    function GetIgnorePunctuation: WordBool;
-    procedure SetIgnorePunctuation(Value: WordBool);
-    function DictAdd(const AOriginal: WideString): IDictionaryItem;
+    function GetModified:WordBool;
+    procedure SetModified(Value:WordBool);
+    function GetItem(Index:integer):IDictionaryItem;
+    function GetIgnorePunctuation:WordBool;
+    procedure SetIgnorePunctuation(Value:WordBool);
+    function DictAdd(const AOriginal:WideString):IDictionaryItem;
   protected
-    procedure DoChange(Sender: TObject);
+    procedure DoChange(Sender:TObject);
     procedure Merge;
   public
     procedure Invert;
-    procedure Assign(Source: TPersistent); override;
-    procedure LoadFromFile(const Filename: WideString);
-    procedure SaveToFile(const Filename: WideString);
-    function Add(const AOriginal: WideString): TDictionaryItem; overload;
-    function Add(var Item: TDictionaryItem): integer; overload;
-    procedure Delete(Index: integer);
-    function IndexOf(const S: WideString): integer;
+    procedure Assign(Source:TPersistent); override;
+    procedure LoadFromFile(const Filename:WideString);
+    procedure SaveToFile(const Filename:WideString);
+    function Add(const AOriginal:WideString):TDictionaryItem; overload;
+    function Add(var Item:TDictionaryItem):integer; overload;
+    procedure Delete(Index:integer);
+    function IndexOf(const S:WideString):integer;
     // find is like IndexOf but returns the index of where the item should be located
-    function Find(const S: WideString; var Index: integer): boolean;
+    function Find(const S:WideString; var Index:integer):boolean;
     procedure Clear;
     procedure Sort;
     procedure TrimTranslations; // removes empty translations
     constructor Create;
     destructor Destroy; override;
-    property AutoRemoveQuotes: boolean read FAutoRemoveQuotes write FAutoRemoveQuotes default true;
-    property Items[Index: integer]: TDictionaryItem read GetItems; default;
-    property Count: integer read GetCount;
-    property Modified: WordBool read GetModified write SetModified;
-    property IgnorePunctuation: WordBool read GetIgnorePunctuation write SetIgnorePunctuation;
+    property AutoRemoveQuotes:boolean read FAutoRemoveQuotes write FAutoRemoveQuotes default true;
+    property Items[Index:integer]:TDictionaryItem read GetItems; default;
+    property Count:integer read GetCount;
+    property Modified:WordBool read GetModified write SetModified;
+    property IgnorePunctuation:WordBool read GetIgnorePunctuation write SetIgnorePunctuation;
   end;
 
 implementation
 uses
   AppUtils, CommonUtils;
 
-function StripPunctuation(const S: WideString): WideString;
-var i, j: integer;
+function StripPunctuation(const S:WideString):WideString;
+var
+  i, j:integer;
 begin
   Result := S;
   j := 0;
@@ -110,19 +111,19 @@ begin
   SetLength(Result, j);
 end;
 
-function OriginalCompareIgnore(Item1, Item2: Pointer): integer;
+function OriginalCompareIgnore(Item1, Item2:Pointer):integer;
 begin
   Result := WideCompareText(StripPunctuation(TDictionaryItem(Item1).Original), StripPunctuation(TDictionaryItem(Item2).Original));
 end;
 
-function OriginalCompare(Item1, Item2: Pointer): integer;
+function OriginalCompare(Item1, Item2:Pointer):integer;
 begin
   Result := WideCompareText(TDictionaryItem(Item1).Original, TDictionaryItem(Item2).Original);
 end;
 
 { TDictionaryItem }
 
-function TDictionaryItem.Add(const Translation: WideString): Integer;
+function TDictionaryItem.Add(const Translation:WideString):Integer;
 begin
   Result := Translations.Add(Translation);
 end;
@@ -145,7 +146,7 @@ begin
   TTntStringlist(FTranslations).Sorted := true;
 end;
 
-function TDictionaryItem.DefaultTranslation: WideString;
+function TDictionaryItem.DefaultTranslation:WideString;
 begin
   if (DefaultIndex >= 0) and (DefaultIndex < Translations.Count) then
     Result := Translations[DefaultIndex]
@@ -155,7 +156,7 @@ begin
     Result := '';
 end;
 
-procedure TDictionaryItem.Delete(Index: integer);
+procedure TDictionaryItem.Delete(Index:integer);
 begin
   Translations.Delete(Index);
 end;
@@ -166,22 +167,22 @@ begin
   inherited Destroy;
 end;
 
-function TDictionaryItem.GetOriginal: WideString;
+function TDictionaryItem.GetOriginal:WideString;
 begin
   Result := FOriginal;
 end;
 
-function TDictionaryItem.GetTranslation(Index: Integer): WideString;
+function TDictionaryItem.GetTranslation(Index:Integer):WideString;
 begin
   Result := Translations[Index]
 end;
 
-function TDictionaryItem.IndexOf(const Translation: WideString): integer;
+function TDictionaryItem.IndexOf(const Translation:WideString):integer;
 begin
   Result := TRanslations.IndexOf(Translation);
 end;
 
-procedure TDictionaryItem.SetOriginal(const Value: WideString);
+procedure TDictionaryItem.SetOriginal(const Value:WideString);
 begin
   if FOriginal <> Value then
   begin
@@ -190,26 +191,26 @@ begin
   end;
 end;
 
-procedure TDictionaryItem.SetTranslation(Index: integer;
-  const Value: WideString);
+procedure TDictionaryItem.SetTranslation(Index:integer;
+  const Value:WideString);
 begin
   Translations[Index] := Value;
 end;
 
-procedure TDictionaryItem.SetTranslations(const Value: TTntStrings);
+procedure TDictionaryItem.SetTranslations(const Value:TTntStrings);
 begin
   FTranslations.Assign(Value);
   Change;
 end;
 
-function TDictionaryItem.TranslationCount: integer;
+function TDictionaryItem.TranslationCount:integer;
 begin
   Result := Translations.Count;
 end;
 
 { TDictionaryItems }
 
-function TDictionaryItems.Add(const AOriginal: WideString): TDictionaryItem;
+function TDictionaryItems.Add(const AOriginal:WideString):TDictionaryItem;
 begin
   Assert(AOriginal <> '', 'The original string must not be empty');
   Result := TDictionaryItem.Create;
@@ -218,7 +219,7 @@ begin
   Add(Result);
 end;
 
-function TDictionaryItems.Add(var Item: TDictionaryItem): integer;
+function TDictionaryItems.Add(var Item:TDictionaryItem):integer;
 begin
   Assert(Item <> nil, 'Item not assigned');
   Assert(Item.Original <> '', 'The original string must not be empty');
@@ -236,8 +237,9 @@ begin
   Modified := true;
 end;
 
-procedure TDictionaryItems.Assign(Source: TPersistent);
-var i: integer;
+procedure TDictionaryItems.Assign(Source:TPersistent);
+var
+  i:integer;
 begin
   if Source = nil then
     Clear
@@ -257,7 +259,8 @@ begin
 end;
 
 procedure TDictionaryItems.Clear;
-var i: integer;
+var
+  i:integer;
 begin
   for i := FItems.Count - 1 downto 0 do
     TDictionaryItems(FItems[i]).Free;
@@ -272,8 +275,9 @@ begin
   FAutoRemoveQuotes := true;
 end;
 
-procedure TDictionaryItems.Delete(Index: integer);
-var P: TDictionaryItem;
+procedure TDictionaryItems.Delete(Index:integer);
+var
+  P:TDictionaryItem;
 begin
   P := Items[Index];
   FItems.Delete(Index);
@@ -288,12 +292,12 @@ begin
   inherited;
 end;
 
-function TDictionaryItems.DictAdd(const AOriginal: WideString): IDictionaryItem;
+function TDictionaryItems.DictAdd(const AOriginal:WideString):IDictionaryItem;
 begin
   Result := Add(AOriginal);
 end;
 
-procedure TDictionaryItems.DoChange(Sender: TObject);
+procedure TDictionaryItems.DoChange(Sender:TObject);
 begin
   // always sort after the original string has been changed, so it ends up in the right position
   Sort;
@@ -301,9 +305,10 @@ begin
   Modified := true;
 end;
 
-function TDictionaryItems.Find(const S: WideString;
-  var Index: integer): boolean;
-var AItem: TDictionaryItem;
+function TDictionaryItems.Find(const S:WideString;
+  var Index:integer):boolean;
+var
+  AItem:TDictionaryItem;
 begin
   AItem := TDictionaryItem.Create;
   try
@@ -317,32 +322,32 @@ begin
   end;
 end;
 
-function TDictionaryItems.GetCount: integer;
+function TDictionaryItems.GetCount:integer;
 begin
   Result := FItems.Count;
 end;
 
-function TDictionaryItems.GetIgnorePunctuation: WordBool;
+function TDictionaryItems.GetIgnorePunctuation:WordBool;
 begin
   Result := FIgnorePunctuation;
 end;
 
-function TDictionaryItems.GetItem(Index: integer): IDictionaryItem;
+function TDictionaryItems.GetItem(Index:integer):IDictionaryItem;
 begin
   Result := Items[Index];
 end;
 
-function TDictionaryItems.GetItems(Index: integer): TDictionaryItem;
+function TDictionaryItems.GetItems(Index:integer):TDictionaryItem;
 begin
   Result := TDictionaryItem(FItems[Index]);
 end;
 
-function TDictionaryItems.GetModified: WordBool;
+function TDictionaryItems.GetModified:WordBool;
 begin
   Result := FModified;
 end;
 
-function TDictionaryItems.IndexOf(const S: WideString): integer;
+function TDictionaryItems.IndexOf(const S:WideString):integer;
 begin
   if not Find(S, Result) then
     Result := -1;
@@ -350,8 +355,8 @@ end;
 
 procedure TDictionaryItems.Invert;
 var
-  i, j: integer;
-  tmp: TDictionaryItems;
+  i, j:integer;
+  tmp:TDictionaryItems;
 begin
   tmp := TDictionaryItems.Create;
   try
@@ -367,13 +372,13 @@ begin
   Modified := true;
 end;
 
-procedure TDictionaryItems.LoadFromFile(const Filename: WideString);
+procedure TDictionaryItems.LoadFromFile(const Filename:WideString);
 var
-  AFile, AValues: TTntStringlist;
-  i, j: integer;
-  AItem: TDictionaryItem;
+  AFile, AValues:TTntStringlist;
+  i, j:integer;
+  AItem:TDictionaryItem;
 
-  function DoDequote(const S: WideString): WideString;
+  function DoDequote(const S:WideString):WideString;
   begin
     if AutoRemoveQuotes then
       Result := AutoWideDequotedStr(S)
@@ -413,8 +418,8 @@ end;
 
 procedure TDictionaryItems.Merge;
 var
-  ACurrentOriginal: WideString;
-  i: integer;
+  ACurrentOriginal:WideString;
+  i:integer;
 begin
   ACurrentOriginal := ''; // we don't allow empty originals, so this value should never appear in the list
   i := 0;
@@ -440,10 +445,10 @@ begin
   TrimTranslations;
 end;
 
-procedure TDictionaryItems.SaveToFile(const Filename: WideString);
+procedure TDictionaryItems.SaveToFile(const Filename:WideString);
 var
-  AFile: TTntStringlist;
-  i: integer;
+  AFile:TTntStringlist;
+  i:integer;
 begin
   TrimTranslations;
   AFile := TTNtStringlist.Create;
@@ -457,12 +462,12 @@ begin
   Modified := false;
 end;
 
-procedure TDictionaryItems.SetIgnorePunctuation(Value: WordBool);
+procedure TDictionaryItems.SetIgnorePunctuation(Value:WordBool);
 begin
   FIgnorePunctuation := Value;
 end;
 
-procedure TDictionaryItems.SetModified(Value: WordBool);
+procedure TDictionaryItems.SetModified(Value:WordBool);
 begin
   FModified := Value;
 end;
@@ -473,7 +478,8 @@ begin
 end;
 
 procedure TDictionaryItems.TrimTranslations;
-var i, j: integer;
+var
+  i, j:integer;
 begin
   for i := 0 to Count - 1 do
     for j := Items[i].Translations.Count - 1 downto 0 do
@@ -485,4 +491,3 @@ begin
 end;
 
 end.
-

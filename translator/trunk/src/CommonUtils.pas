@@ -22,65 +22,65 @@ interface
 uses
   Windows, SysUtils, Controls, Classes, TntClasses;
 
-procedure InfoMsg(const AText, ACaption: WideString);
-procedure AboutMsg(const AText, ACaption: WideString);
-procedure ErrMsg(const AText, ACaption: WideString);
-function YesNo(const AText, ACaption: WideString): boolean;
-function YesNoCancel(const AText, ACaption: WideString): integer;
-function WideMessageBox(hWnd: HWND; lpText, lpCaption: PWideChar; uType: UINT): Integer;
+procedure InfoMsg(const AText, ACaption:WideString);
+procedure AboutMsg(const AText, ACaption:WideString);
+procedure ErrMsg(const AText, ACaption:WideString);
+function YesNo(const AText, ACaption:WideString):boolean;
+function YesNoCancel(const AText, ACaption:WideString):integer;
+function WideMessageBox(hWnd:HWND; lpText, lpCaption:PWideChar; uType:UINT):Integer;
 
-function GetCmdSwitchValue(const Switch: AnsiString; SwitchChars: TSysCharSet; var Value: AnsiString; IgnoreCase: boolean): boolean;
-function ScreenCursor(ACursor: TCursor): IInterface;
-function WaitCursor: IInterface;
+function GetCmdSwitchValue(const Switch:AnsiString; SwitchChars:TSysCharSet; var Value:AnsiString; IgnoreCase:boolean):boolean;
+function ScreenCursor(ACursor:TCursor):IInterface;
+function WaitCursor:IInterface;
 
-function StripChars(const S: AnsiString; Ch: TSysCharSet): AnsiString; overload;
-function StripChars(const S: WideString; const Ch: WideString): WideString; overload;
-function SysDir: WideString;
-function WinDir: WideString;
+function StripChars(const S:AnsiString; Ch:TSysCharSet):AnsiString; overload;
+function StripChars(const S:WideString; const Ch:WideString):WideString; overload;
+function SysDir:WideString;
+function WinDir:WideString;
 
-function MatchesString(const SubStr, Str: WideString; WholeLine, CaseSense, Fuzzy: boolean): boolean;
-function StripKey(const S, StripChars: WideString; ReallyStrip: boolean): WideString;
-procedure StripKeys(Strings: TTntStrings; StripChars: WideString; ReallyStrip: boolean);
-function trimCRLFRight(const S: WideString): WideString;
-function strBetween(const S: WideString; StartChar, EndChar: WideChar): WideString;
-function StrDefault(const S, Default: WideString): WideString;
+function MatchesString(const SubStr, Str:WideString; WholeLine, CaseSense, Fuzzy:boolean):boolean;
+function StripKey(const S, StripChars:WideString; ReallyStrip:boolean):WideString;
+procedure StripKeys(Strings:TTntStrings; StripChars:WideString; ReallyStrip:boolean);
+function trimCRLFRight(const S:WideString):WideString;
+function strBetween(const S:WideString; StartChar, EndChar:WideChar):WideString;
+function StrDefault(const S, Default:WideString):WideString;
 
-function MyWideDequotedStr(const S: WideString; Quote: WideChar): WideString;
-function AutoWideDequotedStr(const S: WideString): WideString;
-function MyWideQuotedStr(const S: WideString; Quote: WideChar): WideString;
+function MyWideDequotedStr(const S:WideString; Quote:WideChar):WideString;
+function AutoWideDequotedStr(const S:WideString):WideString;
+function MyWideQuotedStr(const S:WideString; Quote:WideChar):WideString;
 
-function GetMinimizedFilename(const AFilename: WideString; Minimize: boolean): WideString;
-function DoubleQuoteString(const S: WideString; CheckString: boolean = true): WideString;
-function RunProcess(const Filename, Params: WideString; WorkingDir: WideString;
-  const WaitUntilTerminated, WaitUntilIdle: Boolean; const ShowCmd: Integer; var ResultCode: Cardinal): Boolean;
-function GetSpecialFolderLocation(const Folder: Integer): WideString;
-function WideSHGetFolderPath(hwnd: HWND; csidl: Integer; hToken: THandle; dwFlags: DWord; pszPath: PWideChar): HRESULT;
-function IsFileOpen(const Filename: WideString): boolean;
+function GetMinimizedFilename(const AFilename:WideString; Minimize:boolean):WideString;
+function DoubleQuoteString(const S:WideString; CheckString:boolean = true):WideString;
+function RunProcess(const Filename, Params:WideString; WorkingDir:WideString;
+  const WaitUntilTerminated, WaitUntilIdle:Boolean; const ShowCmd:Integer; var ResultCode:Cardinal):Boolean;
+function GetSpecialFolderLocation(const Folder:Integer):WideString;
+function WideSHGetFolderPath(hwnd:HWND; csidl:Integer; hToken:THandle; dwFlags:DWord; pszPath:PWideChar):HRESULT;
+function IsFileOpen(const Filename:WideString):boolean;
 
-function SubStrCount(const SubStr, Str: WideString): integer;
-function WideContainsChar(Ch: WideChar; const S: WideString): boolean;
-function IsCharPunct(const S: WideChar): boolean;
-function IsCharUpper(const S: WideChar): boolean;
-function IsCharLower(const S: WideChar): boolean;
-function IsCharDigit(const S: WideChar): boolean;
-function IsCharSpace(const S: WideChar): boolean;
-function IsCharControl(const S: WideChar): boolean;
-function IsCharBlank(const S: WideChar): boolean;
-function IsCharHex(const S: WideChar): boolean;
-function IsCharAlpha(const S: WideChar): boolean;
+function SubStrCount(const SubStr, Str:WideString):integer;
+function WideContainsChar(Ch:WideChar; const S:WideString):boolean;
+function IsCharPunct(const S:WideChar):boolean;
+function IsCharUpper(const S:WideChar):boolean;
+function IsCharLower(const S:WideChar):boolean;
+function IsCharDigit(const S:WideChar):boolean;
+function IsCharSpace(const S:WideChar):boolean;
+function IsCharControl(const S:WideChar):boolean;
+function IsCharBlank(const S:WideChar):boolean;
+function IsCharHex(const S:WideChar):boolean;
+function IsCharAlpha(const S:WideChar):boolean;
 
-function GetClipboardString(const Section, Name, Value: WideString): WideString;
-function ParseClipboardString(const Str: WideString; out Section, Name, Value: WideString): boolean;
+function GetClipboardString(const Section, Name, Value:WideString):WideString;
+function ParseClipboardString(const Str:WideString; out Section, Name, Value:WideString):boolean;
 
 // for Delphi 6
-function ValueFromIndex(S: TTntStrings; i: integer): WideString; overload;
-function ValueFromIndex(S: TStrings; i: integer): AnsiString; overload;
-function strtok(Search, Delim: WideString): WideString;
+function ValueFromIndex(S:TTntStrings; i:integer):WideString; overload;
+function ValueFromIndex(S:TStrings; i:integer):AnsiString; overload;
+function strtok(Search, Delim:WideString):WideString;
 
-function WideStartsText(const ASubText, AText: WideString): Boolean;
-function WideEndsText(const ASubText, AText: WideString): Boolean;
+function WideStartsText(const ASubText, AText:WideString):Boolean;
+function WideEndsText(const ASubText, AText:WideString):Boolean;
 
-function BinarySearch(AList: TList; L, R: integer; CompareItem: Pointer; CompareFunc: TListSortCompare; var Index: integer): boolean;
+function BinarySearch(AList:TList; L, R:integer; CompareItem:Pointer; CompareFunc:TListSortCompare; var Index:integer):boolean;
 
 implementation
 uses
@@ -88,7 +88,7 @@ uses
   ShlObj, ActiveX, ShFolder,
   TntWindows, TntSysUtils, {$IFDEF COMPILER_9_UP}WideStrUtils{$ELSE}TntWideStrUtils{$ENDIF};
 
-function AutoWideDequotedStr(const S: WideString): WideString;
+function AutoWideDequotedStr(const S:WideString):WideString;
 begin
   if (Length(S) > 1) and (S[1] in [WideChar(''''), WideChar('"')]) and
   (S[Length(S)] in [WideChar(''''), WideChar('"')]) then
@@ -97,7 +97,7 @@ begin
     Result := S;
 end;
 
-function MyWideDequotedStr(const S: WideString; Quote: WideChar): WideString;
+function MyWideDequotedStr(const S:WideString; Quote:WideChar):WideString;
 // var LText:PWideChar;
 begin
   if (S = '') or (Quote = #0) then
@@ -113,7 +113,7 @@ begin
   end;
 end;
 
-function MyWideQuotedStr(const S: WideString; Quote: WideChar): WideString;
+function MyWideQuotedStr(const S:WideString; Quote:WideChar):WideString;
 begin
   if (S = '') or (Quote = #0) then
     Result := S
@@ -121,9 +121,9 @@ begin
     Result := Quote + S + Quote;
 end;
 
-function StripChars(const S: AnsiString; Ch: TSysCharSet): AnsiString;
+function StripChars(const S:AnsiString; Ch:TSysCharSet):AnsiString;
 var
-  i, j: integer;
+  i, j:integer;
 begin
   Result := '';
   SetLength(Result, Length(S));
@@ -139,9 +139,9 @@ begin
   SetLength(Result, j);
 end;
 
-function StripChars(const S: WideString; const Ch: WideString): WideString; overload;
+function StripChars(const S:WideString; const Ch:WideString):WideString; overload;
 var
-  i, j: integer;
+  i, j:integer;
 begin
   Result := '';
   SetLength(Result, Length(S));
@@ -157,8 +157,9 @@ begin
   SetLength(Result, j);
 end;
 
-function trimCRLFRight(const S: WideString): WideString;
-var i: integer;
+function trimCRLFRight(const S:WideString):WideString;
+var
+  i:integer;
 begin
   Result := S;
   i := Length(Result);
@@ -168,7 +169,7 @@ begin
     SetLength(Result, i);
 end;
 
-function WideMessageBox(hWnd: HWND; lpText, lpCaption: PWideChar; uType: UINT): Integer;
+function WideMessageBox(hWnd:HWND; lpText, lpCaption:PWideChar; uType:UINT):Integer;
 begin
   if Win32PlatformIsUnicode then
     Result := MessageBoxW(hWnd, lpText, lpCaption, uType)
@@ -176,15 +177,15 @@ begin
     Result := MessageBoxA(hWnd, PAnsiChar(string(lpText)), PAnsiChar(string(lpCaption)), uType);
 end;
 
-procedure InfoMsg(const AText, ACaption: WideString);
+procedure InfoMsg(const AText, ACaption:WideString);
 begin
   WideMessageBox(GetFocus, PWideChar(AText), PWideChar(ACaption), MB_OK or MB_ICONINFORMATION)
 end;
 
-procedure AboutMsg(const AText, ACaption: WideString);
+procedure AboutMsg(const AText, ACaption:WideString);
 var
-  ParamsW: TMsgBoxParamsW;
-  ParamsA: TMsgBoxParamsA;
+  ParamsW:TMsgBoxParamsW;
+  ParamsA:TMsgBoxParamsA;
 begin
   // if there's no icon, display an info box instead
   if FindResource(hInstance, PAnsiChar('MAINICON'), RT_GROUP_ICON) = 0 then
@@ -233,26 +234,26 @@ begin
   end;
 end;
 
-procedure ErrMsg(const AText, ACaption: WideString);
+procedure ErrMsg(const AText, ACaption:WideString);
 begin
   WideMessageBox(GetFocus, PWideChar(AText), PWideChar(ACaption), MB_OK or MB_ICONERROR)
 end;
 
-function YesNo(const AText, ACaption: WideString): boolean;
+function YesNo(const AText, ACaption:WideString):boolean;
 begin
   Result := WideMessageBox(GetFocus, PWideChar(AText), PWideChar(ACaption), MB_YESNO or MB_ICONQUESTION) = IDYES
 end;
 
-function YesNoCancel(const AText, ACaption: WideString): integer;
+function YesNoCancel(const AText, ACaption:WideString):integer;
 begin
   Result := WideMessageBox(GetFocus, PWideChar(AText), PWideChar(ACaption), MB_YESNOCANCEL or MB_ICONQUESTION)
 end;
 
-function GetCmdSwitchValue(const Switch: AnsiString; SwitchChars: TSysCharSet; var
-  Value: AnsiString; IgnoreCase: boolean): boolean;
+function GetCmdSwitchValue(const Switch:AnsiString; SwitchChars:TSysCharSet; var
+  Value:AnsiString; IgnoreCase:boolean):boolean;
 var
-  i: integer;
-  S: AnsiString;
+  i:integer;
+  S:AnsiString;
 begin
   Result := false;
   for i := 1 to ParamCount do
@@ -276,15 +277,15 @@ end;
 type
   TScreenCursor = class(TInterfacedObject, IInterface)
   private
-    FCursor: TCursor;
+    FCursor:TCursor;
   public
-    constructor Create(ACursor: TCursor);
+    constructor Create(ACursor:TCursor);
     destructor Destroy; override;
   end;
 
   { TScreenCursor }
 
-constructor TScreenCursor.Create(ACursor: TCursor);
+constructor TScreenCursor.Create(ACursor:TCursor);
 begin
   inherited Create;
   FCursor := Screen.Cursor;
@@ -298,37 +299,37 @@ begin
   inherited;
 end;
 
-function ScreenCursor(ACursor: TCursor): IInterface;
+function ScreenCursor(ACursor:TCursor):IInterface;
 begin
   Result := TScreenCursor.Create(ACursor);
 end;
 
-function WaitCursor: IInterface;
+function WaitCursor:IInterface;
 begin
   Result := ScreenCursor(crHourGlass);
 end;
 
-function SysDir: WideString;
+function SysDir:WideString;
 var
-  buf: array[0..MAX_PATH] of WideChar;
+  buf:array[0..MAX_PATH] of WideChar;
 begin
   SetString(Result, buf, Tnt_GetSystemDirectoryW(buf, sizeof(buf)));
 end;
 
-function WinDir: WideString;
+function WinDir:WideString;
 var
-  buf: array[0..MAX_PATH] of WideChar;
+  buf:array[0..MAX_PATH] of WideChar;
 begin
   SetString(Result, buf, Tnt_GetWindowsDirectoryW(buf, sizeof(buf)));
 end;
 
-function MatchesString(const SubStr, Str: WideString; WholeLine, CaseSense, Fuzzy: boolean): boolean;
+function MatchesString(const SubStr, Str:WideString; WholeLine, CaseSense, Fuzzy:boolean):boolean;
 
-  function MakeFuzzy(const S: WideString): WideString;
+  function MakeFuzzy(const S:WideString):WideString;
   var
-    i: integer;
-    W: Word;
-    tmp: WideChar;
+    i:integer;
+    W:Word;
+    tmp:WideChar;
   begin
     if not Fuzzy then
       Result := S
@@ -362,9 +363,9 @@ begin
   end;
 end;
 
-function StripKey(const S, StripChars: WideString; ReallyStrip: boolean): WideString;
+function StripKey(const S, StripChars:WideString; ReallyStrip:boolean):WideString;
 var
-  i, j: integer;
+  i, j:integer;
 begin
   Result := S;
   if ReallyStrip then
@@ -382,9 +383,9 @@ begin
   end;
 end;
 
-procedure StripKeys(Strings: TTntStrings; StripChars: WideString; ReallyStrip: boolean);
+procedure StripKeys(Strings:TTntStrings; StripChars:WideString; ReallyStrip:boolean);
 var
-  i: integer;
+  i:integer;
 begin
   if ReallyStrip then
   begin
@@ -393,9 +394,9 @@ begin
   end;
 end;
 
-function strBetween(const S: WideString; StartChar, EndChar: WideChar): WideString;
+function strBetween(const S:WideString; StartChar, EndChar:WideChar):WideString;
 var
-  i, AStart, AEnd: integer;
+  i, AStart, AEnd:integer;
 begin
   AStart := 0;
   AEnd := 0;
@@ -413,7 +414,7 @@ begin
     Result := '';
 end;
 
-function StrDefault(const S, Default: WideString): WideString;
+function StrDefault(const S, Default:WideString):WideString;
 begin
   if S = '' then
     Result := Default
@@ -421,7 +422,7 @@ begin
     Result := S;
 end;
 
-function GetMinimizedFilename(const AFilename: WideString; Minimize: boolean): WideString;
+function GetMinimizedFilename(const AFilename:WideString; Minimize:boolean):WideString;
 begin
   if Minimize then
     Result := WideChangeFileExt(WideExtractFileName(AFilename), '')
@@ -429,7 +430,7 @@ begin
     Result := AFilename;
 end;
 
-function DoubleQuoteString(const S: WideString; CheckString: boolean = true): WideString;
+function DoubleQuoteString(const S:WideString; CheckString:boolean = true):WideString;
 begin
   if not CheckString or (Pos(' ', S) > 0) then
     Result := WideQuotedStr(S, '"')
@@ -439,7 +440,7 @@ end;
 
 procedure ProcessMessage;
 var
-  M: TMsg;
+  M:TMsg;
 begin
   while PeekMessage(M, 0, 0, 0, PM_REMOVE) do
   begin
@@ -450,13 +451,13 @@ end;
 
 // from Inno Setup
 
-function RunProcess(const Filename, Params: WideString; WorkingDir: WideString;
-  const WaitUntilTerminated, WaitUntilIdle: Boolean; const ShowCmd: Integer; var ResultCode: Cardinal): Boolean;
+function RunProcess(const Filename, Params:WideString; WorkingDir:WideString;
+  const WaitUntilTerminated, WaitUntilIdle:Boolean; const ShowCmd:Integer; var ResultCode:Cardinal):Boolean;
 var
-  CmdLine: WideString;
-  WorkingDirP: PWideChar;
-  StartupInfo: TStartupInfoW;
-  ProcessInfo: TProcessInformation;
+  CmdLine:WideString;
+  WorkingDirP:PWideChar;
+  StartupInfo:TStartupInfoW;
+  ProcessInfo:TProcessInformation;
 begin
   Result := False;
   CmdLine := DoubleQuoteString(Filename);
@@ -507,9 +508,9 @@ begin
   Result := True;
 end;
 
-function PidlFree(var IdList: PItemIdList): Boolean;
+function PidlFree(var IdList:PItemIdList):Boolean;
 var
-  Malloc: IMalloc;
+  Malloc:IMalloc;
 begin
   Result := False;
   if IdList = nil then
@@ -525,7 +526,7 @@ begin
   end;
 end;
 
-function PidlToPath(IdList: PItemIdList): WideString;
+function PidlToPath(IdList:PItemIdList):WideString;
 begin
   SetLength(Result, MAX_PATH);
   if Tnt_SHGetPathFromIDListW(IdList, PWideChar(Result)) then
@@ -534,9 +535,9 @@ begin
     Result := '';
 end;
 
-function GetSpecialFolderLocation(const Folder: Integer): WideString;
+function GetSpecialFolderLocation(const Folder:Integer):WideString;
 var
-  FolderPidl: PItemIdList;
+  FolderPidl:PItemIdList;
 begin
   if Succeeded(SHGetSpecialFolderLocation(0, Folder, FolderPidl)) then
   begin
@@ -547,11 +548,11 @@ begin
     Result := '';
 end;
 
-function SHGetFolderPathW2(hwnd: HWND; csidl: Integer; hToken: THandle; dwFlags: DWord; pszPath: PWideChar): HRESULT; stdcall; external 'SHFolder.dll' name 'SHGetFolderPathW';
+function SHGetFolderPathW2(hwnd:HWND; csidl:Integer; hToken:THandle; dwFlags:DWord; pszPath:PWideChar):HRESULT; stdcall; external 'SHFolder.dll' name 'SHGetFolderPathW';
 
-function WideSHGetFolderPath(hwnd: HWND; csidl: Integer; hToken: THandle; dwFlags: DWord; pszPath: PWideChar): HRESULT;
+function WideSHGetFolderPath(hwnd:HWND; csidl:Integer; hToken:THandle; dwFlags:DWord; pszPath:PWideChar):HRESULT;
 var
-  AnsiBuff: AnsiString;
+  AnsiBuff:AnsiString;
 begin
   if Win32PlatformIsUnicode then
     Result := SHGetFolderPathW2(hwnd, csidl, hToken, dwFlags, pszPath)
@@ -564,10 +565,10 @@ begin
   end;
 end;
 
-function IsFileOpen(const Filename: WideString): boolean;
+function IsFileOpen(const Filename:WideString):boolean;
 var
-  hFile: THandle;
-  aLastError, aOldErrorMode: DWORD;
+  hFile:THandle;
+  aLastError, aOldErrorMode:DWORD;
 begin
   Result := false;
   // don't display dialog when accessing removable drives without media
@@ -593,8 +594,9 @@ begin
   end;
 end;
 
-function SubStrCount(const SubStr, Str: WideString): integer;
-var tmp: PWideChar;
+function SubStrCount(const SubStr, Str:WideString):integer;
+var
+  tmp:PWideChar;
 begin
   Result := 0;
   if (Length(SubStr) = 0) or (Length(Str) = 0) then
@@ -608,8 +610,9 @@ begin
   end;
 end;
 
-function WideContainsChar(Ch: WideChar; const S: WideString): boolean;
-var i: integer;
+function WideContainsChar(Ch:WideChar; const S:WideString):boolean;
+var
+  i:integer;
 begin
   for i := 1 to Length(S) do
     if Ch = S[i] then
@@ -620,9 +623,9 @@ begin
   Result := false;
 end;
 
-function IsCharType(const S: WideChar; InfoType, AType: Cardinal): boolean;
+function IsCharType(const S:WideChar; InfoType, AType:Cardinal):boolean;
 var
-  CharType: integer;
+  CharType:integer;
 begin
   if (S <> WideChar(#0)) and GetStringTypeExW(LOCALE_USER_DEFAULT, InfoType, @S, 1, CharType) then
     Result := CharType and AType = AType
@@ -630,54 +633,54 @@ begin
     Result := false;
 end;
 
-function IsCharPunct(const S: WideChar): boolean;
+function IsCharPunct(const S:WideChar):boolean;
 begin
   Result := IsCharType(S, CT_CTYPE1, C1_PUNCT);
 end;
 
-function IsCharUpper(const S: WideChar): boolean;
+function IsCharUpper(const S:WideChar):boolean;
 begin
   Result := IsCharType(S, CT_CTYPE1, C1_UPPER);
 end;
 
-function IsCharLower(const S: WideChar): boolean;
+function IsCharLower(const S:WideChar):boolean;
 begin
   Result := IsCharType(S, CT_CTYPE1, C1_LOWER);
 end;
 
-function IsCharDigit(const S: WideChar): boolean;
+function IsCharDigit(const S:WideChar):boolean;
 begin
   Result := IsCharType(S, CT_CTYPE1, C1_DIGIT);
 end;
 
-function IsCharSpace(const S: WideChar): boolean;
+function IsCharSpace(const S:WideChar):boolean;
 begin
   Result := IsCharType(S, CT_CTYPE1, C1_SPACE);
 end;
 
-function IsCharControl(const S: WideChar): boolean;
+function IsCharControl(const S:WideChar):boolean;
 begin
   Result := IsCharType(S, CT_CTYPE1, C1_CNTRL);
 end;
 
-function IsCharBlank(const S: WideChar): boolean;
+function IsCharBlank(const S:WideChar):boolean;
 begin
   Result := IsCharType(S, CT_CTYPE1, C1_BLANK);
 end;
 
-function IsCharHex(const S: WideChar): boolean;
+function IsCharHex(const S:WideChar):boolean;
 begin
   Result := IsCharType(S, CT_CTYPE1, C1_XDIGIT);
 end;
 
-function IsCharAlpha(const S: WideChar): boolean;
+function IsCharAlpha(const S:WideChar):boolean;
 begin
   Result := IsCharType(S, CT_CTYPE1, C1_ALPHA);
 end;
 
-function GetClipboardString(const Section, Name, Value: WideString): WideString;
+function GetClipboardString(const Section, Name, Value:WideString):WideString;
 var
-  S: TTntStringlist;
+  S:TTntStringlist;
 begin
   S := TTntStringlist.Create;
   try
@@ -690,9 +693,9 @@ begin
   end;
 end;
 
-function ParseClipboardString(const Str: WideString; out Section, Name, Value: WideString): boolean;
+function ParseClipboardString(const Str:WideString; out Section, Name, Value:WideString):boolean;
 var
-  S: TTntStringlist;
+  S:TTntStringlist;
 begin
   S := TTntStringlist.Create;
   try
@@ -715,7 +718,7 @@ begin
   end;
 end;
 
-function ValueFromIndex(S: TTntStrings; i: integer): WideString;
+function ValueFromIndex(S:TTntStrings; i:integer):WideString;
 begin
   if (i >= 0) and (i < S.Count) then
   begin
@@ -728,9 +731,9 @@ begin
   end;
 end;
 
-function ValueFromIndex(S: TStrings; i: integer): AnsiString;
+function ValueFromIndex(S:TStrings; i:integer):AnsiString;
 var
-  tmp: TTntStringlist;
+  tmp:TTntStringlist;
 begin
   tmp := TTntStringlist.Create;
   try
@@ -746,12 +749,12 @@ end;
 {$ENDIF}
 {$J+ }
 
-function strtok(Search, Delim: WideString): WideString;
+function strtok(Search, Delim:WideString):WideString;
 const
 
-  I: integer = 1;
-  Len: integer = 0;
-  PrvStr: WideString = '';
+  I:integer = 1;
+  Len:integer = 0;
+  PrvStr:WideString = '';
 begin
   Result := '';
   if Search <> '' then
@@ -775,7 +778,7 @@ end;
 {$ENDIF JOPTSET}
 {$UNDEF JOPTSET}
 
-function WideStartsText(const ASubText, AText: WideString): Boolean;
+function WideStartsText(const ASubText, AText:WideString):Boolean;
 begin
   if (ASubText <> '') and (AText <> '') then
     Result := WideSameText(ASubText, Copy(AText, 1, Length(ASubText)))
@@ -783,9 +786,9 @@ begin
     Result := false;
 end;
 
-function WideEndsText(const ASubText, AText: WideString): Boolean;
+function WideEndsText(const ASubText, AText:WideString):Boolean;
 var
-  L: integer;
+  L:integer;
 begin
   if not Win32PlatformIsUnicode then
     Result := AnsiEndsText(ASubText, AText)
@@ -799,10 +802,10 @@ begin
   end;
 end;
 
-function BinarySearch(AList: TList; L, R: integer; CompareItem: Pointer; CompareFunc: TListSortCompare; var Index: integer): boolean;
+function BinarySearch(AList:TList; L, R:integer; CompareItem:Pointer; CompareFunc:TListSortCompare; var Index:integer):boolean;
 var
-  M: integer;
-  CompareResult: integer;
+  M:integer;
+  CompareResult:integer;
 begin
   while L <= R do
   begin
@@ -825,4 +828,3 @@ begin
 end;
 
 end.
-

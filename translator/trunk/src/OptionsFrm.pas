@@ -32,73 +32,73 @@ uses
 
 type
   TfrmOptions = class(TfrmBase)
-    btnOK: TTntButton;
-    btnCancel: TTntButton;
-    Bevel2: TBevel;
-    btnColors: TTntButton;
-    pcSettings: TTntPageControl;
-    tsGeneral: TTntTabSheet;
-    tsAdvanced: TTntTabSheet;
-    Label1: TTntLabel;
-    Label2: TTntLabel;
-    Bevel1: TBevel;
-    chkShowQuotes: TTntCheckBox;
-    chkShowDetails: TTntCheckBox;
-    chkShowToolTips: TTntCheckBox;
-    chkShowShortCuts: TTntCheckBox;
-    chkReturnToSave: TTntCheckBox;
-    chkMoveToNext: TTntCheckBox;
-    edLanguage: TTntEdit;
-    btnLanguage: TTntButton;
-    edHelp: TTntEdit;
-    btnHelp: TTntButton;
-    pnlFontPreview: TTntPanel;
-    chkUseTranslationEverywhere: TTntCheckBox;
-    chkAutoFocusTranslation: TTntCheckBox;
-    TntLabel1: TTntLabel;
-    cbDefaultTransEncoding: TTntComboBox;
-    chkGlobalPath: TTntCheckBox;
-    chkShowFullNames: TTntCheckBox;
-    chkMonitorFiles: TTntCheckBox;
-    chkInvertDictionary: TTntCheckBox;
-    chkDictIgnoreSpeedKey: TTntCheckBox;
-    chkDictIgnoreNonEmpty: TTntCheckBox;
-    chkSavePosition: TTntCheckBox;
-    chkSaveMinMax: TTntCheckBox;
-    TntLabel2: TTntLabel;
-    TntLabel3: TTntLabel;
-    reHeader: TTntRichEdit;
-    reFooter: TTntRichEdit;
-    Bevel3: TBevel;
-    Bevel4: TBevel;
-    Bevel5: TBevel;
-    cbFonts: TTntComboBox;
-    TntLabel4: TTntLabel;
-    TntLabel5: TTntLabel;
-    cbFontSizes: TTntComboBox;
-    TntLabel6: TTntLabel;
-    procedure chkShowToolTipsClick(Sender: TObject);
-    procedure chkReturnToSaveClick(Sender: TObject);
-    procedure btnLanguageClick(Sender: TObject);
-    procedure btnHelpClick(Sender: TObject);
-    procedure chkSavePositionClick(Sender: TObject);
-    procedure btnColorsClick(Sender: TObject);
-    procedure cbFontsChange(Sender: TObject);
-    procedure cbFontSizesChange(Sender: TObject);
+    btnOK:TTntButton;
+    btnCancel:TTntButton;
+    Bevel2:TBevel;
+    btnColors:TTntButton;
+    pcSettings:TTntPageControl;
+    tsGeneral:TTntTabSheet;
+    tsAdvanced:TTntTabSheet;
+    Label1:TTntLabel;
+    Label2:TTntLabel;
+    Bevel1:TBevel;
+    chkShowQuotes:TTntCheckBox;
+    chkShowDetails:TTntCheckBox;
+    chkShowToolTips:TTntCheckBox;
+    chkShowShortCuts:TTntCheckBox;
+    chkReturnToSave:TTntCheckBox;
+    chkMoveToNext:TTntCheckBox;
+    edLanguage:TTntEdit;
+    btnLanguage:TTntButton;
+    edHelp:TTntEdit;
+    btnHelp:TTntButton;
+    pnlFontPreview:TTntPanel;
+    chkUseTranslationEverywhere:TTntCheckBox;
+    chkAutoFocusTranslation:TTntCheckBox;
+    TntLabel1:TTntLabel;
+    cbDefaultTransEncoding:TTntComboBox;
+    chkGlobalPath:TTntCheckBox;
+    chkShowFullNames:TTntCheckBox;
+    chkMonitorFiles:TTntCheckBox;
+    chkInvertDictionary:TTntCheckBox;
+    chkDictIgnoreSpeedKey:TTntCheckBox;
+    chkDictIgnoreNonEmpty:TTntCheckBox;
+    chkSavePosition:TTntCheckBox;
+    chkSaveMinMax:TTntCheckBox;
+    TntLabel2:TTntLabel;
+    TntLabel3:TTntLabel;
+    reHeader:TTntRichEdit;
+    reFooter:TTntRichEdit;
+    Bevel3:TBevel;
+    Bevel4:TBevel;
+    Bevel5:TBevel;
+    cbFonts:TTntComboBox;
+    TntLabel4:TTntLabel;
+    TntLabel5:TTntLabel;
+    cbFontSizes:TTntComboBox;
+    TntLabel6:TTntLabel;
+    procedure chkShowToolTipsClick(Sender:TObject);
+    procedure chkReturnToSaveClick(Sender:TObject);
+    procedure btnLanguageClick(Sender:TObject);
+    procedure btnHelpClick(Sender:TObject);
+    procedure chkSavePositionClick(Sender:TObject);
+    procedure btnColorsClick(Sender:TObject);
+    procedure cbFontsChange(Sender:TObject);
+    procedure cbFontSizesChange(Sender:TObject);
   private
     { Private declarations }
 
-    FOptions: TAppOptions;
-    procedure GetFonts(Strings: TTntStrings);
+    FOptions:TAppOptions;
+    procedure GetFonts(Strings:TTntStrings);
     procedure UpdatePreview;
     procedure UpdateFontList;
     procedure UpdateFontSizes;
-    procedure LoadOptions(Options: TAppOptions);
-    procedure SaveOptions(Options: TAppOptions);
-    procedure GetFontSizes(const FontName: WideString; Items: Tlist);
+    procedure LoadOptions(Options:TAppOptions);
+    procedure SaveOptions(Options:TAppOptions);
+    procedure GetFontSizes(const FontName:WideString; Items:Tlist);
   public
     { Public declarations }
-    class function Execute(Options: TAppOptions): boolean;
+    class function Execute(Options:TAppOptions):boolean;
   end;
 
 implementation
@@ -107,17 +107,17 @@ uses
 
 {$R *.dfm}
 
-procedure TfrmOptions.chkShowToolTipsClick(Sender: TObject);
+procedure TfrmOptions.chkShowToolTipsClick(Sender:TObject);
 begin
   chkShowShortCuts.Enabled := chkShowToolTips.Checked;
 end;
 
-procedure TfrmOptions.chkReturnToSaveClick(Sender: TObject);
+procedure TfrmOptions.chkReturnToSaveClick(Sender:TObject);
 begin
   chkMoveToNext.Enabled := chkReturnToSave.Checked;
 end;
 
-procedure TfrmOptions.btnLanguageClick(Sender: TObject);
+procedure TfrmOptions.btnLanguageClick(Sender:TObject);
 begin
   with TTntOpenDialog.Create(nil) do
   try
@@ -131,7 +131,7 @@ begin
   end;
 end;
 
-procedure TfrmOptions.btnHelpClick(Sender: TObject);
+procedure TfrmOptions.btnHelpClick(Sender:TObject);
 begin
   with TTntOpenDialog.Create(nil) do
   try
@@ -145,14 +145,14 @@ begin
   end;
 end;
 
-procedure TfrmOptions.chkSavePositionClick(Sender: TObject);
+procedure TfrmOptions.chkSavePositionClick(Sender:TObject);
 begin
   chkSaveMinMax.Enabled := chkSavePosition.Checked;
 end;
 
-class function TfrmOptions.Execute(Options: TAppOptions): boolean;
+class function TfrmOptions.Execute(Options:TAppOptions):boolean;
 var
-  frm: TfrmOptions;
+  frm:TfrmOptions;
 begin
   frm := self.Create(Application);
   try
@@ -181,12 +181,12 @@ begin
     Caption := WideFormat('%s, %dpt', [Font.Name, Font.Size]);
 end;
 
-procedure TfrmOptions.btnColorsClick(Sender: TObject);
+procedure TfrmOptions.btnColorsClick(Sender:TObject);
 begin
   TfrmColors.Edit(FOptions);
 end;
 
-procedure TfrmOptions.LoadOptions(Options: TAppOptions);
+procedure TfrmOptions.LoadOptions(Options:TAppOptions);
 begin
   FOptions := Options;
   chkShowQuotes.Checked := Options.ShowQuotes;
@@ -215,7 +215,7 @@ begin
   UpdateFontList;
 end;
 
-procedure TfrmOptions.SaveOptions(Options: TAppOptions);
+procedure TfrmOptions.SaveOptions(Options:TAppOptions);
 begin
   FOptions := Options;
   Options.ShowQuotes := chkShowQuotes.Checked;
@@ -244,12 +244,12 @@ begin
   Options.Footer := reFooter.Lines;
 end;
 
-procedure TfrmOptions.GetFonts(Strings: TTntStrings);
+procedure TfrmOptions.GetFonts(Strings:TTntStrings);
 begin
   Strings.Assign(Screen.Fonts);
 end;
 
-procedure AddDefaultSizes(Items: Tlist);
+procedure AddDefaultSizes(Items:Tlist);
 begin
   Items.Add(Pointer(8));
   Items.Add(Pointer(9));
@@ -269,9 +269,10 @@ begin
   Items.Add(Pointer(72));
 end;
 
-function EnumProc(var elf: TEnumLogFont;
-  var ntm: TNewTextMetric; FontType: Integer; Items: TList): Integer; stdcall;
-var Size: integer;
+function EnumProc(var elf:TEnumLogFont;
+  var ntm:TNewTextMetric; FontType:Integer; Items:TList):Integer; stdcall;
+var
+  Size:integer;
 begin
   if FontType = TRUETYPE_FONTTYPE then
   begin
@@ -287,7 +288,7 @@ begin
   end;
 end;
 
-procedure TfrmOptions.GetFontSizes(const FontName: WideString; Items: TList);
+procedure TfrmOptions.GetFontSizes(const FontName:WideString; Items:TList);
 begin
   Items.Clear;
   EnumFontFamilies(Canvas.Handle, PChar(string(FontName)),
@@ -296,13 +297,13 @@ begin
     AddDefaultSizes(Items);
 end;
 
-procedure TfrmOptions.cbFontsChange(Sender: TObject);
+procedure TfrmOptions.cbFontsChange(Sender:TObject);
 begin
   inherited;
   UpdateFontSizes;
 end;
 
-procedure TfrmOptions.cbFontSizesChange(Sender: TObject);
+procedure TfrmOptions.cbFontSizesChange(Sender:TObject);
 begin
   inherited;
   UpdatePreview;
@@ -319,16 +320,16 @@ begin
   UpdateFontSizes;
 end;
 
-function IntCompare(Item1, Item2: Pointer): integer;
+function IntCompare(Item1, Item2:Pointer):integer;
 begin
   Result := integer(Item1) - integer(Item2);
 end;
 
 procedure TfrmOptions.UpdateFontSizes;
 var
-  S: string;
-  L: TList;
-  i: integer;
+  S:string;
+  L:TList;
+  i:integer;
 begin
   S := cbFontSizes.Text;
   if S = '' then

@@ -29,51 +29,51 @@ uses
   TntStdActns, TntActnList, TB2Item, TBX, SpTBXItem;
 
 type
-  TCommentModifiedEvent = procedure(Sender: TObject; const AText: WideString) of object;
+  TCommentModifiedEvent = procedure(Sender:TObject; const AText:WideString) of object;
   TfrmComments = class(TfrmBase)
-    pnlBack: TTntPanel;
-    pnlTrans: TTntPanel;
-    lblTrans: TLabel;
-    reTranslation: TTntRichEdit;
-    pnlOrig: TTntPanel;
-    lblOrig: TTntLabel;
-    reOriginal: TTntRichEdit;
-    StatusBar1: TTntStatusBar;
-    alComments: TTntActionList;
-    popComments: TSpTBXPopupMenu;
-    Undo1: TSpTBXItem;
-    N1: TSpTBXItem;
-    Cut1: TSpTBXItem;
-    Copy1: TSpTBXItem;
-    Paste1: TSpTBXItem;
-    N2: TSpTBXItem;
-    SelectAll1: TSpTBXItem;
-    spLocked: TTntSpeedButton;
-    acClose: TTntAction;
-    EditUndo1: TTntEditUndo;
-    EditSelectAll1: TTntEditSelectAll;
-    EditPaste1: TTntEditPaste;
-    EditCopy1: TTntEditCopy;
-    EditCut1: TTntEditCut;
-    procedure FormResize(Sender: TObject);
-    procedure FormDestroy(Sender: TObject);
-    procedure acCloseExecute(Sender: TObject);
-    procedure reTranslationChange(Sender: TObject);
+    pnlBack:TTntPanel;
+    pnlTrans:TTntPanel;
+    lblTrans:TLabel;
+    reTranslation:TTntRichEdit;
+    pnlOrig:TTntPanel;
+    lblOrig:TTntLabel;
+    reOriginal:TTntRichEdit;
+    StatusBar1:TTntStatusBar;
+    alComments:TTntActionList;
+    popComments:TSpTBXPopupMenu;
+    Undo1:TSpTBXItem;
+    N1:TSpTBXItem;
+    Cut1:TSpTBXItem;
+    Copy1:TSpTBXItem;
+    Paste1:TSpTBXItem;
+    N2:TSpTBXItem;
+    SelectAll1:TSpTBXItem;
+    spLocked:TTntSpeedButton;
+    acClose:TTntAction;
+    EditUndo1:TTntEditUndo;
+    EditSelectAll1:TTntEditSelectAll;
+    EditPaste1:TTntEditPaste;
+    EditCopy1:TTntEditCopy;
+    EditCut1:TTntEditCut;
+    procedure FormResize(Sender:TObject);
+    procedure FormDestroy(Sender:TObject);
+    procedure acCloseExecute(Sender:TObject);
+    procedure reTranslationChange(Sender:TObject);
   private
-    FOnCommentModified: TCommentModifiedEvent;
-    function GetPinned: boolean;
-    procedure SetPinned(const Value: boolean);
-    procedure SetOnCommentModified(const Value: TCommentModifiedEvent);
+    FOnCommentModified:TCommentModifiedEvent;
+    function GetPinned:boolean;
+    procedure SetPinned(const Value:boolean);
+    procedure SetOnCommentModified(const Value:TCommentModifiedEvent);
     { Private declarations }
   public
     { Public declarations }
-    procedure SetComments(const Item: ITranslationItem; CommentChars: TTntStrings);
-    property Pinned: boolean read GetPinned write SetPinned;
-    property OnCommentModified: TCommentModifiedEvent read FOnCommentModified write SetOnCommentModified;
+    procedure SetComments(const Item:ITranslationItem; CommentChars:TTntStrings);
+    property Pinned:boolean read GetPinned write SetPinned;
+    property OnCommentModified:TCommentModifiedEvent read FOnCommentModified write SetOnCommentModified;
   end;
 
 var
-  frmComments: TfrmComments = nil;
+  frmComments:TfrmComments = nil;
 
 implementation
 uses
@@ -81,8 +81,9 @@ uses
 
 {$R *.dfm}
 
-procedure TfrmComments.FormResize(Sender: TObject);
-var H: integer;
+procedure TfrmComments.FormResize(Sender:TObject);
+var
+  H:integer;
 begin
   H := pnlBack.Height - pnlOrig.Height - pnlTrans.Height;
   if H < 0 then
@@ -90,7 +91,7 @@ begin
   reOriginal.Height := H div 2;
 end;
 
-procedure TfrmComments.SetComments(const Item: ITranslationItem; CommentChars: TTntStrings);
+procedure TfrmComments.SetComments(const Item:ITranslationItem; CommentChars:TTntStrings);
 // var i: integer;
 begin
   if Item = nil then
@@ -114,34 +115,34 @@ begin
   end;
 end;
 
-procedure TfrmComments.FormDestroy(Sender: TObject);
+procedure TfrmComments.FormDestroy(Sender:TObject);
 begin
   frmComments := nil;
 end;
 
-function TfrmComments.GetPinned: boolean;
+function TfrmComments.GetPinned:boolean;
 begin
   Result := spLocked.Down;
 end;
 
-procedure TfrmComments.SetPinned(const Value: boolean);
+procedure TfrmComments.SetPinned(const Value:boolean);
 begin
   spLocked.Down := Value;
 end;
 
-procedure TfrmComments.acCloseExecute(Sender: TObject);
+procedure TfrmComments.acCloseExecute(Sender:TObject);
 begin
   Close;
 end;
 
-procedure TfrmComments.reTranslationChange(Sender: TObject);
+procedure TfrmComments.reTranslationChange(Sender:TObject);
 begin
   if reTranslation.Modified and Assigned(FOnCommentModified) then
     FOnCommentModified(self, reTranslation.Text);
 end;
 
 procedure TfrmComments.SetOnCommentModified(
-  const Value: TCommentModifiedEvent);
+  const Value:TCommentModifiedEvent);
 begin
   FOnCommentModified := Value;
   reTranslation.ReadOnly := not Assigned(FOnCommentModified);

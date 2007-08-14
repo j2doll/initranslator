@@ -29,48 +29,48 @@ uses
   TBX, TntComCtrls, SpTBXItem;
 
 type
-  TMacroReplaceEvent = procedure(Sender: TObject; var Args: WideString) of object;
+  TMacroReplaceEvent = procedure(Sender:TObject; var Args:WideString) of object;
   TfrmPromptArgs = class(TfrmBase)
-    edArguments: TTntEdit;
-    btnArguments: TTntBitBtn;
-    Label1: TTntLabel;
-    Label2: TTntLabel;
-    reCommandLine: TTntRichEdit;
-    btnCancel: TTntButton;
-    btnOK: TTntButton;
-    popArguments: TSpTBXPopupMenu;
-    OriginalLine1: TSpTBXItem;
-    OriginalText1: TSpTBXItem;
-    OriginalPath1: TSpTBXItem;
-    OriginalDirectory1: TSpTBXItem;
-    OriginalName1: TSpTBXItem;
-    OriginalExtension1: TSpTBXItem;
-    N1: TSpTBXSeparatorItem;
-    ranslationLine1: TSpTBXItem;
-    ranslationText1: TSpTBXItem;
-    ranslationPath1: TSpTBXItem;
-    ranslationDirectory1: TSpTBXItem;
-    ranslationName1: TSpTBXItem;
-    ranslationExtension1: TSpTBXItem;
-    N2: TSpTBXSeparatorItem;
-    DictionaryPath1: TSpTBXItem;
-    DictionaryDirectory1: TSpTBXItem;
-    DictionaryName1: TSpTBXItem;
-    DictionaryExtension1: TSpTBXItem;
-    TBXSeparatorItem1: TSpTBXSeparatorItem;
-    TBItem1: TTBItem;
-    TBXItem2: TSpTBXItem;
-    TBXItem1: TSpTBXItem;
-    procedure btnArgumentsClick(Sender: TObject);
-    procedure edArgumentsChange(Sender: TObject);
-    procedure ArgumentsClick(Sender: TObject);
+    edArguments:TTntEdit;
+    btnArguments:TTntBitBtn;
+    Label1:TTntLabel;
+    Label2:TTntLabel;
+    reCommandLine:TTntRichEdit;
+    btnCancel:TTntButton;
+    btnOK:TTntButton;
+    popArguments:TSpTBXPopupMenu;
+    OriginalLine1:TSpTBXItem;
+    OriginalText1:TSpTBXItem;
+    OriginalPath1:TSpTBXItem;
+    OriginalDirectory1:TSpTBXItem;
+    OriginalName1:TSpTBXItem;
+    OriginalExtension1:TSpTBXItem;
+    N1:TSpTBXSeparatorItem;
+    ranslationLine1:TSpTBXItem;
+    ranslationText1:TSpTBXItem;
+    ranslationPath1:TSpTBXItem;
+    ranslationDirectory1:TSpTBXItem;
+    ranslationName1:TSpTBXItem;
+    ranslationExtension1:TSpTBXItem;
+    N2:TSpTBXSeparatorItem;
+    DictionaryPath1:TSpTBXItem;
+    DictionaryDirectory1:TSpTBXItem;
+    DictionaryName1:TSpTBXItem;
+    DictionaryExtension1:TSpTBXItem;
+    TBXSeparatorItem1:TSpTBXSeparatorItem;
+    TBItem1:TTBItem;
+    TBXItem2:TSpTBXItem;
+    TBXItem1:TSpTBXItem;
+    procedure btnArgumentsClick(Sender:TObject);
+    procedure edArgumentsChange(Sender:TObject);
+    procedure ArgumentsClick(Sender:TObject);
   private
     { Private declarations }
-    FOnMacroReplace: TMacroReplaceEvent;
-    FCmdLine: WideString;
+    FOnMacroReplace:TMacroReplaceEvent;
+    FCmdLine:WideString;
   public
     { Public declarations }
-    class function Edit(const Title, CmdLine: WideString; var Args: WideString; OnMacroReplace: TMacroReplaceEvent): boolean;
+    class function Edit(const Title, CmdLine:WideString; var Args:WideString; OnMacroReplace:TMacroReplaceEvent):boolean;
   end;
 
 implementation
@@ -81,8 +81,9 @@ uses
 
 { TfrmPromptArgs }
 
-class function TfrmPromptArgs.Edit(const Title, CmdLine: WideString; var Args: WideString; OnMacroReplace: TMacroReplaceEvent): boolean;
-var frmPromptArgs: TfrmPromptArgs;
+class function TfrmPromptArgs.Edit(const Title, CmdLine:WideString; var Args:WideString; OnMacroReplace:TMacroReplaceEvent):boolean;
+var
+  frmPromptArgs:TfrmPromptArgs;
 begin
   frmPromptArgs := Self.Create(Application);
   try
@@ -99,16 +100,18 @@ begin
   end;
 end;
 
-procedure TfrmPromptArgs.btnArgumentsClick(Sender: TObject);
-var P: TPoint;
+procedure TfrmPromptArgs.btnArgumentsClick(Sender:TObject);
+var
+  P:TPoint;
 begin
   P := btnArguments.ClientOrigin;
   Inc(P.X, btnArguments.Width);
   popArguments.Popup(P.X, P.Y);
 end;
 
-procedure TfrmPromptArgs.edArgumentsChange(Sender: TObject);
-var S: WideString;
+procedure TfrmPromptArgs.edArgumentsChange(Sender:TObject);
+var
+  S:WideString;
 begin
   S := edArguments.Text;
   if Assigned(FOnMacroReplace) then
@@ -116,7 +119,7 @@ begin
   reCommandLine.Text := FCmdLine + ' ' + S;
 end;
 
-procedure TfrmPromptArgs.ArgumentsClick(Sender: TObject);
+procedure TfrmPromptArgs.ArgumentsClick(Sender:TObject);
 begin
   edArguments.SelText := cArgsMacros[TMenuItem(Sender).Tag];
 end;

@@ -25,15 +25,15 @@ uses
 type
   TShortCutEdit = class(TCustomEdit)
   private
-    function GetShortCut: TShortCut;
-    procedure SetShortCut(const Value: TShortCut);
+    function GetShortCut:TShortCut;
+    procedure SetShortCut(const Value:TShortCut);
   protected
-    procedure KeyDown(var Key: Word; Shift: TShiftState); override;
-    procedure KeyUp(var Key: Word; Shift: TShiftState); override;
-    procedure KeyPress(var Key: Char); override;
+    procedure KeyDown(var Key:Word; Shift:TShiftState); override;
+    procedure KeyUp(var Key:Word; Shift:TShiftState); override;
+    procedure KeyPress(var Key:Char); override;
 
   public
-    property ShortCut: TShortCut read GetShortCut write SetShortCut;
+    property ShortCut:TShortCut read GetShortCut write SetShortCut;
     property BevelInner;
     property BevelKind;
     property BevelOuter;
@@ -47,12 +47,12 @@ uses
 
 { TShortCutEdit }
 
-function TShortCutEdit.GetShortCut: TShortCut;
+function TShortCutEdit.GetShortCut:TShortCut;
 begin
   Result := TextToShortCut(Text);
 end;
 
-procedure TShortCutEdit.KeyDown(var Key: Word; Shift: TShiftState);
+procedure TShortCutEdit.KeyDown(var Key:Word; Shift:TShiftState);
 begin
   inherited;
   if ((Key = VK_BACK) or (Key = VK_ESCAPE)) and (Shift = []) then
@@ -85,13 +85,13 @@ begin
   end;
 end;
 
-procedure TShortCutEdit.KeyPress(var Key: Char);
+procedure TShortCutEdit.KeyPress(var Key:Char);
 begin
   inherited;
   Key := #0;
 end;
 
-procedure TShortCutEdit.KeyUp(var Key: Word; Shift: TShiftState);
+procedure TShortCutEdit.KeyUp(var Key:Word; Shift:TShiftState);
 begin
   inherited;
   Menus.ShortCutToKey(Self.ShortCut, Key, Shift);
@@ -101,7 +101,7 @@ begin
   Key := 0;
 end;
 
-procedure TShortCutEdit.SetShortCut(const Value: TShortCut);
+procedure TShortCutEdit.SetShortCut(const Value:TShortCut);
 begin
   Text := MyShortCutToText(Value);
 end;

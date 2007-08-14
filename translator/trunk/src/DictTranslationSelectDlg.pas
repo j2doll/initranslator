@@ -25,33 +25,33 @@ uses
 
 type
   TfrmDictTranslationSelect = class(TfrmBase)
-    TntLabel1: TTntLabel;
-    edOriginal: TTntEdit;
-    TntLabel2: TTntLabel;
-    edTranslation: TTntEdit;
-    TntLabel3: TTntLabel;
-    lbTranslations: TTntListBox;
-    btnUse: TTntButton;
-    btnCancel: TTntButton;
-    btnIgnore: TTntButton;
-    btnAdd: TTntButton;
-    chkIgnoreNonEmpty: TTntCheckBox;
-    chkDontAskAgain: TCheckBox;
-    procedure btnIgnoreClick(Sender: TObject);
-    procedure btnUseClick(Sender: TObject);
-    procedure btnAddClick(Sender: TObject);
-    procedure btnCancelClick(Sender: TObject);
-    procedure lbTranslationsClick(Sender: TObject);
-    procedure edTranslationChange(Sender: TObject);
-    procedure lbTranslationsDblClick(Sender: TObject);
+    TntLabel1:TTntLabel;
+    edOriginal:TTntEdit;
+    TntLabel2:TTntLabel;
+    edTranslation:TTntEdit;
+    TntLabel3:TTntLabel;
+    lbTranslations:TTntListBox;
+    btnUse:TTntButton;
+    btnCancel:TTntButton;
+    btnIgnore:TTntButton;
+    btnAdd:TTntButton;
+    chkIgnoreNonEmpty:TTntCheckBox;
+    chkDontAskAgain:TCheckBox;
+    procedure btnIgnoreClick(Sender:TObject);
+    procedure btnUseClick(Sender:TObject);
+    procedure btnAddClick(Sender:TObject);
+    procedure btnCancelClick(Sender:TObject);
+    procedure lbTranslationsClick(Sender:TObject);
+    procedure edTranslationChange(Sender:TObject);
+    procedure lbTranslationsDblClick(Sender:TObject);
   private
     { Private declarations }
-    FResult: integer;
-    FModified: boolean;
-    FDictionaryItem: TDictionaryItem;
+    FResult:integer;
+    FModified:boolean;
+    FDictionaryItem:TDictionaryItem;
   public
     { Public declarations }
-    class function Edit(DictionaryItem: TDictionaryItem; var Translation: WideString; out Modified: boolean; var Prompt: boolean): Integer;
+    class function Edit(DictionaryItem:TDictionaryItem; var Translation:WideString; out Modified:boolean; var Prompt:boolean):Integer;
   end;
 
 implementation
@@ -63,9 +63,9 @@ uses
 { TfrmDictTranslationSelect }
 
 class function TfrmDictTranslationSelect.Edit(
-  DictionaryItem: TDictionaryItem; var Translation: WideString; out Modified: boolean; var Prompt: boolean): Integer;
+  DictionaryItem:TDictionaryItem; var Translation:WideString; out Modified:boolean; var Prompt:boolean):Integer;
 var
-  frm: TfrmDictTranslationSelect;
+  frm:TfrmDictTranslationSelect;
 begin
   if DictionaryItem = nil then
   begin
@@ -99,17 +99,17 @@ begin
   end;
 end;
 
-procedure TfrmDictTranslationSelect.btnIgnoreClick(Sender: TObject);
+procedure TfrmDictTranslationSelect.btnIgnoreClick(Sender:TObject);
 begin
   FResult := cDictIgnore;
 end;
 
-procedure TfrmDictTranslationSelect.btnUseClick(Sender: TObject);
+procedure TfrmDictTranslationSelect.btnUseClick(Sender:TObject);
 begin
   FResult := cDictUse;
 end;
 
-procedure TfrmDictTranslationSelect.btnAddClick(Sender: TObject);
+procedure TfrmDictTranslationSelect.btnAddClick(Sender:TObject);
 begin
 //  FResult := cDictAdd;
   FDictionaryItem.Translations.Add(edTranslation.Text);
@@ -117,12 +117,12 @@ begin
   FModified := true;
 end;
 
-procedure TfrmDictTranslationSelect.btnCancelClick(Sender: TObject);
+procedure TfrmDictTranslationSelect.btnCancelClick(Sender:TObject);
 begin
   FResult := cDictCancel;
 end;
 
-procedure TfrmDictTranslationSelect.lbTranslationsClick(Sender: TObject);
+procedure TfrmDictTranslationSelect.lbTranslationsClick(Sender:TObject);
 begin
   with lbTranslations do
   begin
@@ -131,13 +131,13 @@ begin
   end;
 end;
 
-procedure TfrmDictTranslationSelect.edTranslationChange(Sender: TObject);
+procedure TfrmDictTranslationSelect.edTranslationChange(Sender:TObject);
 begin
   btnAdd.Enabled := (edTranslation.Text <> '') and (lbTranslations.Items.IndexOf(edTranslation.Text) < 0);
 end;
 
 procedure TfrmDictTranslationSelect.lbTranslationsDblClick(
-  Sender: TObject);
+  Sender:TObject);
 begin
   if lbTranslations.ItemIndex > -1 then
     btnUse.Click;

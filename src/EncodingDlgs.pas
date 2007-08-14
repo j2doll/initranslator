@@ -33,49 +33,49 @@ uses
 
 type
   TfrmEncoding = class(TTntForm)
-    cbEncodings: TTntComboBox;
-    lblEncoding: TTntLabel;
-    bvlTopLine: TBevel;
-    chkHeader: TTntCheckBox;
-    chkFooter: TTntCheckBox;
+    cbEncodings:TTntComboBox;
+    lblEncoding:TTntLabel;
+    bvlTopLine:TBevel;
+    chkHeader:TTntCheckBox;
+    chkFooter:TTntCheckBox;
   private
-    FParentWnd: HWND;
-    procedure WMNCDestroy(var Message: TWMNCDestroy); message WM_NCDESTROY;
+    FParentWnd:HWND;
+    procedure WMNCDestroy(var Message:TWMNCDestroy); message WM_NCDESTROY;
   protected
     procedure Initialize; virtual;
   public
-    constructor Create(OpenDialog: TTntOpenDialog); reintroduce;
+    constructor Create(OpenDialog:TTntOpenDialog); reintroduce;
     destructor Destroy; override;
   end;
 
   TEncodingOpenDialog = class(TTntOpenDialog)
   private
-    FEncodingIndex, FSelectedIndex: integer;
-    FEncodings: TTntStrings;
-    FForm: TfrmEncoding;
-    FEncodingLabel: WideString;
-    FInsertFooter: boolean;
-    FInsertHeader: boolean;
-    procedure SetEncodingIndex(const Value: integer);
-    procedure SetEncodings(const Value: TTntStrings);
+    FEncodingIndex, FSelectedIndex:integer;
+    FEncodings:TTntStrings;
+    FForm:TfrmEncoding;
+    FEncodingLabel:WideString;
+    FInsertFooter:boolean;
+    FInsertHeader:boolean;
+    procedure SetEncodingIndex(const Value:integer);
+    procedure SetEncodings(const Value:TTntStrings);
   protected
     procedure DoShow; override;
     procedure DoClose; override;
   public
-    constructor Create(AOwner: TComponent); override;
+    constructor Create(AOwner:TComponent); override;
     destructor Destroy; override;
-    function Execute: boolean; override;
+    function Execute:boolean; override;
   published
-    property Encodings: TTntStrings read FEncodings write SetEncodings;
-    property EncodingLabel: WideString read FEncodingLabel write FEncodingLabel;
-    property EncodingIndex: integer read FEncodingIndex write SetEncodingIndex default 0;
-    property InsertHeader: boolean read FInsertHeader write FInsertHeader;
-    property InsertFooter: boolean read FInsertFooter write FInsertFooter;
+    property Encodings:TTntStrings read FEncodings write SetEncodings;
+    property EncodingLabel:WideString read FEncodingLabel write FEncodingLabel;
+    property EncodingIndex:integer read FEncodingIndex write SetEncodingIndex default 0;
+    property InsertHeader:boolean read FInsertHeader write FInsertHeader;
+    property InsertFooter:boolean read FInsertFooter write FInsertFooter;
   end;
 
   TEncodingSaveDialog = class(TEncodingOpenDialog)
   public
-    function Execute: boolean; override;
+    function Execute:boolean; override;
   end;
 
 resourcestring
@@ -89,7 +89,7 @@ uses
 
 { TfrmEncoding }
 
-constructor TfrmEncoding.Create(OpenDialog: TTntOpenDialog);
+constructor TfrmEncoding.Create(OpenDialog:TTntOpenDialog);
 begin
   FParentWnd := GetParent(OpenDialog.Handle);
   Initialize;
@@ -104,8 +104,8 @@ end;
 
 procedure TfrmEncoding.Initialize;
 var
-  DlgRect, DlgClientRect, OpenRect: TRect;
-  hOpen, hItem: HWND;
+  DlgRect, DlgClientRect, OpenRect:TRect;
+  hOpen, hItem:HWND;
 begin
   CreateParented(FParentWnd);
   GetWindowRect(FParentWnd, DlgRect);
@@ -136,7 +136,7 @@ begin
     MoveWindow(FParentWnd, Left, Top, Right - Left, Bottom - Top + Self.Height, true);
 end;
 
-procedure TfrmEncoding.WMNCDestroy(var Message: TWMNCDestroy);
+procedure TfrmEncoding.WMNCDestroy(var Message:TWMNCDestroy);
 begin
   inherited;
   Free;
@@ -144,7 +144,7 @@ end;
 
 { TEncodingOpenDialog }
 
-constructor TEncodingOpenDialog.Create(AOwner: TComponent);
+constructor TEncodingOpenDialog.Create(AOwner:TComponent);
 begin
   inherited;
   FEncodings := TTntStringlist.Create;
@@ -188,7 +188,7 @@ begin
   inherited;
 end;
 
-function TEncodingOpenDialog.Execute: boolean;
+function TEncodingOpenDialog.Execute:boolean;
 begin
   Result := inherited Execute;
   if Result then
@@ -197,14 +197,14 @@ begin
     raise Exception.CreateFmt('Invalid filename specified "%s"', [Filename]);
 end;
 
-procedure TEncodingOpenDialog.SetEncodingIndex(const Value: integer);
+procedure TEncodingOpenDialog.SetEncodingIndex(const Value:integer);
 begin
   FEncodingIndex := Value;
   if FForm <> nil then
     FForm.cbEncodings.ItemIndex := Value;
 end;
 
-procedure TEncodingOpenDialog.SetEncodings(const Value: TTntStrings);
+procedure TEncodingOpenDialog.SetEncodings(const Value:TTntStrings);
 begin
   FEncodings.Assign(Value);
   if FForm <> nil then
@@ -216,7 +216,7 @@ end;
 
 { TEncodingSaveDialog }
 
-function TEncodingSaveDialog.Execute: boolean;
+function TEncodingSaveDialog.Execute:boolean;
 begin
   if Win32PlatformIsUnicode then
     Result := DoExecuteW(@GetSaveFileNameW)
@@ -229,3 +229,4 @@ begin
 end;
 
 end.
+

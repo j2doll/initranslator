@@ -661,7 +661,7 @@ begin
             FItem := FOrphans.Add;
             FItem.Section := ASection;
             FItem.Name := Copy(tmpString, 1, j - 1);
-            FItem.Original := Copy(tmpString, 1, j - 1);  // have to store something...
+            FItem.Original := Copy(tmpString, 1, j - 1); // have to store something...
             FItem.Translation := Copy(tmpString, j + 1, MaxInt);
             // normal behavior is to regard empty translations as untranslated
 //            FItem.Translated := FItem.Translation <> '';

@@ -26,24 +26,24 @@ uses
 
 type
   TfrmConfigSuspicious = class(TfrmBase)
-    chkLeading: TTntCheckBox;
-    chkTrailing: TTntCheckBox;
-    chkEndControl: TTntCheckBox;
-    chkIdentical: TTntCheckBox;
-    chkEmptyTranslation: TTntCheckBox;
-    TntLabel1: TTntLabel;
-    TntLabel2: TTntLabel;
-    btnOK: TTntButton;
-    btnCancel: TTntButton;
-    reItems: TTntRichEdit;
-    TntBevel1: TTntBevel;
+    chkLeading:TTntCheckBox;
+    chkTrailing:TTntCheckBox;
+    chkEndControl:TTntCheckBox;
+    chkIdentical:TTntCheckBox;
+    chkEmptyTranslation:TTntCheckBox;
+    TntLabel1:TTntLabel;
+    TntLabel2:TTntLabel;
+    btnOK:TTntButton;
+    btnCancel:TTntButton;
+    reItems:TTntRichEdit;
+    TntBevel1:TTntBevel;
   private
     { Private declarations }
   public
     { Public declarations }
-    procedure LoadOptions(AppOptions: TAppOptions);
-    procedure SaveOptions(AppOptions: TAppOptions);
-    class function Edit(AppOptions: TAppOptions): boolean;
+    procedure LoadOptions(AppOptions:TAppOptions);
+    procedure SaveOptions(AppOptions:TAppOptions);
+    class function Edit(AppOptions:TAppOptions):boolean;
   end;
 
 implementation
@@ -52,9 +52,9 @@ implementation
 
 { TfrmConfigSuspicious }
 
-class function TfrmConfigSuspicious.Edit(AppOptions: TAppOptions): boolean;
+class function TfrmConfigSuspicious.Edit(AppOptions:TAppOptions):boolean;
 var
-  frm: TfrmConfigSuspicious;
+  frm:TfrmConfigSuspicious;
 begin
   frm := self.Create(Application);
   try
@@ -67,7 +67,7 @@ begin
   end;
 end;
 
-procedure TfrmConfigSuspicious.LoadOptions(AppOptions: TAppOptions);
+procedure TfrmConfigSuspicious.LoadOptions(AppOptions:TAppOptions);
 begin
   chkLeading.Checked := AppOptions.MisMatchLeadingSpaces;
   chkTrailing.Checked := AppOptions.MisMatchTrailingSpaces;
@@ -77,7 +77,7 @@ begin
   reItems.Lines.CommaText := AppOptions.MisMatchItems;
 end;
 
-procedure TfrmConfigSuspicious.SaveOptions(AppOptions: TAppOptions);
+procedure TfrmConfigSuspicious.SaveOptions(AppOptions:TAppOptions);
 begin
   AppOptions.MisMatchLeadingSpaces := chkLeading.Checked;
   AppOptions.MisMatchTrailingSpaces := chkTrailing.Checked;

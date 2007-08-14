@@ -26,28 +26,28 @@ const
   WM_THREADRESUME = WM_USER + 101;
 
 type
-  TFileMonitorEvent = procedure(Sender: TObject; const Filename: WideString; var AContinue, AReset: boolean) of object;
+  TFileMonitorEvent = procedure(Sender:TObject; const Filename:WideString; var AContinue, AReset:boolean) of object;
   TFileMonitorThread = class(TThread)
   private
-    FOnChange: TFileMonitorEvent;
-    FFilename: WideString;
-    FFileAge: TDateTime;
-    FTimeOut: integer;
+    FOnChange:TFileMonitorEvent;
+    FFilename:WideString;
+    FFileAge:TDateTime;
+    FTimeOut:integer;
     procedure Change; dynamic;
-    procedure SetFilename(const Value: WideString);
+    procedure SetFilename(const Value:WideString);
   protected
     procedure Execute; override;
     // override these to check for other changes in the file (like attributes)
     // by default, it only checks for last modify date
     procedure InitMonitor; virtual;
-    function HasChanged: boolean; virtual;
+    function HasChanged:boolean; virtual;
 
-    procedure WmThreadResume(var Msg: TMessage); message WM_THREADRESUME;
+    procedure WmThreadResume(var Msg:TMessage); message WM_THREADRESUME;
   public
-    constructor Create(const AFilename: WideString; ATimeOut: integer = 200);
+    constructor Create(const AFilename:WideString; ATimeOut:integer = 200);
     // changing the filename will reset the monitor thread (calls InitMonitor)
-    property Filename: WideString read FFilename write SetFilename;
-    property OnChange: TFileMonitorEvent read FOnChange write FOnChange;
+    property Filename:WideString read FFilename write SetFilename;
+    property OnChange:TFileMonitorEvent read FOnChange write FOnChange;
   end;
 
 implementation
@@ -58,12 +58,13 @@ resourcestring
   SFmtMonitorFileNotFound = 'File "%s" not found: cannot monitor a nonexistent file!';
 
 {$IFNDEF COMPILER9_UP}
-function FileAge(const FileName: string; out FileDateTime: TDateTime): Boolean;
+
+function FileAge(const FileName:string; out FileDateTime:TDateTime):Boolean;
 var
-  Handle: THandle;
-  FindData: TWin32FindData;
-  LSystemTime: TSystemTime;
-  LocalFileTime: TFileTime;
+  Handle:THandle;
+  FindData:TWin32FindData;
+  LSystemTime:TSystemTime;
+  LocalFileTime:TFileTime;
 begin
   Result := False;
   Handle := FindFirstFile(PChar(FileName), FindData);
@@ -82,12 +83,12 @@ begin
   end;
 end;
 {$ENDIF}
-  
+
 { TFileMonitorThread }
 
 procedure TFileMonitorThread.Change;
 var
-  AContinue, AReset: boolean;
+  AContinue, AReset:boolean;
 begin
   AContinue := true; // by default, we want to continue monitoring
   AReset := true; // by default, we don't prompt again on this change
@@ -102,7 +103,7 @@ begin
   end;
 end;
 
-constructor TFileMonitorThread.Create(const AFilename: WideString; ATimeOut: integer);
+constructor TFileMonitorThread.Create(const AFilename:WideString; ATimeOut:integer);
 begin
   if (AFilename = '') or not WideFileExists(AFilename) then
     raise Exception.CreateFmt(SFmtMonitorFileNotFound, [AFilename]);
@@ -134,8 +135,9 @@ begin
   end;
 end;
 
-function TFileMonitorThread.HasChanged: boolean;
-var tmp:TDateTime;
+function TFileMonitorThread.HasChanged:boolean;
+var
+  tmp:TDateTime;
 begin
   FileAge(Filename, tmp);
   Result := FFileAge < tmp;
@@ -146,9 +148,9 @@ begin
   FileAge(Filename, FFileAge);
 end;
 
-procedure TFileMonitorThread.SetFilename(const Value: WideString);
+procedure TFileMonitorThread.SetFilename(const Value:WideString);
 var
-  DoResume: boolean;
+  DoResume:boolean;
 begin
   if (Value = '') or not WideFileExists(Value) then
     raise Exception.CreateFmt(SFmtMonitorFileNotFound, [Value]);
@@ -161,7 +163,7 @@ begin
     Resume;
 end;
 
-procedure TFileMonitorThread.WmThreadResume(var Msg: TMessage);
+procedure TFileMonitorThread.WmThreadResume(var Msg:TMessage);
 begin
   if Suspended then
     Resume;

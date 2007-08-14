@@ -35,20 +35,20 @@ uses
 
 type
   TExceptionDialogMail = class(TExceptionDialog)
-    SendBtn: TTntButton;
-    procedure SendBtnClick(Sender: TObject);
+    SendBtn:TTntButton;
+    procedure SendBtnClick(Sender:TObject);
   private
     { Private declarations }
   protected
     procedure AfterCreateDetails; override;
     procedure BeforeCreateDetails; override;
-    function ReportMaxColumns: Integer; override;
+    function ReportMaxColumns:Integer; override;
   public
     { Public declarations }
   end;
 
 var
-  ExceptionDialogMail: TExceptionDialogMail;
+  ExceptionDialogMail:TExceptionDialogMail;
 
 implementation
 
@@ -77,12 +77,12 @@ begin
   SendBtn.Enabled := False;
 end;
 
-function TExceptionDialogMail.ReportMaxColumns: Integer;
+function TExceptionDialogMail.ReportMaxColumns:Integer;
 begin
   Result := 78;
 end;
 
-procedure TExceptionDialogMail.SendBtnClick(Sender: TObject);
+procedure TExceptionDialogMail.SendBtnClick(Sender:TObject);
 begin
   with TJclEmail.Create do
   try

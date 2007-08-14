@@ -29,36 +29,36 @@ uses
 
 type
   TfrmImportExport = class(TfrmBase)
-    lvItems: TTntListView;
-    btnOK: TTntButton;
-    btnCancel: TTntButton;
-    lblList: TTntLabel;
-    acImportExport: TTntActionList;
-    acImport: TTntAction;
-    acExport: TTntAction;
-    btnConfigure: TTntButton;
-    acConfigure: TTntAction;
-    stNothingToShow: TTntStaticText;
-    procedure lvItemsDblClick(Sender: TObject);
-    procedure acImportExportUpdate(Action: TBasicAction;
-      var Handled: boolean);
-    procedure lvItemsEnter(Sender: TObject);
-    procedure acImportExecute(Sender: TObject);
-    procedure acExportExecute(Sender: TObject);
-    procedure acConfigureExecute(Sender: TObject);
-    procedure FormShow(Sender: TObject);
+    lvItems:TTntListView;
+    btnOK:TTntButton;
+    btnCancel:TTntButton;
+    lblList:TTntLabel;
+    acImportExport:TTntActionList;
+    acImport:TTntAction;
+    acExport:TTntAction;
+    btnConfigure:TTntButton;
+    acConfigure:TTntAction;
+    stNothingToShow:TTntStaticText;
+    procedure lvItemsDblClick(Sender:TObject);
+    procedure acImportExportUpdate(Action:TBasicAction;
+      var Handled:boolean);
+    procedure lvItemsEnter(Sender:TObject);
+    procedure acImportExecute(Sender:TObject);
+    procedure acExportExecute(Sender:TObject);
+    procedure acConfigureExecute(Sender:TObject);
+    procedure FormShow(Sender:TObject);
   private
     { Private declarations }
-    FCapabilitiesSupported: integer;
-    FItems, FOrphans: ITranslationItems;
-    FImport: boolean;
-    function DoTranslate(const S: WideString): WideString;
-    function LoadPlugins(const PluginFolder: WideString; ForImport: boolean): integer;
+    FCapabilitiesSupported:integer;
+    FItems, FOrphans:ITranslationItems;
+    FImport:boolean;
+    function DoTranslate(const S:WideString):WideString;
+    function LoadPlugins(const PluginFolder:WideString; ForImport:boolean):integer;
   public
     { Public declarations }
-    class procedure GetStrings(const PluginFolder: WideString; ini: TWideCustomIniFile);
-    class function Edit(const Items, Orphans: ITranslationItems; const PluginFolder: WideString;
-      const DoImport: boolean; var ItemIndex, CapabilitesSupported: integer): boolean;
+    class procedure GetStrings(const PluginFolder:WideString; ini:TWideCustomIniFile);
+    class function Edit(const Items, Orphans:ITranslationItems; const PluginFolder:WideString;
+      const DoImport:boolean; var ItemIndex, CapabilitesSupported:integer):boolean;
   end;
 
 implementation
@@ -67,20 +67,20 @@ uses
 
 {$R *.dfm}
 var
-  FLoadedLibs: TList = nil;
+  FLoadedLibs:TList = nil;
 
 type
   TLibItem = class
-    LibName: WideString;
-    LibHandle: HMODULE;
-    Parser: IFileParser;
+    LibName:WideString;
+    LibHandle:HMODULE;
+    Parser:IFileParser;
   end;
 
-function InternalLoadLibrary(const LibName: WideString): TLibItem;
+function InternalLoadLibrary(const LibName:WideString):TLibItem;
 var
-  LibHandle: HMODULE;
-  ExportFunc: TExportFileParserFunc;
-  i: integer;
+  LibHandle:HMODULE;
+  ExportFunc:TExportFileParserFunc;
+  i:integer;
 begin
   Result := nil;
   // find already loaded DLL's
@@ -117,7 +117,7 @@ end;
 
 procedure FreeLibraries;
 var
-  i: integer;
+  i:integer;
 begin
   for i := 0 to FLoadedLibs.Count - 1 do
     if FLoadedLibs[i] <> nil then
@@ -131,11 +131,11 @@ end;
 
 { TfrmImportExport }
 
-class function TfrmImportExport.Edit(const Items, Orphans: ITranslationItems;
-  const PluginFolder: WideString; const DoImport: boolean; var ItemIndex, CapabilitesSupported: integer): boolean;
+class function TfrmImportExport.Edit(const Items, Orphans:ITranslationItems;
+  const PluginFolder:WideString; const DoImport:boolean; var ItemIndex, CapabilitesSupported:integer):boolean;
 var
-  frmImportExport: TfrmImportExport;
-  i: integer;
+  frmImportExport:TfrmImportExport;
+  i:integer;
 begin
   frmImportExport := Self.Create(Application);
   with frmImportExport do
@@ -166,11 +166,11 @@ begin
     i := LoadPlugins(PluginFolder, DoImport);
     lvItems.AlphaSort;
     if (ItemIndex >= 0) and (ItemIndex < lvItems.Items.Count) then
-    with lvItems.Items[ItemIndex] do
-    begin
-      Selected := true;
-      Focused := true;
-    end;
+      with lvItems.Items[ItemIndex] do
+      begin
+        Selected := true;
+        Focused := true;
+      end;
     Result := (ShowModal = mrOK) and (i > 0);
     if Result then
     begin
@@ -183,13 +183,13 @@ begin
   end;
 end;
 
-procedure TfrmImportExport.lvItemsDblClick(Sender: TObject);
+procedure TfrmImportExport.lvItemsDblClick(Sender:TObject);
 begin
   btnOK.Click;
 end;
 
-procedure TfrmImportExport.acImportExportUpdate(Action: TBasicAction;
-  var Handled: boolean);
+procedure TfrmImportExport.acImportExportUpdate(Action:TBasicAction;
+  var Handled:boolean);
 begin
   if btnOK.Action <> nil then
     TAction(btnOK.Action).Enabled := lvItems.Selected <> nil;
@@ -197,15 +197,15 @@ begin
     (TLibItem(lvItems.Selected.Data).Parser.Capabilities and CAP_CONFIGURE = CAP_CONFIGURE);
 end;
 
-function TfrmImportExport.LoadPlugins(const PluginFolder: WideString;
-  ForImport: boolean): integer;
+function TfrmImportExport.LoadPlugins(const PluginFolder:WideString;
+  ForImport:boolean):integer;
 const
-  cCapability: array[boolean] of integer = (CAP_EXPORT, CAP_IMPORT);
+  cCapability:array[boolean] of integer = (CAP_EXPORT, CAP_IMPORT);
 var
-  F: TSearchRecW;
-  APath: WideString;
-  li: TListItem;
-  LibItem: TLibItem;
+  F:TSearchRecW;
+  APath:WideString;
+  li:TListItem;
+  LibItem:TLibItem;
 begin
   Result := 0;
   APath := WideIncludeTrailingPathDelimiter(PluginFolder);
@@ -251,7 +251,7 @@ begin
     stNothingToShow.Visible := false;
 end;
 
-procedure TfrmImportExport.lvItemsEnter(Sender: TObject);
+procedure TfrmImportExport.lvItemsEnter(Sender:TObject);
 begin
   if (lvItems.Selected = nil) and (lvItems.Items.Count > 0) then
   begin
@@ -261,9 +261,9 @@ begin
   end;
 end;
 
-procedure TfrmImportExport.acImportExecute(Sender: TObject);
+procedure TfrmImportExport.acImportExecute(Sender:TObject);
 var
-  Parser: IFileParser;
+  Parser:IFileParser;
 begin
   Parser := TLibItem(lvItems.Selected.Data).Parser;
   Parser.Init(GlobalApplicationServices);
@@ -280,9 +280,9 @@ begin
     ModalResult := mrNone;
 end;
 
-procedure TfrmImportExport.acExportExecute(Sender: TObject);
+procedure TfrmImportExport.acExportExecute(Sender:TObject);
 var
-  Parser: IFileParser;
+  Parser:IFileParser;
 begin
   Parser := TLibItem(lvItems.Selected.Data).Parser;
   Parser.Init(GlobalApplicationServices);
@@ -298,15 +298,15 @@ begin
     ModalResult := mrNone;
 end;
 
-procedure TfrmImportExport.acConfigureExecute(Sender: TObject);
+procedure TfrmImportExport.acConfigureExecute(Sender:TObject);
 const
-  cCapability: array[boolean] of integer = (CAP_EXPORT, CAP_IMPORT);
+  cCapability:array[boolean] of integer = (CAP_EXPORT, CAP_IMPORT);
 begin
   TLibItem(lvItems.Selected.Data).Parser.Init(GlobalApplicationServices);
   TLibItem(lvItems.Selected.Data).Parser.Configure(cCapability[FImport]);
 end;
 
-function TfrmImportExport.DoTranslate(const S: WideString): WideString;
+function TfrmImportExport.DoTranslate(const S:WideString):WideString;
 begin
   if GlobalLanguageFile <> nil then
     Result := GlobalLanguageFile.Translate(Application.MainForm.ClassName, S, S)
@@ -314,13 +314,13 @@ begin
     Result := S;
 end;
 
-class procedure TfrmImportExport.GetStrings(const PluginFolder: WideString; ini: TWideCustomIniFile);
+class procedure TfrmImportExport.GetStrings(const PluginFolder:WideString; ini:TWideCustomIniFile);
 var
-  i: integer;
-  LibItem: TLibItem;
-  frm: TfrmImportExport;
-  Section, Name, Value: WideString;
-  Obj: ILocalizable;
+  i:integer;
+  LibItem:TLibItem;
+  frm:TfrmImportExport;
+  Section, Name, Value:WideString;
+  Obj:ILocalizable;
 begin
   frm := self.Create(Application);
   try
@@ -350,7 +350,7 @@ begin
   end;
 end;
 
-procedure TfrmImportExport.FormShow(Sender: TObject);
+procedure TfrmImportExport.FormShow(Sender:TObject);
 begin
   if lvItems.Selected <> nil then
     lvItems.Selected.MakeVisible(false);
@@ -364,4 +364,3 @@ finalization
   FreeAndNil(FLoadedLibs);
 
 end.
-

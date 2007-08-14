@@ -29,78 +29,78 @@ uses
 
 type
   TFrmKbdCfg = class(TTntFrame)
-    lbCategories: TTntListBox;
-    Label1: TTntLabel;
-    Label2: TTntLabel;
-    lblNewShortCut: TTntLabel;
-    Label4: TTntLabel;
-    lbCurrentShortCuts: TTntListBox;
-    btnAdd: TTntButton;
-    btnRemove: TTntButton;
-    lblAssignedTo: TTntLabel;
-    btnReset: TTntButton;
-    btnClose: TTntButton;
-    alMain: TTntActionList;
-    acAdd: TTntAction;
-    acRemove: TTntAction;
-    lblAssignedTo2: TTntLabel;
-    lblCommand: TTntLabel;
-    bvTop: TBevel;
-    lblShortcut: TTntLabel;
-    bvMiddle: TBevel;
-    lblDescription: TTntLabel;
-    lblBottom: TTntLabel;
-    bvBottom: TBevel;
-    acReset: TTntAction;
-    acClose: TTntAction;
-    lvCommands: TTntListView;
-    procedure acAddExecute(Sender: TObject);
-    procedure acRemoveExecute(Sender: TObject);
-    procedure alMainUpdate(Action: TBasicAction; var Handled: Boolean);
-    procedure btnCloseClick(Sender: TObject);
-    procedure lbCategoriesClick(Sender: TObject);
-    procedure acResetExecute(Sender: TObject);
-    procedure acCloseExecute(Sender: TObject);
-    procedure lvCommandsSelectItem(Sender: TObject; Item: TListItem;
-      Selected: Boolean);
-    procedure lvCommandsEnter(Sender: TObject);
-    procedure lvCommandsChange(Sender: TObject; Item: TListItem;
-      Change: TItemChange);
-    procedure lbCategoriesEnter(Sender: TObject);
-    procedure edShortCutChange(Sender: TObject);
+    lbCategories:TTntListBox;
+    Label1:TTntLabel;
+    Label2:TTntLabel;
+    lblNewShortCut:TTntLabel;
+    Label4:TTntLabel;
+    lbCurrentShortCuts:TTntListBox;
+    btnAdd:TTntButton;
+    btnRemove:TTntButton;
+    lblAssignedTo:TTntLabel;
+    btnReset:TTntButton;
+    btnClose:TTntButton;
+    alMain:TTntActionList;
+    acAdd:TTntAction;
+    acRemove:TTntAction;
+    lblAssignedTo2:TTntLabel;
+    lblCommand:TTntLabel;
+    bvTop:TBevel;
+    lblShortcut:TTntLabel;
+    bvMiddle:TBevel;
+    lblDescription:TTntLabel;
+    lblBottom:TTntLabel;
+    bvBottom:TBevel;
+    acReset:TTntAction;
+    acClose:TTntAction;
+    lvCommands:TTntListView;
+    procedure acAddExecute(Sender:TObject);
+    procedure acRemoveExecute(Sender:TObject);
+    procedure alMainUpdate(Action:TBasicAction; var Handled:Boolean);
+    procedure btnCloseClick(Sender:TObject);
+    procedure lbCategoriesClick(Sender:TObject);
+    procedure acResetExecute(Sender:TObject);
+    procedure acCloseExecute(Sender:TObject);
+    procedure lvCommandsSelectItem(Sender:TObject; Item:TListItem;
+      Selected:Boolean);
+    procedure lvCommandsEnter(Sender:TObject);
+    procedure lvCommandsChange(Sender:TObject; Item:TListItem;
+      Change:TItemChange);
+    procedure lbCategoriesEnter(Sender:TObject);
+    procedure edShortCutChange(Sender:TObject);
   private
     { Private declarations }
-    CatList: TTntStringlist;
-    edShortCut: TShortCutEdit;
-    FActionList: TTntActionList;
-    FOnClose: TNotifyEvent;
-    FModified: boolean;
-    FTempStoreFilename: WideString;
-    function GetCurrentAction: TTntAction;
-    function GetShortCutAssignee(ShortCut: TShortCut): TTntAction;
-    procedure SetTempStoreFilename(const Value: WideString);
+    CatList:TTntStringlist;
+    edShortCut:TShortCutEdit;
+    FActionList:TTntActionList;
+    FOnClose:TNotifyEvent;
+    FModified:boolean;
+    FTempStoreFilename:WideString;
+    function GetCurrentAction:TTntAction;
+    function GetShortCutAssignee(ShortCut:TShortCut):TTntAction;
+    procedure SetTempStoreFilename(const Value:WideString);
     procedure CheckTempName;
     procedure ClearCatList;
-    function GetTempStoreFilename: WideString;
-    procedure CopyToCommands(S: TTntStrings);
-    function DoTranslate(const S: WideString): WideString;
+    function GetTempStoreFilename:WideString;
+    procedure CopyToCommands(S:TTntStrings);
+    function DoTranslate(const S:WideString):WideString;
   public
     { Public declarations }
-    procedure EditShortCuts(AActionList: TTntActionList);
-    constructor Create(AOwner: TComponent); override;
+    procedure EditShortCuts(AActionList:TTntActionList);
+    constructor Create(AOwner:TComponent); override;
 
     destructor Destroy; override;
     procedure AdjustControls;
-    property TempStoreFilename: WideString read GetTempStoreFilename write SetTempStoreFilename;
-    property OnClose: TNotifyEvent read FOnClose write FOnClose;
-    property Modified: boolean read FModified;
+    property TempStoreFilename:WideString read GetTempStoreFilename write SetTempStoreFilename;
+    property OnClose:TNotifyEvent read FOnClose write FOnClose;
+    property Modified:boolean read FModified;
   end;
 
 const
   ACTION_HIDDEN_TAG = -1;
 
-procedure SaveActionShortCutsToFile(AL: TTntActionList; Filename: WideString);
-procedure LoadActionShortCutsFromFile(AL: TTntActionList; Filename: WideString);
+procedure SaveActionShortCutsToFile(AL:TTntActionList; Filename:WideString);
+procedure LoadActionShortCutsFromFile(AL:TTntActionList; Filename:WideString);
 
 implementation
 uses
@@ -112,10 +112,11 @@ uses
 
 // format: Action.Name;Action.ShortCut;Action.SecondaryShortCuts[0]#27Action.SecondaryShortCuts[1]#27...
 
-procedure SaveActionShortCutsToFile(AL: TTntActionList; Filename: WideString);
-var i: integer;
-  A: TTntAction;
-  S: TTntStringlist;
+procedure SaveActionShortCutsToFile(AL:TTntActionList; Filename:WideString);
+var
+  i:integer;
+  A:TTntAction;
+  S:TTntStringlist;
 begin
   if Filename = '' then
     Filename := GetAppStoragePath + 'translator.alf';
@@ -135,8 +136,9 @@ end;
 
 // TTntActionList.FindComponent doesn't work (FComponents = nil)...
 
-function FindAction(AL: TTntActionList; const AName: WideString): TTntAction;
-var i: integer;
+function FindAction(AL:TTntActionList; const AName:WideString):TTntAction;
+var
+  i:integer;
 begin
   for i := 0 to AL.ActionCount - 1 do
     if AnsiSameText(TTntAction(AL.Actions[i]).Name, AName) then
@@ -147,12 +149,12 @@ begin
   Result := nil;
 end;
 
-procedure LoadActionShortCutsFromFile(AL: TTntActionList; Filename: WideString);
+procedure LoadActionShortCutsFromFile(AL:TTntActionList; Filename:WideString);
 var
-  i, j: integer;
-  A: TTntAction;
-  S: TTntStringlist;
-  ActionName: WideString;
+  i, j:integer;
+  A:TTntAction;
+  S:TTntStringlist;
+  ActionName:WideString;
 begin
   if Filename = '' then
     Filename := GetAppStoragePath + 'translator.alf';
@@ -181,9 +183,10 @@ begin
   end;
 end;
 
-procedure TFrmKbdCfg.acAddExecute(Sender: TObject);
-var A: TTntAction;
-  S: WideString;
+procedure TFrmKbdCfg.acAddExecute(Sender:TObject);
+var
+  A:TTntAction;
+  S:WideString;
 begin
   if edShortCut.ShortCut = 0 then
     Exit;
@@ -212,11 +215,11 @@ begin
   end;
 end;
 
-procedure TFrmKbdCfg.acRemoveExecute(Sender: TObject);
+procedure TFrmKbdCfg.acRemoveExecute(Sender:TObject);
 var
-  A: TTntAction;
-  S: TShortCut;
-  Index: integer;
+  A:TTntAction;
+  S:TShortCut;
+  Index:integer;
 begin
   A := GetCurrentAction;
   if A = nil then
@@ -238,15 +241,15 @@ begin
   FModified := true;
 end;
 
-function IsValidKey(AKey: Word; AShift: TShiftState): boolean;
+function IsValidKey(AKey:Word; AShift:TShiftState):boolean;
 begin
   Result := (AKey in [VK_F1..VK_F12]) or not (AKey in [0, VK_CONTROL, VK_MENU, VK_SHIFT]);
 end;
 
-procedure TFrmKbdCfg.alMainUpdate(Action: TBasicAction; var Handled: Boolean);
+procedure TFrmKbdCfg.alMainUpdate(Action:TBasicAction; var Handled:Boolean);
 var
-  AKey: word;
-  AShift: TShiftState;
+  AKey:word;
+  AShift:TShiftState;
 begin
   // make sure shortcuts have at least Ctrl and Alt along with Shift or is a function key (F1..F12)
   ShortCutToKey(edShortCut.ShortCut, AKey, AShift);
@@ -256,13 +259,13 @@ begin
   edShortCut.Enabled := (lvCommands.Selected <> nil);
 end;
 
-procedure TFrmKbdCfg.btnCloseClick(Sender: TObject);
+procedure TFrmKbdCfg.btnCloseClick(Sender:TObject);
 begin
   if Assigned(FOnClose) then
     FOnClose(self);
 end;
 
-constructor TFrmKbdCfg.Create(AOwner: TComponent);
+constructor TFrmKbdCfg.Create(AOwner:TComponent);
 begin
   inherited;
   CatList := TTntStringlist.Create;
@@ -288,12 +291,12 @@ begin
   inherited;
 end;
 
-procedure TFrmKbdCfg.EditShortCuts(AActionList: TTntActionList);
+procedure TFrmKbdCfg.EditShortCuts(AActionList:TTntActionList);
 var
-  i, j: integer;
-  S: WideString;
-  A: TTntAction;
-  ActList: TTntStringlist;
+  i, j:integer;
+  S:WideString;
+  A:TTntAction;
+  ActList:TTntStringlist;
 begin
   FActionList := AActionList;
   if FActionList = nil then
@@ -329,7 +332,7 @@ begin
   FModified := false;
 end;
 
-function TFrmKbdCfg.GetCurrentAction: TTntAction;
+function TFrmKbdCfg.GetCurrentAction:TTntAction;
 begin
   Result := nil;
   with lvCommands do
@@ -340,10 +343,11 @@ begin
   end;
 end;
 
-function TFrmKbdCfg.GetShortCutAssignee(ShortCut: TShortCut): TTntAction;
-var i: integer;
-  S: WideString;
-  A: TTntAction;
+function TFrmKbdCfg.GetShortCutAssignee(ShortCut:TShortCut):TTntAction;
+var
+  i:integer;
+  S:WideString;
+  A:TTntAction;
 begin
   Result := nil;
   if (ShortCut = 0) or (FActionList = nil) then
@@ -361,8 +365,9 @@ begin
   end;
 end;
 
-procedure TFrmKbdCfg.CopyToCommands(S: TTntStrings);
-var i: integer;
+procedure TFrmKbdCfg.CopyToCommands(S:TTntStrings);
+var
+  i:integer;
 begin
   lvCommands.Items.Clear;
   for i := 0 to S.Count - 1 do
@@ -374,8 +379,9 @@ begin
     end;
 end;
 
-procedure TFrmKbdCfg.lbCategoriesClick(Sender: TObject);
-var i: integer;
+procedure TFrmKbdCfg.lbCategoriesClick(Sender:TObject);
+var
+  i:integer;
 begin
   i := lbCategories.ItemIndex;
   if i < 0 then
@@ -385,20 +391,20 @@ begin
   CopyToCommands(TTntStringlist(lbCategories.Items.Objects[i]));
 end;
 
-procedure TFrmKbdCfg.acResetExecute(Sender: TObject);
+procedure TFrmKbdCfg.acResetExecute(Sender:TObject);
 begin
   LoadActionShortCutsFromFile(FActionList, TempStoreFilename);
   EditShortCuts(FActionList);
 end;
 
-procedure TFrmKbdCfg.acCloseExecute(Sender: TObject);
+procedure TFrmKbdCfg.acCloseExecute(Sender:TObject);
 begin
   DeleteFile(TempStoreFilename);
   if Assigned(FOnClose) then
     FOnClose(self);
 end;
 
-procedure TFrmKbdCfg.SetTempStoreFilename(const Value: WideString);
+procedure TFrmKbdCfg.SetTempStoreFilename(const Value:WideString);
 begin
   FTempStoreFilename := Value;
   CheckTempName;
@@ -406,8 +412,8 @@ end;
 
 procedure TFrmKbdCfg.CheckTempName;
 var
-  bufFile: array[0..MAX_PATH] of AnsiChar;
-  nSize: Cardinal;
+  bufFile:array[0..MAX_PATH] of AnsiChar;
+  nSize:Cardinal;
 begin
   if FTempStoreFilename = '' then
   begin
@@ -418,18 +424,18 @@ begin
   end;
 end;
 
-function TFrmKbdCfg.GetTempStoreFilename: WideString;
+function TFrmKbdCfg.GetTempStoreFilename:WideString;
 begin
   CheckTempName;
   Result := FTempStoreFilename;
 end;
 
-procedure TFrmKbdCfg.lvCommandsSelectItem(Sender: TObject; Item: TListItem;
-  Selected: Boolean);
+procedure TFrmKbdCfg.lvCommandsSelectItem(Sender:TObject; Item:TListItem;
+  Selected:Boolean);
 var
-  A: TTntAction;
-  S: WideString;
-  i: integer;
+  A:TTntAction;
+  S:WideString;
+  i:integer;
 begin
   if not Selected then
     Exit;
@@ -455,7 +461,7 @@ begin
   end;
 end;
 
-procedure TFrmKbdCfg.lvCommandsEnter(Sender: TObject);
+procedure TFrmKbdCfg.lvCommandsEnter(Sender:TObject);
 begin
   if (lvCommands.Selected = nil) and (lvCommands.Items.Count > 0) then
   begin
@@ -464,21 +470,22 @@ begin
   end;
 end;
 
-function TFrmKbdCfg.DoTranslate(const S: WideString): WideString;
+function TFrmKbdCfg.DoTranslate(const S:WideString):WideString;
 begin
   Result := _(Application.MainForm.ClassName, S);
 end;
 
 procedure TFrmKbdCfg.ClearCatList;
-var i: integer;
+var
+  i:integer;
 begin
   for i := 0 to CatList.Count - 1 do
     TObject(CatList.Objects[i]).Free;
   CatList.Clear;
 end;
 
-procedure TFrmKbdCfg.lvCommandsChange(Sender: TObject; Item: TListItem;
-  Change: TItemChange);
+procedure TFrmKbdCfg.lvCommandsChange(Sender:TObject; Item:TListItem;
+  Change:TItemChange);
 begin
   edShortCut.ShortCut := 0;
 end;
@@ -496,7 +503,7 @@ end;
 type
   TAccessListBox = class(TListBox);
 
-procedure TFrmKbdCfg.lbCategoriesEnter(Sender: TObject);
+procedure TFrmKbdCfg.lbCategoriesEnter(Sender:TObject);
 begin
   if (lbCategories.ItemIndex < 0) then
   begin
@@ -505,8 +512,9 @@ begin
   end;
 end;
 
-procedure TFrmKbdCfg.edShortCutChange(Sender: TObject);
-var A: TTntAction;
+procedure TFrmKbdCfg.edShortCutChange(Sender:TObject);
+var
+  A:TTntAction;
 begin
   if edShortCut.ShortCut = 0 then
   begin

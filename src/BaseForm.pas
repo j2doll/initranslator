@@ -36,11 +36,11 @@ type
   public
     { Public declarations }
     procedure AfterConstruction; override;
-    function CloseQuery: Boolean; override;
+    function CloseQuery:Boolean; override;
   end;
 
 var
-  frmBase: TfrmBase;
+  frmBase:TfrmBase;
 
 implementation
 uses
@@ -64,7 +64,7 @@ begin
   FixXPStyles(self);
 end;
 
-function TfrmBase.CloseQuery: Boolean;
+function TfrmBase.CloseQuery:Boolean;
 begin
   SaveFormPos;
   Result := inherited CloseQuery;
@@ -72,7 +72,7 @@ end;
 
 procedure TfrmBase.LoadFormPos;
 var
-  W: TAppWindowInfo;
+  W:TAppWindowInfo;
 begin
   if (Self = Application.MainForm) and IsIconic(Application.Handle) or IsZoomed(Handle) then
     ShowWindow(Handle, SW_RESTORE);
@@ -96,7 +96,7 @@ end;
 
 procedure TfrmBase.SaveFormPos;
 var
-  W: TAppWindowInfo;
+  W:TAppWindowInfo;
 begin
   W.Name := self.Name;
   W.WindowState := WindowState;
@@ -106,4 +106,3 @@ begin
 end;
 
 end.
-

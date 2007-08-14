@@ -26,206 +26,206 @@ uses
 type
   PAppWindowInfo = ^TAppWindowInfo;
   TAppWindowInfo = record
-    Name: shortstring;
-    BoundsRect: TRect;
-    WindowState: TWindowState;
+    Name:shortstring;
+    BoundsRect:TRect;
+    WindowState:TWindowState;
   end;
 
   TToolItem = class(TCollectionItem)
   private
-    FCaptureOutput: boolean;
-    FWaitForCompletion: boolean;
-    FPromptForArguments: boolean;
-    FInitialDirectory: WideString;
-    FArguments: WideString;
-    FTitle: WideString;
-    FCommand: WideString;
-    FUseShellExecute: boolean;
-    FShortCut: Word;
-    function GetAsString: WideString;
-    procedure SetAsString(const Value: WideString);
+    FCaptureOutput:boolean;
+    FWaitForCompletion:boolean;
+    FPromptForArguments:boolean;
+    FInitialDirectory:WideString;
+    FArguments:WideString;
+    FTitle:WideString;
+    FCommand:WideString;
+    FUseShellExecute:boolean;
+    FShortCut:Word;
+    function GetAsString:WideString;
+    procedure SetAsString(const Value:WideString);
   public
-    procedure Assign(Source: TPersistent); override;
-    property AsString: WideString read GetAsString write SetAsString;
+    procedure Assign(Source:TPersistent); override;
+    property AsString:WideString read GetAsString write SetAsString;
   published
-    property Title: WideString read FTitle write FTitle;
-    property Command: WideString read FCommand write FCommand;
-    property Arguments: WideString read FArguments write FArguments;
-    property InitialDirectory: WideString read FInitialDirectory write FInitialDirectory;
-    property CaptureOutput: boolean read FCaptureOutput write FCaptureOutput;
-    property PromptForArguments: boolean read FPromptForArguments write FPromptForArguments;
-    property WaitForCompletion: boolean read FWaitForCompletion write FWaitForCompletion;
-    property UseShellExecute: boolean read FUseShellExecute write FUseShellExecute;
-    property ShortCut: Word read FShortCut write FShortCut;
+    property Title:WideString read FTitle write FTitle;
+    property Command:WideString read FCommand write FCommand;
+    property Arguments:WideString read FArguments write FArguments;
+    property InitialDirectory:WideString read FInitialDirectory write FInitialDirectory;
+    property CaptureOutput:boolean read FCaptureOutput write FCaptureOutput;
+    property PromptForArguments:boolean read FPromptForArguments write FPromptForArguments;
+    property WaitForCompletion:boolean read FWaitForCompletion write FWaitForCompletion;
+    property UseShellExecute:boolean read FUseShellExecute write FUseShellExecute;
+    property ShortCut:Word read FShortCut write FShortCut;
   end;
 
   TToolItems = class(TCollection)
   private
-    function GetItem(Index: integer): TToolItem;
-    procedure SetItem(Index: integer; const Value: TToolItem);
+    function GetItem(Index:integer):TToolItem;
+    procedure SetItem(Index:integer; const Value:TToolItem);
   public
     constructor Create;
-    procedure Assign(Source: TPersistent); override;
-    function Add: TToolItem;
-    function IndexOf(const Title: WideString): integer;
-    procedure Exchange(Index1, Index2: integer);
-    procedure LoadFromIni(ini: TWideCustomIniFile);
-    procedure SaveToIni(ini: TWideCustomIniFile);
-    property Items[Index: integer]: TToolItem read GetItem write SetItem; default;
+    procedure Assign(Source:TPersistent); override;
+    function Add:TToolItem;
+    function IndexOf(const Title:WideString):integer;
+    procedure Exchange(Index1, Index2:integer);
+    procedure LoadFromIni(ini:TWideCustomIniFile);
+    procedure SaveToIni(ini:TWideCustomIniFile);
+    property Items[Index:integer]:TToolItem read GetItem write SetItem; default;
   end;
 
   TAppOptions = class
   private
-    FWindowInfos: TTntStrings;
-    FInvertDictionary: boolean;
-    FSaveFormPos: boolean;
-    FSaveOnReturn: boolean;
-    FShowToolTips: boolean;
-    FAutoMoveToNext: boolean;
-    FShowDetails: boolean;
-    FShowQuotes: boolean;
-    FShowToolTipShortCuts: boolean;
-    FSaveMinMaxState: boolean;
-    FSplitterPosition: integer;
-    FAppTitle: WideString;
-    FOriginalFile: WideString;
-    FLanguageFile: WideString;
-    FTranslationFile: WideString;
-    FHelpFile: WideString;
-    FDictionaryFile: WideString;
-    FFilename: WideString;
-    FFilterIndex: integer;
-    FGlobalPath: boolean;
-    FPinCommentWindow: boolean;
-    FMatchCase: boolean;
-    FMatchLine: boolean;
-    FSearchUp: boolean;
-    FFindText: WideString;
-    FReplaceText: WideString;
-    FReplaceHistory: WideString;
-    FFindHistory: WideString;
-    FFindInIndex: integer;
-    FTransEncoding: integer;
-    FOrigEncoding: integer;
-    FMonitorFiles: boolean;
-    FTheme: WideString;
-    FFuzzySearch: boolean;
-    FDictIgnoreSpeedKeys: boolean;
-    FShowFullNameInColumns: boolean;
-    FUseTranslationEverywhere: boolean;
-    FAutoFocusTranslation: boolean;
-    FTools: TToolItems;
-    FMisMatchItems: WideString;
-    FMisMatchTrailingSpaces: boolean;
-    FMisMatchLeadingSpaces: boolean;
-    FMisMatchIdentical: boolean;
-    FMisMatchEmptyTranslation: boolean;
-    FMisMatchEndControl: boolean;
-    FDictIgnoreNonEmpty: boolean;
-    FDictEditFilter: Integer;
-    FColorEvenRow: TColor;
-    FColorUntranslated: TColor;
-    FColorOddRow: TColor;
-    FColorFontUntranslated: TColor;
-    FColorFontOddRow: TColor;
-    FColorFontEvenRow: TColor;
-    FDefaultOrigEncoding: integer;
-    FDefaultTransEncoding: integer;
-    FFooter: TTntStrings;
-    FHeader: TTntStrings;
-    FFontSize: integer;
-    FFontName: WideString;
-    procedure ReadWindowInfos(ini: TWideCustomIniFile);
-    procedure WriteWindowInfos(ini: TWideCustomIniFile);
-    function GetWindowInfo(AForm: TForm): TAppWindowInfo;
-    procedure SetWindowInfo(AForm: TForm; const Value: TAppWindowInfo);
-    procedure SetTools(const Value: TToolItems);
-    procedure SetFooter(const Value: TTntStrings);
-    procedure SetHeader(const Value: TTntStrings);
-    function GetOption(const Section, Name: WideString): WideString;
-    procedure SetOption(const Section, Name, Value: WideString);
+    FWindowInfos:TTntStrings;
+    FInvertDictionary:boolean;
+    FSaveFormPos:boolean;
+    FSaveOnReturn:boolean;
+    FShowToolTips:boolean;
+    FAutoMoveToNext:boolean;
+    FShowDetails:boolean;
+    FShowQuotes:boolean;
+    FShowToolTipShortCuts:boolean;
+    FSaveMinMaxState:boolean;
+    FSplitterPosition:integer;
+    FAppTitle:WideString;
+    FOriginalFile:WideString;
+    FLanguageFile:WideString;
+    FTranslationFile:WideString;
+    FHelpFile:WideString;
+    FDictionaryFile:WideString;
+    FFilename:WideString;
+    FFilterIndex:integer;
+    FGlobalPath:boolean;
+    FPinCommentWindow:boolean;
+    FMatchCase:boolean;
+    FMatchLine:boolean;
+    FSearchUp:boolean;
+    FFindText:WideString;
+    FReplaceText:WideString;
+    FReplaceHistory:WideString;
+    FFindHistory:WideString;
+    FFindInIndex:integer;
+    FTransEncoding:integer;
+    FOrigEncoding:integer;
+    FMonitorFiles:boolean;
+    FTheme:WideString;
+    FFuzzySearch:boolean;
+    FDictIgnoreSpeedKeys:boolean;
+    FShowFullNameInColumns:boolean;
+    FUseTranslationEverywhere:boolean;
+    FAutoFocusTranslation:boolean;
+    FTools:TToolItems;
+    FMisMatchItems:WideString;
+    FMisMatchTrailingSpaces:boolean;
+    FMisMatchLeadingSpaces:boolean;
+    FMisMatchIdentical:boolean;
+    FMisMatchEmptyTranslation:boolean;
+    FMisMatchEndControl:boolean;
+    FDictIgnoreNonEmpty:boolean;
+    FDictEditFilter:Integer;
+    FColorEvenRow:TColor;
+    FColorUntranslated:TColor;
+    FColorOddRow:TColor;
+    FColorFontUntranslated:TColor;
+    FColorFontOddRow:TColor;
+    FColorFontEvenRow:TColor;
+    FDefaultOrigEncoding:integer;
+    FDefaultTransEncoding:integer;
+    FFooter:TTntStrings;
+    FHeader:TTntStrings;
+    FFontSize:integer;
+    FFontName:WideString;
+    procedure ReadWindowInfos(ini:TWideCustomIniFile);
+    procedure WriteWindowInfos(ini:TWideCustomIniFile);
+    function GetWindowInfo(AForm:TForm):TAppWindowInfo;
+    procedure SetWindowInfo(AForm:TForm; const Value:TAppWindowInfo);
+    procedure SetTools(const Value:TToolItems);
+    procedure SetFooter(const Value:TTntStrings);
+    procedure SetHeader(const Value:TTntStrings);
+    function GetOption(const Section, Name:WideString):WideString;
+    procedure SetOption(const Section, Name, Value:WideString);
   public
-    constructor Create(const AFilename: WideString);
+    constructor Create(const AFilename:WideString);
     destructor Destroy; override;
     procedure ClearWindowInfos;
-    procedure SaveToFile(AFilename: WideString);
-    procedure LoadFromFile(AFilename: WideString);
-    property Filename: WideString read FFilename;
-    property WindowInfos[AForm: TForm]: TAppWindowInfo read GetWindowInfo write SetWindowInfo;
+    procedure SaveToFile(AFilename:WideString);
+    procedure LoadFromFile(AFilename:WideString);
+    property Filename:WideString read FFilename;
+    property WindowInfos[AForm:TForm]:TAppWindowInfo read GetWindowInfo write SetWindowInfo;
   public
-    property Option[const Section, Name: WideString]: WideString read GetOption write SetOption;
-    property ShowQuotes: boolean read FShowQuotes write FShowQuotes;
-    property InvertDictionary: boolean read FInvertDictionary write FInvertDictionary;
-    property SaveFormPos: boolean read FSaveFormPos write FSaveFormPos default true;
-    property SaveMinMaxState: boolean read FSaveMinMaxState write FSaveMinMaxState default true;
-    property ShowDetails: boolean read FShowDetails write FShowDetails;
-    property SaveOnReturn: boolean read FSaveOnReturn write FSaveOnReturn;
-    property AutoMoveToNext: boolean read FAutoMoveToNext write FAutoMoveToNext;
-    property ShowToolTips: boolean read FShowToolTips write FShowToolTips;
-    property ShowToolTipShortCuts: boolean read FShowToolTipShortCuts write FShowToolTipShortCuts;
-    property DictIgnoreSpeedKeys: boolean read FDictIgnoreSpeedKeys write FDictIgnoreSpeedKeys;
-    property LanguageFile: WideString read FLanguageFile write FLanguageFile;
-    property GlobalPath: boolean read FGlobalPath write FGlobalPath;
-    property UseTranslationEverywhere: boolean read FUseTranslationEverywhere write FUseTranslationEverywhere;
-    property AutoFocusTranslation: boolean read FAutoFocusTranslation write FAutoFocusTranslation;
-    property HelpFile: WideString read FHelpFile write FHelpFile;
-    property DictionaryFile: WideString read FDictionaryFile write FDictionaryFile;
+    property Option[const Section, Name:WideString]:WideString read GetOption write SetOption;
+    property ShowQuotes:boolean read FShowQuotes write FShowQuotes;
+    property InvertDictionary:boolean read FInvertDictionary write FInvertDictionary;
+    property SaveFormPos:boolean read FSaveFormPos write FSaveFormPos default true;
+    property SaveMinMaxState:boolean read FSaveMinMaxState write FSaveMinMaxState default true;
+    property ShowDetails:boolean read FShowDetails write FShowDetails;
+    property SaveOnReturn:boolean read FSaveOnReturn write FSaveOnReturn;
+    property AutoMoveToNext:boolean read FAutoMoveToNext write FAutoMoveToNext;
+    property ShowToolTips:boolean read FShowToolTips write FShowToolTips;
+    property ShowToolTipShortCuts:boolean read FShowToolTipShortCuts write FShowToolTipShortCuts;
+    property DictIgnoreSpeedKeys:boolean read FDictIgnoreSpeedKeys write FDictIgnoreSpeedKeys;
+    property LanguageFile:WideString read FLanguageFile write FLanguageFile;
+    property GlobalPath:boolean read FGlobalPath write FGlobalPath;
+    property UseTranslationEverywhere:boolean read FUseTranslationEverywhere write FUseTranslationEverywhere;
+    property AutoFocusTranslation:boolean read FAutoFocusTranslation write FAutoFocusTranslation;
+    property HelpFile:WideString read FHelpFile write FHelpFile;
+    property DictionaryFile:WideString read FDictionaryFile write FDictionaryFile;
 
-    property TranslationFile: WideString read FTranslationFile write FTranslationFile;
-    property DefaultTransEncoding: integer read FDefaultTransEncoding write FDefaultTransEncoding;
-    property DefaultOrigEncoding: integer read FDefaultOrigEncoding write FDefaultOrigEncoding;
-    property TransEncoding: integer read FTransEncoding write FTransEncoding;
-    property OriginalFile: WideString read FOriginalFile write FOriginalFile;
-    property OrigEncoding: integer read FOrigEncoding write FOrigEncoding;
-    property SplitterPosition: integer read FSplitterPosition write FSplitterPosition default 160;
-    property FilterIndex: integer read FFilterIndex write FFilterIndex default 1;
-    property AppTitle: WideString read FAppTitle write FAppTitle;
-    property FontName: WideString read FFontName write FFontName;
-    property FontSize: integer read FFontSize write FFontSize;
-    property MonitorFiles: boolean read FMonitorFiles write FMonitorFiles default true;
-    property Theme: WideString read FTheme write FTheme;
-    property Header: TTntStrings read FHeader write SetHeader;
-    property Footer: TTntStrings read FFooter write SetFooter;
+    property TranslationFile:WideString read FTranslationFile write FTranslationFile;
+    property DefaultTransEncoding:integer read FDefaultTransEncoding write FDefaultTransEncoding;
+    property DefaultOrigEncoding:integer read FDefaultOrigEncoding write FDefaultOrigEncoding;
+    property TransEncoding:integer read FTransEncoding write FTransEncoding;
+    property OriginalFile:WideString read FOriginalFile write FOriginalFile;
+    property OrigEncoding:integer read FOrigEncoding write FOrigEncoding;
+    property SplitterPosition:integer read FSplitterPosition write FSplitterPosition default 160;
+    property FilterIndex:integer read FFilterIndex write FFilterIndex default 1;
+    property AppTitle:WideString read FAppTitle write FAppTitle;
+    property FontName:WideString read FFontName write FFontName;
+    property FontSize:integer read FFontSize write FFontSize;
+    property MonitorFiles:boolean read FMonitorFiles write FMonitorFiles default true;
+    property Theme:WideString read FTheme write FTheme;
+    property Header:TTntStrings read FHeader write SetHeader;
+    property Footer:TTntStrings read FFooter write SetFooter;
 
     // find replace
-    property FindText: WideString read FFindText write FFindText;
-    property ReplaceText: WideString read FReplaceText write FReplaceText;
-    property FindHistory: WideString read FFindHistory write FFindHistory;
-    property ReplaceHistory: WideString read FReplaceHistory write FReplaceHistory;
-    property MatchLine: boolean read FMatchLine write FMatchLine;
-    property MatchCase: boolean read FMatchCase write FMatchCase;
-    property SearchUp: boolean read FSearchUp write FSearchUp;
-    property FuzzySearch: boolean read FFuzzySearch write FFuzzySearch;
-    property FindInIndex: integer read FFindInIndex write FFindInIndex;
+    property FindText:WideString read FFindText write FFindText;
+    property ReplaceText:WideString read FReplaceText write FReplaceText;
+    property FindHistory:WideString read FFindHistory write FFindHistory;
+    property ReplaceHistory:WideString read FReplaceHistory write FReplaceHistory;
+    property MatchLine:boolean read FMatchLine write FMatchLine;
+    property MatchCase:boolean read FMatchCase write FMatchCase;
+    property SearchUp:boolean read FSearchUp write FSearchUp;
+    property FuzzySearch:boolean read FFuzzySearch write FFuzzySearch;
+    property FindInIndex:integer read FFindInIndex write FFindInIndex;
 
-    property MisMatchItems: WideString read FMisMatchItems write FMisMatchItems;
-    property MisMatchLeadingSpaces: boolean read FMisMatchLeadingSpaces write FMisMatchLeadingSpaces;
-    property MisMatchTrailingSpaces: boolean read FMisMatchTrailingSpaces write FMisMatchTrailingSpaces;
-    property MisMatchEndControl: boolean read FMisMatchEndControl write FMisMatchEndControl;
-    property MisMatchIdentical: boolean read FMisMatchIdentical write FMisMatchIdentical;
-    property MisMatchEmptyTranslation: boolean read FMisMatchEmptyTranslation write FMisMatchEmptyTranslation;
+    property MisMatchItems:WideString read FMisMatchItems write FMisMatchItems;
+    property MisMatchLeadingSpaces:boolean read FMisMatchLeadingSpaces write FMisMatchLeadingSpaces;
+    property MisMatchTrailingSpaces:boolean read FMisMatchTrailingSpaces write FMisMatchTrailingSpaces;
+    property MisMatchEndControl:boolean read FMisMatchEndControl write FMisMatchEndControl;
+    property MisMatchIdentical:boolean read FMisMatchIdentical write FMisMatchIdentical;
+    property MisMatchEmptyTranslation:boolean read FMisMatchEmptyTranslation write FMisMatchEmptyTranslation;
 
-    property PinCommentWindow: boolean read FPinCommentWindow write FPinCommentWindow default true;
-    property ShowFullNameInColumns: boolean read FShowFullNameInColumns write FShowFullNameInColumns default false;
-    property Tools: TToolItems read FTools write SetTools;
+    property PinCommentWindow:boolean read FPinCommentWindow write FPinCommentWindow default true;
+    property ShowFullNameInColumns:boolean read FShowFullNameInColumns write FShowFullNameInColumns default false;
+    property Tools:TToolItems read FTools write SetTools;
 
-    property DictIgnoreNonEmpty: boolean read FDictIgnoreNonEmpty write FDictIgnoreNonEmpty;
-    property DictEditFilter: Integer read FDictEditFilter write FDictEditFilter;
+    property DictIgnoreNonEmpty:boolean read FDictIgnoreNonEmpty write FDictIgnoreNonEmpty;
+    property DictEditFilter:Integer read FDictEditFilter write FDictEditFilter;
 
-    property ColorUntranslated: TColor read FColorUntranslated write FColorUntranslated;
-    property ColorFontUntranslated: TColor read FColorFontUntranslated write FColorFontUntranslated;
+    property ColorUntranslated:TColor read FColorUntranslated write FColorUntranslated;
+    property ColorFontUntranslated:TColor read FColorFontUntranslated write FColorFontUntranslated;
 
-    property ColorEvenRow: TColor read FColorEvenRow write FColorEvenRow;
-    property ColorFontEvenRow: TColor read FColorFontEvenRow write FColorFontEvenRow;
-    property ColorOddRow: TColor read FColorOddRow write FColorOddRow;
-    property ColorFontOddRow: TColor read FColorFontOddRow write FColorFontOddRow;
+    property ColorEvenRow:TColor read FColorEvenRow write FColorEvenRow;
+    property ColorFontEvenRow:TColor read FColorFontEvenRow write FColorFontEvenRow;
+    property ColorOddRow:TColor read FColorOddRow write FColorOddRow;
+    property ColorFontOddRow:TColor read FColorFontOddRow write FColorFontOddRow;
   end;
 
 implementation
 uses
   StrUtils, AppConsts, AppUtils, CommonUtils, TntSysUtils;
 
-function StrToFontStyles(const S: WideString): TFontStyles;
+function StrToFontStyles(const S:WideString):TFontStyles;
 begin
   Result := [];
   if Pos('B', S) > 0 then
@@ -238,11 +238,11 @@ begin
     Include(Result, fsStrikeout);
 end;
 
-function FontStylesToStr(Styles: TFontStyles): WideString;
+function FontStylesToStr(Styles:TFontStyles):WideString;
 const
-  cStyles: array[TFontStyle] of PWideChar = ('B', 'I', 'U', 'S');
+  cStyles:array[TFontStyle] of PWideChar = ('B', 'I', 'U', 'S');
 var
-  i: TFontStyle;
+  i:TFontStyle;
 begin
   Result := '';
   for i := Low(cStyles) to High(cStyles) do
@@ -252,7 +252,7 @@ end;
 
 { TToolItem }
 
-procedure TToolItem.Assign(Source: TPersistent);
+procedure TToolItem.Assign(Source:TPersistent);
 begin
   if Source is TToolItem then
     AsString := TToolItem(Source).AsString
@@ -260,8 +260,9 @@ begin
     inherited;
 end;
 
-function TToolItem.GetAsString: WideString;
-var S: TTntStringlist;
+function TToolItem.GetAsString:WideString;
+var
+  S:TTntStringlist;
 begin
   S := TTntStringlist.Create;
   try
@@ -280,8 +281,9 @@ begin
   end;
 end;
 
-procedure TToolItem.SetAsString(const Value: WideString);
-var S: TTntStringlist;
+procedure TToolItem.SetAsString(const Value:WideString);
+var
+  S:TTntStringlist;
 begin
   S := TTntStringlist.Create;
   try
@@ -311,13 +313,14 @@ end;
 
 { TToolItems }
 
-function TToolItems.Add: TToolItem;
+function TToolItems.Add:TToolItem;
 begin
   Result := TToolItem(inherited Add);
 end;
 
-procedure TToolItems.Assign(Source: TPersistent);
-var i: integer;
+procedure TToolItems.Assign(Source:TPersistent);
+var
+  i:integer;
 begin
   if Source is TToolItems then
   begin
@@ -334,8 +337,9 @@ begin
   inherited Create(TToolItem);
 end;
 
-procedure TToolItems.Exchange(Index1, Index2: integer);
-var F: TToolItem;
+procedure TToolItems.Exchange(Index1, Index2:integer);
+var
+  F:TToolItem;
 begin
   F := Add;
   F.Assign(Items[Index1]);
@@ -344,12 +348,12 @@ begin
   Delete(Count - 1);
 end;
 
-function TToolItems.GetItem(Index: integer): TToolItem;
+function TToolItems.GetItem(Index:integer):TToolItem;
 begin
   Result := TToolItem(inherited Items[Index]);
 end;
 
-function TToolItems.IndexOf(const Title: WideString): integer;
+function TToolItems.IndexOf(const Title:WideString):integer;
 begin
   for Result := 0 to Count - 1 do
     if WideSameText(Items[Result].Title, Title) then
@@ -357,10 +361,10 @@ begin
   Result := -1;
 end;
 
-procedure TToolItems.LoadFromIni(ini: TWideCustomIniFile);
+procedure TToolItems.LoadFromIni(ini:TWideCustomIniFile);
 var
-  i: integer;
-  S: TTntStringlist;
+  i:integer;
+  S:TTntStringlist;
 begin
   Clear;
   S := TTntStringlist.Create;
@@ -373,15 +377,16 @@ begin
   end;
 end;
 
-procedure TToolItems.SaveToIni(ini: TWideCustomIniFile);
-var i: integer;
+procedure TToolItems.SaveToIni(ini:TWideCustomIniFile);
+var
+  i:integer;
 begin
   ini.EraseSection('External Tools');
   for i := 0 to Count - 1 do
     ini.WriteString('External Tools', IntToStr(i), Items[i].AsString);
 end;
 
-procedure TToolItems.SetItem(Index: integer; const Value: TToolItem);
+procedure TToolItems.SetItem(Index:integer; const Value:TToolItem);
 begin
   inherited Items[Index] := Value;
 end;
@@ -389,14 +394,15 @@ end;
 { TAppOptions }
 
 procedure TAppOptions.ClearWindowInfos;
-var i: integer;
+var
+  i:integer;
 begin
   for i := 0 to FWindowInfos.Count - 1 do
     Dispose(PAppWindowInfo(FWindowInfos.Objects[i]));
   FWindowInfos.Clear;
 end;
 
-constructor TAppOptions.Create(const AFilename: WideString);
+constructor TAppOptions.Create(const AFilename:WideString);
 resourcestring
   sDefault = 'Default';
 begin
@@ -432,13 +438,14 @@ begin
   inherited;
 end;
 
-procedure TAppOptions.ReadWindowInfos(ini: TWideCustomIniFile);
+procedure TAppOptions.ReadWindowInfos(ini:TWideCustomIniFile);
 var
-  i: integer;
-  S: TTntStringlist;
+  i:integer;
+  S:TTntStringlist;
 
-  procedure DecodeInfo(const Name, Value: WideString);
-  var P: PAppWindowInfo;
+  procedure DecodeInfo(const Name, Value:WideString);
+  var
+    P:PAppWindowInfo;
   begin
     // format of Value: Left;Top;Right;Bottom;WindowState
     if (FWindowInfos.IndexOf(Name) < 0) then
@@ -467,9 +474,9 @@ begin
   end;
 end;
 
-procedure TAppOptions.LoadFromFile(AFilename: WideString);
+procedure TAppOptions.LoadFromFile(AFilename:WideString);
 var
-  ini: TWideMemIniFile;
+  ini:TWideMemIniFile;
 begin
   if AFilename = '' then
     AFilename := GetAppStoragePath + 'translator.ini';
@@ -550,11 +557,11 @@ begin
   end;
 end;
 
-procedure TAppOptions.WriteWindowInfos(ini: TWideCustomIniFile);
+procedure TAppOptions.WriteWindowInfos(ini:TWideCustomIniFile);
 var
-  i: integer;
+  i:integer;
 
-  function EncodeInfo(Info: TAppWindowInfo): WideString;
+  function EncodeInfo(Info:TAppWindowInfo):WideString;
   begin
     // format of value: Left;Top;Right;Bottom;WindowState;
     with Info.BoundsRect do
@@ -568,9 +575,9 @@ begin
       EncodeInfo(PAppWindowInfo(FWindowInfos.Objects[i])^));
 end;
 
-procedure TAppOptions.SaveToFile(AFilename: WideString);
+procedure TAppOptions.SaveToFile(AFilename:WideString);
 var
-  ini: TWideMemIniFile;
+  ini:TWideMemIniFile;
 begin
   if AFilename = '' then
     AFilename := GetAppStoragePath + 'translator.ini';
@@ -650,10 +657,10 @@ begin
   end;
 end;
 
-function TAppOptions.GetWindowInfo(AForm: TForm): TAppWindowInfo;
+function TAppOptions.GetWindowInfo(AForm:TForm):TAppWindowInfo;
 var
-  i: integer;
-  AName: WideString;
+  i:integer;
+  AName:WideString;
 begin
   Result.BoundsRect := AForm.BoundsRect;
   Result.WindowState := AForm.WindowState;
@@ -673,11 +680,11 @@ begin
   end;
 end;
 
-procedure TAppOptions.SetWindowInfo(AForm: TForm; const Value: TAppWindowInfo);
+procedure TAppOptions.SetWindowInfo(AForm:TForm; const Value:TAppWindowInfo);
 var
-  i: integer;
-  P: PAppWindowInfo;
-  AName: WideString;
+  i:integer;
+  P:PAppWindowInfo;
+  AName:WideString;
 begin
   if not SaveFormPos then
     Exit;
@@ -707,22 +714,22 @@ begin
   end;
 end;
 
-procedure TAppOptions.SetTools(const Value: TToolItems);
+procedure TAppOptions.SetTools(const Value:TToolItems);
 begin
   FTools.Assign(Value);
 end;
 
-procedure TAppOptions.SetFooter(const Value: TTntStrings);
+procedure TAppOptions.SetFooter(const Value:TTntStrings);
 begin
   FFooter.Assign(Value);
 end;
 
-procedure TAppOptions.SetHeader(const Value: TTntStrings);
+procedure TAppOptions.SetHeader(const Value:TTntStrings);
 begin
   FHeader.Assign(Value);
 end;
 
-function TAppOptions.GetOption(const Section, Name: WideString): WideString;
+function TAppOptions.GetOption(const Section, Name:WideString):WideString;
 begin
   with TWideMemIniFile.Create(Filename) do
   try
@@ -732,7 +739,7 @@ begin
   end;
 end;
 
-procedure TAppOptions.SetOption(const Section, Name, Value: WideString);
+procedure TAppOptions.SetOption(const Section, Name, Value:WideString);
 begin
   with TWideMemIniFile.Create(Filename) do
   try

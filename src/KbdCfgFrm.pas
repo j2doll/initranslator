@@ -30,13 +30,13 @@ uses
 
 type
   TfrmConfigKbd = class(TfrmBase)
-    FrmKbdCfg1: TFrmKbdCfg;
-    procedure FormCreate(Sender: TObject);
+    FrmKbdCfg1:TFrmKbdCfg;
+    procedure FormCreate(Sender:TObject);
   private
     { Private declarations }
   public
     { Public declarations }
-    class function EditShortCuts(AActionList: TTntActionList): boolean;
+    class function EditShortCuts(AActionList:TTntActionList):boolean;
   end;
 
 implementation
@@ -45,9 +45,9 @@ uses
 
 {$R *.dfm}
 
-class function TfrmConfigKbd.EditShortCuts(AActionList: TTntActionList): boolean;
+class function TfrmConfigKbd.EditShortCuts(AActionList:TTntActionList):boolean;
 var
-  frmConfigKbd: TfrmConfigKbd;
+  frmConfigKbd:TfrmConfigKbd;
 begin
   frmConfigKbd := self.Create(Application);
   try
@@ -65,7 +65,7 @@ begin
   end;
 end;
 
-procedure TfrmConfigKbd.FormCreate(Sender: TObject);
+procedure TfrmConfigKbd.FormCreate(Sender:TObject);
 begin
   FrmKbdCfg1.Align := alClient;
 end;

@@ -24,43 +24,43 @@ uses
   MsgTranslate, AppConsts, AppOptions, TransIntf,
   TntClasses, TBXExtItems;
 
-procedure TBMRULoadFromIni(MRU: TTBXMRUList);
-procedure TBMRUSaveToIni(MRU: TTBXMRUList);
-procedure TBMRULoadFromReg(MRU: TTBXMRUList; RootKey: Cardinal; const Path: WideString);
-procedure TBMRUSaveToReg(MRU: TTBXMRUList; RootKey: Cardinal; const Path: WideString);
+procedure TBMRULoadFromIni(MRU:TTBXMRUList);
+procedure TBMRUSaveToIni(MRU:TTBXMRUList);
+procedure TBMRULoadFromReg(MRU:TTBXMRUList; RootKey:Cardinal; const Path:WideString);
+procedure TBMRUSaveToReg(MRU:TTBXMRUList; RootKey:Cardinal; const Path:WideString);
 
-function DetectEncoding(const FileName: WideString): TEncoding;
-function GetAppVersion: WideString;
-function GetCurrentYear: Integer;
+function DetectEncoding(const FileName:WideString):TEncoding;
+function GetAppVersion:WideString;
+function GetCurrentYear:Integer;
 
-function ActionShortCutInUse(AM: TActionList; ShortCut: Word): boolean;
-function FindActionShortCut(AM: TActionList; ShortCut: Word): TCustomAction;
-function RemoveActionShortCut(AM: TActionList; ShortCut: Word): integer;
-function _(const ASection, AMsg: WideString): WideString;
-function MyShortCutToText(ShortCut: TShortCut): WideString;
+function ActionShortCutInUse(AM:TActionList; ShortCut:Word):boolean;
+function FindActionShortCut(AM:TActionList; ShortCut:Word):TCustomAction;
+function RemoveActionShortCut(AM:TActionList; ShortCut:Word):integer;
+function _(const ASection, AMsg:WideString):WideString;
+function MyShortCutToText(ShortCut:TShortCut):WideString;
 
-function GlobalLanguageFile: TAppLanguage;
-function GlobalAppOptions: TAppOptions;
-function GlobalApplicationServices: IApplicationServices;
+function GlobalLanguageFile:TAppLanguage;
+function GlobalAppOptions:TAppOptions;
+function GlobalApplicationServices:IApplicationServices;
 
-function GetUserAppDataFolder(const Default: WideString): WideString;
-function GetUserShortcutFile: WideString;
-function GetUserAppOptionsFile: WideString;
-procedure HandleFileCreateException(Sender: TObject; E: Exception; const Filename: WideString);
+function GetUserAppDataFolder(const Default:WideString):WideString;
+function GetUserShortcutFile:WideString;
+function GetUserAppOptionsFile:WideString;
+procedure HandleFileCreateException(Sender:TObject; E:Exception; const Filename:WideString);
 
-function GetAppStoragePath: WideString;
-function AutoDetectCharacterSet(Stream: TStream): TEncoding; overload;
-function AutoDetectCharacterSet(const Filename: WideString): TEncoding; overload;
-function FileCharSetToEncoding(CharSet: TTntStreamCharSet): TEncoding;
+function GetAppStoragePath:WideString;
+function AutoDetectCharacterSet(Stream:TStream):TEncoding; overload;
+function AutoDetectCharacterSet(const Filename:WideString):TEncoding; overload;
+function FileCharSetToEncoding(CharSet:TTntStreamCharSet):TEncoding;
 
-procedure FixXPStyles(AControl: TWinControl);
-function GetPluginsFolder: WideString;
+procedure FixXPStyles(AControl:TWinControl);
+function GetPluginsFolder:WideString;
 
 type
-  TApplicationServicesFunc = function: IApplicationServices;
+  TApplicationServicesFunc = function:IApplicationServices;
 
 var
-  GlobalApplicationServicesFunc: TApplicationServicesFunc = nil;
+  GlobalApplicationServicesFunc:TApplicationServicesFunc = nil;
 
 implementation
 uses
@@ -71,24 +71,24 @@ uses
   TntWindows, TntSysUtils, TntWideStrUtils;
 
 var
-  FLanguageFile: TAppLanguage = nil;
-  FAppOptions: TAppOptions = nil;
+  FLanguageFile:TAppLanguage = nil;
+  FAppOptions:TAppOptions = nil;
 
-function AutoDetectCharacterSet(Stream: TStream): TEncoding;
+function AutoDetectCharacterSet(Stream:TStream):TEncoding;
 begin
   case TntClasses.AutoDetectCharacterSet(Stream) of
-    csAnsi: Result := feAnsi;
-    csUnicode: Result := feUnicode;
-    csUnicodeSwapped: Result := feUnicodeSwapped;
-    csUtf8: Result := feUtf8;
+    csAnsi:Result := feAnsi;
+    csUnicode:Result := feUnicode;
+    csUnicodeSwapped:Result := feUnicodeSwapped;
+    csUtf8:Result := feUtf8;
   else
     Result := feAnsi;
   end;
 end;
 
-function AutoDetectCharacterSet(const Filename: WideString): TEncoding;
+function AutoDetectCharacterSet(const Filename:WideString):TEncoding;
 var
-  F: TTntFileStream;
+  F:TTntFileStream;
 begin
   F := TTntFileStream.Create(Filename, fmOpenRead or fmShareDenyNone);
   try
@@ -98,32 +98,32 @@ begin
   end;
 end;
 
-function FileCharSetToEncoding(CharSet: TTntStreamCharSet): TEncoding;
+function FileCharSetToEncoding(CharSet:TTntStreamCharSet):TEncoding;
 begin
   case CharSet of
-    csUnicode: Result := feUnicode;
-    csUnicodeSwapped: Result := feUnicodeSwapped;
-    csUtf8: Result := feUtf8;
+    csUnicode:Result := feUnicode;
+    csUnicodeSwapped:Result := feUnicodeSwapped;
+    csUtf8:Result := feUtf8;
   else
     Result := feAnsi;
   end;
 end;
 
-function GlobalLanguageFile: TAppLanguage;
+function GlobalLanguageFile:TAppLanguage;
 begin
   if FLanguageFile = nil then
     FLanguageFile := TAppLanguage.Create('');
   Result := FLanguageFile;
 end;
 
-function GlobalAppOptions: TAppOptions;
+function GlobalAppOptions:TAppOptions;
 begin
   if FAppOptions = nil then
     FAppOptions := TAppOptions.Create(GetUserAppOptionsFile);
   Result := FAppOptions;
 end;
 
-function GlobalApplicationServices: IApplicationServices;
+function GlobalApplicationServices:IApplicationServices;
 begin
   if Assigned(GlobalApplicationServicesFunc) then
     Result := GlobalApplicationServicesFunc
@@ -131,7 +131,7 @@ begin
     Result := nil;
 end;
 
-function GetUserAppDataFolder(const Default: WideString): WideString;
+function GetUserAppDataFolder(const Default:WideString):WideString;
 begin
   SetLength(Result, MAX_PATH + 1);
   // DONE: it seems SHGetFolderPathW in SHFolder doesn't use PWideChar...
@@ -142,7 +142,7 @@ begin
   Result := WideString(PWideChar(Result)); // strip excessive characters
 end;
 
-function GetUserShortcutFile: WideString;
+function GetUserShortcutFile:WideString;
 begin
   Result := GetUserAppDataFolder('');
   if (Result <> '') and WideDirectoryExists(Result) then
@@ -154,7 +154,7 @@ begin
   Result := WideIncludeTrailingPathDelimiter(Result) + 'translator.alf';
 end;
 
-function GetUserAppOptionsFile: WideString;
+function GetUserAppOptionsFile:WideString;
 begin
   Result := GetUserAppDataFolder('');
   if (Result <> '') and WideDirectoryExists(Result) then
@@ -165,7 +165,7 @@ begin
   Result := WideIncludeTrailingPathDelimiter(Result) + 'translator.ini';
 end;
 
-function _(const ASection, AMsg: WideString): WideString;
+function _(const ASection, AMsg:WideString):WideString;
 begin
   if GlobalLanguageFile <> nil then
     Result := GlobalLanguageFile.Translate(ASection, AMsg, AMsg)
@@ -173,9 +173,9 @@ begin
     Result := AMsg;
 end;
 
-function WideUpperCaseFirst(const S: WideString): WideString;
+function WideUpperCaseFirst(const S:WideString):WideString;
 var
-  i: integer;
+  i:integer;
 begin
   if S = '' then
     Result := ''
@@ -188,10 +188,10 @@ begin
       Result[i] := WideUpperCase(Result[i])[1];
 end;
 
-function MyShortCutToText(ShortCut: TShortCut): WideString;
+function MyShortCutToText(ShortCut:TShortCut):WideString;
 var
-  ACtrl, AShift, AAlt: WideString;
-  i: integer;
+  ACtrl, AShift, AAlt:WideString;
+  i:integer;
 begin
   Result := ShortCutToText(ShortCut);
   if Pos('+', Result) > 0 then
@@ -216,15 +216,15 @@ begin
   Result := WideUpperCaseFirst(Result);
 end;
 
-function DetectEncoding(const FileName: WideString): TEncoding;
+function DetectEncoding(const FileName:WideString):TEncoding;
 begin
   { DONE : Fix this later }
   Result := AutoDetectCharacterSet(Filename);
 end;
 
-procedure TBMRULoadFromReg(MRU: TTBXMRUList; RootKey: DWORD; const Path: WideString);
+procedure TBMRULoadFromReg(MRU:TTBXMRUList; RootKey:DWORD; const Path:WideString);
 var
-  ini: TRegIniFile;
+  ini:TRegIniFile;
 begin
   ini := TRegIniFile.Create('');
   try
@@ -236,9 +236,9 @@ begin
   end;
 end;
 
-procedure TBMRUSaveToReg(MRU: TTBXMRUList; RootKey: DWORD; const Path: WideString);
+procedure TBMRUSaveToReg(MRU:TTBXMRUList; RootKey:DWORD; const Path:WideString);
 var
-  ini: TRegIniFile;
+  ini:TRegIniFile;
 begin
   ini := TRegIniFile.Create('');
   try
@@ -250,11 +250,11 @@ begin
   end;
 end;
 
-procedure TBMRULoadFromIni(MRU: TTBXMRUList);
+procedure TBMRULoadFromIni(MRU:TTBXMRUList);
 var
-  ini: TWideMemIniFile;
-  i: Integer;
-  S: WideString;
+  ini:TWideMemIniFile;
+  i:Integer;
+  S:WideString;
 begin
   ini := TWideMemIniFile.Create(GetUserAppOptionsFile);
   try
@@ -271,10 +271,10 @@ begin
   end;
 end;
 
-procedure TBMRUSaveToIni(MRU: TTBXMRUList);
+procedure TBMRUSaveToIni(MRU:TTBXMRUList);
 var
-  ini: TWideMemIniFile;
-  i: Integer;
+  ini:TWideMemIniFile;
+  i:Integer;
 begin
   ini := TWideMemIniFile.Create(GetUserAppOptionsFile);
   try
@@ -291,21 +291,21 @@ begin
   end;
 end;
 
-function GetCurrentYear: Integer;
+function GetCurrentYear:Integer;
 var
-  Y, M, D: Word;
+  Y, M, D:Word;
 begin
   DecodeDate(Date, Y, M, D);
   Result := Y;
 end;
 
-function GetAppVersion: WideString;
+function GetAppVersion:WideString;
 var
-  FileName: WideString;
-  InfoSize, Wnd: DWORD;
-  VerBuf: Pointer;
-  FI: PVSFixedFileInfo;
-  VerSize: DWORD;
+  FileName:WideString;
+  InfoSize, Wnd:DWORD;
+  VerBuf:Pointer;
+  FI:PVSFixedFileInfo;
+  VerSize:DWORD;
 begin
   Result := '1.0.0.0';
   FileName := Application.ExeName;
@@ -323,14 +323,14 @@ begin
   end;
 end;
 
-function ActionShortCutInUse(AM: TActionList; ShortCut: Word): boolean;
+function ActionShortCutInUse(AM:TActionList; ShortCut:Word):boolean;
 begin
   Result := FindActionShortCut(AM, ShortCut) <> nil;
 end;
 
-function FindActionShortCut(AM: TActionList; ShortCut: Word): TCustomAction;
+function FindActionShortCut(AM:TActionList; ShortCut:Word):TCustomAction;
 var
-  i, j: integer;
+  i, j:integer;
 begin
   Result := nil;
   if ShortCut = 0 then
@@ -348,10 +348,10 @@ begin
   Result := nil;
 end;
 
-function RemoveActionShortCut(AM: TActionList; ShortCut: Word): integer;
+function RemoveActionShortCut(AM:TActionList; ShortCut:Word):integer;
 var
-  Action: TCustomAction;
-  i: integer;
+  Action:TCustomAction;
+  i:integer;
 begin
   Result := 0;
   if ShortCut = 0 then
@@ -374,7 +374,7 @@ begin
   end;
 end;
 
-procedure HandleFileCreateException(Sender: TObject; E: Exception; const Filename: WideString);
+procedure HandleFileCreateException(Sender:TObject; E:Exception; const Filename:WideString);
 begin
   if E is EFCreateError then
     ErrMsg(WideFormat(_(Sender.ClassName, SFmtErrCreateFile), [Filename]), _(Sender.ClassName, SErrorCaption))
@@ -382,7 +382,7 @@ begin
     Application.HandleException(Sender);
 end;
 
-function GetAppStoragePath: WideString;
+function GetAppStoragePath:WideString;
 begin
   // try to get path to \Documents and Settings\<user>\Application Data
   // if that fails, use application install folder
@@ -397,10 +397,10 @@ end;
 type
   TAccessComboBox = class(TCustomComboBox);
 
-procedure FixXPStyles(AControl: TWInControl);
+procedure FixXPStyles(AControl:TWInControl);
 var
-  i: integer;
-  WC: TWinControl;
+  i:integer;
+  WC:TWinControl;
 begin
   if (AControl is TWinControl) then
   begin
@@ -420,7 +420,7 @@ begin
   end;
 end;
 
-function GetPluginsFolder: WideString;
+function GetPluginsFolder:WideString;
 begin
   Result := WideIncludeTrailingPathDelimiter(WideExtractFilePath(Application.ExeName)) + 'plugins';
 end;
@@ -432,7 +432,7 @@ begin
   try
     FAppOptions.SaveToFile(GetUserAppOptionsFile);
   except
-    on E: Exception do
+    on E:Exception do
       HandleFileCreateException(FAppOptions, E, GetUserAppOptionsFile);
   end;
   FreeAndNil(FAppOptions);
@@ -445,4 +445,3 @@ finalization
   FreeAndNil(FLanguageFile);
 
 end.
-

@@ -26,25 +26,25 @@ uses
 type
   TToolConsistencyPlugins = class(TInterfacedObject, IInterface, IToolItems)
   public
-    function Count: Integer; safecall;
-    function ToolItem(Index: Integer; out ToolItem: IToolItem): HRESULT;
+    function Count:Integer; safecall;
+    function ToolItem(Index:Integer; out ToolItem:IToolItem):HRESULT;
       safecall;
   end;
 
   TToolConsistencyPlugin = class(TInterfacedObject, IInterface, IToolItem, ILocalizable)
   private
-    FStringIndex: integer;
+    FStringIndex:integer;
     FAppServices:IApplicationServices;
-    function Translate(const Value: WideString): WideString;
+    function Translate(const Value:WideString):WideString;
     { ILocalizable }
-    function GetString(out Section: WideString; out Name: WideString; out Value: WideString): WordBool; safecall;
+    function GetString(out Section:WideString; out Name:WideString; out Value:WideString):WordBool; safecall;
   public
-    function About: WideString; safecall;
-    function DisplayName: WideString; safecall;
-    function Execute(const Items: ITranslationItems; const Orphans: ITranslationItems; var SelectedItem: ITranslationItem): HRESULT; safecall;
-    function Icon: Cardinal; safecall;
-    procedure Init(const ApplicationServices: IApplicationServices); safecall;
-    function Status(const Items: ITranslationItems; const Orphans: ITranslationItems; const SelectedItem: ITranslationItem): Integer; safecall;
+    function About:WideString; safecall;
+    function DisplayName:WideString; safecall;
+    function Execute(const Items:ITranslationItems; const Orphans:ITranslationItems; var SelectedItem:ITranslationItem):HRESULT; safecall;
+    function Icon:Cardinal; safecall;
+    procedure Init(const ApplicationServices:IApplicationServices); safecall;
+    function Status(const Items:ITranslationItems; const Orphans:ITranslationItems; const SelectedItem:ITranslationItem):Integer; safecall;
   end;
 
 implementation
@@ -53,13 +53,13 @@ uses ToolConsistencyFrm, ToolConsistencyConsts;
 
 { TToolConsistencyPlugins }
 
-function TToolConsistencyPlugins.Count: Integer;
+function TToolConsistencyPlugins.Count:Integer;
 begin
   Result := 1;
 end;
 
-function TToolConsistencyPlugins.ToolItem(Index: Integer;
-  out ToolItem: IToolItem): HRESULT;
+function TToolConsistencyPlugins.ToolItem(Index:Integer;
+  out ToolItem:IToolItem):HRESULT;
 begin
   if Index = 0 then
   begin
@@ -72,7 +72,7 @@ end;
 
 { TToolConsistencyPlugin }
 
-function TToolConsistencyPlugin.Translate(const Value: WideString): WideString;
+function TToolConsistencyPlugin.Translate(const Value:WideString):WideString;
 begin
   if FAppServices <> nil then
     Result := FAppServices.Translate(SLocalizeSectionName, Value, Value)
@@ -80,7 +80,7 @@ begin
     Result := Value;
 end;
 
-function TToolConsistencyPlugin.GetString(out Section, Name, Value: WideString): WordBool;
+function TToolConsistencyPlugin.GetString(out Section, Name, Value:WideString):WordBool;
 begin
   Section := SLocalizeSectionName;
   Result := true;
@@ -128,35 +128,35 @@ begin
   Inc(FStringIndex);
 end;
 
-function TToolConsistencyPlugin.About: WideString;
+function TToolConsistencyPlugin.About:WideString;
 begin
   Result := Translate(SToolConsistencyAbout);
 end;
 
-function TToolConsistencyPlugin.DisplayName: WideString;
+function TToolConsistencyPlugin.DisplayName:WideString;
 begin
   Result := Translate(SToolConsistencyPluginDisplayName);
 end;
 
-function TToolConsistencyPlugin.Execute(const Items, Orphans: ITranslationItems; var SelectedItem: ITranslationItem): HRESULT;
+function TToolConsistencyPlugin.Execute(const Items, Orphans:ITranslationItems; var SelectedItem:ITranslationItem):HRESULT;
 begin
   TfrmToolConsistency.Execute(FAppServices, Items, Orphans, SelectedItem);
   Result := S_OK;
 end;
 
-function TToolConsistencyPlugin.Icon: Cardinal;
+function TToolConsistencyPlugin.Icon:Cardinal;
 begin
   Result := 0;
 end;
 
-procedure TToolConsistencyPlugin.Init(const ApplicationServices: IApplicationServices);
+procedure TToolConsistencyPlugin.Init(const ApplicationServices:IApplicationServices);
 begin
   FAppServices := ApplicationServices;
 end;
 
 function TToolConsistencyPlugin.Status(const Items,
-  Orphans: ITranslationItems;
-  const SelectedItem: ITranslationItem): Integer;
+  Orphans:ITranslationItems;
+  const SelectedItem:ITranslationItem):Integer;
 begin
   Result := TOOL_VISIBLE;
   if Items.Count > 0 then
@@ -164,5 +164,3 @@ begin
 end;
 
 end.
-
-

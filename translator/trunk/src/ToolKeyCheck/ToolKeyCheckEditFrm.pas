@@ -8,17 +8,17 @@ uses
 
 type
   TfrmToolKeyCheckEdit = class(TTntForm)
-    TntLabel1: TTntLabel;
-    reOriginal: TTntRichEdit;
-    TntLabel2: TTntLabel;
-    reTranslation: TTntRichEdit;
-    btnOK: TTntButton;
-    btnCancel: TTntButton;
-    procedure reTranslationKeyDown(Sender: TObject; var Key: Word;
-      Shift: TShiftState);
-    procedure reTranslationKeyUp(Sender: TObject; var Key: Word;
-      Shift: TShiftState);
-    procedure reTranslationEnter(Sender: TObject);
+    TntLabel1:TTntLabel;
+    reOriginal:TTntRichEdit;
+    TntLabel2:TTntLabel;
+    reTranslation:TTntRichEdit;
+    btnOK:TTntButton;
+    btnCancel:TTntButton;
+    procedure reTranslationKeyDown(Sender:TObject; var Key:Word;
+      Shift:TShiftState);
+    procedure reTranslationKeyUp(Sender:TObject; var Key:Word;
+      Shift:TShiftState);
+    procedure reTranslationEnter(Sender:TObject);
   private
     { Private declarations }
     procedure DoTranslate;
@@ -35,9 +35,10 @@ uses
 
 { TfrmToolKeyCheckEdit }
 
-class function TfrmToolKeyCheckEdit.Edit(const Original: WideString;
-  var Translation: WideString): boolean;
-var frm:TfrmToolKeyCheckEdit;
+class function TfrmToolKeyCheckEdit.Edit(const Original:WideString;
+  var Translation:WideString):boolean;
+var
+  frm:TfrmToolKeyCheckEdit;
 begin
   frm := self.Create(Application);
   try
@@ -52,21 +53,21 @@ begin
   end;
 end;
 
-procedure TfrmToolKeyCheckEdit.reTranslationKeyDown(Sender: TObject;
-  var Key: Word; Shift: TShiftState);
+procedure TfrmToolKeyCheckEdit.reTranslationKeyDown(Sender:TObject;
+  var Key:Word; Shift:TShiftState);
 begin
- if Key = VK_RETURN then
-   Key := 0;
+  if Key = VK_RETURN then
+    Key := 0;
 end;
 
-procedure TfrmToolKeyCheckEdit.reTranslationKeyUp(Sender: TObject;
-  var Key: Word; Shift: TShiftState);
+procedure TfrmToolKeyCheckEdit.reTranslationKeyUp(Sender:TObject;
+  var Key:Word; Shift:TShiftState);
 begin
- if Key = VK_RETURN then
-   Key := 0;
+  if Key = VK_RETURN then
+    Key := 0;
 end;
 
-procedure TfrmToolKeyCheckEdit.reTranslationEnter(Sender: TObject);
+procedure TfrmToolKeyCheckEdit.reTranslationEnter(Sender:TObject);
 begin
   reTranslation.SelectAll;
 end;

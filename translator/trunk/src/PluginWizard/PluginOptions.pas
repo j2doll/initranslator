@@ -33,7 +33,7 @@ type
     Title:string;
     IsFileParser:boolean;
     constructor Create;
-    destructor Destroy;override;
+    destructor Destroy; override;
   end;
 
 implementation
@@ -58,12 +58,12 @@ procedure TPluginOptions.LoadSettings;
 begin
   with TRegIniFile.Create('\Software\Borland\IniTranslatorWizard') do
   try
-    PluginClassName := ReadString('Settings','PluginClassName',PluginClassName);
-    ProjectName := ReadString('Settings','ProjectName',ProjectName);
-    UnitName := ReadString('Settings','UnitName',UnitName);
-    TransIntfPath := ReadString('Settings','TransIntfPath',TransIntfPath);
-    Title := ReadString('Settings','Title',Title);
-    IsFileParser := ReadBool('Settings','IsFileParser',IsFileParser);
+    PluginClassName := ReadString('Settings', 'PluginClassName', PluginClassName);
+    ProjectName := ReadString('Settings', 'ProjectName', ProjectName);
+    UnitName := ReadString('Settings', 'UnitName', UnitName);
+    TransIntfPath := ReadString('Settings', 'TransIntfPath', TransIntfPath);
+    Title := ReadString('Settings', 'Title', Title);
+    IsFileParser := ReadBool('Settings', 'IsFileParser', IsFileParser);
   finally
     Free;
   end;
@@ -73,12 +73,12 @@ procedure TPluginOptions.SaveSettings;
 begin
   with TRegIniFile.Create('\Software\Borland\IniTranslatorWizard') do
   try
-    WriteString('Settings','PluginClassName',PluginClassName);
-    WriteString('Settings','ProjectName',ProjectName);
-    WriteString('Settings','UnitName',UnitName);
-    WriteString('Settings','TransIntfPath',TransIntfPath);
-    WriteString('Settings','Title',Title);
-    WriteBool('Settings','IsFileParser',IsFileParser);
+    WriteString('Settings', 'PluginClassName', PluginClassName);
+    WriteString('Settings', 'ProjectName', ProjectName);
+    WriteString('Settings', 'UnitName', UnitName);
+    WriteString('Settings', 'TransIntfPath', TransIntfPath);
+    WriteString('Settings', 'Title', Title);
+    WriteBool('Settings', 'IsFileParser', IsFileParser);
   finally
     Free;
   end;

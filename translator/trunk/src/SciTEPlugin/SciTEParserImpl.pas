@@ -31,22 +31,22 @@ RESTRICTIONS:
 type
   TSciTEParser = class(TInterfacedObject, IUnknown, IFileParser)
   private
-    FOldHandle: LongWord;
-    FTransFile: WideString;
-    FExportRect: TRect;
-    procedure BuildPreview(const Items: ITranslationItems; Strings: TTntStrings);
-    function DoSciTEImport(const Items, Orphans: ITranslationItems; const TransFile: WideString): boolean;
+    FOldHandle:LongWord;
+    FTransFile:WideString;
+    FExportRect:TRect;
+    procedure BuildPreview(const Items:ITranslationItems; Strings:TTntStrings);
+    function DoSciTEImport(const Items, Orphans:ITranslationItems; const TransFile:WideString):boolean;
     procedure LoadSettings;
     procedure SaveSettings;
   public
     constructor Create;
     destructor Destroy; override;
-    function Configure(Capability: Integer): HRESULT; safecall;
-    function DisplayName(Capability: Integer): WideString; safecall;
-    function ExportItems(const Items, Orphans: ITranslationItems): HRESULT; safecall;
-    function ImportItems(const Items, Orphans: ITranslationItems): HRESULT; safecall;
-    procedure Init(const ApplicationServices: IApplicationServices); safecall;
-    function Capabilities: Integer; safecall;
+    function Configure(Capability:Integer):HRESULT; safecall;
+    function DisplayName(Capability:Integer):WideString; safecall;
+    function ExportItems(const Items, Orphans:ITranslationItems):HRESULT; safecall;
+    function ImportItems(const Items, Orphans:ITranslationItems):HRESULT; safecall;
+    procedure Init(const ApplicationServices:IApplicationServices); safecall;
+    function Capabilities:Integer; safecall;
   end;
 
 implementation
@@ -61,24 +61,24 @@ const
   SImportError = 'There was an error importing, please check the files and try again';
   SError = 'SciTE Parser Error';
 
-function YesNo(const Text, Caption: WideString): boolean;
+function YesNo(const Text, Caption:WideString):boolean;
 begin
   Result := WideMessageBox(GetActiveWindow, PWideChar(Text), PWideChar(Caption), MB_YESNO or MB_ICONQUESTION) = IDYES;
 end;
 
-procedure ShowError(const Text: WideString);
+procedure ShowError(const Text:WideString);
 begin
   WideMessageBox(GetActiveWindow, PWideChar('There was an error:'#13#10 + Text), PWideChar(WideString('SciTE Error')), MB_OK or MB_ICONERROR);
 end;
 
 { TSciTEParser }
 
-function TSciTEParser.Capabilities: Integer;
+function TSciTEParser.Capabilities:Integer;
 begin
   Result := CAP_IMPORT or CAP_EXPORT;
 end;
 
-function TSciTEParser.Configure(Capability: Integer): HRESULT;
+function TSciTEParser.Configure(Capability:Integer):HRESULT;
 begin
   Result := S_OK;
 end;
@@ -89,11 +89,11 @@ begin
   FOldHandle := Application.Handle;
 end;
 
-procedure TSciTEParser.BuildPreview(const Items: ITranslationItems;
-  Strings: TTntStrings);
+procedure TSciTEParser.BuildPreview(const Items:ITranslationItems;
+  Strings:TTntStrings);
 var
-  i: integer;
-  FOldSort: TTranslateSortType;
+  i:integer;
+  FOldSort:TTranslateSortType;
 begin
   try
     FOldSort := Items.Sort;
@@ -119,25 +119,25 @@ begin
   inherited;
 end;
 
-function TSciTEParser.DisplayName(Capability: Integer): WideString;
+function TSciTEParser.DisplayName(Capability:Integer):WideString;
 begin
   case Capability of
-    CAP_IMPORT: Result := cSciTEImportTitle;
-    CAP_EXPORT: Result := cSciTEExportTitle;
+    CAP_IMPORT:Result := cSciTEImportTitle;
+    CAP_EXPORT:Result := cSciTEExportTitle;
 //    CAP_CONFIGURE : Result := 'Configure';
   else
     Result := '';
   end;
 end;
 
-function TSciTEParser.DoSciTEImport(const Items, Orphans: ITranslationItems;
-  const TransFile: WideString): boolean;
+function TSciTEParser.DoSciTEImport(const Items, Orphans:ITranslationItems;
+  const TransFile:WideString):boolean;
 var
-  S: TTntStringList;
-  i: integer;
-  FOldSort: TTranslateSortType;
-  FLastItem: ITranslationItem;
-  procedure ParseRow(const S: WideString);
+  S:TTntStringList;
+  i:integer;
+  FOldSort:TTranslateSortType;
+  FLastItem:ITranslationItem;
+  procedure ParseRow(const S:WideString);
   begin
     if (Pos('#', S) = 1) then
     begin
@@ -204,8 +204,9 @@ begin
   end;
 end;
 
-function TSciTEParser.ExportItems(const Items, Orphans: ITranslationItems): HRESULT;
-var S: TTntStringlist;
+function TSciTEParser.ExportItems(const Items, Orphans:ITranslationItems):HRESULT;
+var
+  S:TTntStringlist;
 begin
   try
     Result := S_FALSE;
@@ -227,7 +228,7 @@ begin
   end;
 end;
 
-function TSciTEParser.ImportItems(const Items, Orphans: ITranslationItems): HRESULT;
+function TSciTEParser.ImportItems(const Items, Orphans:ITranslationItems):HRESULT;
 begin
   try
     Result := S_FALSE;
@@ -249,13 +250,14 @@ begin
   end;
 end;
 
-procedure TSciTEParser.Init(const ApplicationServices: IApplicationServices);
+procedure TSciTEParser.Init(const ApplicationServices:IApplicationServices);
 begin
   Application.Handle := ApplicationServices.AppHandle;
 end;
 
 procedure TSciTEParser.LoadSettings;
-var M: TMemoryStream;
+var
+  M:TMemoryStream;
 begin
   try
     with TIniFile.Create(ChangeFileExt(GetModuleName(hInstance), '.ini')) do
@@ -280,7 +282,8 @@ begin
 end;
 
 procedure TSciTEParser.SaveSettings;
-var M: TMemoryStream;
+var
+  M:TMemoryStream;
 begin
   try
     with TIniFile.Create(ChangeFileExt(GetModuleName(hInstance), '.ini')) do
@@ -304,4 +307,3 @@ end;
 
 
 end.
-

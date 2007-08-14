@@ -28,52 +28,52 @@ uses
 
 type
   TListViewInfo = class
-    Column: TListColumn;
-    Descending: boolean;
+    Column:TListColumn;
+    Descending:boolean;
   end;
 
   TfrmToolKeyCheck = class(TTntForm)
-    TntStatusBar1: TTntStatusBar;
-    lvItems: TTntListView;
-    ilSortArrows: TImageList;
-    TntPanel1: TTntPanel;
-    chkIgnoreEmpty: TTntCheckBox;
-    TntButton1: TTntButton;
-    alMain: TTntActionList;
-    acUpdate: TTntAction;
-    acEdit: TTntAction;
-    acClose: TTntAction;
-    popListView: TTntPopupMenu;
-    Edit1: TTntMenuItem;
-    acSync: TTntAction;
-    Showinmainlist1: TTntMenuItem;
-    N1: TTntMenuItem;
-    Update1: TTntMenuItem;
-    Close1: TTntMenuItem;
-    procedure lvItemsResize(Sender: TObject);
-    procedure lvItemsEnter(Sender: TObject);
-    procedure lvItemsColumnClick(Sender: TObject; Column: TListColumn);
-    procedure TntFormCreate(Sender: TObject);
-    procedure TntFormDestroy(Sender: TObject);
-    procedure lvItemsSelectItem(Sender: TObject; Item: TListItem;
-      Selected: Boolean);
-    procedure lvItemsInsert(Sender: TObject; Item: TListItem);
-    procedure acCloseExecute(Sender: TObject);
-    procedure acUpdateExecute(Sender: TObject);
-    procedure chkIgnoreEmptyClick(Sender: TObject);
-    procedure acEditExecute(Sender: TObject);
-    procedure acSyncExecute(Sender: TObject);
+    TntStatusBar1:TTntStatusBar;
+    lvItems:TTntListView;
+    ilSortArrows:TImageList;
+    TntPanel1:TTntPanel;
+    chkIgnoreEmpty:TTntCheckBox;
+    TntButton1:TTntButton;
+    alMain:TTntActionList;
+    acUpdate:TTntAction;
+    acEdit:TTntAction;
+    acClose:TTntAction;
+    popListView:TTntPopupMenu;
+    Edit1:TTntMenuItem;
+    acSync:TTntAction;
+    Showinmainlist1:TTntMenuItem;
+    N1:TTntMenuItem;
+    Update1:TTntMenuItem;
+    Close1:TTntMenuItem;
+    procedure lvItemsResize(Sender:TObject);
+    procedure lvItemsEnter(Sender:TObject);
+    procedure lvItemsColumnClick(Sender:TObject; Column:TListColumn);
+    procedure TntFormCreate(Sender:TObject);
+    procedure TntFormDestroy(Sender:TObject);
+    procedure lvItemsSelectItem(Sender:TObject; Item:TListItem;
+      Selected:Boolean);
+    procedure lvItemsInsert(Sender:TObject; Item:TListItem);
+    procedure acCloseExecute(Sender:TObject);
+    procedure acUpdateExecute(Sender:TObject);
+    procedure chkIgnoreEmptyClick(Sender:TObject);
+    procedure acEditExecute(Sender:TObject);
+    procedure acSyncExecute(Sender:TObject);
   private
     { Private declarations }
-    FListViewInfo: TListViewInfo;
-    FItems: ITranslationItems;
+    FListViewInfo:TListViewInfo;
+    FItems:ITranslationItems;
     procedure LoadItems;
     procedure LoadSettings;
     procedure SaveSettings;
     procedure DoTranslate;
   public
     { Public declarations }
-    class function Edit(const Items: ITranslationItems): boolean;
+    class function Edit(const Items:ITranslationItems):boolean;
   end;
 
 implementation
@@ -91,16 +91,16 @@ begin
   Result := Tnt_WideStringReplace(S, CRLF, '\r\n', [rfReplaceAll]);
 end;
 
-function GetAccelerator(const S: WideString): WideString;
+function GetAccelerator(const S:WideString):WideString;
 begin
   Result := WideGetHotkey(S);
 end;
 
-function GetAccessKey(const S: WideString): WideString;
+function GetAccessKey(const S:WideString):WideString;
 var
-  i: integer;
-  aShortCut: TShortCut;
-  tmp: WideString;
+  i:integer;
+  aShortCut:TShortCut;
+  tmp:WideString;
 begin
   Result := '';
     // sanity check
@@ -146,9 +146,9 @@ end;
 
 { TfrmToolKeyCheck }
 
-class function TfrmToolKeyCheck.Edit(const Items: ITranslationItems): boolean;
+class function TfrmToolKeyCheck.Edit(const Items:ITranslationItems):boolean;
 var
-  frm: TfrmToolKeyCheck;
+  frm:TfrmToolKeyCheck;
 begin
   frm := self.Create(Application);
   try
@@ -166,9 +166,9 @@ end;
 
 procedure TfrmToolKeyCheck.LoadItems;
 var
-  i: integer;
-  li: TTntListItem;
-  aAccess, aAccel: WideString;
+  i:integer;
+  li:TTntListItem;
+  aAccess, aAccel:WideString;
 begin
   WaitCursor;
   if FItems = nil then
@@ -197,15 +197,16 @@ begin
   end;
 end;
 
-procedure TfrmToolKeyCheck.lvItemsResize(Sender: TObject);
-var i, W: integer;
+procedure TfrmToolKeyCheck.lvItemsResize(Sender:TObject);
+var
+  i, W:integer;
 begin
   W := lvItems.ClientWidth div lvItems.Columns.Count;
   for i := 0 to lvItems.Columns.Count - 1 do
     lvItems.Columns[i].Width := W;
 end;
 
-procedure TfrmToolKeyCheck.lvItemsEnter(Sender: TObject);
+procedure TfrmToolKeyCheck.lvItemsEnter(Sender:TObject);
 begin
   if (lvItems.Items.Count > 0) and (lvItems.Selected = nil) then
   begin
@@ -214,12 +215,12 @@ begin
   end;
 end;
 
-function ListViewSort(lParam1, lParam2, lParamSort: Integer): Integer; stdcall;
+function ListViewSort(lParam1, lParam2, lParamSort:Integer):Integer; stdcall;
 var
-  Item1: TTntListItem absolute lParam1;
-  Item2: TTntListItem absolute lParam2;
-  Info: TListVIewInfo absolute lParamSort;
-  S1, S2: WIdeString;
+  Item1:TTntListItem absolute lParam1;
+  Item2:TTntListItem absolute lParam2;
+  Info:TListVIewInfo absolute lParamSort;
+  S1, S2:WIdeString;
 begin
   if Info.Column.Index = 0 then
   begin
@@ -238,9 +239,10 @@ begin
     Result := -Result;
 end;
 
-procedure TfrmToolKeyCheck.lvItemsColumnClick(Sender: TObject;
-  Column: TListColumn);
-var i: integer;
+procedure TfrmToolKeyCheck.lvItemsColumnClick(Sender:TObject;
+  Column:TListColumn);
+var
+  i:integer;
 begin
   if FListViewInfo.Column = Column then
     FListViewInfo.Descending := not FListViewInfo.Descending
@@ -256,19 +258,20 @@ begin
     Column.ImageIndex := cDnArrow;
 end;
 
-procedure TfrmToolKeyCheck.TntFormCreate(Sender: TObject);
+procedure TfrmToolKeyCheck.TntFormCreate(Sender:TObject);
 begin
   FListViewInfo := TListViewInfo.Create;
 end;
 
-procedure TfrmToolKeyCheck.TntFormDestroy(Sender: TObject);
+procedure TfrmToolKeyCheck.TntFormDestroy(Sender:TObject);
 begin
   FListViewInfo.Free;
 end;
 
-procedure TfrmToolKeyCheck.lvItemsSelectItem(Sender: TObject;
-  Item: TListItem; Selected: Boolean);
-var AItem: ITranslationItem;
+procedure TfrmToolKeyCheck.lvItemsSelectItem(Sender:TObject;
+  Item:TListItem; Selected:Boolean);
+var
+  AItem:ITranslationItem;
 begin
   if Assigned(Item) and Assigned(Item.Data) then
   begin
@@ -280,23 +283,23 @@ begin
     TntStatusBar1.Panels[0].Text := '';
 end;
 
-procedure TfrmToolKeyCheck.lvItemsInsert(Sender: TObject; Item: TListItem);
+procedure TfrmToolKeyCheck.lvItemsInsert(Sender:TObject; Item:TListItem);
 begin
   Item.ImageIndex := -1;
   Item.StateIndex := -1;
 end;
 
-procedure TfrmToolKeyCheck.acCloseExecute(Sender: TObject);
+procedure TfrmToolKeyCheck.acCloseExecute(Sender:TObject);
 begin
   Close;
 end;
 
-procedure TfrmToolKeyCheck.acUpdateExecute(Sender: TObject);
+procedure TfrmToolKeyCheck.acUpdateExecute(Sender:TObject);
 begin
   LoadItems;
 end;
 
-procedure TfrmToolKeyCheck.chkIgnoreEmptyClick(Sender: TObject);
+procedure TfrmToolKeyCheck.chkIgnoreEmptyClick(Sender:TObject);
 begin
   acUpdate.Execute;
 end;
@@ -322,10 +325,10 @@ begin
   end;
 end;
 
-procedure TfrmToolKeyCheck.acEditExecute(Sender: TObject);
+procedure TfrmToolKeyCheck.acEditExecute(Sender:TObject);
 var
-  AItem: ITranslationItem;
-  S: WideString;
+  AItem:ITranslationItem;
+  S:WideString;
 begin
   if Assigned(lvItems.Selected) and Assigned(lvItems.Selected.Data) then
   begin
@@ -342,8 +345,9 @@ begin
   end;
 end;
 
-procedure TfrmToolKeyCheck.acSyncExecute(Sender: TObject);
-var AItem: ITranslationItem;
+procedure TfrmToolKeyCheck.acSyncExecute(Sender:TObject);
+var
+  AItem:ITranslationItem;
 begin
   if lvItems.Selected <> nil then
     AItem := ITranslationItem(lvItems.Selected.Data);
@@ -366,4 +370,3 @@ begin
 end;
 
 end.
-

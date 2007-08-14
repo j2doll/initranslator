@@ -27,45 +27,45 @@ uses
 type
   TKeePassParser = class(TInterfacedObject, IUnknown, IFileParser, ILocalizable)
   private
-    FIndex: integer;
-    FFilename: WideString;
+    FIndex:integer;
+    FFilename:WideString;
     procedure LoadSettings;
     procedure SaveSettings;
-    procedure BuildPreview(Items: ITranslationItems; Strings: TTntStrings);
+    procedure BuildPreview(Items:ITranslationItems; Strings:TTntStrings);
   public
 
-    function Capabilities: Integer; safecall;
-    function Configure(Capability: Integer): HRESULT; safecall;
-    function DisplayName(Capability: Integer): WideString; safecall;
-    function ExportItems(const Items: ITranslationItems;
-      const Orphans: ITranslationItems): HRESULT; safecall;
-    function ImportItems(const Items: ITranslationItems;
-      const Orphans: ITranslationItems): HRESULT; safecall;
-    procedure Init(const ApplicationServices: IApplicationServices); safecall;
-    function GetString(out Section: WideString; out Name: WideString;
-      out Value: WideString): WordBool; safecall;
+    function Capabilities:Integer; safecall;
+    function Configure(Capability:Integer):HRESULT; safecall;
+    function DisplayName(Capability:Integer):WideString; safecall;
+    function ExportItems(const Items:ITranslationItems;
+      const Orphans:ITranslationItems):HRESULT; safecall;
+    function ImportItems(const Items:ITranslationItems;
+      const Orphans:ITranslationItems):HRESULT; safecall;
+    procedure Init(const ApplicationServices:IApplicationServices); safecall;
+    function GetString(out Section:WideString; out Name:WideString;
+      out Value:WideString):WordBool; safecall;
   end;
 
 implementation
 uses
   Windows, SysUtils, Forms,
-  {$IFDEF COMPILER_9_UP}WideStrUtils{$ELSE}TntWideStrUtils{$ENDIF},
-  WideIniFiles, SingleImportFrm, PreviewExportFrm, 
+{$IFDEF COMPILER_9_UP}WideStrUtils{$ELSE}TntWideStrUtils{$ENDIF},
+  WideIniFiles, SingleImportFrm, PreviewExportFrm,
   KeePassParserLang;
 
 { TKeePassParser }
 
-function TKeePassParser.Capabilities: Integer;
+function TKeePassParser.Capabilities:Integer;
 begin
   Result := CAP_IMPORT or CAP_EXPORT;
 end;
 
-function TKeePassParser.Configure(Capability: Integer): HRESULT;
+function TKeePassParser.Configure(Capability:Integer):HRESULT;
 begin
   Result := E_NOTIMPL;
 end;
 
-function TKeePassParser.DisplayName(Capability: Integer): WideString;
+function TKeePassParser.DisplayName(Capability:Integer):WideString;
 begin
   case Capability of
     CAP_IMPORT:
@@ -77,10 +77,10 @@ begin
   end;
 end;
 
-procedure TKeePassParser.BuildPreview(Items: ITranslationItems; Strings: TTntStrings);
+procedure TKeePassParser.BuildPreview(Items:ITranslationItems; Strings:TTntStrings);
 var
-  i: integer;
-  S: WideString;
+  i:integer;
+  S:WideString;
 begin
   Strings.Clear;
   S := '';
@@ -89,10 +89,10 @@ begin
   Strings.Add(S);
 end;
 
-function TKeePassParser.ExportItems(const Items, Orphans: ITranslationItems): HRESULT;
+function TKeePassParser.ExportItems(const Items, Orphans:ITranslationItems):HRESULT;
 var
-  S: TTntStringlist;
-  FOldSort: TTranslateSortType;
+  S:TTntStringlist;
+  FOldSort:TTranslateSortType;
 begin
   Result := S_FALSE;
   FOldSort := Items.Sort;
@@ -122,13 +122,13 @@ end;
 // format:
 // |ORIGINAL||Translation||ORIGINAL||Translation|...
 
-function TKeePassParser.GetString(out Section, Name, Value: WideString): WordBool;
+function TKeePassParser.GetString(out Section, Name, Value:WideString):WordBool;
 begin
   Result := true;
   case FIndex of
-    0: Value := cKeePassFilter;
-    1: Value := cKeePassImportTitle;
-    2: Value := cKeePassExportTitle;
+    0:Value := cKeePassFilter;
+    1:Value := cKeePassImportTitle;
+    2:Value := cKeePassExportTitle;
   else
     Result := false;
   end;
@@ -142,21 +142,21 @@ begin
     FIndex := 0;
 end;
 
-function TKeePassParser.ImportItems(const Items, Orphans: ITranslationItems): HRESULT;
+function TKeePassParser.ImportItems(const Items, Orphans:ITranslationItems):HRESULT;
 var
-  S: TTntStringlist;
+  S:TTntStringlist;
 
-  procedure ParseItems(P: PWideChar);
+  procedure ParseItems(P:PWideChar);
   const
     cNull = WideChar(#0);
     cBar = WideChar('|');
   type
     States = (Original, Translation);
   var
-    R, S: PWideChar;
+    R, S:PWideChar;
 
-    AStates: States;
-    TI: ITranslationItem;
+    AStates:States;
+    TI:ITranslationItem;
 
   begin
     AStates := Original;
@@ -205,7 +205,7 @@ var
             end;
         end;
       end
-      else 
+      else
         Inc(P);
     end;
   end;
@@ -232,7 +232,7 @@ begin
     Result := S_FALSE;
 end;
 
-procedure TKeePassParser.Init(const ApplicationServices: IApplicationServices);
+procedure TKeePassParser.Init(const ApplicationServices:IApplicationServices);
 begin
   GlobalAppServices := ApplicationServices;
 end;
@@ -267,4 +267,3 @@ begin
 end;
 
 end.
-

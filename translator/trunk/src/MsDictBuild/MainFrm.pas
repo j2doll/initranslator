@@ -29,33 +29,33 @@ uses
 
 type
   TfrmMain = class(TForm)
-    Label1: TTntLabel;
-    reInputFiles: TTntRichEdit;
-    Panel1: TTntPanel;
-    Label2: TTntLabel;
-    Label3: TTntLabel;
-    edDictFile: TTntEdit;
-    btnOutBrowse: TTntButton;
-    rbAppend: TTntRadioButton;
-    rbOverwrite: TTntRadioButton;
-    btnConvert: TTntButton;
-    btnSelect: TTntButton;
-    odInFiles: TOpenDialog;
-    sdOutFile: TSaveDialog;
-    Label4: TTntLabel;
-    Image1: TImage;
-    StatusBar1: TStatusBar;
-    procedure btnSelectClick(Sender: TObject);
-    procedure btnOutBrowseClick(Sender: TObject);
-    procedure btnConvertClick(Sender: TObject);
-    procedure FormCreate(Sender: TObject);
-    procedure FormCloseQuery(Sender: TObject; var CanClose: Boolean);
-    procedure Label4Click(Sender: TObject);
+    Label1:TTntLabel;
+    reInputFiles:TTntRichEdit;
+    Panel1:TTntPanel;
+    Label2:TTntLabel;
+    Label3:TTntLabel;
+    edDictFile:TTntEdit;
+    btnOutBrowse:TTntButton;
+    rbAppend:TTntRadioButton;
+    rbOverwrite:TTntRadioButton;
+    btnConvert:TTntButton;
+    btnSelect:TTntButton;
+    odInFiles:TOpenDialog;
+    sdOutFile:TSaveDialog;
+    Label4:TTntLabel;
+    Image1:TImage;
+    StatusBar1:TStatusBar;
+    procedure btnSelectClick(Sender:TObject);
+    procedure btnOutBrowseClick(Sender:TObject);
+    procedure btnConvertClick(Sender:TObject);
+    procedure FormCreate(Sender:TObject);
+    procedure FormCloseQuery(Sender:TObject; var CanClose:Boolean);
+    procedure Label4Click(Sender:TObject);
   private
     { Private declarations }
     FLastOpenDir:string;
-    function ConvertFile(const Filename: string; Strings: TTntStrings): integer;
-    function ConvertFileSpec(const FileSpec: string; Strings: TTntStrings): integer;
+    function ConvertFile(const Filename:string; Strings:TTntStrings):integer;
+    function ConvertFileSpec(const FileSpec:string; Strings:TTntStrings):integer;
     procedure LoadSettings;
     procedure SaveSettings;
   public
@@ -63,19 +63,19 @@ type
   end;
 
 var
-  frmMain: TfrmMain;
+  frmMain:TfrmMain;
 
 implementation
 uses
   IniFiles, ShellAPI, ShFolder,
-  {$IFDEF COMPILER_9_UP}WideStrUtils{$ELSE}TntWideStrUtils{$ENDIF};
+{$IFDEF COMPILER_9_UP}WideStrUtils{$ELSE}TntWideStrUtils{$ENDIF};
 
 {$R *.dfm}
 
-procedure TfrmMain.btnSelectClick(Sender: TObject);
+procedure TfrmMain.btnSelectClick(Sender:TObject);
 var
-  S: TTntStringlist;
-  i: integer;
+  S:TTntStringlist;
+  i:integer;
 begin
   odInFiles.InitialDir := FLastOpenDir;
   odInFiles.Filename := '';
@@ -99,22 +99,22 @@ begin
   end;
 end;
 
-procedure TfrmMain.btnOutBrowseClick(Sender: TObject);
+procedure TfrmMain.btnOutBrowseClick(Sender:TObject);
 begin
   sdOutFile.Filename := edDictFile.Text;
   if sdOutFile.Execute then
     edDictFile.Text := sdOutFile.Filename;
 end;
 
-function TfrmMain.ConvertFile(const Filename: string; Strings: TTntStrings): integer;
+function TfrmMain.ConvertFile(const Filename:string; Strings:TTntStrings):integer;
 var
-  AInFile, AContent: TTntStringlist;
-  AName, AValue: WideString;
-  i, j: integer;
-  procedure ParseItem(const S: WideString; out Name, Value: WideString);
+  AInFile, AContent:TTntStringlist;
+  AName, AValue:WideString;
+  i, j:integer;
+  procedure ParseItem(const S:WideString; out Name, Value:WideString);
   var
-    P, P1: PWideChar;
-    tmp: WideString;
+    P, P1:PWideChar;
+    tmp:WideString;
   begin
     if Length(S) < 6 then Exit;
     P := PWideChar(S);
@@ -173,7 +173,7 @@ begin
       try
         ParseItem(AInFile[i], AName, AValue);
       except
-        raise Exception.CreateFmt('Error parsing "%s" at line %d',[Filename, i]);
+        raise Exception.CreateFmt('Error parsing "%s" at line %d', [Filename, i]);
       end;
       if AName <> '' then
       begin
@@ -189,9 +189,9 @@ begin
   end;
 end;
 
-function TfrmMain.ConvertFileSpec(const FileSpec: string; Strings: TTntStrings): integer;
+function TfrmMain.ConvertFileSpec(const FileSpec:string; Strings:TTntStrings):integer;
 var
-  F: TSearchRec;
+  F:TSearchRec;
 begin
   Result := 0;
   if FindFirst(FileSpec, faAnyFile, F) = 0 then
@@ -205,10 +205,10 @@ begin
   end;
 end;
 
-procedure TfrmMain.btnConvertClick(Sender: TObject);
+procedure TfrmMain.btnConvertClick(Sender:TObject);
 var
-  i, ACount: integer;
-  AOutFile: TTntStringlist;
+  i, ACount:integer;
+  AOutFile:TTntStringlist;
 begin
   SaveSettings;
   if edDictFile.Text = '' then
@@ -235,7 +235,7 @@ end;
 function GetUserAppDataFolder:string;
 begin
   SetLength(Result, MAX_PATH + 1);
-  if not Succeeded(SHGetFolderPath(0, CSIDL_APPDATA,0,0, PChar(Result))) then
+  if not Succeeded(SHGetFolderPath(0, CSIDL_APPDATA, 0, 0, PChar(Result))) then
     Result := '';
   Result := string(PChar(Result));
   if Result = '' then
@@ -257,7 +257,7 @@ begin
     edDictFile.Text := ReadString('Settings', 'DictFile', edDictFile.Text);
     rbAppend.Checked := ReadBool('Settings', 'Append', rbAppend.Checked);
     rbOverwrite.Checked := not rbAppend.Checked;
-    FLastOpenDir := ReadString('Settings','LastDir','.');
+    FLastOpenDir := ReadString('Settings', 'LastDir', '.');
   finally
     Free;
   end;
@@ -270,26 +270,25 @@ begin
     WriteString('Settings', 'Input Files', reInputFiles.Lines.CommaText);
     WriteString('Settings', 'DictFile', edDictFile.Text);
     WriteBool('Settings', 'Append', rbAppend.Checked);
-    WriteString('Settings','LastDir',FLastOpenDir);
+    WriteString('Settings', 'LastDir', FLastOpenDir);
   finally
     Free;
   end;
 end;
 
-procedure TfrmMain.FormCreate(Sender: TObject);
+procedure TfrmMain.FormCreate(Sender:TObject);
 begin
   LoadSettings;
 end;
 
-procedure TfrmMain.FormCloseQuery(Sender: TObject; var CanClose: Boolean);
+procedure TfrmMain.FormCloseQuery(Sender:TObject; var CanClose:Boolean);
 begin
   SaveSettings;
 end;
 
-procedure TfrmMain.Label4Click(Sender: TObject);
+procedure TfrmMain.Label4Click(Sender:TObject);
 begin
   ShellExecute(Handle, nil, 'ftp://ftp.microsoft.com/developr/msdn/newup/Glossary/', nil, nil, SW_SHOWNORMAL);
 end;
 
 end.
-

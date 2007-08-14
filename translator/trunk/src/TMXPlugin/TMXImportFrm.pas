@@ -25,24 +25,24 @@ uses
 
 type
   TfrmTMXImport = class(TTntForm)
-    Label1: TTntLabel;
-    edFilename: TTntEdit;
-    btnBrowse: TTntButton;
-    btnOK: TTntButton;
-    btnCancel: TTntButton;
-    OpenDialog1: TTntOpenDialog;
-    Label2: TTntLabel;
-    Label3: TTntLabel;
-    cbOrigLang: TTntComboBox;
-    cbTransLang: TTntComboBox;
-    procedure btnBrowseClick(Sender: TObject);
-    procedure edFilenameChange(Sender: TObject);
+    Label1:TTntLabel;
+    edFilename:TTntEdit;
+    btnBrowse:TTntButton;
+    btnOK:TTntButton;
+    btnCancel:TTntButton;
+    OpenDialog1:TTntOpenDialog;
+    Label2:TTntLabel;
+    Label3:TTntLabel;
+    cbOrigLang:TTntComboBox;
+    cbTransLang:TTntComboBox;
+    procedure btnBrowseClick(Sender:TObject);
+    procedure edFilenameChange(Sender:TObject);
   private
     { Private declarations }
-    procedure ParseLanguages(const Filename: WideString);
+    procedure ParseLanguages(const Filename:WideString);
   public
     { Public declarations }
-    class function Execute(var AFilename, AOrigLang, ATransLang: WideString; const ACaption, Filter, InitialDir, DefaultExt: WideString): boolean;
+    class function Execute(var AFilename, AOrigLang, ATransLang:WideString; const ACaption, Filter, InitialDir, DefaultExt:WideString):boolean;
   end;
 
 implementation
@@ -53,9 +53,9 @@ uses
 
 { TfrmImport }
 
-class function TfrmTMXImport.Execute(var AFilename, AOrigLang, ATransLang: WideString; const ACaption, Filter, InitialDir, DefaultExt: WideString): boolean;
+class function TfrmTMXImport.Execute(var AFilename, AOrigLang, ATransLang:WideString; const ACaption, Filter, InitialDir, DefaultExt:WideString):boolean;
 var
-  frmImport: TfrmTMXImport;
+  frmImport:TfrmTMXImport;
 begin
   frmImport := self.Create(Application);
   with frmImport do
@@ -79,33 +79,33 @@ begin
   end;
 end;
 
-procedure TfrmTMXImport.btnBrowseClick(Sender: TObject);
+procedure TfrmTMXImport.btnBrowseClick(Sender:TObject);
 begin
   OpenDialog1.Filename := edFilename.Text;
   if OpenDialog1.Execute then
     edFilename.Text := OpenDialog1.Filename;
 end;
 
-procedure TfrmTMXImport.edFilenameChange(Sender: TObject);
+procedure TfrmTMXImport.edFilenameChange(Sender:TObject);
 begin
   if FileExists(edFilename.Text) then
     ParseLanguages(edFilename.Text);
 end;
 
-procedure TfrmTMXImport.ParseLanguages(const Filename: WideString);
+procedure TfrmTMXImport.ParseLanguages(const Filename:WideString);
 var
-  FXMLImport: TXMLDocument;
-  NodeList: IDOMNodeList;
-  Node: IDOMNode;
-  i: integer;
-  S: WideString;
-  List: TTntStringList;
+  FXMLImport:TXMLDocument;
+  NodeList:IDOMNodeList;
+  Node:IDOMNode;
+  i:integer;
+  S:WideString;
+  List:TTntStringList;
 begin
   // detect available languages
   FXMLImport := TXMLDocument.Create(nil);
   List := TTntStringList.Create;
   try
-    List.Sorted := true;  // no duplicates
+    List.Sorted := true; // no duplicates
 
     FXMLImport.LoadFromFile(Filename);
     if FXMLImport.DOMDocument <> nil then
@@ -133,4 +133,3 @@ begin
 end;
 
 end.
-

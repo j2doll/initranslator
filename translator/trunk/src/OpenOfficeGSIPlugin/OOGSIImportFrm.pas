@@ -26,30 +26,30 @@ uses
 
 type
   TfrmImport = class(TTntForm)
-    Label1: TTntLabel;
-    edFilename: TTntEdit;
-    btnBrowse: TTntButton;
-    btnOK: TTntButton;
-    btnCancel: TTntButton;
-    OpenDialog1: TTntOpenDialog;
-    Label2: TTntLabel;
-    edFilename2: TTntEdit;
-    btnBrowse2: TTntButton;
-    OpenDialog2: TTntOpenDialog;
-    chkOriginalIsDual: TTntCheckBox;
-    chkSearchTranslation: TTntCheckBox;
-    procedure CheckChange(Sender: TObject);
-    procedure btnBrowseClick(Sender: TObject);
-    procedure btnBrowse2Click(Sender: TObject);
-    procedure chkOriginalIsDualClick(Sender: TObject);
+    Label1:TTntLabel;
+    edFilename:TTntEdit;
+    btnBrowse:TTntButton;
+    btnOK:TTntButton;
+    btnCancel:TTntButton;
+    OpenDialog1:TTntOpenDialog;
+    Label2:TTntLabel;
+    edFilename2:TTntEdit;
+    btnBrowse2:TTntButton;
+    OpenDialog2:TTntOpenDialog;
+    chkOriginalIsDual:TTntCheckBox;
+    chkSearchTranslation:TTntCheckBox;
+    procedure CheckChange(Sender:TObject);
+    procedure btnBrowseClick(Sender:TObject);
+    procedure btnBrowse2Click(Sender:TObject);
+    procedure chkOriginalIsDualClick(Sender:TObject);
   private
     { Private declarations }
     procedure LoadSettings;
     procedure SaveSettings;
   public
     { Public declarations }
-    class function Execute(var AOriginalFile, ATranslationFile: WideString;
-      var OrigIsDualLine, SearchTrans:boolean; const ACaption, Filter, InitialDir, DefaultExt: WideString): boolean;
+    class function Execute(var AOriginalFile, ATranslationFile:WideString;
+      var OrigIsDualLine, SearchTrans:boolean; const ACaption, Filter, InitialDir, DefaultExt:WideString):boolean;
   end;
 
 implementation
@@ -60,10 +60,10 @@ uses
 
 { TfrmImport }
 
-class function TfrmImport.Execute(var AOriginalFile, ATranslationFile: WideString;
-  var OrigIsDualLine, SearchTrans:boolean; const ACaption, Filter, InitialDir, DefaultExt: WideString): boolean;
+class function TfrmImport.Execute(var AOriginalFile, ATranslationFile:WideString;
+  var OrigIsDualLine, SearchTrans:boolean; const ACaption, Filter, InitialDir, DefaultExt:WideString):boolean;
 var
-  frmImport: TfrmImport;
+  frmImport:TfrmImport;
 begin
   frmImport := self.Create(Application);
   with frmImport do
@@ -95,12 +95,12 @@ begin
   end;
 end;
 
-procedure TfrmImport.CheckChange(Sender: TObject);
+procedure TfrmImport.CheckChange(Sender:TObject);
 begin
   btnOK.Enabled := FileExists(edFilename.Text);
 end;
 
-procedure TfrmImport.btnBrowseClick(Sender: TObject);
+procedure TfrmImport.btnBrowseClick(Sender:TObject);
 begin
   OpenDialog1.Filename := edFilename.Text;
   if OpenDialog1.Execute then
@@ -108,7 +108,7 @@ begin
   CheckChange(Sender);
 end;
 
-procedure TfrmImport.btnBrowse2Click(Sender: TObject);
+procedure TfrmImport.btnBrowse2Click(Sender:TObject);
 begin
   OpenDialog2.Filename := edFilename2.Text;
   if OpenDialog2.Execute then
@@ -117,7 +117,8 @@ begin
 end;
 
 procedure TfrmImport.LoadSettings;
-var M: TMemoryStream; FRect: TRect;
+var
+  M:TMemoryStream; FRect:TRect;
 begin
   try
     FRect := Rect(0, 0, 0, 0);
@@ -157,7 +158,8 @@ begin
 end;
 
 procedure TfrmImport.SaveSettings;
-var M: TMemoryStream; FRect: TRect;
+var
+  M:TMemoryStream; FRect:TRect;
 begin
   if WindowState = wsNormal then
   try
@@ -180,7 +182,7 @@ begin
   end;
 end;
 
-procedure TfrmImport.chkOriginalIsDualClick(Sender: TObject);
+procedure TfrmImport.chkOriginalIsDualClick(Sender:TObject);
 begin
   Label2.Enabled := not chkOriginalIsDual.Checked;
   edFilename2.Enabled := Label2.Enabled;
@@ -189,4 +191,3 @@ begin
 end;
 
 end.
-

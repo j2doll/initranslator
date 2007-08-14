@@ -20,7 +20,7 @@ unit ToolTrimConsts;
 interface
 uses
   TransIntf;
-  
+
 const
   SSectionName = 'ToolTrim';
   SToolTrimAbout = 'This plugin trims leading and trailing whitespaces and other characters';

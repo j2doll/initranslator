@@ -28,27 +28,27 @@ uses
 
 type
   TfrmPOExport = class(TTntForm)
-    lblFilename: TTntLabel;
-    edFilename: TTntEdit;
-    btnBrowse: TTntButton;
-    btnOK: TTntButton;
-    btnCancel: TTntButton;
-    rePreview: TTntRichEdit;
-    lblPreview: TTntLabel;
-    alPOExport: TTntActionList;
-    acSaveFile: TTntAction;
-    SaveDialog1: TTntSaveDialog;
-    chkCompileMO: TTntCheckBox;
-    edMOCmdLine: TTntEdit;
-    procedure acSaveFileExecute(Sender: TObject);
-    procedure alPOExportUpdate(Action: TBasicAction; var Handled: Boolean);
-    procedure chkCompileMOClick(Sender: TObject);
+    lblFilename:TTntLabel;
+    edFilename:TTntEdit;
+    btnBrowse:TTntButton;
+    btnOK:TTntButton;
+    btnCancel:TTntButton;
+    rePreview:TTntRichEdit;
+    lblPreview:TTntLabel;
+    alPOExport:TTntActionList;
+    acSaveFile:TTntAction;
+    SaveDialog1:TTntSaveDialog;
+    chkCompileMO:TTntCheckBox;
+    edMOCmdLine:TTntEdit;
+    procedure acSaveFileExecute(Sender:TObject);
+    procedure alPOExportUpdate(Action:TBasicAction; var Handled:Boolean);
+    procedure chkCompileMOClick(Sender:TObject);
   private
     { Private declarations }
   public
     { Public declarations }
     class function Edit(var AFilename, ACmdLine:string;
-      var CompileMO:Boolean; Preview:TTntStrings): boolean;
+      var CompileMO:Boolean; Preview:TTntStrings):boolean;
   end;
 
 implementation
@@ -57,23 +57,23 @@ uses
 
 {$R *.dfm}
 
-procedure TfrmPOExport.acSaveFileExecute(Sender: TObject);
+procedure TfrmPOExport.acSaveFileExecute(Sender:TObject);
 begin
   SaveDialog1.Filename := edFilename.Text;
   if SaveDialog1.Execute then
     edFilename.Text := SaveDialog1.Filename;
 end;
 
-procedure TfrmPOExport.alPOExportUpdate(Action: TBasicAction;
-  var Handled: Boolean);
+procedure TfrmPOExport.alPOExportUpdate(Action:TBasicAction;
+  var Handled:Boolean);
 begin
   btnOK.Enabled := (edFilename.Text <> '');
 end;
 
 class function TfrmPOExport.Edit(var AFilename, ACmdLine:string;
-  var CompileMO:Boolean; Preview:TTntStrings): boolean;
+  var CompileMO:Boolean; Preview:TTntStrings):boolean;
 var
-  frmPOExport: TfrmPOExport;
+  frmPOExport:TfrmPOExport;
 {  function MakeValidComments(Strings:TStrings):WideString;
   var i:integer;
   begin
@@ -115,11 +115,10 @@ begin
     Free;
   end;
 end;
-procedure TfrmPOExport.chkCompileMOClick(Sender: TObject);
+
+procedure TfrmPOExport.chkCompileMOClick(Sender:TObject);
 begin
   edMOCmdLine.Enabled := chkCompileMO.Checked;
 end;
 
 end.
-
-

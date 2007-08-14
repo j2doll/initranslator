@@ -34,24 +34,24 @@ uses
 type
   TPolyGlotParser = class(TInterfacedObject, IUnknown, IFileParser)
   private
-    FOldAppHandle: Cardinal;
-    FTransFile, FOrigFile: WideString;
-    FSection: WideString;
+    FOldAppHandle:Cardinal;
+    FTransFile, FOrigFile:WideString;
+    FSection:WideString;
     procedure LoadSettings;
     procedure SaveSettings;
-    procedure BuildPreview(Items: ITranslationItems; Strings: TTntStrings);
+    procedure BuildPreview(Items:ITranslationItems; Strings:TTntStrings);
   public
     constructor Create;
     destructor Destroy; override;
 
-    function Capabilities: Integer; safecall;
-    function Configure(Capability: Integer): HRESULT; safecall;
-    function DisplayName(Capability: Integer): WideString; safecall;
-    function ExportItems(const Items: ITranslationItems;
-      const Orphans: ITranslationItems): HRESULT; safecall;
-    function ImportItems(const Items: ITranslationItems;
-      const Orphans: ITranslationItems): HRESULT; safecall;
-    procedure Init(const ApplicationServices: IApplicationServices); safecall;
+    function Capabilities:Integer; safecall;
+    function Configure(Capability:Integer):HRESULT; safecall;
+    function DisplayName(Capability:Integer):WideString; safecall;
+    function ExportItems(const Items:ITranslationItems;
+      const Orphans:ITranslationItems):HRESULT; safecall;
+    function ImportItems(const Items:ITranslationItems;
+      const Orphans:ITranslationItems):HRESULT; safecall;
+    procedure Init(const ApplicationServices:IApplicationServices); safecall;
   end;
 
 implementation
@@ -66,8 +66,9 @@ const
 
 { TPolyGlotParser }
 
-procedure TPolyGlotParser.BuildPreview(Items: ITranslationItems; Strings: TTntStrings);
-var i: integer;
+procedure TPolyGlotParser.BuildPreview(Items:ITranslationItems; Strings:TTntStrings);
+var
+  i:integer;
 begin
   FSection := '';
   for i := 0 to Items.Count - 1 do
@@ -86,12 +87,12 @@ begin
   end;
 end;
 
-function TPolyGlotParser.Capabilities: Integer;
+function TPolyGlotParser.Capabilities:Integer;
 begin
   Result := CAP_IMPORT or CAP_EXPORT;
 end;
 
-function TPolyGlotParser.Configure(Capability: Integer): HRESULT;
+function TPolyGlotParser.Configure(Capability:Integer):HRESULT;
 begin
   Result := E_NOTIMPL;
 end;
@@ -109,7 +110,7 @@ begin
   inherited;
 end;
 
-function TPolyGlotParser.DisplayName(Capability: Integer): WideString;
+function TPolyGlotParser.DisplayName(Capability:Integer):WideString;
 begin
   case Capability of
     CAP_IMPORT:
@@ -122,10 +123,10 @@ begin
 end;
 
 function TPolyGlotParser.ExportItems(const Items,
-  Orphans: ITranslationItems): HRESULT;
+  Orphans:ITranslationItems):HRESULT;
 var
-  S: TTntStringlist;
-  FOldSort: TTranslateSortType;
+  S:TTntStringlist;
+  FOldSort:TTranslateSortType;
 begin
   Result := S_FALSE;
   FOldSort := Items.Sort;
@@ -151,11 +152,11 @@ begin
   end;
 end;
 
-function TPolyGlotParser.ImportItems(const Items, Orphans: ITranslationItems): HRESULT;
+function TPolyGlotParser.ImportItems(const Items, Orphans:ITranslationItems):HRESULT;
 var
-  S: TTntStringlist;
-  i, j, k: integer;
-  TI: ITranslationItem;
+  S:TTntStringlist;
+  i, j, k:integer;
+  TI:ITranslationItem;
 begin
   Result := S_FALSE;
   try
@@ -229,7 +230,7 @@ begin
   end;
 end;
 
-procedure TPolyGlotParser.Init(const ApplicationServices: IApplicationServices);
+procedure TPolyGlotParser.Init(const ApplicationServices:IApplicationServices);
 begin
   Application.Handle := ApplicationServices.AppHandle;
 end;
@@ -265,4 +266,3 @@ begin
 end;
 
 end.
-

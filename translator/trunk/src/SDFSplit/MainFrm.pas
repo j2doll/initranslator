@@ -27,50 +27,51 @@ uses
 
 type
   TfrmMain = class(TTntForm)
-    Label1: TTntLabel;
-    edSDFFile: TTntEdit;
-    btnSDFFile: TTntButton;
-    Label2: TTntLabel;
-    edSaveFolder: TTntEdit;
-    btnSaveFolder: TTntButton;
-    btnOK: TTntButton;
-    btnCancel: TTntButton;
-    odSDFFile: TTntOpenDialog;
-    chkExtractLanguage: TTntCheckBox;
-    cbLanguages: TTntComboBox;
-    chkSortItems: TTntCheckBox;
-    procedure btnOKClick(Sender: TObject);
-    procedure btnCancelClick(Sender: TObject);
-    procedure btnSDFFileClick(Sender: TObject);
-    procedure btnSaveFolderClick(Sender: TObject);
-    procedure chkExtractLanguageClick(Sender: TObject);
-    procedure FormCloseQuery(Sender: TObject; var CanClose: Boolean);
-    procedure FormShow(Sender: TObject);
+    Label1:TTntLabel;
+    edSDFFile:TTntEdit;
+    btnSDFFile:TTntButton;
+    Label2:TTntLabel;
+    edSaveFolder:TTntEdit;
+    btnSaveFolder:TTntButton;
+    btnOK:TTntButton;
+    btnCancel:TTntButton;
+    odSDFFile:TTntOpenDialog;
+    chkExtractLanguage:TTntCheckBox;
+    cbLanguages:TTntComboBox;
+    chkSortItems:TTntCheckBox;
+    procedure btnOKClick(Sender:TObject);
+    procedure btnCancelClick(Sender:TObject);
+    procedure btnSDFFileClick(Sender:TObject);
+    procedure btnSaveFolderClick(Sender:TObject);
+    procedure chkExtractLanguageClick(Sender:TObject);
+    procedure FormCloseQuery(Sender:TObject; var CanClose:Boolean);
+    procedure FormShow(Sender:TObject);
   private
     { Private declarations }
     procedure LoadSettings;
     procedure SaveSettings;
-    procedure SplitFile(const Filename, OutputFolder: string; SortItems: boolean);
-    procedure ExtractFile(const Filename, OutputFolder, Language: string; SortItems: boolean);
-    function Validate: boolean;
+    procedure SplitFile(const Filename, OutputFolder:string; SortItems:boolean);
+    procedure ExtractFile(const Filename, OutputFolder, Language:string; SortItems:boolean);
+    function Validate:boolean;
   public
     { Public declarations }
   end;
 
 var
-  frmMain: TfrmMain;
+  frmMain:TfrmMain;
 
 implementation
 
 uses
-  {$WARN UNIT_PLATFORM OFF}FileCtrl, {$WARN UNIT_PLATFORM ON} IniFiles, CommonUtils;
+{$WARN UNIT_PLATFORM OFF}FileCtrl, {$WARN UNIT_PLATFORM ON}IniFiles, CommonUtils;
 
 
 {$R *.dfm}
 
-procedure StrTokenize(const S: string; Delimiter: Char; List: TStrings; MinLength: integer = 1);
-var i, j: integer;
-  tmp: string;
+procedure StrTokenize(const S:string; Delimiter:Char; List:TStrings; MinLength:integer = 1);
+var
+  i, j:integer;
+  tmp:string;
 begin
   j := 1;
   for i := 1 to Length(S) do
@@ -92,7 +93,8 @@ begin
 end;
 
 function TfrmMain.Validate:boolean;
-var S:WideString;
+var
+  S:WideString;
 begin
   S := '';
   if not FileExists(edSDFFile.Text) then
@@ -115,7 +117,7 @@ begin
     WideMessageBox(Handle, PWideChar(S), 'Error', MB_OK or MB_ICONERROR);
 end;
 
-procedure TfrmMain.btnOKClick(Sender: TObject);
+procedure TfrmMain.btnOKClick(Sender:TObject);
 begin
   if not Validate then Exit;
 
@@ -126,8 +128,9 @@ begin
   WideMessageBox(Handle, 'Done', PWideChar(Caption), MB_OK or MB_ICONINFORMATION);
 end;
 
-function GetLanguage(S: string): string;
-var T: TStringlist;
+function GetLanguage(S:string):string;
+var
+  T:TStringlist;
 begin
   T := TStringlist.Create;
   try
@@ -141,18 +144,18 @@ begin
   end;
 end;
 
-procedure TfrmMain.SplitFile(const Filename, OutputFolder: string; SortItems: boolean);
+procedure TfrmMain.SplitFile(const Filename, OutputFolder:string; SortItems:boolean);
 var
-  i, aStart, aIndex, aCount: integer;
-  S: TStringlist;
-  aFileNameTemplate, aBaseFolder, aCurrentFilename: string;
-  FFiles: array of TextFile;
-  FLanguages: TStringlist;
+  i, aStart, aIndex, aCount:integer;
+  S:TStringlist;
+  aFileNameTemplate, aBaseFolder, aCurrentFilename:string;
+  FFiles:array of TextFile;
+  FLanguages:TStringlist;
 
-  function GetLanguages(S: TStrings; i: integer): integer;
+  function GetLanguages(S:TStrings; i:integer):integer;
   var
-    j: integer;
-    lang: string;
+    j:integer;
+    lang:string;
   begin
     for j := i to S.Count - 1 do
     begin
@@ -234,12 +237,12 @@ begin
   end;
 end;
 
-procedure TfrmMain.ExtractFile(const Filename, OutputFolder, Language: string; SortItems: boolean);
+procedure TfrmMain.ExtractFile(const Filename, OutputFolder, Language:string; SortItems:boolean);
 var
-  i, aStart: integer;
-  S: TStringlist;
-  aFileNameTemplate, aBaseFolder, aCurrentFilename: string;
-  FFile: TextFile;
+  i, aStart:integer;
+  S:TStringlist;
+  aFileNameTemplate, aBaseFolder, aCurrentFilename:string;
+  FFile:TextFile;
 begin
   aBaseFolder := IncludeTrailingPathDelimiter(OutputFolder);
   aFileNameTemplate := ExtractFileName(Filename);
@@ -275,12 +278,12 @@ begin
   end;
 end;
 
-procedure TfrmMain.btnCancelClick(Sender: TObject);
+procedure TfrmMain.btnCancelClick(Sender:TObject);
 begin
   Close;
 end;
 
-procedure TfrmMain.btnSDFFileClick(Sender: TObject);
+procedure TfrmMain.btnSDFFileClick(Sender:TObject);
 begin
   odSDFFile.FileName := edSDFFile.Text;
   if odSDFFile.Execute then
@@ -291,8 +294,9 @@ begin
   end;
 end;
 
-procedure TfrmMain.btnSaveFolderClick(Sender: TObject);
-var S: string;
+procedure TfrmMain.btnSaveFolderClick(Sender:TObject);
+var
+  S:string;
 begin
   S := edSaveFolder.Text;
   if S = '' then
@@ -301,7 +305,7 @@ begin
     edSaveFolder.Text := S;
 end;
 
-procedure TfrmMain.chkExtractLanguageClick(Sender: TObject);
+procedure TfrmMain.chkExtractLanguageClick(Sender:TObject);
 begin
   if chkExtractLanguage.Checked then
     btnOK.Caption := 'Extract'
@@ -314,11 +318,11 @@ procedure TfrmMain.LoadSettings;
 begin
   with TIniFile.Create(ChangeFileExt(Application.Exename, '.ini')) do
   try
-    edSDFFile.Text := ReadString('Settings', 'Filename','');
-    edSaveFolder.Text := ReadString('Settings', 'SaveFolder','');
-    chkExtractLanguage.Checked := ReadBool('Settings', 'ExtractLanguage',false);
+    edSDFFile.Text := ReadString('Settings', 'Filename', '');
+    edSaveFolder.Text := ReadString('Settings', 'SaveFolder', '');
+    chkExtractLanguage.Checked := ReadBool('Settings', 'ExtractLanguage', false);
     chkSortItems.Checked := ReadBool('Settings', 'SortItems', true);
-    cbLanguages.Text := ReadString('Settings', 'Language','af');
+    cbLanguages.Text := ReadString('Settings', 'Language', 'af');
   finally
     Free;
   end;
@@ -328,26 +332,25 @@ procedure TfrmMain.SaveSettings;
 begin
   with TIniFile.Create(ChangeFileExt(Application.Exename, '.ini')) do
   try
-    WriteString('Settings', 'Filename',edSDFFile.Text);
-    WriteString('Settings', 'SaveFolder',edSaveFolder.Text);
-    WriteBool('Settings', 'ExtractLanguage',chkExtractLanguage.Checked);
+    WriteString('Settings', 'Filename', edSDFFile.Text);
+    WriteString('Settings', 'SaveFolder', edSaveFolder.Text);
+    WriteBool('Settings', 'ExtractLanguage', chkExtractLanguage.Checked);
     WriteBool('Settings', 'SortItems', chkSortItems.Checked);
-    WriteString('Settings', 'Language',cbLanguages.Text);
+    WriteString('Settings', 'Language', cbLanguages.Text);
   finally
     Free;
   end;
 end;
 
-procedure TfrmMain.FormCloseQuery(Sender: TObject; var CanClose: Boolean);
+procedure TfrmMain.FormCloseQuery(Sender:TObject; var CanClose:Boolean);
 begin
   SaveSettings;
 end;
 
-procedure TfrmMain.FormShow(Sender: TObject);
+procedure TfrmMain.FormShow(Sender:TObject);
 begin
   LoadSettings;
   OnShow := nil;
 end;
 
 end.
-

@@ -30,39 +30,39 @@ RESTRICTIONS:
 type
   TIBFParser = class(TInterfacedObject, IUnknown, IFileParser, ILocalizable)
   private
-    FOldHandle: LongWord;
-    FCount: integer;
-    FAppServices: IApplicationServices;
-    FOrigFile, FTransFile: WideString;
-    FExportRect: TRect;
-    procedure BuildPreview(const Items: ITranslationItems; Strings: TTntStrings);
-    function DoImport(const Items, Orphans: ITranslationItems; const OrigFile, TransFile: WideString): boolean;
+    FOldHandle:LongWord;
+    FCount:integer;
+    FAppServices:IApplicationServices;
+    FOrigFile, FTransFile:WideString;
+    FExportRect:TRect;
+    procedure BuildPreview(const Items:ITranslationItems; Strings:TTntStrings);
+    function DoImport(const Items, Orphans:ITranslationItems; const OrigFile, TransFile:WideString):boolean;
     procedure LoadSettings;
     procedure SaveSettings;
-    function Translate(const Value: WideString): WideString;
+    function Translate(const Value:WideString):WideString;
   public
     constructor Create;
     destructor Destroy; override;
-    function Configure(Capability: Integer): HRESULT; safecall;
-    function DisplayName(Capability: Integer): WideString; safecall;
-    function ExportItems(const Items, Orphans: ITranslationItems): HRESULT; safecall;
-    function ImportItems(const Items, Orphans: ITranslationItems): HRESULT; safecall;
+    function Configure(Capability:Integer):HRESULT; safecall;
+    function DisplayName(Capability:Integer):WideString; safecall;
+    function ExportItems(const Items, Orphans:ITranslationItems):HRESULT; safecall;
+    function ImportItems(const Items, Orphans:ITranslationItems):HRESULT; safecall;
 
-    procedure Init(const ApplicationServices: IApplicationServices); safecall;
-    function Capabilities: Integer; safecall;
-    function HandleOrig(const AFilename: WideString; const Items: ITranslationItems; const Orphans: ITranslationItems): Boolean; safecall;
-    function HandleTrans(const AFilename: WideString; const Items: ITranslationItems; const Orphans: ITranslationItems): Boolean; safecall;
-    function GetString(out Section: WideString; out Name: WideString; out Value: WideString): WordBool; safecall;
+    procedure Init(const ApplicationServices:IApplicationServices); safecall;
+    function Capabilities:Integer; safecall;
+    function HandleOrig(const AFilename:WideString; const Items:ITranslationItems; const Orphans:ITranslationItems):Boolean; safecall;
+    function HandleTrans(const AFilename:WideString; const Items:ITranslationItems; const Orphans:ITranslationItems):Boolean; safecall;
+    function GetString(out Section:WideString; out Name:WideString; out Value:WideString):WordBool; safecall;
 
   end;
 
 implementation
 uses
-  Windows, Forms, IniFiles, TntSysUtils, CommonUtils, 
+  Windows, Forms, IniFiles, TntSysUtils, CommonUtils,
   TntWindows, PreviewExportFrm, DualImportFrm;
 
 var
-  FHeader, FFooter: TTntStringlist;
+  FHeader, FFooter:TTntStringlist;
 
 const
   cPHPFilter:WideString = 'PHP files (*.php)|*.php|All files (*.*)|*.*';
@@ -74,7 +74,7 @@ const
   SFmtErrorMsg:WideString = '%s';
 
 
-function MyWideDequotedStr(const S: WideString; Quote: WideChar): WideString;
+function MyWideDequotedStr(const S:WideString; Quote:WideChar):WideString;
 //var LText:PWideChar;
 begin
   Result := S;
@@ -84,19 +84,19 @@ begin
     Result := Copy(S, 2, Length(S) - 2)
 end;
 
-procedure ShowError(const Text: WideString);
+procedure ShowError(const Text:WideString);
 begin
   WideMessageBox(GetActiveWindow, PWideChar(WideFormat(SFmtErrorMsg, [Text])), PWideChar(SError), MB_OK or MB_ICONERROR);
 end;
 
 { TIBFParser }
 
-function TIBFParser.Capabilities: Integer;
+function TIBFParser.Capabilities:Integer;
 begin
   Result := CAP_IMPORT or CAP_EXPORT;
 end;
 
-function TIBFParser.Configure(Capability: Integer): HRESULT;
+function TIBFParser.Configure(Capability:Integer):HRESULT;
 begin
   Result := S_OK;
 end;
@@ -107,11 +107,11 @@ begin
   FOldHandle := Application.Handle;
 end;
 
-procedure TIBFParser.BuildPreview(const Items: ITranslationItems;
-  Strings: TTntStrings);
+procedure TIBFParser.BuildPreview(const Items:ITranslationItems;
+  Strings:TTntStrings);
 var
-  i: integer;
-  FOldSort: TTranslateSortType;
+  i:integer;
+  FOldSort:TTranslateSortType;
 begin
   try
     FOldSort := Items.Sort;
@@ -140,30 +140,30 @@ begin
   inherited;
 end;
 
-function TIBFParser.DisplayName(Capability: Integer): WideString;
+function TIBFParser.DisplayName(Capability:Integer):WideString;
 begin
   case Capability of
-    CAP_IMPORT: Result := Translate(cIBFImportTitle);
-    CAP_EXPORT: Result := Translate(cIBFExportTitle);
+    CAP_IMPORT:Result := Translate(cIBFImportTitle);
+    CAP_EXPORT:Result := Translate(cIBFExportTitle);
 //    CAP_CONFIGURE : Result := 'Configure';
   else
     Result := '';
   end;
 end;
 
-function TIBFParser.DoImport(const Items, Orphans: ITranslationItems;
-  const OrigFile, TransFile: WideString): boolean;
+function TIBFParser.DoImport(const Items, Orphans:ITranslationItems;
+  const OrigFile, TransFile:WideString):boolean;
 var
-  S: TTntStringList;
-  HeaderComplete: boolean;
-  i: integer;
-  FOldSort: TTranslateSortType;
+  S:TTntStringList;
+  HeaderComplete:boolean;
+  i:integer;
+  FOldSort:TTranslateSortType;
 
-  function ParseRow(const S: WideString; IsTranslation, TranslateFormat: boolean): boolean;
+  function ParseRow(const S:WideString; IsTranslation, TranslateFormat:boolean):boolean;
   var
-    T: ITranslationItem;
-    i: integer;
-    tmp, tmp2: WideString;
+    T:ITranslationItem;
+    i:integer;
+    tmp, tmp2:WideString;
   begin
     Result := false;
     if not TranslateFormat then
@@ -284,9 +284,9 @@ $lang['newslink']  = "senaste nytt:";
   end;
 end;
 
-function TIBFParser.ExportItems(const Items, Orphans: ITranslationItems): HRESULT;
+function TIBFParser.ExportItems(const Items, Orphans:ITranslationItems):HRESULT;
 var
-  S: TTntStringlist;
+  S:TTntStringlist;
 begin
   try
     Result := S_FALSE;
@@ -308,7 +308,7 @@ begin
   end;
 end;
 
-function TIBFParser.ImportItems(const Items, Orphans: ITranslationItems): HRESULT;
+function TIBFParser.ImportItems(const Items, Orphans:ITranslationItems):HRESULT;
 begin
   Result := S_FALSE;
   LoadSettings;
@@ -327,7 +327,7 @@ begin
   end;
 end;
 
-procedure TIBFParser.Init(const ApplicationServices: IApplicationServices);
+procedure TIBFParser.Init(const ApplicationServices:IApplicationServices);
 begin
   FAppServices := ApplicationServices;
   Application.Handle := ApplicationServices.AppHandle;
@@ -335,7 +335,7 @@ end;
 
 procedure TIBFParser.LoadSettings;
 var
-  M: TMemoryStream;
+  M:TMemoryStream;
 begin
   try
     with TIniFile.Create(ChangeFileExt(GetModuleName(hInstance), '.ini')) do
@@ -362,7 +362,7 @@ end;
 
 procedure TIBFParser.SaveSettings;
 var
-  M: TMemoryStream;
+  M:TMemoryStream;
 begin
   try
     with TIniFile.Create(ChangeFileExt(GetModuleName(hInstance), '.ini')) do
@@ -385,14 +385,14 @@ begin
   end;
 end;
 
-function TIBFParser.HandleOrig(const AFilename: WideString; const Items,
-  Orphans: ITranslationItems): Boolean;
+function TIBFParser.HandleOrig(const AFilename:WideString; const Items,
+  Orphans:ITranslationItems):Boolean;
 begin
   Result := false;
 end;
 
-function TIBFParser.HandleTrans(const AFilename: WideString; const Items,
-  Orphans: ITranslationItems): Boolean;
+function TIBFParser.HandleTrans(const AFilename:WideString; const Items,
+  Orphans:ITranslationItems):Boolean;
 begin
   Result := false;
 end;
@@ -400,15 +400,15 @@ var
   frmExport:TfrmExport = nil;
 
 function TIBFParser.GetString(out Section, Name,
-  Value: WideString): WordBool;
+  Value:WideString):WordBool;
 begin
   Result := true;
   case FCount of
-    0: Value := cPHPFilter;
-    1: Value := cIBFExportTitle;
-    2: Value := cIBFImportTitle;
-    3: Value := SImportError;
-    4: Value := SError;
+    0:Value := cPHPFilter;
+    1:Value := cIBFExportTitle;
+    2:Value := cIBFImportTitle;
+    3:Value := SImportError;
+    4:Value := SError;
     // 5: Value := cSectionName;
   else
     if frmExport = nil then
@@ -429,7 +429,7 @@ begin
   end;
 end;
 
-function TIBFParser.Translate(const Value: WideString): WideString;
+function TIBFParser.Translate(const Value:WideString):WideString;
 begin
   if FAppServices <> nil then
     Result := FAppServices.Translate(ClassName, Value, Value)
@@ -446,4 +446,3 @@ finalization
   FFooter.Free;
 
 end.
-

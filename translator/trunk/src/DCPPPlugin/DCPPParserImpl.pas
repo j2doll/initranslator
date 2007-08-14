@@ -26,21 +26,21 @@ uses
 type
   TDCPPParser = class(TInterfacedObject, IUnknown, IFileParser, ILocalizable)
   private
-    FIndex: integer;
+    FIndex:integer;
     FLanguageName, FAuthor, FVersion, FRevision, FRightToLeft, FEncoding,
-      FOrigFile, FTransFile: WideString;
+      FOrigFile, FTransFile:WideString;
     procedure LoadSettings;
     procedure SaveSettings;
-    procedure BuildPreview(Items: ITranslationItems; xml: IXMLDocument);
+    procedure BuildPreview(Items:ITranslationItems; xml:IXMLDocument);
   public
-    function Capabilities: Integer; safecall;
-    function Configure(Capability: Integer): HRESULT; safecall;
-    function DisplayName(Capability: Integer): WideString; safecall;
-    function ExportItems(const Items: ITranslationItems; const Orphans: ITranslationItems): HRESULT; safecall;
-    function ImportItems(const Items: ITranslationItems; const Orphans: ITranslationItems): HRESULT; safecall;
-    procedure Init(const ApplicationServices: IApplicationServices); safecall;
-    function GetString(out Section: WideString; out Name: WideString;
-      out Value: WideString): WordBool; safecall;
+    function Capabilities:Integer; safecall;
+    function Configure(Capability:Integer):HRESULT; safecall;
+    function DisplayName(Capability:Integer):WideString; safecall;
+    function ExportItems(const Items:ITranslationItems; const Orphans:ITranslationItems):HRESULT; safecall;
+    function ImportItems(const Items:ITranslationItems; const Orphans:ITranslationItems):HRESULT; safecall;
+    procedure Init(const ApplicationServices:IApplicationServices); safecall;
+    function GetString(out Section:WideString; out Name:WideString;
+      out Value:WideString):WordBool; safecall;
   end;
 
 implementation
@@ -51,12 +51,12 @@ uses
 
 { TDCPPParser }
 
-function StripCRLF(const S: WideString): WideString;
+function StripCRLF(const S:WideString):WideString;
 begin
   Result := Tnt_WideStringReplace(S, CRLF, ' ', [rfReplaceAll]);
 end;
 
-function XMLEncode(const S: WideString): WideString;
+function XMLEncode(const S:WideString):WideString;
 begin
   Result := Tnt_WideStringReplace(S, '&', '&amp;', [rfReplaceAll]);
   Result := Tnt_WideStringReplace(Result, '"', '&quot;', [rfReplaceAll]);
@@ -65,10 +65,10 @@ begin
   Result := Tnt_WideStringReplace(Result, '>', '&gt;', [rfReplaceAll]);
 end;
 
-procedure TDCPPParser.BuildPreview(Items: ITranslationItems; xml: IXMLDocument);
+procedure TDCPPParser.BuildPreview(Items:ITranslationItems; xml:IXMLDocument);
 var
-  i, OldSort: integer;
-  node, node2: IXMLNode;
+  i, OldSort:integer;
+  node, node2:IXMLNode;
 begin
   OldSort := Items.Sort;
   try
@@ -95,17 +95,17 @@ begin
   end;
 end;
 
-function TDCPPParser.Capabilities: Integer;
+function TDCPPParser.Capabilities:Integer;
 begin
   Result := CAP_IMPORT or CAP_EXPORT or CAP_ITEM_DELETE or CAP_ITEM_EDIT or CAP_ITEM_INSERT;
 end;
 
-function TDCPPParser.Configure(Capability: Integer): HRESULT;
+function TDCPPParser.Configure(Capability:Integer):HRESULT;
 begin
   Result := S_FALSE;
 end;
 
-function TDCPPParser.DisplayName(Capability: Integer): WideString;
+function TDCPPParser.DisplayName(Capability:Integer):WideString;
 begin
   case Capability of
     CAP_IMPORT:
@@ -117,12 +117,12 @@ begin
   end;
 end;
 
-function TDCPPParser.ExportItems(const Items, Orphans: ITranslationItems): HRESULT;
+function TDCPPParser.ExportItems(const Items, Orphans:ITranslationItems):HRESULT;
 var
-  ExportOrig: boolean;
-  FOldSort: TTranslateSortType;
-  xml: IXMLDocument;
-  S: TTntStringlist;
+  ExportOrig:boolean;
+  FOldSort:TTranslateSortType;
+  xml:IXMLDocument;
+  S:TTntStringlist;
 begin
   Result := S_FALSE;
   FOldSort := Items.Sort;
@@ -163,13 +163,13 @@ begin
 end;
 
 function TDCPPParser.GetString(out Section, Name,
-  Value: WideString): WordBool;
+  Value:WideString):WordBool;
 begin
   Result := true;
   case FIndex of
-    0: Value := cImportTitle;
-    1: Value := cExportTitle;
-    3: Value := cDCPPFilter;
+    0:Value := cImportTitle;
+    1:Value := cExportTitle;
+    3:Value := cDCPPFilter;
   else
     Result := false;
   end;
@@ -184,17 +184,17 @@ begin
 end;
 
 function TDCPPParser.ImportItems(const Items,
-  Orphans: ITranslationItems): HRESULT;
+  Orphans:ITranslationItems):HRESULT;
 var
-  i, aIndex: integer;
-  FOldSort: TTranslateSortType;
-  TI: ITranslationItem;
-  DualImport: boolean;
-  xml: IXMLDocument;
-  nodes: IDOMNodeList;
-  node: IDOMNode;
+  i, aIndex:integer;
+  FOldSort:TTranslateSortType;
+  TI:ITranslationItem;
+  DualImport:boolean;
+  xml:IXMLDocument;
+  nodes:IDOMNodeList;
+  node:IDOMNode;
 
-  procedure getSettings(const Nodes: IDOMNodeList);
+  procedure getSettings(const Nodes:IDOMNodeList);
   begin
     if (Nodes = nil) or (Nodes.length < 1) then
       Exit;
@@ -308,7 +308,7 @@ begin
     Result := S_FALSE;
 end;
 
-procedure TDCPPParser.Init(const ApplicationServices: IApplicationServices);
+procedure TDCPPParser.Init(const ApplicationServices:IApplicationServices);
 begin
   GlobalAppServices := ApplicationServices;
 end;
@@ -357,4 +357,3 @@ begin
 end;
 
 end.
-

@@ -25,20 +25,20 @@ uses
 type
   TToolTreeViewPlugins = class(TInterfacedObject, IUnknown, IToolItems)
   public
-    function Count: Integer; safecall;
-    function ToolItem(Index: Integer; out ToolItem: IToolItem): HRESULT; safecall;
+    function Count:Integer; safecall;
+    function ToolItem(Index:Integer; out ToolItem:IToolItem):HRESULT; safecall;
   end;
 
   TToolTreeViewPlugin = class(TInterfacedObject, IUnknown, IToolItem)
   private
     FOldAppHandle:Cardinal;
   public
-    function About: WideString; safecall;
-    function DisplayName: WideString; safecall;
-    function Execute(const Items, Orphans: ITranslationItems; var SelectedItem:ITranslationItem): HRESULT; safecall;
-    function Icon: Cardinal; safecall;
-    procedure Init(const ApplicationServices: IApplicationServices); safecall;
-    function Status(const Items, Orphans: ITranslationItems; const SelectedItem:ITranslationItem): Integer; safecall;
+    function About:WideString; safecall;
+    function DisplayName:WideString; safecall;
+    function Execute(const Items, Orphans:ITranslationItems; var SelectedItem:ITranslationItem):HRESULT; safecall;
+    function Icon:Cardinal; safecall;
+    procedure Init(const ApplicationServices:IApplicationServices); safecall;
+    function Status(const Items, Orphans:ITranslationItems; const SelectedItem:ITranslationItem):Integer; safecall;
     destructor Destroy; override;
   end;
 
@@ -48,7 +48,7 @@ uses
 
 { TToolTreeViewPlugin }
 
-function TToolTreeViewPlugin.About: WideString;
+function TToolTreeViewPlugin.About:WideString;
 begin
   Result := 'Treeview plugin for IniTranslator, version 1.0';
 end;
@@ -59,12 +59,12 @@ begin
   inherited;
 end;
 
-function TToolTreeViewPlugin.DisplayName: WideString;
+function TToolTreeViewPlugin.DisplayName:WideString;
 begin
   Result := '&Tree view...';
 end;
 
-function TToolTreeViewPlugin.Execute(const Items, Orphans: ITranslationItems; var SelectedItem:ITranslationItem): HRESULT;
+function TToolTreeViewPlugin.Execute(const Items, Orphans:ITranslationItems; var SelectedItem:ITranslationItem):HRESULT;
 begin
   if TfrmToolTreeView.Edit(Items, SelectedItem) then
     Result := S_OK
@@ -72,18 +72,18 @@ begin
     Result := S_FALSE;
 end;
 
-function TToolTreeViewPlugin.Icon: Cardinal;
+function TToolTreeViewPlugin.Icon:Cardinal;
 begin
   Result := 0;
 end;
 
-procedure TToolTreeViewPlugin.Init(const ApplicationServices: IApplicationServices);
+procedure TToolTreeViewPlugin.Init(const ApplicationServices:IApplicationServices);
 begin
   FOldAppHandle := Application.Handle;
   Application.Handle := ApplicationServices.AppHandle;
 end;
 
-function TToolTreeViewPlugin.Status(const Items, Orphans: ITranslationItems; const SelectedItem:ITranslationItem): Integer;
+function TToolTreeViewPlugin.Status(const Items, Orphans:ITranslationItems; const SelectedItem:ITranslationItem):Integer;
 begin
   Result := TOOL_VISIBLE;
   if Items.Count > 0 then
@@ -92,13 +92,13 @@ end;
 
 { TToolTreeViewPlugins }
 
-function TToolTreeViewPlugins.Count: Integer;
+function TToolTreeViewPlugins.Count:Integer;
 begin
   Result := 1;
 end;
 
-function TToolTreeViewPlugins.ToolItem(Index: Integer;
-  out ToolItem: IToolItem): HRESULT;
+function TToolTreeViewPlugins.ToolItem(Index:Integer;
+  out ToolItem:IToolItem):HRESULT;
 begin
   if Index = 0 then
   begin

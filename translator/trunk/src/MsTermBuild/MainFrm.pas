@@ -9,54 +9,55 @@ uses
 
 type
   TfrmMain = class(TForm)
-    TntLabel1: TTntLabel;
-    edInput: TTntEdit;
-    btnInput: TTntButton;
-    TntLabel2: TTntLabel;
-    edOutput: TTntEdit;
-    btnOutput: TTntButton;
-    TntLabel3: TTntLabel;
-    cbOriginal: TTntComboBox;
-    TntLabel4: TTntLabel;
-    cbTranslation: TTntComboBox;
-    btnCreate: TTntButton;
-    dlgInput: TTntOpenDialog;
-    dlgOutput: TTntSaveDialog;
-    chkOverwrite: TTntCheckBox;
-    TntLabel5: TTntLabel;
-    procedure edInputChange(Sender: TObject);
-    procedure btnCreateClick(Sender: TObject);
-    procedure btnInputClick(Sender: TObject);
-    procedure btnOutputClick(Sender: TObject);
-    procedure FormShow(Sender: TObject);
-    procedure FormCloseQuery(Sender: TObject; var CanClose: Boolean);
-    procedure TntLabel5Click(Sender: TObject);
-    procedure edOutputChange(Sender: TObject);
+    TntLabel1:TTntLabel;
+    edInput:TTntEdit;
+    btnInput:TTntButton;
+    TntLabel2:TTntLabel;
+    edOutput:TTntEdit;
+    btnOutput:TTntButton;
+    TntLabel3:TTntLabel;
+    cbOriginal:TTntComboBox;
+    TntLabel4:TTntLabel;
+    cbTranslation:TTntComboBox;
+    btnCreate:TTntButton;
+    dlgInput:TTntOpenDialog;
+    dlgOutput:TTntSaveDialog;
+    chkOverwrite:TTntCheckBox;
+    TntLabel5:TTntLabel;
+    procedure edInputChange(Sender:TObject);
+    procedure btnCreateClick(Sender:TObject);
+    procedure btnInputClick(Sender:TObject);
+    procedure btnOutputClick(Sender:TObject);
+    procedure FormShow(Sender:TObject);
+    procedure FormCloseQuery(Sender:TObject; var CanClose:Boolean);
+    procedure TntLabel5Click(Sender:TObject);
+    procedure edOutputChange(Sender:TObject);
   private
     { Private declarations }
     procedure LoadSettings;
     procedure SaveSettings;
-    procedure LoadLanguages(const Filename: WideString; Original, Translation: TTntStrings);
-    function Validate: boolean;
-    procedure ConvertFile(const Input, Output: WideString; OrigIndex,
-      TransIndex: integer; OverwriteOutput: boolean);
+    procedure LoadLanguages(const Filename:WideString; Original, Translation:TTntStrings);
+    function Validate:boolean;
+    procedure ConvertFile(const Input, Output:WideString; OrigIndex,
+      TransIndex:integer; OverwriteOutput:boolean);
   public
     { Public declarations }
   end;
 
 var
-  frmMain: TfrmMain;
+  frmMain:TfrmMain;
 
 implementation
 uses
-  {$IFDEF COMPILER_9_UP}WideStrUtils{$ELSE}TntWideStrUtils{$ENDIF}, IniFiles, TntWindows;
+{$IFDEF COMPILER_9_UP}WideStrUtils{$ELSE}TntWideStrUtils{$ENDIF}, IniFiles, TntWindows;
 
 {$R *.dfm}
 
-procedure TfrmMain.edInputChange(Sender: TObject);
-var i, j: integer;
+procedure TfrmMain.edInputChange(Sender:TObject);
+var
+  i, j:integer;
 
-  function Max(Value1, Value2: integer): integer;
+  function Max(Value1, Value2:integer):integer;
   begin
     Result := Value1;
     if Value2 > Value1 then
@@ -76,14 +77,14 @@ begin
   edInput.Hint := edInput.Text;
 end;
 
-procedure TfrmMain.btnOutputClick(Sender: TObject);
+procedure TfrmMain.btnOutputClick(Sender:TObject);
 begin
   dlgOutput.Filename := edOutput.Text;
   if dlgOutput.Execute then
     edOutput.Text := dlgOutput.Filename;
 end;
 
-procedure TfrmMain.btnInputClick(Sender: TObject);
+procedure TfrmMain.btnInputClick(Sender:TObject);
 begin
   dlgInput.Filename := edInput.Text;
   if dlgInput.Execute then
@@ -93,10 +94,10 @@ begin
   end;
 end;
 
-procedure SplitString(const S: WideString; Strings: TTntStrings; Delimiter: WideChar);
+procedure SplitString(const S:WideString; Strings:TTntStrings; Delimiter:WideChar);
 var
-  i, j: integer;
-  tmp: WideString;
+  i, j:integer;
+  tmp:WideString;
 begin
   j := 1;
   Strings.Clear;
@@ -111,13 +112,13 @@ begin
   end;
 end;
 
-procedure TfrmMain.LoadLanguages(const Filename: WideString; Original,
-  Translation: TTntStrings);
+procedure TfrmMain.LoadLanguages(const Filename:WideString; Original,
+  Translation:TTntStrings);
 const
-  cMarker: PWideChar = 'English - United States'; // this is the start of the first item
+  cMarker:PWideChar = 'English - United States'; // this is the start of the first item
 var
-  S, T: TTntStringlist;
-  i: integer;
+  S, T:TTntStringlist;
+  i:integer;
 begin
   Original.BeginUpdate;
   S := TTntStringlist.Create;
@@ -140,8 +141,9 @@ begin
   end;
 end;
 
-function TfrmMain.Validate: boolean;
-var S: WideString;
+function TfrmMain.Validate:boolean;
+var
+  S:WideString;
 begin
   Result := true;
   S := '';
@@ -180,13 +182,13 @@ begin
     WideMessageDlg(S, mtError, [mbOK], 0);
 end;
 
-procedure TfrmMain.ConvertFile(const Input, Output: WideString; OrigIndex, TransIndex: integer; OverwriteOutput: boolean);
+procedure TfrmMain.ConvertFile(const Input, Output:WideString; OrigIndex, TransIndex:integer; OverwriteOutput:boolean);
 const
-  cMarker: PWideChar = 'English - United States'; // this is the start of the first item
+  cMarker:PWideChar = 'English - United States'; // this is the start of the first item
 var
-  I, T, O: TTntStringlist;
-  j: integer;
-  MarkerFound: boolean;
+  I, T, O:TTntStringlist;
+  j:integer;
+  MarkerFound:boolean;
 begin
   if (OrigIndex < 0) or (TransIndex < 0) then
     raise Exception.CreateFmt('OrigIndex (%d) or TransIndex (%d) is invalid', [OrigIndex, TransIndex]);
@@ -220,7 +222,7 @@ begin
   end;
 end;
 
-procedure TfrmMain.btnCreateClick(Sender: TObject);
+procedure TfrmMain.btnCreateClick(Sender:TObject);
 begin
   Screen.Cursor := crHourGlass;
   try
@@ -263,26 +265,25 @@ begin
 
 end;
 
-procedure TfrmMain.FormShow(Sender: TObject);
+procedure TfrmMain.FormShow(Sender:TObject);
 begin
   OnShow := nil;
   LoadSettings;
 end;
 
-procedure TfrmMain.FormCloseQuery(Sender: TObject; var CanClose: Boolean);
+procedure TfrmMain.FormCloseQuery(Sender:TObject; var CanClose:Boolean);
 begin
   SaveSettings;
 end;
 
-procedure TfrmMain.TntLabel5Click(Sender: TObject);
+procedure TfrmMain.TntLabel5Click(Sender:TObject);
 begin
   Tnt_ShellExecuteW(Handle, 'open', 'http://www.microsoft.com/globaldev/tools/MILSGlossary.mspx', nil, nil, SW_SHOWNORMAL);
 end;
 
-procedure TfrmMain.edOutputChange(Sender: TObject);
+procedure TfrmMain.edOutputChange(Sender:TObject);
 begin
   edOutput.Hint := edOutput.Text;
 end;
 
 end.
-

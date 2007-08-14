@@ -28,51 +28,51 @@ uses
 
 type
   TfrmToolConsistency = class(TTntForm)
-    chkIgnoreAccelChar: TTntCheckBox;
-    tvItems: TTntTreeView;
-    btnClose: TTntButton;
-    lblInfo: TTntLabel;
-    btnUpdate: TTntButton;
-    TntLabel1: TTntLabel;
-    alMain: TTntActionList;
-    acUpdate: TTntAction;
-    acClose: TTntAction;
-    acEdit: TTntAction;
-    acUseThisTranslation: TTntAction;
-    popItems: TTntPopupMenu;
-    Usethistranslation1: TTntMenuItem;
-    Edit1: TTntMenuItem;
-    chkSynchronizeAccelChar: TTntCheckBox;
-    acSync1: TTntMenuItem;
-    acSync: TTntAction;
-    N1: TTntMenuItem;
-    procedure chkIgnoreAccelCharClick(Sender: TObject);
-    procedure tvItemsChange(Sender: TObject; Node: TTreeNode);
-    procedure tvItemsEditing(Sender: TObject; Node: TTreeNode;
-      var AllowEdit: Boolean);
-    procedure tvItemsEdited(Sender: TObject; Node: TTntTreeNode;
-      var S: WideString);
-    procedure acUseThisTranslationExecute(Sender: TObject);
-    procedure acEditExecute(Sender: TObject);
-    procedure acCloseExecute(Sender: TObject);
-    procedure acUpdateExecute(Sender: TObject);
-    procedure alMainUpdate(Action: TBasicAction; var Handled: Boolean);
-    procedure acSyncExecute(Sender: TObject);
+    chkIgnoreAccelChar:TTntCheckBox;
+    tvItems:TTntTreeView;
+    btnClose:TTntButton;
+    lblInfo:TTntLabel;
+    btnUpdate:TTntButton;
+    TntLabel1:TTntLabel;
+    alMain:TTntActionList;
+    acUpdate:TTntAction;
+    acClose:TTntAction;
+    acEdit:TTntAction;
+    acUseThisTranslation:TTntAction;
+    popItems:TTntPopupMenu;
+    Usethistranslation1:TTntMenuItem;
+    Edit1:TTntMenuItem;
+    chkSynchronizeAccelChar:TTntCheckBox;
+    acSync1:TTntMenuItem;
+    acSync:TTntAction;
+    N1:TTntMenuItem;
+    procedure chkIgnoreAccelCharClick(Sender:TObject);
+    procedure tvItemsChange(Sender:TObject; Node:TTreeNode);
+    procedure tvItemsEditing(Sender:TObject; Node:TTreeNode;
+      var AllowEdit:Boolean);
+    procedure tvItemsEdited(Sender:TObject; Node:TTntTreeNode;
+      var S:WideString);
+    procedure acUseThisTranslationExecute(Sender:TObject);
+    procedure acEditExecute(Sender:TObject);
+    procedure acCloseExecute(Sender:TObject);
+    procedure acUpdateExecute(Sender:TObject);
+    procedure alMainUpdate(Action:TBasicAction; var Handled:Boolean);
+    procedure acSyncExecute(Sender:TObject);
   private
     { Private declarations }
-    Congratulations: WideString;
-    FItems: ITranslationItems;
-    FAppServices: IApplicationServices;
-    FSelectedItem: ITranslationItem;
-    procedure BuildList(IgnoreAccelChar: boolean);
+    Congratulations:WideString;
+    FItems:ITranslationItems;
+    FAppServices:IApplicationServices;
+    FSelectedItem:ITranslationItem;
+    procedure BuildList(IgnoreAccelChar:boolean);
     procedure LoadSettings;
     procedure SaveSettings;
-    function AutoShortCut(Item: ITranslationItem; S: WideString): WideString;
+    function AutoShortCut(Item:ITranslationItem; S:WideString):WideString;
   public
     { Public declarations }
-    class function Execute(const ApplicationServices: IApplicationServices;
-      const Items, Orphans: ITranslationItems;
-      var SelectedItem: ITranslationItem): boolean;
+    class function Execute(const ApplicationServices:IApplicationServices;
+      const Items, Orphans:ITranslationItems;
+      var SelectedItem:ITranslationItem):boolean;
   end;
 
 implementation
@@ -85,30 +85,30 @@ uses
 type
   TTranslationItems = class
   private
-    FOriginalItems: TTntStrings;
-    FIgnoreAccelChar: boolean;
-    function GetItems(Index: integer): TTntStrings;
-    function GetCount: integer;
-    function GetName(Index: integer): WideString;
-    function GetRealItem(Index, SubIndex: integer): ITranslationItem;
+    FOriginalItems:TTntStrings;
+    FIgnoreAccelChar:boolean;
+    function GetItems(Index:integer):TTntStrings;
+    function GetCount:integer;
+    function GetName(Index:integer):WideString;
+    function GetRealItem(Index, SubIndex:integer):ITranslationItem;
   public
-    constructor Create(IgnoreAccelChar: boolean);
+    constructor Create(IgnoreAccelChar:boolean);
     destructor Destroy; override;
     procedure Clear;
-    procedure Add(const AItem: ITranslationItem);
-    property Items[Index: integer]: TTntStrings read GetItems;
-    property Name[Index: integer]: WideString read GetName;
-    property RealItem[Index, SubIndex: integer]: ITranslationItem read GetRealItem;
-    property Count: integer read GetCount;
+    procedure Add(const AItem:ITranslationItem);
+    property Items[Index:integer]:TTntStrings read GetItems;
+    property Name[Index:integer]:WideString read GetName;
+    property RealItem[Index, SubIndex:integer]:ITranslationItem read GetRealItem;
+    property Count:integer read GetCount;
   end;
 
 { TTranslationItems }
 
-procedure TTranslationItems.Add(const AItem: ITranslationItem);
+procedure TTranslationItems.Add(const AItem:ITranslationItem);
 var
-  AOriginal, ATranslation: WideString;
-  SL: TTntStringlist;
-  i: integer;
+  AOriginal, ATranslation:WideString;
+  SL:TTntStringlist;
+  i:integer;
 begin
   if FIgnoreAccelChar then
   begin
@@ -135,14 +135,15 @@ begin
 end;
 
 procedure TTranslationItems.Clear;
-var i: integer;
+var
+  i:integer;
 begin
   for i := 0 to FOriginalItems.Count - 1 do
     TTntStringlist(FOriginalItems.Objects[i]).Free;
   FOriginalItems.Clear;
 end;
 
-constructor TTranslationItems.Create(IgnoreAccelChar: boolean);
+constructor TTranslationItems.Create(IgnoreAccelChar:boolean);
 begin
   inherited Create;
   FOriginalItems := TTntStringlist.Create;
@@ -157,29 +158,29 @@ begin
   inherited;
 end;
 
-function TTranslationItems.GetCount: integer;
+function TTranslationItems.GetCount:integer;
 begin
   Result := FOriginalItems.Count;
 end;
 
-function TTranslationItems.GetItems(Index: integer): TTntStrings;
+function TTranslationItems.GetItems(Index:integer):TTntStrings;
 begin
   Result := TTntStrings(FOriginalItems.Objects[Index]);
 end;
 
-function TTranslationItems.GetName(Index: integer): WideString;
+function TTranslationItems.GetName(Index:integer):WideString;
 begin
   Result := FOriginalItems[Index];
 end;
 
-function TTranslationItems.GetRealItem(Index, SubIndex: integer): ITranslationItem;
+function TTranslationItems.GetRealItem(Index, SubIndex:integer):ITranslationItem;
 begin
   Result := ITranslationItem(Pointer(TTntStrings(FOriginalItems.Objects[Index]).Objects[SubIndex]));
 end;
 
 { TfrmToolConsistency }
 
-function TfrmToolConsistency.AutoShortCut(Item: ITranslationItem; S: WideString): WideString;
+function TfrmToolConsistency.AutoShortCut(Item:ITranslationItem; S:WideString):WideString;
 var
   WHK:WideString;
   i:integer;
@@ -205,7 +206,7 @@ begin
             i := Pos(cHotKeyPrefix + WHK, WideUpperCase(Item.Original));
             if (i > 0) and (i <= Length(S)) then
               S := Copy(S, 1, i - 1) + cHotkeyPrefix + Copy(S, i, MaxInt)
-            else  // give up - insert at start
+            else // give up - insert at start
               S := cHotkeyPrefix + S;
           end;
         end;
@@ -217,17 +218,17 @@ begin
   Result := S;
 end;
 
-procedure TfrmToolConsistency.chkIgnoreAccelCharClick(Sender: TObject);
+procedure TfrmToolConsistency.chkIgnoreAccelCharClick(Sender:TObject);
 begin
   BuildList(chkIgnoreAccelChar.Checked);
 end;
 
-procedure TfrmToolConsistency.BuildList(IgnoreAccelChar: boolean);
+procedure TfrmToolConsistency.BuildList(IgnoreAccelChar:boolean);
 var
-  i, j: integer;
-  N: TTntTreeNode;
-  AItem: ITranslationItem;
-  FTItems: TTranslationItems;
+  i, j:integer;
+  N:TTntTreeNode;
+  AItem:ITranslationItem;
+  FTItems:TTranslationItems;
 begin
   tvItems.Items.Clear;
   FTItems := TTranslationItems.Create(IgnoreAccelChar);
@@ -265,10 +266,10 @@ begin
   end;
 end;
 
-class function TfrmToolConsistency.Execute(const ApplicationServices: IApplicationServices; const Items, Orphans: ITranslationItems; var SelectedItem: ITranslationItem): boolean;
+class function TfrmToolConsistency.Execute(const ApplicationServices:IApplicationServices; const Items, Orphans:ITranslationItems; var SelectedItem:ITranslationItem):boolean;
 var
-  frm: TfrmToolConsistency;
-  FAppHandle: Cardinal;
+  frm:TfrmToolConsistency;
+  FAppHandle:Cardinal;
 begin
   FAppHandle := Application.Handle;
   Application.Handle := ApplicationServices.AppHandle;
@@ -333,8 +334,8 @@ begin
   end;
 end;
 
-procedure TfrmToolConsistency.tvItemsChange(Sender: TObject;
-  Node: TTreeNode);
+procedure TfrmToolConsistency.tvItemsChange(Sender:TObject;
+  Node:TTreeNode);
 begin
   if Assigned(Node) and Assigned(Node.Data) then
   begin
@@ -347,22 +348,22 @@ begin
   alMain.UpdateAction(nil);
 end;
 
-procedure TfrmToolConsistency.tvItemsEditing(Sender: TObject;
-  Node: TTreeNode; var AllowEdit: Boolean);
+procedure TfrmToolConsistency.tvItemsEditing(Sender:TObject;
+  Node:TTreeNode; var AllowEdit:Boolean);
 begin
   AllowEdit := Assigned(Node) and Assigned(Node.Data);
 end;
 
-procedure TfrmToolConsistency.tvItemsEdited(Sender: TObject;
-  Node: TTntTreeNode; var S: WideString);
+procedure TfrmToolConsistency.tvItemsEdited(Sender:TObject;
+  Node:TTntTreeNode; var S:WideString);
 begin
   S := AutoShortCut(ITranslationItem(Node.Data), S);
 end;
 
-procedure TfrmToolConsistency.acUseThisTranslationExecute(Sender: TObject);
+procedure TfrmToolConsistency.acUseThisTranslationExecute(Sender:TObject);
 var
-  N: TTntTreeNode;
-  Item1, Item2: ITranslationItem;
+  N:TTntTreeNode;
+  Item1, Item2:ITranslationItem;
 begin
   if Assigned(tvItems.Selected) and Assigned(tvItems.Selected.Data) then
   begin
@@ -395,13 +396,13 @@ begin
   end;
 end;
 
-procedure TfrmToolConsistency.acEditExecute(Sender: TObject);
+procedure TfrmToolConsistency.acEditExecute(Sender:TObject);
 begin
   if Assigned(tvItems.Selected) and Assigned(tvItems.Selected.Data) then
     tvItems.Selected.EditText;
 end;
 
-procedure TfrmToolConsistency.acCloseExecute(Sender: TObject);
+procedure TfrmToolConsistency.acCloseExecute(Sender:TObject);
 begin
   if tvItems.IsEditing then
     tvItems.Selected.EndEdit(true)
@@ -409,23 +410,22 @@ begin
     Close;
 end;
 
-procedure TfrmToolConsistency.acUpdateExecute(Sender: TObject);
+procedure TfrmToolConsistency.acUpdateExecute(Sender:TObject);
 begin
   BuildList(chkIgnoreAccelChar.Checked);
 end;
 
-procedure TfrmToolConsistency.alMainUpdate(Action: TBasicAction;
-  var Handled: Boolean);
+procedure TfrmToolConsistency.alMainUpdate(Action:TBasicAction;
+  var Handled:Boolean);
 begin
   acUseThisTranslation.Enabled := Assigned(tvItems.Selected) and Assigned(tvItems.Selected.Data);
   acEdit.Enabled := acUseThisTranslation.Enabled;
 end;
 
-procedure TfrmToolConsistency.acSyncExecute(Sender: TObject);
+procedure TfrmToolConsistency.acSyncExecute(Sender:TObject);
 begin
   if Assigned(tvItems.Selected) and Assigned(tvItems.Selected.Data) then
     FAppServices.SelectedItem := ITranslationItem(tvItems.Selected.Data);
 end;
 
 end.
-

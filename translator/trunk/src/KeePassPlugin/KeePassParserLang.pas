@@ -11,12 +11,12 @@ const
   cKeePassExportTitle = 'Export to KeePass language file';
 
 var
-  GlobalAppServices: IApplicationServices = nil;
-function Translate(Value: WideString): WideString;
+  GlobalAppServices:IApplicationServices = nil;
+function Translate(Value:WideString):WideString;
 
 implementation
 
-function Translate(Value: WideString): WideString;
+function Translate(Value:WideString):WideString;
 begin
   if GlobalAppServices <> nil then
     Result := GlobalAppServices.Translate(cSectionName, Value, Value)
@@ -25,4 +25,3 @@ begin
 end;
 
 end.
-

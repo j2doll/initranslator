@@ -8,15 +8,15 @@ uses
 
 type
   TfrmEditItem = class(TTntForm)
-    reOriginal: TTntRichEdit;
-    Panel1: TPanel;
-    reTranslation: TTntRichEdit;
-    procedure reTranslationKeyDown(Sender: TObject; var Key: Word;
-      Shift: TShiftState);
-    procedure TntFormKeyUp(Sender: TObject; var Key: Word;
-      Shift: TShiftState);
-    procedure TntFormKeyDown(Sender: TObject; var Key: Word;
-      Shift: TShiftState);
+    reOriginal:TTntRichEdit;
+    Panel1:TPanel;
+    reTranslation:TTntRichEdit;
+    procedure reTranslationKeyDown(Sender:TObject; var Key:Word;
+      Shift:TShiftState);
+    procedure TntFormKeyUp(Sender:TObject; var Key:Word;
+      Shift:TShiftState);
+    procedure TntFormKeyDown(Sender:TObject; var Key:Word;
+      Shift:TShiftState);
   private
     { Private declarations }
     ReturnKey:boolean;
@@ -31,16 +31,16 @@ uses
   Math;
 {$R *.DFM}
 
-procedure TfrmEditItem.reTranslationKeyDown(Sender: TObject; var Key: Word;
-  Shift: TShiftState);
+procedure TfrmEditItem.reTranslationKeyDown(Sender:TObject; var Key:Word;
+  Shift:TShiftState);
 begin
   if Key = VK_RETURN then
     Key := 0;
 end;
 
-class function TfrmEditItem.Edit(const AItem: ITranslationItem; APos:TPoint): boolean;
+class function TfrmEditItem.Edit(const AItem:ITranslationItem; APos:TPoint):boolean;
 var
-  frm: TfrmEditItem;
+  frm:TfrmEditItem;
   R:TRect;
 begin
   frm := Self.Create(Application);
@@ -70,8 +70,8 @@ begin
   end;
 end;
 
-procedure TfrmEditItem.TntFormKeyUp(Sender: TObject; var Key: Word;
-  Shift: TShiftState);
+procedure TfrmEditItem.TntFormKeyUp(Sender:TObject; var Key:Word;
+  Shift:TShiftState);
 begin
   if ReturnKey and (Key = VK_RETURN) then
   begin
@@ -83,8 +83,8 @@ begin
   ReturnKey := false;
 end;
 
-procedure TfrmEditItem.TntFormKeyDown(Sender: TObject; var Key: Word;
-  Shift: TShiftState);
+procedure TfrmEditItem.TntFormKeyDown(Sender:TObject; var Key:Word;
+  Shift:TShiftState);
 begin
   ReturnKey := false;
   if Key = VK_RETURN then

@@ -25,23 +25,23 @@ uses
 type
   TTMXParser = class(TInterfacedObject, IUnknown, IFileParser)
   private
-    FOldAppHandle: Cardinal;
-    FOrigFile, FOrigLang, FTransLang: WideString;
+    FOldAppHandle:Cardinal;
+    FOrigFile, FOrigLang, FTransLang:WideString;
     procedure LoadSettings;
     procedure SaveSettings;
-    procedure BuildPreview(Items: ITranslationItems; Strings: TTntStrings);
+    procedure BuildPreview(Items:ITranslationItems; Strings:TTntStrings);
   public
     constructor Create;
     destructor Destroy; override;
 
-    function Capabilities: Integer; safecall;
-    function Configure(Capability: Integer): HRESULT; safecall;
-    function DisplayName(Capability: Integer): WideString; safecall;
-    function ExportItems(const Items: ITranslationItems;
-      const Orphans: ITranslationItems): HRESULT; safecall;
-    function ImportItems(const Items: ITranslationItems;
-      const Orphans: ITranslationItems): HRESULT; safecall;
-    procedure Init(const ApplicationServices: IApplicationServices); safecall;
+    function Capabilities:Integer; safecall;
+    function Configure(Capability:Integer):HRESULT; safecall;
+    function DisplayName(Capability:Integer):WideString; safecall;
+    function ExportItems(const Items:ITranslationItems;
+      const Orphans:ITranslationItems):HRESULT; safecall;
+    function ImportItems(const Items:ITranslationItems;
+      const Orphans:ITranslationItems):HRESULT; safecall;
+    procedure Init(const ApplicationServices:IApplicationServices); safecall;
   end;
 
 implementation
@@ -53,19 +53,19 @@ const
   cTMXFilter = 'TMX Files (*.tmx)|*.tmx|All files (*.*)|*.*';
   cTMXImportTitle = 'Import from TMX file';
   cTMXExportTitle = 'Export to TMX file';
-  cOriginalItem: WideString = '!!!!Original%d!!!!';
-  cTranslationItem: WideString = '!!!!Translation%d!!!!';
+  cOriginalItem:WideString = '!!!!Original%d!!!!';
+  cTranslationItem:WideString = '!!!!Translation%d!!!!';
 
 var
-  XML: WideString = '';
+  XML:WideString = '';
 
 { TTMXParser }
 
-procedure TTMXParser.BuildPreview(Items: ITranslationItems; Strings: TTntStrings);
+procedure TTMXParser.BuildPreview(Items:ITranslationItems; Strings:TTntStrings);
 var
-  i: integer;
-  TI: ItranslationItem;
-  S: WideString;
+  i:integer;
+  TI:ItranslationItem;
+  S:WideString;
 begin
   if XML = '' then
     raise Exception.Create('Building TMX file from scratch not supported. Please import from a TMX file before trying to export.');
@@ -79,12 +79,12 @@ begin
   Strings.Text := S;
 end;
 
-function TTMXParser.Capabilities: Integer;
+function TTMXParser.Capabilities:Integer;
 begin
   Result := CAP_IMPORT or CAP_EXPORT;
 end;
 
-function TTMXParser.Configure(Capability: Integer): HRESULT;
+function TTMXParser.Configure(Capability:Integer):HRESULT;
 begin
   Result := E_NOTIMPL;
 end;
@@ -101,7 +101,7 @@ begin
   inherited;
 end;
 
-function TTMXParser.DisplayName(Capability: Integer): WideString;
+function TTMXParser.DisplayName(Capability:Integer):WideString;
 begin
   case Capability of
     CAP_IMPORT:
@@ -113,10 +113,10 @@ begin
   end;
 end;
 
-function TTMXParser.ExportItems(const Items, Orphans: ITranslationItems): HRESULT;
+function TTMXParser.ExportItems(const Items, Orphans:ITranslationItems):HRESULT;
 var
-  S: TTntStringlist;
-  FOldSort: TTranslateSortType;
+  S:TTntStringlist;
+  FOldSort:TTranslateSortType;
 begin
   Result := S_FALSE;
   FOldSort := Items.Sort;
@@ -141,32 +141,32 @@ begin
   end;
 end;
 
-function TTMXParser.ImportItems(const Items, Orphans: ITranslationItems): HRESULT;
+function TTMXParser.ImportItems(const Items, Orphans:ITranslationItems):HRESULT;
 type
   TFoundItem = (fiOriginal, fiTranslation);
   TFoundItems = set of TFoundItem;
 
 var
-  NodeList: IDOMNodeList;
-  Node, ChildNode: IDOMNode;
-  i: integer;
-  TI: ITranslationItem;
-  FFoundItems: TFoundItems;
-  FXMLImport: IXMLDocument;
+  NodeList:IDOMNodeList;
+  Node, ChildNode:IDOMNode;
+  i:integer;
+  TI:ITranslationItem;
+  FFoundItems:TFoundItems;
+  FXMLImport:IXMLDocument;
 
-  function IsOriginal(const Attributes: IDOMNamedNodeMap): boolean;
+  function IsOriginal(const Attributes:IDOMNamedNodeMap):boolean;
   begin
     Result := (Attributes <> nil) and (Attributes.getNamedItem('xml:lang') <> nil)
       and WideSameText(Attributes.getNamedItem('xml:lang').nodeValue, FOrigLang);
   end;
 
-  function IsTranslation(const Attributes: IDOMNamedNodeMap): boolean;
+  function IsTranslation(const Attributes:IDOMNamedNodeMap):boolean;
   begin
     Result := (Attributes <> nil) and (Attributes.getNamedItem('xml:lang') <> nil)
       and WideSameText(Attributes.getNamedItem('xml:lang').nodeValue, FTransLang);
   end;
 
-  function RemoveTags(const S: WideString): WideString;
+  function RemoveTags(const S:WideString):WideString;
   begin
     Result := Tnt_WideStringReplace(S, '<seg>', '', [rfReplaceAll]);
     Result := Tnt_WideStringReplace(Result, '</seg>', '', [rfReplaceAll]);
@@ -244,7 +244,7 @@ begin
   end;
 end;
 
-procedure TTMXParser.Init(const ApplicationServices: IApplicationServices);
+procedure TTMXParser.Init(const ApplicationServices:IApplicationServices);
 begin
   Application.Handle := ApplicationServices.AppHandle;
 end;
@@ -282,4 +282,3 @@ begin
 end;
 
 end.
-

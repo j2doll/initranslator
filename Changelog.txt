@@ -1,5 +1,8 @@
 Ini Translator Changelog
 ========================
+2007-08-14:
+- modifications to build with Delphi 2007
+
 2006-12-22:
 - PreviewExportForm didn't delete temporary file
 WixParser:

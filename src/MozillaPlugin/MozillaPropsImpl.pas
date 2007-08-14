@@ -23,27 +23,27 @@ uses
 type
   TMozillaPropsParser = class(TInterfacedObject, IUnknown, IFileParser, ILocalizable)
   private
-    FOldAppHandle: Cardinal;
-    FCount: integer;
-    FAppServices: IApplicationServices;
-    FOrigFile, FTransFile: WideString;
-    FExportRect: TRect;
+    FOldAppHandle:Cardinal;
+    FCount:integer;
+    FAppServices:IApplicationServices;
+    FOrigFile, FTransFile:WideString;
+    FExportRect:TRect;
     procedure LoadSettings;
     procedure SaveSettings;
-    procedure BuildPreview(Items: ITranslationItems; Strings: TTntStrings);
-    function Translate(const Value: WideString): WideString;
+    procedure BuildPreview(Items:ITranslationItems; Strings:TTntStrings);
+    function Translate(const Value:WideString):WideString;
   public
     constructor Create;
     destructor Destroy; override;
-    function Capabilities: Integer; safecall;
-    function Configure(Capability: Integer): HRESULT; safecall;
-    function DisplayName(Capability: Integer): WideString; safecall;
-    function ExportItems(const Items: ITranslationItems;
-      const Orphans: ITranslationItems): HRESULT; safecall;
-    function ImportItems(const Items: ITranslationItems;
-      const Orphans: ITranslationItems): HRESULT; safecall;
-    procedure Init(const ApplicationServices: IApplicationServices); safecall;
-    function GetString(out Section: WideString; out Name: WideString; out Value: WideString): WordBool; safecall;
+    function Capabilities:Integer; safecall;
+    function Configure(Capability:Integer):HRESULT; safecall;
+    function DisplayName(Capability:Integer):WideString; safecall;
+    function ExportItems(const Items:ITranslationItems;
+      const Orphans:ITranslationItems):HRESULT; safecall;
+    function ImportItems(const Items:ITranslationItems;
+      const Orphans:ITranslationItems):HRESULT; safecall;
+    procedure Init(const ApplicationServices:IApplicationServices); safecall;
+    function GetString(out Section:WideString; out Name:WideString; out Value:WideString):WordBool; safecall;
   end;
 
 implementation
@@ -58,9 +58,10 @@ const
 
 { TMozillaPropsParser }
 
-procedure TMozillaPropsParser.BuildPreview(Items: ITranslationItems;
-  Strings: TTntStrings);
-var i: integer;
+procedure TMozillaPropsParser.BuildPreview(Items:ITranslationItems;
+  Strings:TTntStrings);
+var
+  i:integer;
 begin
   for i := 0 to Items.Count - 1 do
     with Items[i] do
@@ -71,12 +72,12 @@ begin
     end;
 end;
 
-function TMozillaPropsParser.Capabilities: Integer;
+function TMozillaPropsParser.Capabilities:Integer;
 begin
   Result := CAP_EXPORT or CAP_IMPORT;
 end;
 
-function TMozillaPropsParser.Configure(Capability: Integer): HRESULT;
+function TMozillaPropsParser.Configure(Capability:Integer):HRESULT;
 begin
   Result := E_NOTIMPL;
 end;
@@ -93,7 +94,7 @@ begin
   inherited;
 end;
 
-function TMozillaPropsParser.DisplayName(Capability: Integer): WideString;
+function TMozillaPropsParser.DisplayName(Capability:Integer):WideString;
 begin
   case Capability of
     CAP_EXPORT:
@@ -106,10 +107,10 @@ begin
 end;
 
 function TMozillaPropsParser.ExportItems(const Items,
-  Orphans: ITranslationItems): HRESULT;
+  Orphans:ITranslationItems):HRESULT;
 var
-  S: TTntStringlist;
-  FOldSort: TTranslateSortType;
+  S:TTntStringlist;
+  FOldSort:TTranslateSortType;
 begin
   Result := S_FALSE;
   try
@@ -135,13 +136,13 @@ begin
 end;
 
 function TMozillaPropsParser.GetString(out Section, Name,
-  Value: WideString): WordBool;
+  Value:WideString):WordBool;
 begin
   Result := true;
   case FCount of
-    0: Value := cPropsFilter;
-    1: Value := cPropsImportTitle;
-    2: Value := cPropsExportTitle;
+    0:Value := cPropsFilter;
+    1:Value := cPropsImportTitle;
+    2:Value := cPropsExportTitle;
   else
     Result := false;
     FCount := 0;
@@ -152,12 +153,12 @@ begin
   Name := Value;
 end;
 
-function TMozillaPropsParser.ImportItems(const Items, Orphans: ITranslationItems): HRESULT;
+function TMozillaPropsParser.ImportItems(const Items, Orphans:ITranslationItems):HRESULT;
 var
-  S: TTntStringlist;
-  i, j: integer;
-  TI: ITranslationItem;
-  tmp, cmt: WideString;
+  S:TTntStringlist;
+  i, j:integer;
+  TI:ITranslationItem;
+  tmp, cmt:WideString;
 begin
   Result := S_FALSE;
   try
@@ -220,14 +221,15 @@ begin
   end;
 end;
 
-procedure TMozillaPropsParser.Init(const ApplicationServices: IApplicationServices);
+procedure TMozillaPropsParser.Init(const ApplicationServices:IApplicationServices);
 begin
   FAppServices := ApplicationServices;
   Application.Handle := ApplicationServices.AppHandle;
 end;
 
 procedure TMozillaPropsParser.LoadSettings;
-var M: TMemoryStream;
+var
+  M:TMemoryStream;
 begin
   with TIniFile.Create(ChangeFileExt(GetModuleName(hInstance), '.ini')) do
   try
@@ -249,7 +251,8 @@ begin
 end;
 
 procedure TMozillaPropsParser.SaveSettings;
-var M: TMemoryStream;
+var
+  M:TMemoryStream;
 begin
   with TIniFile.Create(ChangeFileExt(GetModuleName(hInstance), '.ini')) do
   try
@@ -269,7 +272,7 @@ begin
 end;
 
 function TMozillaPropsParser.Translate(
-  const Value: WideString): WideString;
+  const Value:WideString):WideString;
 begin
   if FAppServices <> nil then
     Result := FAppServices.Translate(ClassName, Value, Value)
@@ -278,4 +281,3 @@ begin
 end;
 
 end.
-

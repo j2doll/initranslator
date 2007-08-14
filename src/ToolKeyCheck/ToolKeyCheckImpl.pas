@@ -26,26 +26,26 @@ uses
 type
   TToolKeyCheckPlugins = class(TInterfacedObject, IUnknown, IToolItems)
   public
-    function Count: Integer; safecall;
-    function ToolItem(Index: Integer; out ToolItem: IToolItem): HRESULT; safecall;
+    function Count:Integer; safecall;
+    function ToolItem(Index:Integer; out ToolItem:IToolItem):HRESULT; safecall;
   end;
 
   TTToolKeyCheckPlugin = class(TInterfacedObject, IUnknown, IToolItem, ILocalizable)
   private
-    FOldAppHandle: Cardinal;
-    FIndex: integer;
+    FOldAppHandle:Cardinal;
+    FIndex:integer;
   public
     { IToolItem }
-    function About: WideString; safecall;
-    function DisplayName: WideString; safecall;
-    function Execute(const Items, Orphans: ITranslationItems; var SelectedItem: ITranslationItem): HRESULT; safecall;
-    function Icon: Cardinal; safecall;
-    procedure Init(const ApplicationServices: IApplicationServices); safecall;
-    function Status(const Items, Orphans: ITranslationItems; const SelectedItem: ITranslationItem): Integer; safecall;
+    function About:WideString; safecall;
+    function DisplayName:WideString; safecall;
+    function Execute(const Items, Orphans:ITranslationItems; var SelectedItem:ITranslationItem):HRESULT; safecall;
+    function Icon:Cardinal; safecall;
+    procedure Init(const ApplicationServices:IApplicationServices); safecall;
+    function Status(const Items, Orphans:ITranslationItems; const SelectedItem:ITranslationItem):Integer; safecall;
     destructor Destroy; override;
     { ILocalizable }
-    function GetString(out Section: WideString; out Name: WideString;
-      out Value: WideString): WordBool; safecall;
+    function GetString(out Section:WideString; out Name:WideString;
+      out Value:WideString):WordBool; safecall;
   end;
 
 implementation
@@ -54,13 +54,13 @@ uses
 
 { TTToolKeyCheckPlugins }
 
-function TToolKeyCheckPlugins.Count: Integer;
+function TToolKeyCheckPlugins.Count:Integer;
 begin
   Result := 1;
 end;
 
-function TToolKeyCheckPlugins.ToolItem(Index: Integer;
-  out ToolItem: IToolItem): HRESULT;
+function TToolKeyCheckPlugins.ToolItem(Index:Integer;
+  out ToolItem:IToolItem):HRESULT;
 begin
   Result := S_FALSE;
   if Index = 0 then
@@ -72,7 +72,7 @@ end;
 
 { TTToolKeyCheckPlugin }
 
-function TTToolKeyCheckPlugin.About: WideString;
+function TTToolKeyCheckPlugin.About:WideString;
 begin
   Result := Translate(SAbout);
 end;
@@ -83,38 +83,38 @@ begin
   inherited;
 end;
 
-function TTToolKeyCheckPlugin.DisplayName: WideString;
+function TTToolKeyCheckPlugin.DisplayName:WideString;
 begin
   Result := Translate(SDisplayName);
 end;
 
-function TTToolKeyCheckPlugin.Execute(const Items, Orphans: ITranslationItems; var SelectedItem: ITranslationItem): HRESULT;
+function TTToolKeyCheckPlugin.Execute(const Items, Orphans:ITranslationItems; var SelectedItem:ITranslationItem):HRESULT;
 begin
   TfrmToolKeyCheck.Edit(Items);
   Result := S_OK;
 end;
 
-function TTToolKeyCheckPlugin.GetString(out Section, Name, Value: WideString): WordBool;
+function TTToolKeyCheckPlugin.GetString(out Section, Name, Value:WideString):WordBool;
 begin
   Result := true;
   case FIndex of
-    0: Value := SDisplayName;
-    1: Value := SAbout;
-    2: Value := SMainFormCaption;
-    3: Value := SIgnoreEmpty;
-    4: Value := SUpdate;
-    5: Value := SEdit;
-    6: Value := SClose;
-    7: Value := SSync;
-    8: Value := SOriginal;
-    9: Value := STranslation;
-    10: Value := SAccelKey;
-    11: Value := SAccessKey;
-    12: Value := SEditFormCaption;
-    13: Value := SOriginalLabel;
-    14: Value := STranslationLabel;
-    15: Value := SOK;
-    16: Value := SCancel;
+    0:Value := SDisplayName;
+    1:Value := SAbout;
+    2:Value := SMainFormCaption;
+    3:Value := SIgnoreEmpty;
+    4:Value := SUpdate;
+    5:Value := SEdit;
+    6:Value := SClose;
+    7:Value := SSync;
+    8:Value := SOriginal;
+    9:Value := STranslation;
+    10:Value := SAccelKey;
+    11:Value := SAccessKey;
+    12:Value := SEditFormCaption;
+    13:Value := SOriginalLabel;
+    14:Value := STranslationLabel;
+    15:Value := SOK;
+    16:Value := SCancel;
   else
     Result := false;
   end;
@@ -129,19 +129,19 @@ begin
     FIndex := 0;
 end;
 
-function TTToolKeyCheckPlugin.Icon: Cardinal;
+function TTToolKeyCheckPlugin.Icon:Cardinal;
 begin
   Result := 0;
 end;
 
-procedure TTToolKeyCheckPlugin.Init(const ApplicationServices: IApplicationServices);
+procedure TTToolKeyCheckPlugin.Init(const ApplicationServices:IApplicationServices);
 begin
   FOldAppHandle := Application.Handle;
   Application.Handle := ApplicationServices.AppHandle;
   GlobalAppServices := ApplicationServices;
 end;
 
-function TTToolKeyCheckPlugin.Status(const Items, Orphans: ITranslationItems; const SelectedItem: ITranslationItem): Integer;
+function TTToolKeyCheckPlugin.Status(const Items, Orphans:ITranslationItems; const SelectedItem:ITranslationItem):Integer;
 begin
   Result := TOOL_VISIBLE;
   if Items.Count > 0 then
@@ -149,4 +149,3 @@ begin
 end;
 
 end.
-

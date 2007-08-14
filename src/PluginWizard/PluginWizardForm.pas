@@ -27,27 +27,27 @@ uses
 
 type
   TfrmTranslatorPluginWizard = class(TForm)
-    btnOK: TButton;
-    btnCancel: TButton;
-    GroupBox1: TGroupBox;
-    Label1: TLabel;
-    edClassName: TEdit;
-    rbFileParser: TRadioButton;
-    rbToolPlugin: TRadioButton;
-    Label2: TLabel;
-    edTitle: TEdit;
-    Label3: TLabel;
-    edTransIntfPath: TEdit;
-    btnBrowse: TButton;
-    odTransIntf: TOpenDialog;
-    procedure btnBrowseClick(Sender: TObject);
-    procedure btnOKClick(Sender: TObject);
+    btnOK:TButton;
+    btnCancel:TButton;
+    GroupBox1:TGroupBox;
+    Label1:TLabel;
+    edClassName:TEdit;
+    rbFileParser:TRadioButton;
+    rbToolPlugin:TRadioButton;
+    Label2:TLabel;
+    edTitle:TEdit;
+    Label3:TLabel;
+    edTransIntfPath:TEdit;
+    btnBrowse:TButton;
+    odTransIntf:TOpenDialog;
+    procedure btnBrowseClick(Sender:TObject);
+    procedure btnOKClick(Sender:TObject);
   private
     { Private declarations }
-    function Validate: boolean;
+    function Validate:boolean;
   public
     { Public declarations }
-    class function Execute(Options: TPluginOptions): boolean;
+    class function Execute(Options:TPluginOptions):boolean;
   end;
 
 implementation
@@ -56,8 +56,9 @@ implementation
 
 { TfrmTranslatorPluginWizard }
 
-class function TfrmTranslatorPluginWizard.Execute(Options: TPluginOptions): boolean;
-var frm: TfrmTranslatorPluginWizard;
+class function TfrmTranslatorPluginWizard.Execute(Options:TPluginOptions):boolean;
+var
+  frm:TfrmTranslatorPluginWizard;
 begin
   frm := self.Create(Application);
   try
@@ -79,20 +80,20 @@ begin
   end;
 end;
 
-procedure TfrmTranslatorPluginWizard.btnBrowseClick(Sender: TObject);
+procedure TfrmTranslatorPluginWizard.btnBrowseClick(Sender:TObject);
 begin
   odTransIntf.FileName := edTransIntfPath.Text;
   if odTransIntf.Execute then
     edTransIntfPath.Text := odTransIntf.FileName;
 end;
 
-procedure TfrmTranslatorPluginWizard.btnOKClick(Sender: TObject);
+procedure TfrmTranslatorPluginWizard.btnOKClick(Sender:TObject);
 begin
   if not Validate then
     ModalResult := mrNone;
 end;
 
-function TfrmTranslatorPluginWizard.Validate: boolean;
+function TfrmTranslatorPluginWizard.Validate:boolean;
 begin
   Result := false;
   if edClassName.Text = '' then
@@ -116,4 +117,3 @@ begin
 end;
 
 end.
-

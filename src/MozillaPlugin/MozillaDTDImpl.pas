@@ -24,28 +24,28 @@ uses
 type
   TMozillaDTDParser = class(TInterfacedObject, IUnknown, IFileParser, ILocalizable)
   private
-    FOldAppHandle: Cardinal;
-    FCount: integer;
-    FAppServices: IApplicationServices;
-    FOrigFile, FTransFile: WideString;
+    FOldAppHandle:Cardinal;
+    FCount:integer;
+    FAppServices:IApplicationServices;
+    FOrigFile, FTransFile:WideString;
     procedure LoadSettings;
     procedure SaveSettings;
-    procedure BuildPreview(Items: ITranslationItems; Strings: TTntStrings);
-    function Translate(const Value: WideString): WideString;
+    procedure BuildPreview(Items:ITranslationItems; Strings:TTntStrings);
+    function Translate(const Value:WideString):WideString;
   public
     constructor Create;
     destructor Destroy; override;
 
-    function Capabilities: Integer; safecall;
-    function Configure(Capability: Integer): HRESULT; safecall;
-    function DisplayName(Capability: Integer): WideString; safecall;
-    function ExportItems(const Items: ITranslationItems;
-      const Orphans: ITranslationItems): HRESULT; safecall;
-    function ImportItems(const Items: ITranslationItems;
-      const Orphans: ITranslationItems): HRESULT; safecall;
-    procedure Init(const ApplicationServices: IApplicationServices); safecall;
-    function GetString(out Section: WideString; out Name: WideString;
-      out Value: WideString): WordBool; safecall;
+    function Capabilities:Integer; safecall;
+    function Configure(Capability:Integer):HRESULT; safecall;
+    function DisplayName(Capability:Integer):WideString; safecall;
+    function ExportItems(const Items:ITranslationItems;
+      const Orphans:ITranslationItems):HRESULT; safecall;
+    function ImportItems(const Items:ITranslationItems;
+      const Orphans:ITranslationItems):HRESULT; safecall;
+    procedure Init(const ApplicationServices:IApplicationServices); safecall;
+    function GetString(out Section:WideString; out Name:WideString;
+      out Value:WideString):WordBool; safecall;
 
   end;
 
@@ -61,10 +61,10 @@ const
 
 { TMozillaDTDParser }
 
-procedure TMozillaDTDParser.BuildPreview(Items: ITranslationItems;
-  Strings: TTntStrings);
+procedure TMozillaDTDParser.BuildPreview(Items:ITranslationItems;
+  Strings:TTntStrings);
 var
-  i: integer;
+  i:integer;
 begin
   for i := 0 to Items.Count - 1 do
     with Items[i] do
@@ -75,12 +75,12 @@ begin
     end;
 end;
 
-function TMozillaDTDParser.Capabilities: Integer;
+function TMozillaDTDParser.Capabilities:Integer;
 begin
   Result := CAP_IMPORT or CAP_EXPORT;
 end;
 
-function TMozillaDTDParser.Configure(Capability: Integer): HRESULT;
+function TMozillaDTDParser.Configure(Capability:Integer):HRESULT;
 begin
   Result := E_NOTIMPL;
 end;
@@ -97,7 +97,7 @@ begin
   inherited;
 end;
 
-function TMozillaDTDParser.DisplayName(Capability: Integer): WideString;
+function TMozillaDTDParser.DisplayName(Capability:Integer):WideString;
 begin
   case Capability of
     CAP_IMPORT:
@@ -110,10 +110,10 @@ begin
 end;
 
 function TMozillaDTDParser.ExportItems(const Items,
-  Orphans: ITranslationItems): HRESULT;
+  Orphans:ITranslationItems):HRESULT;
 var
-  S: TTntStringlist;
-  FOldSort: TTranslateSortType;
+  S:TTntStringlist;
+  FOldSort:TTranslateSortType;
 begin
   Result := S_FALSE;
   FOldSort := Items.Sort;
@@ -139,13 +139,13 @@ begin
 end;
 
 function TMozillaDTDParser.GetString(out Section, Name,
-  Value: WideString): WordBool;
+  Value:WideString):WordBool;
 begin
   Result := true;
   case FCount of
-    0: Value := cDTDFilter;
-    1: Value := cDTDImportTitle;
-    2: Value := cDTDExportTitle;
+    0:Value := cDTDFilter;
+    1:Value := cDTDImportTitle;
+    2:Value := cDTDExportTitle;
   // 3: cSectionName = 'Mozilla Messenger';
   else
     Result := false;
@@ -158,14 +158,14 @@ begin
 end;
 
 function TMozillaDTDParser.ImportItems(const Items,
-  Orphans: ITranslationItems): HRESULT;
+  Orphans:ITranslationItems):HRESULT;
 const
   cEntity:PWideChar = '<!ENTITY ';
 var
-  S: TTntStringlist;
-  tmp, tmp2, cmt: WideString;
-  i, j: integer;
-  TI: ITranslationItem;
+  S:TTntStringlist;
+  tmp, tmp2, cmt:WideString;
+  i, j:integer;
+  TI:ITranslationItem;
 begin
   Result := S_FALSE;
   try
@@ -241,7 +241,7 @@ begin
   end;
 end;
 
-procedure TMozillaDTDParser.Init(const ApplicationServices: IApplicationServices);
+procedure TMozillaDTDParser.Init(const ApplicationServices:IApplicationServices);
 begin
   FAppServices := ApplicationServices;
   Application.Handle := ApplicationServices.AppHandle;
@@ -277,7 +277,7 @@ begin
   end;
 end;
 
-function TMozillaDTDParser.Translate(const Value: WideString): WideString;
+function TMozillaDTDParser.Translate(const Value:WideString):WideString;
 begin
   if FAppServices <> nil then
     Result := FAppServices.Translate(ClassName, Value, Value)
@@ -286,4 +286,3 @@ begin
 end;
 
 end.
-

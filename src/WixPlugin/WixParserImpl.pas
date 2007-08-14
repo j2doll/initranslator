@@ -26,20 +26,20 @@ uses
 type
   TWixParser = class(TInterfacedObject, IUnknown, IFileParser, ILocalizable)
   private
-    FIndex: integer;
-    FOrigFile, FTransFile: WideString;
+    FIndex:integer;
+    FOrigFile, FTransFile:WideString;
     procedure LoadSettings;
     procedure SaveSettings;
-    procedure BuildPreview(Items: ITranslationItems; Strings: TTntStrings);
+    procedure BuildPreview(Items:ITranslationItems; Strings:TTntStrings);
   public
-    function Capabilities: Integer; safecall;
-    function Configure(Capability: Integer): HRESULT; safecall;
-    function DisplayName(Capability: Integer): WideString; safecall;
-    function ExportItems(const Items: ITranslationItems; const Orphans: ITranslationItems): HRESULT; safecall;
-    function ImportItems(const Items: ITranslationItems; const Orphans: ITranslationItems): HRESULT; safecall;
-    procedure Init(const ApplicationServices: IApplicationServices); safecall;
-    function GetString(out Section: WideString; out Name: WideString;
-      out Value: WideString): WordBool; safecall;
+    function Capabilities:Integer; safecall;
+    function Configure(Capability:Integer):HRESULT; safecall;
+    function DisplayName(Capability:Integer):WideString; safecall;
+    function ExportItems(const Items:ITranslationItems; const Orphans:ITranslationItems):HRESULT; safecall;
+    function ImportItems(const Items:ITranslationItems; const Orphans:ITranslationItems):HRESULT; safecall;
+    procedure Init(const ApplicationServices:IApplicationServices); safecall;
+    function GetString(out Section:WideString; out Name:WideString;
+      out Value:WideString):WordBool; safecall;
   end;
 
 implementation
@@ -50,12 +50,12 @@ uses
 
 { TWixParser }
 
-function StripCRLF(const S: WideString): WideString;
+function StripCRLF(const S:WideString):WideString;
 begin
   Result := Tnt_WideStringReplace(S, CRLF, ' ', [rfReplaceAll]);
 end;
 
-function XMLEncode(const S: WideString): WideString;
+function XMLEncode(const S:WideString):WideString;
 begin
   Result := Tnt_WideStringReplace(S, '&', '&amp;', [rfReplaceAll]);
   Result := Tnt_WideStringReplace(Result, '"', '&quot;', [rfReplaceAll]);
@@ -64,10 +64,10 @@ begin
   Result := Tnt_WideStringReplace(Result, '>', '&gt;', [rfReplaceAll]);
 end;
 
-procedure TWixParser.BuildPreview(Items: ITranslationItems;
-  Strings: TTntStrings);
+procedure TWixParser.BuildPreview(Items:ITranslationItems;
+  Strings:TTntStrings);
 var
-  i: integer;
+  i:integer;
 begin
   Strings.Clear;
   Strings.Add('<?xml version="1.0" encoding="UTF-8"?>');
@@ -88,17 +88,17 @@ begin
   Strings.Add('</WixLocalization>');
 end;
 
-function TWixParser.Capabilities: Integer;
+function TWixParser.Capabilities:Integer;
 begin
   Result := CAP_IMPORT or CAP_EXPORT or CAP_ITEM_DELETE or CAP_ITEM_EDIT or CAP_ITEM_INSERT;
 end;
 
-function TWixParser.Configure(Capability: Integer): HRESULT;
+function TWixParser.Configure(Capability:Integer):HRESULT;
 begin
   Result := S_FALSE;
 end;
 
-function TWixParser.DisplayName(Capability: Integer): WideString;
+function TWixParser.DisplayName(Capability:Integer):WideString;
 begin
   case Capability of
     CAP_IMPORT:
@@ -110,11 +110,11 @@ begin
   end;
 end;
 
-function TWixParser.ExportItems(const Items, Orphans: ITranslationItems): HRESULT;
+function TWixParser.ExportItems(const Items, Orphans:ITranslationItems):HRESULT;
 var
-  S: TTntStringlist;
-  ExportOrig: boolean;
-  FOldSort: TTranslateSortType;
+  S:TTntStringlist;
+  ExportOrig:boolean;
+  FOldSort:TTranslateSortType;
 begin
   Result := S_FALSE;
   FOldSort := Items.Sort;
@@ -150,13 +150,13 @@ begin
 end;
 
 function TWixParser.GetString(out Section, Name,
-  Value: WideString): WordBool;
+  Value:WideString):WordBool;
 begin
   Result := true;
   case FIndex of
-    0: Value := cImportTitle;
-    1: Value := cExportTitle;
-    3: Value := cWixFilter;
+    0:Value := cImportTitle;
+    1:Value := cExportTitle;
+    3:Value := cWixFilter;
   else
     Result := false;
   end;
@@ -171,15 +171,15 @@ begin
 end;
 
 function TWixParser.ImportItems(const Items,
-  Orphans: ITranslationItems): HRESULT;
+  Orphans:ITranslationItems):HRESULT;
 var
-  i, aIndex: integer;
+  i, aIndex:integer;
   FOldSort:TTranslateSortType;
-  TI: ITranslationItem;
-  DualImport: boolean;
-  xml: IXMLDocument;
-  nodes: IDOMNodeList;
-  node: IDOMNode;
+  TI:ITranslationItem;
+  DualImport:boolean;
+  xml:IXMLDocument;
+  nodes:IDOMNodeList;
+  node:IDOMNode;
 begin
   LoadSettings;
   if TfrmDualImport.Execute(GlobalAppServices, FOrigFile, FTransFile,
@@ -188,7 +188,7 @@ begin
     Items.Clear;
     Orphans.Clear;
     FOldSort := Items.Sort;
-    DualImport := FTransFile <>'';
+    DualImport := FTransFile <> '';
     xml := TXMLDocument.Create(FOrigFile);
     try
       Items.Sort := stNone;
@@ -259,7 +259,7 @@ begin
     Result := S_FALSE;
 end;
 
-procedure TWixParser.Init(const ApplicationServices: IApplicationServices);
+procedure TWixParser.Init(const ApplicationServices:IApplicationServices);
 begin
   GlobalAppServices := ApplicationServices;
 end;
@@ -296,4 +296,3 @@ begin
 end;
 
 end.
-

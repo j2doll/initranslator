@@ -23,27 +23,27 @@ uses
 type
   TOlegParser = class(TInterfacedObject, IUnknown, IFileParser, ILocalizable)
   private
-    FOldAppHandle: Cardinal;
-    FAppServices: IApplicationServices;
-    FCount: integer;
-    FTransFile: WideString;
+    FOldAppHandle:Cardinal;
+    FAppServices:IApplicationServices;
+    FCount:integer;
+    FTransFile:WideString;
     procedure LoadSettings;
     procedure SaveSettings;
-    procedure BuildPreview(Items: ITranslationItems; Strings: TTntStrings);
-    function Translate(const Value: WideString): WideString;
+    procedure BuildPreview(Items:ITranslationItems; Strings:TTntStrings);
+    function Translate(const Value:WideString):WideString;
   public
     constructor Create;
     destructor Destroy; override;
 
-    function Capabilities: Integer; safecall;
-    function Configure(Capability: Integer): HRESULT; safecall;
-    function DisplayName(Capability: Integer): WideString; safecall;
-    function ExportItems(const Items: ITranslationItems;
-      const Orphans: ITranslationItems): HRESULT; safecall;
-    function ImportItems(const Items: ITranslationItems;
-      const Orphans: ITranslationItems): HRESULT; safecall;
-    procedure Init(const ApplicationServices: IApplicationServices); safecall;
-    function GetString(out Section: WideString; out Name: WideString; out Value: WideString): WordBool; safecall;
+    function Capabilities:Integer; safecall;
+    function Configure(Capability:Integer):HRESULT; safecall;
+    function DisplayName(Capability:Integer):WideString; safecall;
+    function ExportItems(const Items:ITranslationItems;
+      const Orphans:ITranslationItems):HRESULT; safecall;
+    function ImportItems(const Items:ITranslationItems;
+      const Orphans:ITranslationItems):HRESULT; safecall;
+    procedure Init(const ApplicationServices:IApplicationServices); safecall;
+    function GetString(out Section:WideString; out Name:WideString; out Value:WideString):WordBool; safecall;
   end;
 
 implementation
@@ -58,20 +58,21 @@ const
 
 { TOlegParser }
 
-procedure TOlegParser.BuildPreview(Items: ITranslationItems;
-  Strings: TTntStrings);
-var i: integer;
+procedure TOlegParser.BuildPreview(Items:ITranslationItems;
+  Strings:TTntStrings);
+var
+  i:integer;
 begin
   for i := 0 to Items.Count - 1 do
     Strings.Add(Items[i].Original + WideChar(#9) + Items[i].Translation);
 end;
 
-function TOlegParser.Capabilities: Integer;
+function TOlegParser.Capabilities:Integer;
 begin
   Result := CAP_IMPORT or CAP_EXPORT;
 end;
 
-function TOlegParser.Configure(Capability: Integer): HRESULT;
+function TOlegParser.Configure(Capability:Integer):HRESULT;
 begin
   Result := E_NOTIMPL;
 end;
@@ -88,7 +89,7 @@ begin
   inherited;
 end;
 
-function TOlegParser.DisplayName(Capability: Integer): WideString;
+function TOlegParser.DisplayName(Capability:Integer):WideString;
 begin
   case Capability of
     CAP_IMPORT:
@@ -101,10 +102,10 @@ begin
 end;
 
 function TOlegParser.ExportItems(const Items,
-  Orphans: ITranslationItems): HRESULT;
+  Orphans:ITranslationItems):HRESULT;
 var
-  S: TTntStringlist;
-  FOldSort: TTranslateSortType;
+  S:TTntStringlist;
+  FOldSort:TTranslateSortType;
 begin
   Result := S_FALSE;
   FOldSort := Items.Sort;
@@ -129,15 +130,15 @@ begin
   end;
 end;
 var
-  frmImport: TfrmSingleImport = nil;
+  frmImport:TfrmSingleImport = nil;
 
-function TOlegParser.GetString(out Section, Name, Value: WideString): WordBool;
+function TOlegParser.GetString(out Section, Name, Value:WideString):WordBool;
 begin
   Result := true;
   case FCount of
-    0: Value := cOlegFilter;
-    1: Value := cOlegImportTitle;
-    2: Value := cOlegExportTitle;
+    0:Value := cOlegFilter;
+    1:Value := cOlegImportTitle;
+    2:Value := cOlegExportTitle;
   else
     if frmImport = nil then
       frmImport := TfrmSingleImport.Create(Application);
@@ -157,11 +158,11 @@ begin
   end;
 end;
 
-function TOlegParser.ImportItems(const Items, Orphans: ITranslationItems): HRESULT;
+function TOlegParser.ImportItems(const Items, Orphans:ITranslationItems):HRESULT;
 var
-  S: TTntStringlist;
-  i, j: integer;
-  TI: ITranslationItem;
+  S:TTntStringlist;
+  i, j:integer;
+  TI:ITranslationItem;
 begin
   // format:
   // no sections
@@ -204,7 +205,7 @@ begin
   end;
 end;
 
-procedure TOlegParser.Init(const ApplicationServices: IApplicationServices);
+procedure TOlegParser.Init(const ApplicationServices:IApplicationServices);
 begin
   FAppServices := ApplicationServices;
   Application.Handle := ApplicationServices.AppHandle;
@@ -238,7 +239,7 @@ begin
   end;
 end;
 
-function TOlegParser.Translate(const Value: WideString): WideString;
+function TOlegParser.Translate(const Value:WideString):WideString;
 begin
   if FAppServices <> nil then
     Result := FAppServices.Translate(ClassName, Value, Value)
@@ -247,4 +248,3 @@ begin
 end;
 
 end.
-

@@ -30,29 +30,29 @@ uses
 type
   TGSIParser = class(TInterfacedObject, IUnknown, IFileParser, ILocalizable)
   private
-    FOldHandle: LongWord;
-    FAppServices: IApplicationServices;
-    FCount: integer;
-    FOrigFile, FTransFile: WideString;
-    FOrigIsDual, FSearchTrans: boolean;
-    FExportRect: TRect;
-    procedure BuildPreview(const Items: ITranslationItems; Strings: TTntStrings);
-    function DoImport(const Items, Orphans: ITranslationItems;
-      const OrigFile, TransFile: string; OrigIsDual, SearchTrans: boolean): boolean;
+    FOldHandle:LongWord;
+    FAppServices:IApplicationServices;
+    FCount:integer;
+    FOrigFile, FTransFile:WideString;
+    FOrigIsDual, FSearchTrans:boolean;
+    FExportRect:TRect;
+    procedure BuildPreview(const Items:ITranslationItems; Strings:TTntStrings);
+    function DoImport(const Items, Orphans:ITranslationItems;
+      const OrigFile, TransFile:string; OrigIsDual, SearchTrans:boolean):boolean;
     procedure LoadSettings;
     procedure SaveSettings;
-    function Translate(const Value: WideString): WideString;
+    function Translate(const Value:WideString):WideString;
   public
     constructor Create;
     destructor Destroy; override;
-    function Configure(Capability: Integer): HRESULT; safecall;
-    function DisplayName(Capability: Integer): WideString; safecall;
-    function ExportItems(const Items, Orphans: ITranslationItems): HRESULT; safecall;
-    function ImportItems(const Items, Orphans: ITranslationItems): HRESULT; safecall;
+    function Configure(Capability:Integer):HRESULT; safecall;
+    function DisplayName(Capability:Integer):WideString; safecall;
+    function ExportItems(const Items, Orphans:ITranslationItems):HRESULT; safecall;
+    function ImportItems(const Items, Orphans:ITranslationItems):HRESULT; safecall;
 
-    procedure Init(const ApplicationServices: IApplicationServices); safecall;
-    function Capabilities: Integer; safecall;
-    function GetString(out Section, Name, Value: WideString): WordBool; safecall;
+    procedure Init(const ApplicationServices:IApplicationServices); safecall;
+    function Capabilities:Integer; safecall;
+    function GetString(out Section, Name, Value:WideString):WordBool; safecall;
   end;
 
 implementation
@@ -70,12 +70,12 @@ const
   cGSIPlaceHolder = #27;
   cSectionName = 'OpenOffice';
 
-function YesNo(const Text, Caption: string): boolean;
+function YesNo(const Text, Caption:string):boolean;
 begin
   Result := Application.MessageBox(PChar(Text), PChar(Caption), MB_YESNO or MB_ICONQUESTION) = IDYES;
 end;
 
-function MyWideDequotedStr(const S: WideString; Quote: WideChar): WideString;
+function MyWideDequotedStr(const S:WideString; Quote:WideChar):WideString;
 //var LText:PWideChar;
 begin
   Result := S;
@@ -85,19 +85,19 @@ begin
     Result := Copy(S, 2, Length(S) - 2)
 end;
 
-procedure ShowError(const Text: string);
+procedure ShowError(const Text:string);
 begin
   Application.MessageBox(PChar(Format(SFmtErrorMsg, [Text])), PChar(SError), MB_OK or MB_ICONERROR);
 end;
 
 { TGSIParser }
 
-function TGSIParser.Capabilities: Integer;
+function TGSIParser.Capabilities:Integer;
 begin
   Result := CAP_IMPORT or CAP_EXPORT;
 end;
 
-function TGSIParser.Configure(Capability: Integer): HRESULT;
+function TGSIParser.Configure(Capability:Integer):HRESULT;
 begin
   Result := S_OK;
 end;
@@ -108,11 +108,11 @@ begin
   FOldHandle := Application.Handle;
 end;
 
-procedure TGSIParser.BuildPreview(const Items: ITranslationItems;
-  Strings: TTntStrings);
+procedure TGSIParser.BuildPreview(const Items:ITranslationItems;
+  Strings:TTntStrings);
 var
-  i: integer;
-  FOldSort: TTranslateSortType;
+  i:integer;
+  FOldSort:TTranslateSortType;
 begin
   try
     FOldSort := Items.Sort;
@@ -135,20 +135,21 @@ begin
   inherited;
 end;
 
-function TGSIParser.DisplayName(Capability: Integer): WideString;
+function TGSIParser.DisplayName(Capability:Integer):WideString;
 begin
   case Capability of
-    CAP_IMPORT: Result := Translate(cGSIImportTitle);
-    CAP_EXPORT: Result := Translate(cGSIExportTitle);
+    CAP_IMPORT:Result := Translate(cGSIImportTitle);
+    CAP_EXPORT:Result := Translate(cGSIExportTitle);
 //    CAP_CONFIGURE : Result := 'Configure';
   else
     Result := '';
   end;
 end;
 
-procedure StrTokenize(const S: WideString; Delimiter: WideChar; List: TTNTStringlist; MinLength: integer = 1);
-var i, j: integer;
-  tmp: WideString;
+procedure StrTokenize(const S:WideString; Delimiter:WideChar; List:TTNTStringlist; MinLength:integer = 1);
+var
+  i, j:integer;
+  tmp:WideString;
 begin
   j := 1;
   for i := 1 to Length(S) do
@@ -169,16 +170,17 @@ begin
   end;
 end;
 
-function TGSIParser.DoImport(const Items, Orphans: ITranslationItems;
-  const OrigFile, TransFile: string; OrigIsDual, SearchTrans: boolean): boolean;
+function TGSIParser.DoImport(const Items, Orphans:ITranslationItems;
+  const OrigFile, TransFile:string; OrigIsDual, SearchTrans:boolean):boolean;
 var
-  FOrig, FTrans, FTokens: TTntStringList;
-  i, j: integer;
-  FOldSort: TTranslateSortType;
+  FOrig, FTrans, FTokens:TTntStringList;
+  i, j:integer;
+  FOldSort:TTranslateSortType;
   ATemplate, AName, ATranslation:WideString;
 
-  function GetGSIString(const S: WideString; var ExtractedTemplate, AName: WideString): WideString;
-  var i: integer;
+  function GetGSIString(const S:WideString; var ExtractedTemplate, AName:WideString):WideString;
+  var
+    i:integer;
   begin
     FTokens.Clear;
     StrTokenize(S, WideChar(#9), FTokens, 0);
@@ -203,8 +205,9 @@ var
     end;
   end;
 
-  procedure ParseRow(const Orig, Trans: WideString);
-  var S, AName: WideString;
+  procedure ParseRow(const Orig, Trans:WideString);
+  var
+    S, AName:WideString;
   begin
     with Items.Add do
     begin
@@ -268,7 +271,7 @@ begin
         for i := 0 to FTrans.Count - 1 do
         begin
           ATranslation := GetGSIString(FTrans[i], ATemplate, AName);
-          j := Items.IndexOf(cSectionName,  AName);
+          j := Items.IndexOf(cSectionName, AName);
           if j >= 0 then
           begin
             Items[j].Translation := ATranslation;
@@ -289,9 +292,9 @@ begin
   end;
 end;
 
-function TGSIParser.ExportItems(const Items, Orphans: ITranslationItems): HRESULT;
+function TGSIParser.ExportItems(const Items, Orphans:ITranslationItems):HRESULT;
 var
-  S: TTntStringlist;
+  S:TTntStringlist;
 begin
   try
     Result := S_FALSE;
@@ -314,7 +317,7 @@ begin
   end;
 end;
 
-function TGSIParser.ImportItems(const Items, Orphans: ITranslationItems): HRESULT;
+function TGSIParser.ImportItems(const Items, Orphans:ITranslationItems):HRESULT;
 begin
   try
     Result := S_FALSE;
@@ -336,7 +339,7 @@ begin
   end;
 end;
 
-procedure TGSIParser.Init(const ApplicationServices: IApplicationServices);
+procedure TGSIParser.Init(const ApplicationServices:IApplicationServices);
 begin
   FAppServices := ApplicationServices;
   Application.Handle := ApplicationServices.AppHandle;
@@ -344,7 +347,7 @@ end;
 
 procedure TGSIParser.LoadSettings;
 var
-  M: TMemoryStream;
+  M:TMemoryStream;
 begin
   try
     with TIniFile.Create(ChangeFileExt(GetModuleName(hInstance), '.ini')) do
@@ -373,7 +376,7 @@ end;
 
 procedure TGSIParser.SaveSettings;
 var
-  M: TMemoryStream;
+  M:TMemoryStream;
 begin
   try
     with TIniFile.Create(ChangeFileExt(GetModuleName(hInstance), '.ini')) do
@@ -398,15 +401,15 @@ begin
   end;
 end;
 
-function TGSIParser.GetString(out Section, Name, Value: WideString): WordBool;
+function TGSIParser.GetString(out Section, Name, Value:WideString):WordBool;
 begin
   Result := true;
   case FCount of
-    0: Value := cGSIFilter;
-    1: Value := cGSIExportTitle;
-    2: Value := cGSIImportTitle;
-    3: Value := SImportError;
-    4: Value := SError;
+    0:Value := cGSIFilter;
+    1:Value := cGSIExportTitle;
+    2:Value := cGSIImportTitle;
+    3:Value := SImportError;
+    4:Value := SError;
   else
     Result := false;
     FCount := 0;
@@ -417,7 +420,7 @@ begin
   Name := Value;
 end;
 
-function TGSIParser.Translate(const Value: WideString): WideString;
+function TGSIParser.Translate(const Value:WideString):WideString;
 begin
   if FAppServices <> nil then
     Result := FAppServices.Translate(ClassName, Value, Value)
@@ -426,4 +429,3 @@ begin
 end;
 
 end.
-

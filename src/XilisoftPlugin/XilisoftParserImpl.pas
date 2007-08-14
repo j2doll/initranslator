@@ -24,32 +24,32 @@ uses
 type
   TXilisoftParser = class(TInterfacedObject, IUnknown, IFileParser, ILocalizable)
   private
-    FOldAppHandle: Cardinal;
-    FOrigFile: WideString;
-    FTransFile: WideString;
-    FSkip: Boolean;
-    FStringIndex: integer;
-    FAppServices: IApplicationServices;
+    FOldAppHandle:Cardinal;
+    FOrigFile:WideString;
+    FTransFile:WideString;
+    FSkip:Boolean;
+    FStringIndex:integer;
+    FAppServices:IApplicationServices;
     procedure LoadSettings;
     procedure SaveSettings;
-    procedure BuildPreview(Items, Orphans: ITranslationItems; Strings: TTntStrings);
-    function Translate(const Value: WideString): WideString;
+    procedure BuildPreview(Items, Orphans:ITranslationItems; Strings:TTntStrings);
+    function Translate(const Value:WideString):WideString;
 
     { ILocalizable }
-    function GetString(out Section: WideString; out Name: WideString; out Value: WideString): WordBool; safecall;
+    function GetString(out Section:WideString; out Name:WideString; out Value:WideString):WordBool; safecall;
   public
     constructor Create;
     destructor Destroy; override;
 
-    function Capabilities: Integer; safecall;
-    function Configure(Capability: Integer): HRESULT; safecall;
-    function DisplayName(Capability: Integer): WideString; safecall;
-    function ExportItems(const Items: ITranslationItems;
-      const Orphans: ITranslationItems): HRESULT; safecall;
-    function ImportItems(const Items: ITranslationItems;
-      const Orphans: ITranslationItems): HRESULT; safecall;
-    procedure Init(const ApplicationServices: IApplicationServices); safecall;
-    property SkipEmpty: Boolean read FSkip write FSkip;
+    function Capabilities:Integer; safecall;
+    function Configure(Capability:Integer):HRESULT; safecall;
+    function DisplayName(Capability:Integer):WideString; safecall;
+    function ExportItems(const Items:ITranslationItems;
+      const Orphans:ITranslationItems):HRESULT; safecall;
+    function ImportItems(const Items:ITranslationItems;
+      const Orphans:ITranslationItems):HRESULT; safecall;
+    procedure Init(const ApplicationServices:IApplicationServices); safecall;
+    property SkipEmpty:Boolean read FSkip write FSkip;
   end;
 
 implementation
@@ -57,9 +57,9 @@ uses
   XilisoftParserCfgForm, XiliSoftParserConsts, CommonUtils,
   Controls, Windows, SysUtils, Forms, IniFiles, DualImportFrm;
 
-function GetLocaleInformation(Flag: Integer): WideString;
+function GetLocaleInformation(Flag:Integer):WideString;
 var
-  pcLCA: array[0..20] of Char;
+  pcLCA:array[0..20] of Char;
 begin
   if (GetLocaleInfo(LOCALE_SYSTEM_DEFAULT, Flag, pcLCA, 19) <= 0) then
   begin
@@ -70,9 +70,10 @@ end;
 
 { TXilisoftParser }
 
-procedure TXilisoftParser.BuildPreview(Items, Orphans: ITranslationItems;
-  Strings: TTntStrings);
-var i: integer;
+procedure TXilisoftParser.BuildPreview(Items, Orphans:ITranslationItems;
+  Strings:TTntStrings);
+var
+  i:integer;
 begin
   for i := 0 to Orphans.Count - 1 do
     Strings.Add(Orphans[i].Name + WideChar('=') + Orphans[i].Translation);
@@ -84,12 +85,12 @@ begin
     end;
 end;
 
-function TXilisoftParser.Capabilities: Integer;
+function TXilisoftParser.Capabilities:Integer;
 begin
   Result := CAP_IMPORT or CAP_EXPORT or CAP_CONFIGURE;
 end;
 
-function TXilisoftParser.Configure(Capability: Integer): HRESULT;
+function TXilisoftParser.Configure(Capability:Integer):HRESULT;
 begin
   Result := S_FALSE;
   case Capability of
@@ -117,7 +118,7 @@ begin
   inherited;
 end;
 
-function TXilisoftParser.DisplayName(Capability: Integer): WideString;
+function TXilisoftParser.DisplayName(Capability:Integer):WideString;
 begin
   case Capability of
     CAP_IMPORT:
@@ -129,9 +130,9 @@ begin
   end;
 end;
 
-function TXilisoftParser.ExportItems(const Items, Orphans: ITranslationItems): HRESULT;
+function TXilisoftParser.ExportItems(const Items, Orphans:ITranslationItems):HRESULT;
 var
-  S: TTntStringlist;
+  S:TTntStringlist;
 begin
   Result := S_FALSE;
   try
@@ -157,13 +158,13 @@ begin
   end;
 end;
 
-function TXilisoftParser.ImportItems(const Items, Orphans: ITranslationItems): HRESULT;
+function TXilisoftParser.ImportItems(const Items, Orphans:ITranslationItems):HRESULT;
 var
-  SO, ST: TTntStringlist;
-  i, j, k: integer;
-  TI: ITranslationItem;
-  ssi, sst, sName, sValue: WideString;
-  IsInT: Boolean;
+  SO, ST:TTntStringlist;
+  i, j, k:integer;
+  TI:ITranslationItem;
+  ssi, sst, sName, sValue:WideString;
+  IsInT:Boolean;
 begin
   Result := S_FALSE;
   try
@@ -280,7 +281,7 @@ begin
   end;
 end;
 
-function TXilisoftParser.Translate(const Value: WideString): WideString;
+function TXilisoftParser.Translate(const Value:WideString):WideString;
 begin
   if FAppServices <> nil then
     Result := FAppServices.Translate(SLocalizeSectionName, Value, Value)
@@ -288,7 +289,7 @@ begin
     Result := Value;
 end;
 
-procedure TXilisoftParser.Init(const ApplicationServices: IApplicationServices);
+procedure TXilisoftParser.Init(const ApplicationServices:IApplicationServices);
 begin
   Application.Handle := ApplicationServices.AppHandle;
   FAppServices := ApplicationServices;
@@ -326,7 +327,7 @@ begin
   end;
 end;
 
-function TXilisoftParser.GetString(out Section, Name, Value: WideString): WordBool;
+function TXilisoftParser.GetString(out Section, Name, Value:WideString):WordBool;
 begin
   Result := true;
   case FStringIndex of
@@ -360,4 +361,3 @@ begin
 end;
 
 end.
-

@@ -24,16 +24,16 @@ uses
 
 type
   TXilisoftCfgForm = class(TTntForm)
-    TCB1: TTntCheckBox;
-    TntButton1: TTntButton;
-    procedure TntButton1Click(Sender: TObject);
+    TCB1:TTntCheckBox;
+    TntButton1:TTntButton;
+    procedure TntButton1Click(Sender:TObject);
   private
     { Private declarations }
-    FApplicationServices: IApplicationServices;
+    FApplicationServices:IApplicationServices;
   public
     { Public declarations }
-    property ApplicationServices: IApplicationServices read FApplicationServices write FApplicationServices;
-    class function Edit(const ApplicationServices: IApplicationServices; var Checked: boolean): boolean;
+    property ApplicationServices:IApplicationServices read FApplicationServices write FApplicationServices;
+    class function Edit(const ApplicationServices:IApplicationServices; var Checked:boolean):boolean;
   end;
 
 implementation
@@ -43,7 +43,7 @@ uses
 
 {$R *.dfm}
 
-procedure TXilisoftCfgForm.TntButton1Click(Sender: TObject);
+procedure TXilisoftCfgForm.TntButton1Click(Sender:TObject);
 begin
   if TCB1.Checked then
     ModalResult := mrYes
@@ -52,9 +52,9 @@ begin
 end;
 
 class function TXilisoftCfgForm.Edit(
-  const ApplicationServices: IApplicationServices; var Checked: boolean): boolean;
+  const ApplicationServices:IApplicationServices; var Checked:boolean):boolean;
 var
-  frm: TXilisoftCfgForm;
+  frm:TXilisoftCfgForm;
 begin
   frm := self.Create(Application);
   try
@@ -74,4 +74,3 @@ begin
 end;
 
 end.
-

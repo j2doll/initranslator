@@ -26,26 +26,26 @@ uses
 
 type
   TfrmToolTrim = class(TTntForm)
-    lblTrimWhat: TTntLabel;
-    edTrimWhat: TTntEdit;
-    lblTrimWhere: TTntLabel;
-    cbTrimWhere: TTntComboBox;
-    lblTrimHow: TTntLabel;
-    cbTrimHow: TTntComboBox;
-    chkTrimWhitespace: TTntCheckBox;
-    btnOK: TTntButton;
-    btnCancel: TTntButton;
-    procedure btnOKClick(Sender: TObject);
+    lblTrimWhat:TTntLabel;
+    edTrimWhat:TTntEdit;
+    lblTrimWhere:TTntLabel;
+    cbTrimWhere:TTntComboBox;
+    lblTrimHow:TTntLabel;
+    cbTrimHow:TTntComboBox;
+    chkTrimWhitespace:TTntCheckBox;
+    btnOK:TTntButton;
+    btnCancel:TTntButton;
+    procedure btnOKClick(Sender:TObject);
   private
     { Private declarations }
-    FItems: ITranslationItems;
+    FItems:ITranslationItems;
     procedure LoadSettings;
     procedure SaveSettings;
     procedure DoTrim;
     procedure DoTranslate;
   public
     { Public declarations }
-    class function Execute(const Items: ITranslationItems): boolean;
+    class function Execute(const Items:ITranslationItems):boolean;
   end;
 
 implementation
@@ -56,9 +56,9 @@ uses
 
 { TfrmTrim }
 
-class function TfrmToolTrim.Execute(const Items: ITranslationItems): boolean;
+class function TfrmToolTrim.Execute(const Items:ITranslationItems):boolean;
 var
-  frmTrim: TfrmToolTrim;
+  frmTrim:TfrmToolTrim;
   FAppHandle:Cardinal;
 begin
   FAppHandle := Application.Handle;
@@ -105,19 +105,20 @@ begin
   end;
 end;
 
-procedure TfrmToolTrim.btnOKClick(Sender: TObject);
+procedure TfrmToolTrim.btnOKClick(Sender:TObject);
 begin
   DoTrim;
 end;
 
 procedure TfrmToolTrim.DoTrim;
 var
-  i: integer;
-  ti: ITranslationItem;
-  S: WideString;
+  i:integer;
+  ti:ITranslationItem;
+  S:WideString;
 
-  procedure InternalTrim(var S: WideString);
-  var iStart: integer;
+  procedure InternalTrim(var S:WideString);
+  var
+    iStart:integer;
   begin
     if cbTrimHow.ItemIndex in [0, 2] then
     begin
@@ -175,4 +176,3 @@ begin
 end;
 
 end.
-

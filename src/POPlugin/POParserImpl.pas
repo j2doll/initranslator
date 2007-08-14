@@ -25,24 +25,24 @@ uses
 type
   TPOFileParser = class(TInterfacedObject, IUnknown, IFileParser, ILocalizable)
   private
-    FIndex: integer;
-    FFilename, FCmdLine: string;
-    FCompileMO: Boolean;
+    FIndex:integer;
+    FFilename, FCmdLine:string;
+    FCompileMO:Boolean;
     procedure LoadSettings;
     procedure SaveSettings;
-    function GetFilename(const AFilename: string; ForOpen: boolean): string;
-    procedure LoadFromPOFile(const Items, Orphans: ITranslationItems;
-      const Filename: string);
-    procedure MakePOFile(const Items: ITranslationItems; Header, Result: TTntStrings);
+    function GetFilename(const AFilename:string; ForOpen:boolean):string;
+    procedure LoadFromPOFile(const Items, Orphans:ITranslationItems;
+      const Filename:string);
+    procedure MakePOFile(const Items:ITranslationItems; Header, Result:TTntStrings);
   public
-    function Capabilities: Integer; safecall;
-    function Configure(Capability: integer): HResult; safecall;
-    function DisplayName(Capability: integer): WideString; safecall;
-    function ExportItems(const Items, Orphans: ITranslationItems): HResult; safecall;
-    function ImportItems(const Items, Orphans: ITranslationItems): HResult; safecall;
-    procedure Init(const ApplicationServices: IApplicationServices); safecall;
-    function GetString(out Section: WideString; out Name: WideString;
-      out Value: WideString): WordBool; safecall;
+    function Capabilities:Integer; safecall;
+    function Configure(Capability:integer):HResult; safecall;
+    function DisplayName(Capability:integer):WideString; safecall;
+    function ExportItems(const Items, Orphans:ITranslationItems):HResult; safecall;
+    function ImportItems(const Items, Orphans:ITranslationItems):HResult; safecall;
+    procedure Init(const ApplicationServices:IApplicationServices); safecall;
+    function GetString(out Section:WideString; out Name:WideString;
+      out Value:WideString):WordBool; safecall;
 
   end;
 
@@ -51,17 +51,17 @@ uses
   CommonUtils, SysUtils, Classes, Controls, Dialogs, IniFiles, POExportFrm, POParserConsts;
 
 var
-  FHeader: TTntStringList;
+  FHeader:TTntStringList;
 
-function YesNo(const Text, Caption: string): boolean;
+function YesNo(const Text, Caption:string):boolean;
 begin
   Result := Application.MessageBox(PChar(Text), PChar(Caption), MB_YESNO or MB_ICONQUESTION) = IDYES;
 end;
 
-function LineBreakPO(const Str: WideString): WideString;
+function LineBreakPO(const Str:WideString):WideString;
 var
-  S: TTnTStringList;
-  i: integer;
+  S:TTnTStringList;
+  i:integer;
 begin
   Result := StringReplace(Str, '\n', '\n' + SLineBreak, [rfReplaceAll]);
   S := TTntStringlist.Create;
@@ -80,31 +80,31 @@ end;
 
 { TPOFileParser }
 
-function TPOFileParser.Capabilities: Integer;
+function TPOFileParser.Capabilities:Integer;
 begin
   Result := CAP_IMPORT or CAP_EXPORT or CAP_ITEM_DELETE or CAP_ITEM_INSERT or CAP_ITEM_EDIT;
 end;
 
-function TPOFileParser.Configure(Capability: integer): HResult;
+function TPOFileParser.Configure(Capability:integer):HResult;
 begin
   Result := S_OK;
 end;
 
-function TPOFileParser.DisplayName(Capability: integer): WideString;
+function TPOFileParser.DisplayName(Capability:integer):WideString;
 begin
   case Capability of
-    CAP_IMPORT: Result := Translate(SImportTitle);
-    CAP_EXPORT: Result := Translate(SExportTitle);
-    CAP_CONFIGURE: Result := Translate(SConfigureTitle);
+    CAP_IMPORT:Result := Translate(SImportTitle);
+    CAP_EXPORT:Result := Translate(SExportTitle);
+    CAP_CONFIGURE:Result := Translate(SConfigureTitle);
   else
     Result := '';
   end;
 end;
 
-function WinExec32AndWait(const Cmd: string; const CmdShow: Integer): Cardinal;
+function WinExec32AndWait(const Cmd:string; const CmdShow:Integer):Cardinal;
 var
-  StartupInfo: TStartupInfo;
-  ProcessInfo: TProcessInformation;
+  StartupInfo:TStartupInfo;
+  ProcessInfo:TProcessInformation;
 begin
   Result := Cardinal($FFFFFFFF);
   FillChar(StartupInfo, SizeOf(TStartupInfo), #0);
@@ -125,7 +125,7 @@ begin
   end;
 end;
 
-function trimQuotes(const S: WideString; Quote: WideChar): string;
+function trimQuotes(const S:WideString; Quote:WideChar):string;
 begin
   if (Length(S) > 0) and (S[1] = Quote) and (S[Length(S)] = Quote) then
     Result := Copy(S, 2, Length(S) - 2)
@@ -133,12 +133,12 @@ begin
     Result := S;
 end;
 
-procedure TPOFileParser.LoadFromPOFile(const Items, Orphans: ITranslationItems; const Filename: string);
+procedure TPOFileParser.LoadFromPOFile(const Items, Orphans:ITranslationItems; const Filename:string);
 var
-  S, FComments: TTntStringlist;
-  AnItem: ITranslationItem;
-  i: integer;
-  ShortFilename: string;
+  S, FComments:TTntStringlist;
+  AnItem:ITranslationItem;
+  i:integer;
+  ShortFilename:string;
 begin
   try
     Screen.Cursor := crHourGlass;
@@ -246,10 +246,10 @@ begin
   end;
 end;
 
-procedure TPOFileParser.MakePOFile(const Items: ITranslationItems; Header, Result: TTntStrings);
+procedure TPOFileParser.MakePOFile(const Items:ITranslationItems; Header, Result:TTntStrings);
 var
-  i: integer;
-  FOldSort: TTranslateSortType;
+  i:integer;
+  FOldSort:TTranslateSortType;
 begin
   try
     Screen.Cursor := crHourGlass;
@@ -282,10 +282,10 @@ begin
   end;
 end;
 
-function TPOFileParser.ExportItems(const Items, Orphans: ITranslationItems): HResult;
+function TPOFileParser.ExportItems(const Items, Orphans:ITranslationItems):HResult;
 var
-  S: TTntStringList;
-  CmdLine: string;
+  S:TTntStringList;
+  CmdLine:string;
 begin
   WaitCursor;
   Result := S_FALSE;
@@ -316,7 +316,7 @@ begin
   end;
 end;
 
-function TPOFileParser.GetFilename(const AFilename: string; ForOpen: boolean): string;
+function TPOFileParser.GetFilename(const AFilename:string; ForOpen:boolean):string;
 begin
   try
     if ForOpen then
@@ -352,7 +352,7 @@ begin
   end;
 end;
 
-function TPOFileParser.ImportItems(const Items, Orphans: ITranslationItems): HResult;
+function TPOFileParser.ImportItems(const Items, Orphans:ITranslationItems):HResult;
 begin
   WaitCursor;
   Result := S_FALSE;
@@ -372,7 +372,7 @@ begin
   end;
 end;
 
-procedure TPOFileParser.Init(const ApplicationServices: IApplicationServices);
+procedure TPOFileParser.Init(const ApplicationServices:IApplicationServices);
 begin
   GLobalApplicationServices := ApplicationServices;
 end;
@@ -413,22 +413,22 @@ begin
   end;
 end;
 
-function TPOFileParser.GetString(out Section, Name, Value: WideString): WordBool;
+function TPOFileParser.GetString(out Section, Name, Value:WideString):WordBool;
 begin
   Result := true;
   case FIndex of
-    0: Value := SImportTitle;
-    1: Value := SExportTitle;
-    2: Value := SConfigureTitle;
-    3: Value := SFileFilter;
-    4: Value := SFormCaption;
-    5: Value := SFileNameLabel;
-    6: Value := SPreviewLabel;
-    7: Value := SCompileMOCaption;
-    8: Value := SBrowseCaption;
-    9: Value := SOK;
-    10: Value := SCancel;
-    11: Value := SCompileMOHint;
+    0:Value := SImportTitle;
+    1:Value := SExportTitle;
+    2:Value := SConfigureTitle;
+    3:Value := SFileFilter;
+    4:Value := SFormCaption;
+    5:Value := SFileNameLabel;
+    6:Value := SPreviewLabel;
+    7:Value := SCompileMOCaption;
+    8:Value := SBrowseCaption;
+    9:Value := SOK;
+    10:Value := SCancel;
+    11:Value := SCompileMOHint;
   else
     Result := false;
   end;
@@ -448,4 +448,3 @@ initialization
 finalization
   FreeAndNil(FHeader);
 end.
-

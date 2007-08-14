@@ -25,24 +25,24 @@ uses
 type
   TPHPNukeParser = class(TInterfacedObject, IUnknown, IFileParser, ILocalizable)
   private
-    FOldHandle: Cardinal;
-    FAppServices: IApplicationServices;
-    FCount: integer;
-    FOrigFile, FTransFile: WideString;
+    FOldHandle:Cardinal;
+    FAppServices:IApplicationServices;
+    FCount:integer;
+    FOrigFile, FTransFile:WideString;
     procedure LoadSettings;
     procedure SaveSettings;
-    function Translate(const Value: WideString): WideString;
+    function Translate(const Value:WideString):WideString;
   public
     constructor Create;
     destructor Destroy; override;
 
-    function Capabilities: integer; safecall;
-    function Configure(Capability: integer): HRESULT; safecall;
-    function DisplayName(Capability: integer): WideString; safecall;
-    function ExportItems(const Items, Orphans: ITranslationItems): HRESULT; safecall;
-    function ImportItems(const Items, Orphans: ITranslationItems): HRESULT; safecall;
-    procedure Init(const ApplicationServices: IApplicationServices); safecall;
-    function GetString(out Section, Name, Value: WideString): WordBool; safecall;
+    function Capabilities:integer; safecall;
+    function Configure(Capability:integer):HRESULT; safecall;
+    function DisplayName(Capability:integer):WideString; safecall;
+    function ExportItems(const Items, Orphans:ITranslationItems):HRESULT; safecall;
+    function ImportItems(const Items, Orphans:ITranslationItems):HRESULT; safecall;
+    procedure Init(const ApplicationServices:IApplicationServices); safecall;
+    function GetString(out Section, Name, Value:WideString):WordBool; safecall;
   end;
 
 implementation
@@ -57,15 +57,16 @@ const
   cAppTitle = 'phpNuke Parser';
   cSectionName = 'phpNuke';
 var
-  FFooter: TTntStringlist;
+  FFooter:TTntStringlist;
 
-procedure ErrMsg(const AText, ACaption: WideString);
+procedure ErrMsg(const AText, ACaption:WideString);
 begin
   WideMessageBox(GetFocus, PWideChar(AText), PWideChar(ACaption), MB_OK or MB_ICONERROR);
 end;
 
-procedure ExceptMsg(E: Exception);
-var ATitle, AFilename: WideString;
+procedure ExceptMsg(E:Exception);
+var
+  ATitle, AFilename:WideString;
 begin
   AFilename := GetModuleName(hInstance);
   ATitle := ChangeFileExt(ExtractFilename(AFilename), '');
@@ -75,12 +76,12 @@ end;
 
 { TPHPNukeParser }
 
-function TPHPNukeParser.Capabilities: integer;
+function TPHPNukeParser.Capabilities:integer;
 begin
   Result := CAP_IMPORT or CAP_EXPORT;
 end;
 
-function TPHPNukeParser.Configure(Capability: integer): HRESULT;
+function TPHPNukeParser.Configure(Capability:integer):HRESULT;
 begin
   Result := S_OK;
 end;
@@ -98,7 +99,7 @@ begin
   inherited;
 end;
 
-function TPHPNukeParser.DisplayName(Capability: integer): WideString;
+function TPHPNukeParser.DisplayName(Capability:integer):WideString;
 begin
   case Capability of
     CAP_IMPORT:
@@ -108,13 +109,13 @@ begin
   end;
 end;
 
-function TPHPNukeParser.ExportItems(const Items, Orphans: ITranslationItems): HRESULT;
+function TPHPNukeParser.ExportItems(const Items, Orphans:ITranslationItems):HRESULT;
 var
-  S: TTntStringlist;
-  i: integer;
+  S:TTntStringlist;
+  i:integer;
   //  FOldSort: TTranslateSortType;
 
-  function DefaultStr(const S: WideString; QuoteChar: WideChar): WideString;
+  function DefaultStr(const S:WideString; QuoteChar:WideChar):WideString;
   begin
     if QuoteChar = WideChar(#0) then
     begin
@@ -125,7 +126,7 @@ var
       Result := S;
   end;
 
-  function HasContinuation(Index: integer): boolean;
+  function HasContinuation(Index:integer):boolean;
   begin
     Result := (Index < Items.Count - 1) and AnsiStartsText('.', trim(Items[Index + 1].TransComments));
   end;
@@ -161,19 +162,19 @@ begin
       SaveSettings;
     end;
   except
-    on E: Exception do
+    on E:Exception do
       ErrMsg(E.Message, Translate(cAppTitle));
   end;
 end;
 
-function TPHPNukeParser.GetString(out Section, Name, Value: WideString): WordBool;
+function TPHPNukeParser.GetString(out Section, Name, Value:WideString):WordBool;
 begin
   Result := true;
   case FCount of
-    0: Value := cPHPNukeFilter;
-    1: Value := cPHPNukeExportTitle;
-    2: Value := cPHPNukeImportTitle;
-    3: Value := cAppTitle;
+    0:Value := cPHPNukeFilter;
+    1:Value := cPHPNukeExportTitle;
+    2:Value := cPHPNukeImportTitle;
+    3:Value := cAppTitle;
   else
     Result := false;
     FCount := 0;
@@ -184,7 +185,7 @@ begin
   Name := Value;
 end;
 
-function WideStartsText(const ASubText, AText: WideString): boolean;
+function WideStartsText(const ASubText, AText:WideString):boolean;
 begin
   if (ASubText <> '') and (AText <> '') then
     Result := WideSameText(ASubText, Copy(AText, 1, Length(ASubText)))
@@ -192,8 +193,9 @@ begin
     Result := false;
 end;
 
-function WideEndsText(const ASubText, AText: WideString): boolean;
-var L: integer;
+function WideEndsText(const ASubText, AText:WideString):boolean;
+var
+  L:integer;
 begin
   L := Length(AText) - Length(ASubText);
   if (L > 0) and (ASubText <> '') then
@@ -202,18 +204,18 @@ begin
     Result := false;
 end;
 
-function TPHPNukeParser.ImportItems(const Items, Orphans: ITranslationItems): HRESULT;
+function TPHPNukeParser.ImportItems(const Items, Orphans:ITranslationItems):HRESULT;
 var
-  T: ITranslationItem;
-  S: TTntStringlist;
-  Cmt: WideString;
-  i: integer;
+  T:ITranslationItem;
+  S:TTntStringlist;
+  Cmt:WideString;
+  i:integer;
 
-  function ParseLine(const S, Cmt: WideString; const Items: ITranslationItems; IsTranslation: boolean): ITranslationItem;
+  function ParseLine(const S, Cmt:WideString; const Items:ITranslationItems; IsTranslation:boolean):ITranslationItem;
   var
-    AName, AText, tmp: WideString;
-    P: PWideChar;
-    i: integer;
+    AName, AText, tmp:WideString;
+    P:PWideChar;
+    i:integer;
   begin
     // handle phpNuke as well as Joomla files:
     // format:
@@ -264,13 +266,14 @@ var
 
   end;
 
-  function IsContinuation(const S: WideString): boolean;
+  function IsContinuation(const S:WideString):boolean;
   begin
     Result := WideStartsText('.', trim(S));
   end;
 
-  function GetContinuation(const S: WideString): WideString;
-  var i: integer;
+  function GetContinuation(const S:WideString):WideString;
+  var
+    i:integer;
   begin
     i := Pos('.', S);
     if i > 0 then
@@ -344,12 +347,12 @@ begin
       //      Screen.Cursor := crDefault;
     end;
   except
-    on E: Exception do
+    on E:Exception do
       ErrMsg(E.Message, cAppTitle);
   end;
 end;
 
-procedure TPHPNukeParser.Init(const ApplicationServices: IApplicationServices);
+procedure TPHPNukeParser.Init(const ApplicationServices:IApplicationServices);
 begin
   FOldHandle := Application.Handle;
   FAppServices := ApplicationServices;
@@ -367,7 +370,7 @@ begin
       Free;
     end;
   except
-    on E: Exception do
+    on E:Exception do
       ErrMsg(E.Message, cAppTitle);
   end;
 end;
@@ -383,12 +386,12 @@ begin
       Free;
     end;
   except
-    on E: Exception do
+    on E:Exception do
       ErrMsg(E.Message, cAppTitle);
   end;
 end;
 
-function TPHPNukeParser.Translate(const Value: WideString): WideString;
+function TPHPNukeParser.Translate(const Value:WideString):WideString;
 begin
   if FAppServices <> nil then
     Result := FAppServices.Translate(ClassName, Value, Value)
@@ -402,4 +405,3 @@ initialization
 finalization
   FreeAndNil(FFooter);
 end.
-

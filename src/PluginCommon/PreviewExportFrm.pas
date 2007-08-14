@@ -26,33 +26,33 @@ uses
 
 type
   TfrmExport = class(TTntForm, IInterface, ILocalizable)
-    lblFilename: TTntLabel;
-    edFilename: TTntEdit;
-    btnBrowse: TTntButton;
-    rePreview: TTntRichEdit;
-    btnOK: TTntButton;
-    btnCancel: TTntButton;
-    lblPreview: TTntLabel;
-    SaveDialog1: TTntSaveDialog;
-    procedure btnBrowseClick(Sender: TObject);
+    lblFilename:TTntLabel;
+    edFilename:TTntEdit;
+    btnBrowse:TTntButton;
+    rePreview:TTntRichEdit;
+    btnOK:TTntButton;
+    btnCancel:TTntButton;
+    lblPreview:TTntLabel;
+    SaveDialog1:TTntSaveDialog;
+    procedure btnBrowseClick(Sender:TObject);
   private
     { Private declarations }
-    FHasPrompted: boolean;
-    FApplicationServices: IApplicationServices;
-    FCount: integer;
-    function CheckFilename: boolean;
-    function IsValidFilename: boolean;
-    function OverwriteOK: boolean;
+    FHasPrompted:boolean;
+    FApplicationServices:IApplicationServices;
+    FCount:integer;
+    function CheckFilename:boolean;
+    function IsValidFilename:boolean;
+    function OverwriteOK:boolean;
     procedure LoadSettings;
     procedure SaveSettings;
-    function Translate(const Value: WideString): WideString;
+    function Translate(const Value:WideString):WideString;
   public
     { Public declarations }
-    class function Execute(var FileName: WideString; const ACaption, Filter, InitialDir, DefaultExt: WideString;
-      Preview: TTntStrings; WordWrap:boolean = false): boolean; overload;
-    class function Execute(const ApplicationServices: IApplicationServices; var FileName: WideString;
-      const ACaption, Filter, InitialDir, DefaultExt: WideString; Preview: TTntStrings; WordWrap:boolean = false): boolean; overload;
-    function GetString(out Section: WideString; out Name: WideString; out Value: WideString): WordBool; safecall;
+    class function Execute(var FileName:WideString; const ACaption, Filter, InitialDir, DefaultExt:WideString;
+      Preview:TTntStrings; WordWrap:boolean = false):boolean; overload;
+    class function Execute(const ApplicationServices:IApplicationServices; var FileName:WideString;
+      const ACaption, Filter, InitialDir, DefaultExt:WideString; Preview:TTntStrings; WordWrap:boolean = false):boolean; overload;
+    function GetString(out Section:WideString; out Name:WideString; out Value:WideString):WordBool; safecall;
   end;
 
 implementation
@@ -69,16 +69,16 @@ const
 
 { TfrmExport }
 
-class function TfrmExport.Execute(var FileName: WideString; const ACaption, Filter, InitialDir, DefaultExt: WideString; Preview: TTntStrings; WordWrap:boolean = false): boolean;
+class function TfrmExport.Execute(var FileName:WideString; const ACaption, Filter, InitialDir, DefaultExt:WideString; Preview:TTntStrings; WordWrap:boolean = false):boolean;
 begin
   Result := Execute(nil, Filename, ACaption, Filter, InitialDir, DefaultExt, Preview, WordWrap);
 end;
 
-class function TfrmExport.Execute(const ApplicationServices: IApplicationServices; var FileName: WideString;
-  const ACaption, Filter, InitialDir, DefaultExt: WideString;
-  Preview: TTntStrings; WordWrap:boolean = false): boolean;
+class function TfrmExport.Execute(const ApplicationServices:IApplicationServices; var FileName:WideString;
+  const ACaption, Filter, InitialDir, DefaultExt:WideString;
+  Preview:TTntStrings; WordWrap:boolean = false):boolean;
 var
-  frmExport: TfrmExport;
+  frmExport:TfrmExport;
 begin
   Result := false;
   frmExport := self.Create(Application);
@@ -114,7 +114,7 @@ begin
   end;
 end;
 
-procedure TfrmExport.btnBrowseClick(Sender: TObject);
+procedure TfrmExport.btnBrowseClick(Sender:TObject);
 begin
   SaveDialog1.FileName := edFilename.Text;
   SaveDialog1.Title := Translate(SaveDialog1.Title);
@@ -125,15 +125,16 @@ begin
   end;
 end;
 
-function TfrmExport.OverwriteOK: boolean;
+function TfrmExport.OverwriteOK:boolean;
 begin
   Result := FHasPrompted or not FileExists(edFilename.Text) or
     (WideMessageBox(Handle, PWideChar(Translate(WideFormat(SFmtOverwriteOK, [edFilename.Text]))), PWideChar(Translate(SConfirm)), MB_YESNO or MB_SETFOREGROUND or MB_TASKMODAL or MB_ICONQUESTION) = IDYES);
 end;
 
 procedure TfrmExport.LoadSettings;
-var M: TMemoryStream;
-  FRect: TRect;
+var
+  M:TMemoryStream;
+  FRect:TRect;
 begin
   try
     FRect := Rect(0, 0, 0, 0);
@@ -173,8 +174,9 @@ begin
 end;
 
 procedure TfrmExport.SaveSettings;
-var M: TMemoryStream;
-  FRect: TRect;
+var
+  M:TMemoryStream;
+  FRect:TRect;
 begin
   if WindowState = wsNormal then
   try
@@ -197,10 +199,10 @@ begin
   end;
 end;
 
-function TfrmExport.IsValidFilename: boolean;
+function TfrmExport.IsValidFilename:boolean;
 var
-  AHandle: THandle;
-  APrevError, ALastError: DWORD;
+  AHandle:THandle;
+  APrevError, ALastError:DWORD;
 begin
   if edFilename.Text <> '' then
   begin
@@ -231,14 +233,14 @@ begin
     Result := false;
 end;
 
-function TfrmExport.CheckFilename: boolean;
+function TfrmExport.CheckFilename:boolean;
 begin
   Result := IsValidFilename;
   if not Result then
     WideMessageBox(Handle, PWideChar(Translate(Format(SFmtErrIvalidFilename, [edFilename.Text]))), PWideChar(Translate(SError)), MB_OK or MB_TASKMODAl or MB_ICONERROR);
 end;
 
-function TfrmExport.Translate(const Value: WideString): WideString;
+function TfrmExport.Translate(const Value:WideString):WideString;
 begin
   if FApplicationServices <> nil then
     Result := FApplicationServices.Translate(ClassName, Value, Value)
@@ -246,21 +248,21 @@ begin
     Result := Value;
 end;
 
-function TfrmExport.GetString(out Section, Name, Value: WideString): WordBool;
+function TfrmExport.GetString(out Section, Name, Value:WideString):WordBool;
 begin
   Result := true;
   case FCount of
-    0: Value := SFmtErrIvalidFilename;
-    1: Value := SError;
-    2: Value := SFmtOverwriteOK;
-    3: Value := SConfirm;
-    4: Value := Self.Caption;
-    5: Value := lblFilename.Caption;
-    6: Value := lblPreview.Caption;
-    7: Value := btnBrowse.Caption;
-    8: Value := btnOK.Caption;
-    9: Value := btnCancel.Caption;
-    10: Value := SaveDialog1.Title;
+    0:Value := SFmtErrIvalidFilename;
+    1:Value := SError;
+    2:Value := SFmtOverwriteOK;
+    3:Value := SConfirm;
+    4:Value := Self.Caption;
+    5:Value := lblFilename.Caption;
+    6:Value := lblPreview.Caption;
+    7:Value := btnBrowse.Caption;
+    8:Value := btnOK.Caption;
+    9:Value := btnCancel.Caption;
+    10:Value := SaveDialog1.Title;
   else
     Result := false;
     FCount := 0;
@@ -272,4 +274,3 @@ begin
 end;
 
 end.
-

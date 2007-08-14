@@ -9,80 +9,80 @@ uses
 
 type
   TfrmToolTreeView = class(TTntForm)
-    StatusBottom: TTntStatusBar;
-    splitVertical: TTntSplitter;
-    pnlLeft: TTntPanel;
-    lblSections: TTntLabel;
-    tvSections: TTntTreeView;
-    nbViews: TNotebook;
-    pnlRight: TTntPanel;
-    splitHorizontal: TTntSplitter;
-    pnlTopRight: TTntPanel;
-    lblOriginal: TTntLabel;
-    reOriginal: TTntRichEdit;
-    lvView: TTntListView;
-    popTreeview: TTntPopupMenu;
-    N1: TTntMenuItem;
-    N2: TTntMenuItem;
-    ilTreeView: TImageList;
-    pnlBottomRight: TTntPanel;
-    lblTranslation: TTntLabel;
-    reTranslation: TTntRichEdit;
-    alMain: TTntActionList;
-    acPrev: TTntAction;
-    acNext: TTntAction;
-    acPrevUntrans: TTntAction;
-    acNextUntrans: TTntAction;
-    acPrevSection: TTntAction;
-    acNextSection: TTntAction;
-    acClose: TTntAction;
-    Previous1: TTntMenuItem;
-    Next1: TTntMenuItem;
-    Previousuntranslated1: TTntMenuItem;
-    Nextuntranslated1: TTntMenuItem;
-    Previoussection1: TTntMenuItem;
-    Nextsection1: TTntMenuItem;
-    procedure tvSectionsChanging(Sender: TObject; Node: TTreeNode;
-      var AllowChange: Boolean);
-    procedure lvViewDblClick(Sender: TObject);
-    procedure tvSectionsCustomDrawItem(Sender: TCustomTreeView;
-      Node: TTreeNode; State: TCustomDrawState; var DefaultDraw: Boolean);
-    procedure tvSectionsGetImageIndex(Sender: TObject; Node: TTreeNode);
-    procedure lvViewCustomDrawItem(Sender: TCustomListView;
-      Item: TListItem; State: TCustomDrawState; var DefaultDraw: Boolean);
-    procedure tvSectionsDblClick(Sender: TObject);
-    procedure lvViewKeyDown(Sender: TObject; var Key: Word;
-      Shift: TShiftState);
-    procedure tvSectionsKeyPress(Sender: TObject; var Key: Char);
-    procedure lvViewKeyPress(Sender: TObject; var Key: Char);
-    procedure lvViewEnter(Sender: TObject);
-    procedure TntFormResize(Sender: TObject);
-    procedure TntFormKeyUp(Sender: TObject; var Key: Word;
-      Shift: TShiftState);
-    procedure reTranslationKeyUp(Sender: TObject; var Key: Word;
-      Shift: TShiftState);
-    procedure tvSectionsKeyUp(Sender: TObject; var Key: Word;
-      Shift: TShiftState);
-    procedure reTranslationKeyDown(Sender: TObject; var Key: Word;
-      Shift: TShiftState);
-    procedure acPrevExecute(Sender: TObject);
-    procedure acNextExecute(Sender: TObject);
-    procedure acPrevUntransExecute(Sender: TObject);
-    procedure acNextUntransExecute(Sender: TObject);
-    procedure acPrevSectionExecute(Sender: TObject);
-    procedure acNextSectionExecute(Sender: TObject);
-    procedure acCloseExecute(Sender: TObject);
+    StatusBottom:TTntStatusBar;
+    splitVertical:TTntSplitter;
+    pnlLeft:TTntPanel;
+    lblSections:TTntLabel;
+    tvSections:TTntTreeView;
+    nbViews:TNotebook;
+    pnlRight:TTntPanel;
+    splitHorizontal:TTntSplitter;
+    pnlTopRight:TTntPanel;
+    lblOriginal:TTntLabel;
+    reOriginal:TTntRichEdit;
+    lvView:TTntListView;
+    popTreeview:TTntPopupMenu;
+    N1:TTntMenuItem;
+    N2:TTntMenuItem;
+    ilTreeView:TImageList;
+    pnlBottomRight:TTntPanel;
+    lblTranslation:TTntLabel;
+    reTranslation:TTntRichEdit;
+    alMain:TTntActionList;
+    acPrev:TTntAction;
+    acNext:TTntAction;
+    acPrevUntrans:TTntAction;
+    acNextUntrans:TTntAction;
+    acPrevSection:TTntAction;
+    acNextSection:TTntAction;
+    acClose:TTntAction;
+    Previous1:TTntMenuItem;
+    Next1:TTntMenuItem;
+    Previousuntranslated1:TTntMenuItem;
+    Nextuntranslated1:TTntMenuItem;
+    Previoussection1:TTntMenuItem;
+    Nextsection1:TTntMenuItem;
+    procedure tvSectionsChanging(Sender:TObject; Node:TTreeNode;
+      var AllowChange:Boolean);
+    procedure lvViewDblClick(Sender:TObject);
+    procedure tvSectionsCustomDrawItem(Sender:TCustomTreeView;
+      Node:TTreeNode; State:TCustomDrawState; var DefaultDraw:Boolean);
+    procedure tvSectionsGetImageIndex(Sender:TObject; Node:TTreeNode);
+    procedure lvViewCustomDrawItem(Sender:TCustomListView;
+      Item:TListItem; State:TCustomDrawState; var DefaultDraw:Boolean);
+    procedure tvSectionsDblClick(Sender:TObject);
+    procedure lvViewKeyDown(Sender:TObject; var Key:Word;
+      Shift:TShiftState);
+    procedure tvSectionsKeyPress(Sender:TObject; var Key:Char);
+    procedure lvViewKeyPress(Sender:TObject; var Key:Char);
+    procedure lvViewEnter(Sender:TObject);
+    procedure TntFormResize(Sender:TObject);
+    procedure TntFormKeyUp(Sender:TObject; var Key:Word;
+      Shift:TShiftState);
+    procedure reTranslationKeyUp(Sender:TObject; var Key:Word;
+      Shift:TShiftState);
+    procedure tvSectionsKeyUp(Sender:TObject; var Key:Word;
+      Shift:TShiftState);
+    procedure reTranslationKeyDown(Sender:TObject; var Key:Word;
+      Shift:TShiftState);
+    procedure acPrevExecute(Sender:TObject);
+    procedure acNextExecute(Sender:TObject);
+    procedure acPrevUntransExecute(Sender:TObject);
+    procedure acNextUntransExecute(Sender:TObject);
+    procedure acPrevSectionExecute(Sender:TObject);
+    procedure acNextSectionExecute(Sender:TObject);
+    procedure acCloseExecute(Sender:TObject);
   private
     { Private declarations }
-    procedure BuildTree(const Items: ITranslationItems; const SelectedItem: ITranslationItem);
-    procedure FillListView(Node: TTntTreeNode);
-    procedure FindInTree(Data: Pointer);
+    procedure BuildTree(const Items:ITranslationItems; const SelectedItem:ITranslationItem);
+    procedure FillListView(Node:TTntTreeNode);
+    procedure FindInTree(Data:Pointer);
     procedure ShowAtEndMsg;
     procedure ShowAtStartMsg;
-    procedure SetPath(ANode: TTntTreeNode);
+    procedure SetPath(ANode:TTntTreeNode);
   public
     { Public declarations }
-    class function Edit(const Items: ITranslationItems; var SelectedItem: ITranslationItem): WordBool;
+    class function Edit(const Items:ITranslationItems; var SelectedItem:ITranslationItem):WordBool;
   end;
 
 implementation
@@ -101,8 +101,9 @@ begin
   MessageBeep(MB_OK);
 end;
 
-function trimCRLFRight(const S: WideString): WideString;
-var i: integer;
+function trimCRLFRight(const S:WideString):WideString;
+var
+  i:integer;
 begin
   Result := S;
   i := Length(Result);
@@ -112,12 +113,12 @@ begin
     SetLength(Result, i);
 end;
 
-procedure TfrmToolTreeView.BuildTree(const Items: ITranslationItems; const SelectedItem: ITranslationItem);
+procedure TfrmToolTreeView.BuildTree(const Items:ITranslationItems; const SelectedItem:ITranslationItem);
 var
-  N: TTntTreeNode;
-  i: integer;
-  FLastSection: WideString;
-  FoldSort: Integer;
+  N:TTntTreeNode;
+  i:integer;
+  FLastSection:WideString;
+  FoldSort:Integer;
 begin
   tvSections.Items.BeginUpdate;
   FOldSort := Items.Sort;
@@ -155,10 +156,10 @@ begin
   end;
 end;
 
-class function TfrmToolTreeView.Edit(const Items: ITranslationItems; var SelectedItem: ITranslationItem): WordBool;
+class function TfrmToolTreeView.Edit(const Items:ITranslationItems; var SelectedItem:ITranslationItem):WordBool;
 var
-  frm: TfrmToolTreeView;
-  Dummy: boolean;
+  frm:TfrmToolTreeView;
+  Dummy:boolean;
 begin
   frm := self.Create(Application);
   try
@@ -175,9 +176,10 @@ begin
   end;
 end;
 
-procedure TfrmToolTreeView.tvSectionsChanging(Sender: TObject;
-  Node: TTreeNode; var AllowChange: Boolean);
-var I: ITranslationItem;
+procedure TfrmToolTreeView.tvSectionsChanging(Sender:TObject;
+  Node:TTreeNode; var AllowChange:Boolean);
+var
+  I:ITranslationItem;
 begin
   if tvSections.Selected <> nil then // the previous selected node
   begin
@@ -224,9 +226,9 @@ begin
   reTranslation.SelectAll;
 end;
 
-procedure TfrmToolTreeView.FillListView(Node: TTntTreeNode);
+procedure TfrmToolTreeView.FillListView(Node:TTntTreeNode);
 var
-  N: TTntTreeNode;
+  N:TTntTreeNode;
   T:ITranslationItem;
 begin
   lvView.Items.BeginUpdate;
@@ -261,7 +263,7 @@ begin
     lvView.Selected := lvView.Items[0];
 end;
 
-procedure TfrmToolTreeView.lvViewDblClick(Sender: TObject);
+procedure TfrmToolTreeView.lvViewDblClick(Sender:TObject);
 begin
   if lvView.Selected <> nil then
     FindInTree(lvView.Selected.Data);
@@ -270,8 +272,9 @@ begin
   reTranslation.SelectAll;
 end;
 
-procedure TfrmToolTreeView.FindInTree(Data: Pointer);
-var N: TTntTreeNode;
+procedure TfrmToolTreeView.FindInTree(Data:Pointer);
+var
+  N:TTntTreeNode;
 begin
   N := tvSections.Items.GetFirstNode;
   while N <> nil do
@@ -286,9 +289,10 @@ begin
   end;
 end;
 
-procedure TfrmToolTreeView.tvSectionsCustomDrawItem(Sender: TCustomTreeView; Node: TTreeNode; State: TCustomDrawState;
-  var DefaultDraw: Boolean);
-var I: ITranslationItem;
+procedure TfrmToolTreeView.tvSectionsCustomDrawItem(Sender:TCustomTreeView; Node:TTreeNode; State:TCustomDrawState;
+  var DefaultDraw:Boolean);
+var
+  I:ITranslationItem;
 begin
   if Node = nil then
     Exit;
@@ -303,9 +307,10 @@ begin
   end;
 end;
 
-procedure TfrmToolTreeView.lvViewCustomDrawItem(Sender: TCustomListView;
-  Item: TListItem; State: TCustomDrawState; var DefaultDraw: Boolean);
-var I: ITranslationItem;
+procedure TfrmToolTreeView.lvViewCustomDrawItem(Sender:TCustomListView;
+  Item:TListItem; State:TCustomDrawState; var DefaultDraw:Boolean);
+var
+  I:ITranslationItem;
 begin
   if Item = nil then
     Exit;
@@ -320,9 +325,10 @@ begin
   end;
 end;
 
-procedure TfrmToolTreeView.tvSectionsGetImageIndex(Sender: TObject;
-  Node: TTreeNode);
-var I: ITranslationItem;
+procedure TfrmToolTreeView.tvSectionsGetImageIndex(Sender:TObject;
+  Node:TTreeNode);
+var
+  I:ITranslationItem;
 begin
   if Node = nil then
     Exit;
@@ -348,10 +354,10 @@ begin
   Node.SelectedIndex := Node.ImageIndex;
 end;
 
-procedure TfrmToolTreeView.SetPath(ANode: TTntTreeNode);
+procedure TfrmToolTreeView.SetPath(ANode:TTntTreeNode);
 var
-  N: TTntTreeNode;
-  S: WideString;
+  N:TTntTreeNode;
+  S:WideString;
 begin
   S := '';
   N := ANode;
@@ -365,7 +371,7 @@ begin
   StatusBottom.Panels[0].Text := S;
 end;
 
-procedure TfrmToolTreeView.tvSectionsDblClick(Sender: TObject);
+procedure TfrmToolTreeView.tvSectionsDblClick(Sender:TObject);
 begin
   if (tvSections.Selected = nil) or (tvSections.Selected.Data = nil) then
     Exit;
@@ -374,8 +380,8 @@ begin
   reTranslation.SelectAll;
 end;
 
-procedure TfrmToolTreeView.lvViewKeyDown(Sender: TObject; var Key: Word;
-  Shift: TShiftState);
+procedure TfrmToolTreeView.lvViewKeyDown(Sender:TObject; var Key:Word;
+  Shift:TShiftState);
 begin
   if Key = VK_RETURN then
   begin
@@ -384,20 +390,20 @@ begin
   end;
 end;
 
-procedure TfrmToolTreeView.tvSectionsKeyPress(Sender: TObject;
-  var Key: Char);
+procedure TfrmToolTreeView.tvSectionsKeyPress(Sender:TObject;
+  var Key:Char);
 begin
   if Key = #13 then
     Key := #0; // remove "bell"
 end;
 
-procedure TfrmToolTreeView.lvViewKeyPress(Sender: TObject; var Key: Char);
+procedure TfrmToolTreeView.lvViewKeyPress(Sender:TObject; var Key:Char);
 begin
   if Key = #13 then
     Key := #0; // remove "bell"
 end;
 
-procedure TfrmToolTreeView.lvViewEnter(Sender: TObject);
+procedure TfrmToolTreeView.lvViewEnter(Sender:TObject);
 begin
   if (lvView.Items.Count > 0) and (lvView.Selected = nil) then
     lvView.Selected := lvView.Items[0];
@@ -405,8 +411,9 @@ begin
     lvView.Selected.Focused := true;
 end;
 
-procedure TfrmToolTreeView.TntFormResize(Sender: TObject);
-var i, j:integer;
+procedure TfrmToolTreeView.TntFormResize(Sender:TObject);
+var
+  i, j:integer;
 begin
   i := ClientHeight div 2;
   pnlTopRight.Height := i;
@@ -415,15 +422,15 @@ begin
     lvView.Columns[j].Width := i;
 end;
 
-procedure TfrmToolTreeView.TntFormKeyUp(Sender: TObject; var Key: Word;
-  Shift: TShiftState);
+procedure TfrmToolTreeView.TntFormKeyUp(Sender:TObject; var Key:Word;
+  Shift:TShiftState);
 begin
   if (Key = VK_ESCAPE) then
     Close;
 end;
 
-procedure TfrmToolTreeView.reTranslationKeyUp(Sender: TObject;
-  var Key: Word; Shift: TShiftState);
+procedure TfrmToolTreeView.reTranslationKeyUp(Sender:TObject;
+  var Key:Word; Shift:TShiftState);
 begin
   if Key = VK_RETURN then
   begin
@@ -433,8 +440,8 @@ begin
   end;
 end;
 
-procedure TfrmToolTreeView.tvSectionsKeyUp(Sender: TObject; var Key: Word;
-  Shift: TShiftState);
+procedure TfrmToolTreeView.tvSectionsKeyUp(Sender:TObject; var Key:Word;
+  Shift:TShiftState);
 begin
   if Key = VK_RETURN then
   begin
@@ -443,14 +450,14 @@ begin
   end;
 end;
 
-procedure TfrmToolTreeView.reTranslationKeyDown(Sender: TObject;
-  var Key: Word; Shift: TShiftState);
+procedure TfrmToolTreeView.reTranslationKeyDown(Sender:TObject;
+  var Key:Word; Shift:TShiftState);
 begin
   if Key = VK_RETURN then
     Key := 0;
 end;
 
-procedure TfrmToolTreeView.acPrevExecute(Sender: TObject);
+procedure TfrmToolTreeView.acPrevExecute(Sender:TObject);
 begin
   if (tvSections.Selected <> nil) and (tvSections.Selected.GetPrev <> nil) then
   begin
@@ -460,7 +467,7 @@ begin
   ShowAtStartMsg;
 end;
 
-procedure TfrmToolTreeView.acNextExecute(Sender: TObject);
+procedure TfrmToolTreeView.acNextExecute(Sender:TObject);
 begin
   if (tvSections.Selected <> nil) and (tvSections.Selected.GetNext <> nil) then
   begin
@@ -470,10 +477,10 @@ begin
   ShowAtEndMsg;
 end;
 
-procedure TfrmToolTreeView.acPrevUntransExecute(Sender: TObject);
+procedure TfrmToolTreeView.acPrevUntransExecute(Sender:TObject);
 var
-  N: TTntTreeNode;
-  I: ITranslationItem;
+  N:TTntTreeNode;
+  I:ITranslationItem;
 begin
   N := tvSections.Selected;
   if N <> nil then
@@ -494,10 +501,10 @@ begin
   ShowAtStartMsg;
 end;
 
-procedure TfrmToolTreeView.acNextUntransExecute(Sender: TObject);
+procedure TfrmToolTreeView.acNextUntransExecute(Sender:TObject);
 var
-  N: TTntTreeNode;
-  I: ITranslationItem;
+  N:TTntTreeNode;
+  I:ITranslationItem;
 begin
   N := tvSections.Selected;
   if N <> nil then
@@ -518,9 +525,9 @@ begin
   ShowAtEndMsg;
 end;
 
-procedure TfrmToolTreeView.acPrevSectionExecute(Sender: TObject);
+procedure TfrmToolTreeView.acPrevSectionExecute(Sender:TObject);
 var
-  N: TTntTreeNode;
+  N:TTntTreeNode;
 begin
   N := tvSections.Selected;
   if N <> nil then
@@ -539,9 +546,9 @@ begin
   ShowAtStartMsg;
 end;
 
-procedure TfrmToolTreeView.acNextSectionExecute(Sender: TObject);
+procedure TfrmToolTreeView.acNextSectionExecute(Sender:TObject);
 var
-  N: TTntTreeNode;
+  N:TTntTreeNode;
 begin
   N := tvSections.Selected;
   if N <> nil then
@@ -560,10 +567,9 @@ begin
   ShowAtEndMsg;
 end;
 
-procedure TfrmToolTreeView.acCloseExecute(Sender: TObject);
+procedure TfrmToolTreeView.acCloseExecute(Sender:TObject);
 begin
   Close;
 end;
 
 end.
-

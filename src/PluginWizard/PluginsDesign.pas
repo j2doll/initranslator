@@ -26,7 +26,7 @@ type
   // creates a repository wizard for IniTranslator plugins.
   // The wizard can be access from the "New" tab in the Repository
   TPluginWizard = class(TInterfacedObject, IInterface, IOTANotifier,
-    IOTAWizard, IOTARepositoryWizard, IOTAProjectWizard)
+      IOTAWizard, IOTARepositoryWizard, IOTAProjectWizard)
   public
     { IOTANotifier }
     procedure AfterSave;
@@ -34,15 +34,15 @@ type
     procedure Destroyed;
     procedure Modified;
     { IOTAWizard }
-    function GetIDString: string;
-    function GetName: string;
-    function GetState: TWizardState;
+    function GetIDString:string;
+    function GetName:string;
+    function GetState:TWizardState;
     procedure Execute;
     { IOTARepositoryWizard }
-    function GetAuthor: string;
-    function GetComment: string;
-    function GetGlyph: Cardinal;
-    function GetPage: string;
+    function GetAuthor:string;
+    function GetComment:string;
+    function GetGlyph:Cardinal;
+    function GetPage:string;
   end;
 
 procedure Register;
@@ -50,7 +50,7 @@ procedure Register;
 implementation
 uses
   Windows, SysUtils, PluginOptions, PluginWizardForm;
-  
+
 {$R includes.res}
 
 procedure Register;
@@ -61,16 +61,16 @@ end;
 var
   FModuleServices:IOTAModuleServices = nil;
 
-function ModuleServices: IOTAModuleServices;
+function ModuleServices:IOTAModuleServices;
 begin
   if FModuleServices = nil then
     FModuleServices := (BorlandIDEServices as IOTAModuleServices);
   Result := FModuleServices;
 end;
 
-function GetActiveProjectGroup: IOTAProjectGroup;
+function GetActiveProjectGroup:IOTAProjectGroup;
 var
-  i: Integer;
+  i:Integer;
 begin
   for i := 0 to ModuleServices.ModuleCount - 1 do
     if Supports(ModuleServices.Modules[i], IOTAProjectGroup, Result) then
@@ -89,7 +89,7 @@ begin
   SetLength(Result, SizeofResource(ResInstance, HRes));
 end;
 
-function ReplaceMacros(const S:String; Options:TPluginOptions):String;
+function ReplaceMacros(const S:string; Options:TPluginOptions):string;
 begin
 // %transpath% %project% %pluginclassname% %unit% %title%
   Result := StringReplace(S, '%transpath%', Options.TransIntfPath, [rfReplaceAll]);
@@ -103,69 +103,69 @@ type
   // sets up the project for creation
   TPluginCreator = class(TInterfacedObject, IInterface, IOTACreator, IOTAProjectCreator)
   private
-    FOptions: TPluginOptions;
+    FOptions:TPluginOptions;
   public
     // IOTACreator
-    function GetCreatorType: string;
-    function GetExisting: Boolean;
-    function GetFileSystem: string;
-    function GetOwner: IOTAModule;
-    function GetUnnamed: Boolean;
+    function GetCreatorType:string;
+    function GetExisting:Boolean;
+    function GetFileSystem:string;
+    function GetOwner:IOTAModule;
+    function GetUnnamed:Boolean;
     // IOTAProjectCreator
-    function GetFileName: string;
-    function GetOptionFileName: string;
-    function GetShowSource: Boolean;
+    function GetFileName:string;
+    function GetOptionFileName:string;
+    function GetShowSource:Boolean;
     procedure NewDefaultModule;
-    function NewOptionSource(const ProjectName: string): IOTAFile;
-    procedure NewProjectResource(const Project: IOTAProject);
-    function NewProjectSource(const ProjectName: string): IOTAFile;
-    constructor Create(Options: TPluginOptions);
+    function NewOptionSource(const ProjectName:string):IOTAFile;
+    procedure NewProjectResource(const Project:IOTAProject);
+    function NewProjectSource(const ProjectName:string):IOTAFile;
+    constructor Create(Options:TPluginOptions);
   end;
   // creates the project file
   TProjectFile = class(TInterfacedObject, IInterface, IOTAFile)
   private
-    FOptions: TPluginOptions;
+    FOptions:TPluginOptions;
   public
-    constructor Create(Options: TPluginOptions; const ProjectName: string);
-    function GetAge: TDateTime;
-    function GetSource: string;
+    constructor Create(Options:TPluginOptions; const ProjectName:string);
+    function GetAge:TDateTime;
+    function GetSource:string;
   end;
   // sets up the implementation file for creation
   TUnitCreator = class(TInterfacedObject, IInterface, IOTACreator, IOTAModuleCreator)
   private
-    FOwner: IOTAModule;
-    FOptions: TPluginOptions;
+    FOwner:IOTAModule;
+    FOptions:TPluginOptions;
   public
-    procedure FormCreated(const FormEditor: IOTAFormEditor);
-    function GetAncestorName: string;
-    function GetCreatorType: string;
-    function GetExisting: Boolean;
-    function GetFileSystem: string;
-    function GetFormName: string;
-    function GetImplFileName: string;
-    function GetIntfFileName: string;
-    function GetMainForm: Boolean;
-    function GetOwner: IOTAModule;
-    function GetShowForm: Boolean;
-    function GetShowSource: Boolean;
-    function GetUnnamed: Boolean;
-    function NewFormFile(const FormIdent: string;
-      const AncestorIdent: string): IOTAFile;
-    function NewImplSource(const ModuleIdent: string;
-      const FormIdent: string; const AncestorIdent: string): IOTAFile;
-    function NewIntfSource(const ModuleIdent: string;
-      const FormIdent: string; const AncestorIdent: string): IOTAFile;
-    constructor Create(const Owner: IOTAModule; Options: TPluginOptions);
+    procedure FormCreated(const FormEditor:IOTAFormEditor);
+    function GetAncestorName:string;
+    function GetCreatorType:string;
+    function GetExisting:Boolean;
+    function GetFileSystem:string;
+    function GetFormName:string;
+    function GetImplFileName:string;
+    function GetIntfFileName:string;
+    function GetMainForm:Boolean;
+    function GetOwner:IOTAModule;
+    function GetShowForm:Boolean;
+    function GetShowSource:Boolean;
+    function GetUnnamed:Boolean;
+    function NewFormFile(const FormIdent:string;
+      const AncestorIdent:string):IOTAFile;
+    function NewImplSource(const ModuleIdent:string;
+      const FormIdent:string; const AncestorIdent:string):IOTAFile;
+    function NewIntfSource(const ModuleIdent:string;
+      const FormIdent:string; const AncestorIdent:string):IOTAFile;
+    constructor Create(const Owner:IOTAModule; Options:TPluginOptions);
   end;
 
   // creates implementation file
   TUnitFile = class(TInterfacedObject, IInterface, IOTAFile)
   private
-    FOptions: TPluginOptions;
+    FOptions:TPluginOptions;
   public
-    function GetAge: TDateTime;
-    function GetSource: string;
-    constructor Create(Options: TPluginOptions; const ModuleIdent: string);
+    function GetAge:TDateTime;
+    function GetSource:string;
+    constructor Create(Options:TPluginOptions; const ModuleIdent:string);
   end;
 
 { TPluginWizard }
@@ -187,8 +187,8 @@ end;
 
 procedure TPluginWizard.Execute;
 var
-  Module: IOTAModule;
-  Options: TPluginOptions;
+  Module:IOTAModule;
+  Options:TPluginOptions;
 begin
   Options := TPluginOptions.Create;
   try
@@ -202,37 +202,37 @@ begin
   end;
 end;
 
-function TPluginWizard.GetAuthor: string;
+function TPluginWizard.GetAuthor:string;
 begin
   Result := 'Peter Thörnqvist';
 end;
 
-function TPluginWizard.GetComment: string;
+function TPluginWizard.GetComment:string;
 begin
   Result := 'Create new IniTranslator plugin';
 end;
 
-function TPluginWizard.GetGlyph: Cardinal;
+function TPluginWizard.GetGlyph:Cardinal;
 begin
   Result := LoadIcon(hInstance, MakeIntResource('IDI_ICON1'));
 end;
 
-function TPluginWizard.GetIDString: string;
+function TPluginWizard.GetIDString:string;
 begin
   Result := 'IniTranslator.PluginWizard';
 end;
 
-function TPluginWizard.GetName: string;
+function TPluginWizard.GetName:string;
 begin
   Result := 'IniTranslator Plugin';
 end;
 
-function TPluginWizard.GetPage: string;
+function TPluginWizard.GetPage:string;
 begin
   Result := 'New';
 end;
 
-function TPluginWizard.GetState: TWizardState;
+function TPluginWizard.GetState:TWizardState;
 begin
   Result := [wsEnabled];
 end;
@@ -244,48 +244,48 @@ end;
 
 { TPluginCreator }
 
-constructor TPluginCreator.Create(Options: TPluginOptions);
+constructor TPluginCreator.Create(Options:TPluginOptions);
 begin
   FOptions := Options;
 end;
 
-function TPluginCreator.GetCreatorType: string;
+function TPluginCreator.GetCreatorType:string;
 begin
   Result := ''; // custom
 end;
 
-function TPluginCreator.GetExisting: Boolean;
+function TPluginCreator.GetExisting:Boolean;
 begin
   Result := false;
 end;
 
-function TPluginCreator.GetFileName: string;
+function TPluginCreator.GetFileName:string;
 begin
   Result := '';
 end;
 
-function TPluginCreator.GetFileSystem: string;
+function TPluginCreator.GetFileSystem:string;
 begin
   Result := '';
 end;
 
-function TPluginCreator.GetOptionFileName: string;
+function TPluginCreator.GetOptionFileName:string;
 begin
   Result := '';
 end;
 
-function TPluginCreator.GetOwner: IOTAModule;
+function TPluginCreator.GetOwner:IOTAModule;
 begin
   // TODO 5 -cBUG: Even if we return a valid project group here, Delphi still creates a new project group for the project...Why?
   Result := GetActiveProjectGroup;
 end;
 
-function TPluginCreator.GetShowSource: Boolean;
+function TPluginCreator.GetShowSource:Boolean;
 begin
   Result := true;
 end;
 
-function TPluginCreator.GetUnnamed: Boolean;
+function TPluginCreator.GetUnnamed:Boolean;
 begin
   Result := true;
 end;
@@ -295,35 +295,35 @@ begin
   //
 end;
 
-function TPluginCreator.NewOptionSource(const ProjectName: string): IOTAFile;
+function TPluginCreator.NewOptionSource(const ProjectName:string):IOTAFile;
 begin
   Result := nil;
 end;
 
-procedure TPluginCreator.NewProjectResource(const Project: IOTAProject);
+procedure TPluginCreator.NewProjectResource(const Project:IOTAProject);
 begin
   //
 end;
 
-function TPluginCreator.NewProjectSource(const ProjectName: string): IOTAFile;
+function TPluginCreator.NewProjectSource(const ProjectName:string):IOTAFile;
 begin
   Result := TProjectFile.Create(FOptions, ProjectName);
 end;
 
 { TProjectFile }
 
-constructor TProjectFile.Create(Options: TPluginOptions; const ProjectName: string);
+constructor TProjectFile.Create(Options:TPluginOptions; const ProjectName:string);
 begin
   FOptions := Options;
   FOptions.ProjectName := ProjectName;
 end;
 
-function TProjectFile.GetAge: TDateTime;
+function TProjectFile.GetAge:TDateTime;
 begin
   Result := -1;
 end;
 
-function TProjectFile.GetSource: string;
+function TProjectFile.GetSource:string;
 begin
   if FOptions.IsFileParser then
     Result := LoadResourceText('FILEPLUGINPROJECT')
@@ -334,109 +334,109 @@ end;
 
 { TUnitCreator }
 
-constructor TUnitCreator.Create(const Owner: IOTAModule; Options: TPluginOptions);
+constructor TUnitCreator.Create(const Owner:IOTAModule; Options:TPluginOptions);
 begin
   FOwner := Owner;
   FOptions := Options;
 end;
 
-procedure TUnitCreator.FormCreated(const FormEditor: IOTAFormEditor);
+procedure TUnitCreator.FormCreated(const FormEditor:IOTAFormEditor);
 begin
 //
 end;
 
-function TUnitCreator.GetAncestorName: string;
+function TUnitCreator.GetAncestorName:string;
 begin
   Result := '';
 end;
 
-function TUnitCreator.GetCreatorType: string;
+function TUnitCreator.GetCreatorType:string;
 begin
   Result := ''; // custom
 end;
 
-function TUnitCreator.GetExisting: Boolean;
+function TUnitCreator.GetExisting:Boolean;
 begin
   Result := false;
 end;
 
-function TUnitCreator.GetFileSystem: string;
+function TUnitCreator.GetFileSystem:string;
 begin
   Result := '';
 end;
 
-function TUnitCreator.GetFormName: string;
+function TUnitCreator.GetFormName:string;
 begin
   Result := '';
 end;
 
-function TUnitCreator.GetImplFileName: string;
+function TUnitCreator.GetImplFileName:string;
 begin
   Result := '';
 end;
 
-function TUnitCreator.GetIntfFileName: string;
+function TUnitCreator.GetIntfFileName:string;
 begin
   Result := '';
 end;
 
-function TUnitCreator.GetMainForm: Boolean;
+function TUnitCreator.GetMainForm:Boolean;
 begin
   Result := false;
 end;
 
-function TUnitCreator.GetOwner: IOTAModule;
+function TUnitCreator.GetOwner:IOTAModule;
 begin
   Result := FOwner;
 end;
 
-function TUnitCreator.GetShowForm: Boolean;
+function TUnitCreator.GetShowForm:Boolean;
 begin
   Result := false;
 end;
 
-function TUnitCreator.GetShowSource: Boolean;
+function TUnitCreator.GetShowSource:Boolean;
 begin
   Result := true;
 end;
 
-function TUnitCreator.GetUnnamed: Boolean;
+function TUnitCreator.GetUnnamed:Boolean;
 begin
   Result := true;
 end;
 
-function TUnitCreator.NewFormFile(const FormIdent, AncestorIdent: string): IOTAFile;
+function TUnitCreator.NewFormFile(const FormIdent, AncestorIdent:string):IOTAFile;
 begin
   Result := nil;
 end;
 
-function TUnitCreator.NewImplSource(const ModuleIdent, FormIdent, AncestorIdent: string): IOTAFile;
+function TUnitCreator.NewImplSource(const ModuleIdent, FormIdent, AncestorIdent:string):IOTAFile;
 begin
   Result := TUnitFile.Create(FOptions, ModuleIdent);
 end;
 
 function TUnitCreator.NewIntfSource(const ModuleIdent, FormIdent,
-  AncestorIdent: string): IOTAFile;
+  AncestorIdent:string):IOTAFile;
 begin
   Result := nil;
 end;
 
 { TUnitFile }
 
-constructor TUnitFile.Create(Options: TPluginOptions; const ModuleIdent: string);
+constructor TUnitFile.Create(Options:TPluginOptions; const ModuleIdent:string);
 begin
   FOptions := Options;
   FOptions.UnitName := ModuleIdent;
 end;
 
-function TUnitFile.GetAge: TDateTime;
+function TUnitFile.GetAge:TDateTime;
 begin
   Result := -1;
 end;
 
-function TUnitFile.GetSource: string;
+function TUnitFile.GetSource:string;
 var
-  s, dummy: string;
+  s, dummy:string;
 begin
   if FOptions.UnitName = '' then
   begin
@@ -451,4 +451,3 @@ begin
 end;
 
 end.
-

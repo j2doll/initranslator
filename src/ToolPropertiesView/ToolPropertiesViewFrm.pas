@@ -9,27 +9,27 @@ uses
 
 type
   TfrmToolPropertiesView = class(TTntForm)
-    TntStatusBar1: TTntStatusBar;
-    lvItems: TTntListView;
-    alMain: TTntActionList;
-    acSync: TTntAction;
-    acClose: TTntAction;
-    popListView: TTntPopupMenu;
-    Selectinmainlist1: TTntMenuItem;
-    Close1: TTntMenuItem;
-    N1: TTntMenuItem;
-    procedure lvItemsData(Sender: TObject; Item: TListItem);
-    procedure acCloseExecute(Sender: TObject);
-    procedure acSyncExecute(Sender: TObject);
+    TntStatusBar1:TTntStatusBar;
+    lvItems:TTntListView;
+    alMain:TTntActionList;
+    acSync:TTntAction;
+    acClose:TTntAction;
+    popListView:TTntPopupMenu;
+    Selectinmainlist1:TTntMenuItem;
+    Close1:TTntMenuItem;
+    N1:TTntMenuItem;
+    procedure lvItemsData(Sender:TObject; Item:TListItem);
+    procedure acCloseExecute(Sender:TObject);
+    procedure acSyncExecute(Sender:TObject);
   private
     { Private declarations }
     FAppServices:IApplicationServices;
-    procedure LoadItems(const ApplicationServices: IApplicationServices);
+    procedure LoadItems(const ApplicationServices:IApplicationServices);
     procedure RefreshView;
   public
     { Public declarations }
     class function Execute(const ApplicationServices:IApplicationServices;
-      var SelectedItem: ITranslationItem): Boolean;
+      var SelectedItem:ITranslationItem):Boolean;
   end;
 
 implementation
@@ -39,9 +39,9 @@ implementation
 { TfrmToolPropertiesView }
 
 class function TfrmToolPropertiesView.Execute(const ApplicationServices:IApplicationServices;
-  var SelectedItem: ITranslationItem): Boolean;
+  var SelectedItem:ITranslationItem):Boolean;
 var
-  frm: TfrmToolPropertiesView;
+  frm:TfrmToolPropertiesView;
   FAppHandle:Cardinal;
 begin
   FAppHandle := Application.Handle;
@@ -57,28 +57,30 @@ begin
   end;
 end;
 
-procedure TfrmToolPropertiesView.LoadItems(const ApplicationServices: IApplicationServices);
+procedure TfrmToolPropertiesView.LoadItems(const ApplicationServices:IApplicationServices);
 begin
   FAppServices := ApplicationServices;
   RefreshView;
 end;
 
 procedure TfrmToolPropertiesView.RefreshView;
-var i:integer;
+var
+  i:integer;
 begin
   if FAppServices <> nil then
     lvItems.Items.Count := FAppServices.Items.Count
   else
     lvItems.Items.Count := 0;
   if lvItems.Items.Count > 0 then
-  for i := 0 to lvItems.Columns.Count - 1 do
-    lvItems.Columns[i].Width := ColumnHeaderWidth;
-  TntStatusBar1.Panels[0].Text := WideFormat(' %d item(s) in list',[lvItems.Items.Count]);
+    for i := 0 to lvItems.Columns.Count - 1 do
+      lvItems.Columns[i].Width := ColumnHeaderWidth;
+  TntStatusBar1.Panels[0].Text := WideFormat(' %d item(s) in list', [lvItems.Items.Count]);
 end;
 
-procedure TfrmToolPropertiesView.lvItemsData(Sender: TObject;
-  Item: TListItem);
-var AItem:ITranslationItem;
+procedure TfrmToolPropertiesView.lvItemsData(Sender:TObject;
+  Item:TListItem);
+var
+  AItem:ITranslationItem;
 begin
   if (FAppServices <> nil) and (Item.Index >= 0) and (Item.Index < FAppServices.Items.Count) then
     with TTntListItem(Item) do
@@ -101,12 +103,12 @@ begin
     end;
 end;
 
-procedure TfrmToolPropertiesView.acCloseExecute(Sender: TObject);
+procedure TfrmToolPropertiesView.acCloseExecute(Sender:TObject);
 begin
   Close;
 end;
 
-procedure TfrmToolPropertiesView.acSyncExecute(Sender: TObject);
+procedure TfrmToolPropertiesView.acSyncExecute(Sender:TObject);
 begin
   if (FAppServices <> nil) and (lvItems.Selected <> nil)
     and (lvItems.Selected.Index >= 0) and (lvItems.Selected.Index < FAppServices.Items.Count) then
@@ -114,4 +116,3 @@ begin
 end;
 
 end.
-

@@ -31,26 +31,26 @@ RESTRICTIONS:
 type
   TPHPParser = class(TInterfacedObject, IUnknown, IFileParser, ILocalizable)
   private
-    FOldHandle: LongWord;
-    FCount: integer;
-    FAppServices: IApplicationServices;
-    FOrigFile, FTransFile: WideString;
-    FExportRect: TRect;
-    procedure BuildPreview(const Items: ITranslationItems; Strings: TTntStrings);
-    function DoPHPImport(const Items, Orphans: ITranslationItems; const OrigFile, TransFile: WideString): boolean;
+    FOldHandle:LongWord;
+    FCount:integer;
+    FAppServices:IApplicationServices;
+    FOrigFile, FTransFile:WideString;
+    FExportRect:TRect;
+    procedure BuildPreview(const Items:ITranslationItems; Strings:TTntStrings);
+    function DoPHPImport(const Items, Orphans:ITranslationItems; const OrigFile, TransFile:WideString):boolean;
     procedure LoadSettings;
     procedure SaveSettings;
-    function Translate(const Value: WideString): WideString;
+    function Translate(const Value:WideString):WideString;
   public
     constructor Create;
     destructor Destroy; override;
-    function Configure(Capability: Integer): HRESULT; safecall;
-    function DisplayName(Capability: Integer): WideString; safecall;
-    function ExportItems(const Items, Orphans: ITranslationItems): HRESULT; safecall;
-    function ImportItems(const Items, Orphans: ITranslationItems): HRESULT; safecall;
-    procedure Init(const ApplicationServices: IApplicationServices); safecall;
-    function Capabilities: Integer; safecall;
-    function GetString(out Section, Name, Value: WideString): WordBool; safecall;
+    function Configure(Capability:Integer):HRESULT; safecall;
+    function DisplayName(Capability:Integer):WideString; safecall;
+    function ExportItems(const Items, Orphans:ITranslationItems):HRESULT; safecall;
+    function ImportItems(const Items, Orphans:ITranslationItems):HRESULT; safecall;
+    procedure Init(const ApplicationServices:IApplicationServices); safecall;
+    function Capabilities:Integer; safecall;
+    function GetString(out Section, Name, Value:WideString):WordBool; safecall;
   end;
 
 implementation
@@ -65,23 +65,23 @@ const
   SError = 'PHP Parser Error';
   cSectionName = 'php';
 
-function YesNo(const Text, Caption: WideString): boolean;
+function YesNo(const Text, Caption:WideString):boolean;
 begin
   Result := WideMessageBox(GetActiveWindow, PWideChar(Text), PWideChar(Caption), MB_YESNO or MB_ICONQUESTION) = IDYES;
 end;
 
-procedure ShowError(const Text: WideString);
+procedure ShowError(const Text:WideString);
 begin
   WideMessageBox(GetActiveWindow, PWideChar('There was an error:'#13#10 + Text), PWideChar(WideString('PHP Error')), MB_OK or MB_ICONERROR);
 end;
 { TPHPParser }
 
-function TPHPParser.Capabilities: Integer;
+function TPHPParser.Capabilities:Integer;
 begin
   Result := CAP_IMPORT or CAP_EXPORT;
 end;
 
-function TPHPParser.Configure(Capability: Integer): HRESULT;
+function TPHPParser.Configure(Capability:Integer):HRESULT;
 begin
   Result := S_OK;
 end;
@@ -92,11 +92,11 @@ begin
   FOldHandle := Application.Handle;
 end;
 
-procedure TPHPParser.BuildPreview(const Items: ITranslationItems;
-  Strings: TTntStrings);
+procedure TPHPParser.BuildPreview(const Items:ITranslationItems;
+  Strings:TTntStrings);
 var
-  i: integer;
-  FOldSort: TTranslateSortType;
+  i:integer;
+  FOldSort:TTranslateSortType;
 begin
   try
     FOldSort := Items.Sort;
@@ -120,31 +120,31 @@ begin
   inherited;
 end;
 
-function TPHPParser.DisplayName(Capability: Integer): WideString;
+function TPHPParser.DisplayName(Capability:Integer):WideString;
 begin
   case Capability of
-    CAP_IMPORT: Result := Translate(cPHPImportTitle);
-    CAP_EXPORT: Result := Translate(cPHPExportTitle);
+    CAP_IMPORT:Result := Translate(cPHPImportTitle);
+    CAP_EXPORT:Result := Translate(cPHPExportTitle);
 //    CAP_CONFIGURE : Result := 'Configure';
   else
     Result := '';
   end;
 end;
 
-function TPHPParser.DoPHPImport(const Items, Orphans: ITranslationItems;
-  const OrigFile, TransFile: WideString): boolean;
+function TPHPParser.DoPHPImport(const Items, Orphans:ITranslationItems;
+  const OrigFile, TransFile:WideString):boolean;
 var
-  S: TTntStringList;
-  i, j: integer;
-  FOldSort: TTranslateSortType;
+  S:TTntStringList;
+  i, j:integer;
+  FOldSort:TTranslateSortType;
 
-  function ParseRow(const S: WideString; AIndex: integer; IsTranslation: boolean): boolean;
+  function ParseRow(const S:WideString; AIndex:integer; IsTranslation:boolean):boolean;
   type
     TParseState = (stNone, stDollar, stEqual, stFirstQuote, stLastQuote, stSemi);
   var
-    AName, AStr: WideString;
-    State: TParseState;
-    i, j: integer;
+    AName, AStr:WideString;
+    State:TParseState;
+    i, j:integer;
   begin
     Result := false;
     State := stNone;
@@ -234,8 +234,8 @@ begin
     finally
       S.Free;
     end;
-      Items.Modified := false;
-      Orphans.Modified := false;
+    Items.Modified := false;
+    Orphans.Modified := false;
     Items.Sort := FOldSort;
     Result := true;
   except
@@ -243,8 +243,9 @@ begin
   end;
 end;
 
-function TPHPParser.ExportItems(const Items, Orphans: ITranslationItems): HRESULT;
-var S: TTntStringlist;
+function TPHPParser.ExportItems(const Items, Orphans:ITranslationItems):HRESULT;
+var
+  S:TTntStringlist;
 begin
   try
     Result := S_FALSE;
@@ -266,7 +267,7 @@ begin
   end;
 end;
 
-function TPHPParser.ImportItems(const Items, Orphans: ITranslationItems): HRESULT;
+function TPHPParser.ImportItems(const Items, Orphans:ITranslationItems):HRESULT;
 begin
   try
     Result := S_FALSE;
@@ -286,14 +287,15 @@ begin
   end;
 end;
 
-procedure TPHPParser.Init(const ApplicationServices: IApplicationServices);
+procedure TPHPParser.Init(const ApplicationServices:IApplicationServices);
 begin
   FAppServices := ApplicationServices;
   Application.Handle := ApplicationServices.AppHandle;
 end;
 
 procedure TPHPParser.LoadSettings;
-var M: TMemoryStream;
+var
+  M:TMemoryStream;
 begin
   try
     with TIniFile.Create(ChangeFileExt(GetModuleName(hInstance), '.ini')) do
@@ -319,7 +321,8 @@ begin
 end;
 
 procedure TPHPParser.SaveSettings;
-var M: TMemoryStream;
+var
+  M:TMemoryStream;
 begin
   try
     with TIniFile.Create(ChangeFileExt(GetModuleName(hInstance), '.ini')) do
@@ -343,18 +346,18 @@ begin
 end;
 
 var
-  frmImport: TfrmDualImport = nil;
-  frmExport: TfrmExport = nil;
+  frmImport:TfrmDualImport = nil;
+  frmExport:TfrmExport = nil;
 
-function TPHPParser.GetString(out Section, Name, Value: WideString): WordBool;
+function TPHPParser.GetString(out Section, Name, Value:WideString):WordBool;
 begin
   Result := true;
   case FCount of
-    0: Value := cPHPFilter;
-    1: Value := cPHPExportTitle;
-    2: Value := cPHPImportTitle;
-    3: Value := SImportError;
-    4: Value := SError;
+    0:Value := cPHPFilter;
+    1:Value := cPHPExportTitle;
+    2:Value := cPHPImportTitle;
+    3:Value := SImportError;
+    4:Value := SError;
   else
     if frmImport = nil then
       frmImport := TfrmDualImport.Create(Application);
@@ -381,7 +384,7 @@ begin
   end;
 end;
 
-function TPHPParser.Translate(const Value: WideString): WideString;
+function TPHPParser.Translate(const Value:WideString):WideString;
 begin
   if FAppServices <> nil then
     Result := FAppServices.Translate(ClassName, Value, Value)
@@ -390,4 +393,3 @@ begin
 end;
 
 end.
-

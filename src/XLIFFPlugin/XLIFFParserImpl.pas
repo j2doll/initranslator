@@ -25,22 +25,22 @@ uses
 type
   TXLIFFParser = class(TInterfacedObject, IInterface, IFileParser)
   private
-    FOldAppHandle: Cardinal;
-    FApplicationServices: IApplicationServices;
-    FFilename: WideString;
+    FOldAppHandle:Cardinal;
+    FApplicationServices:IApplicationServices;
+    FFilename:WideString;
     procedure LoadSettings;
     procedure SaveSettings;
     function Translate(const Value:WideString):WideString;
 
   protected
-    function Capabilities: Integer; safecall;
-    function Configure(Capability: Integer): HRESULT; safecall;
-    function DisplayName(Capability: Integer): WideString; safecall;
-    function ExportItems(const Items: ITranslationItems;
-      const Orphans: ITranslationItems): HRESULT; safecall;
-    function ImportItems(const Items: ITranslationItems;
-      const Orphans: ITranslationItems): HRESULT; safecall;
-    procedure Init(const ApplicationServices: IApplicationServices); safecall;
+    function Capabilities:Integer; safecall;
+    function Configure(Capability:Integer):HRESULT; safecall;
+    function DisplayName(Capability:Integer):WideString; safecall;
+    function ExportItems(const Items:ITranslationItems;
+      const Orphans:ITranslationItems):HRESULT; safecall;
+    function ImportItems(const Items:ITranslationItems;
+      const Orphans:ITranslationItems):HRESULT; safecall;
+    procedure Init(const ApplicationServices:IApplicationServices); safecall;
   public
     constructor Create;
     destructor Destroy; override;
@@ -64,19 +64,19 @@ resourcestring
   cXLIFFFilter = 'XLIFF files (*.xlf)|*.xlf|All files (*.*)|*.*';
 
 var
-  XML: WideString = '';
+  XML:WideString = '';
 const
-  cTranslationItem: WideString = '%%%%%%%%T%d%%%%%%%%';
-  cOriginalItem: WideString = '%%%%%%%%O%d%%%%%%%%';
+  cTranslationItem:WideString = '%%%%%%%%T%d%%%%%%%%';
+  cOriginalItem:WideString = '%%%%%%%%O%d%%%%%%%%';
 
 { TXLIFFParser }
 
-function TXLIFFParser.Capabilities: Integer;
+function TXLIFFParser.Capabilities:Integer;
 begin
   Result := CAP_IMPORT or CAP_EXPORT;
 end;
 
-function TXLIFFParser.Configure(Capability: Integer): HRESULT;
+function TXLIFFParser.Configure(Capability:Integer):HRESULT;
 begin
   Result := E_NOTIMPL;
 end;
@@ -93,7 +93,7 @@ begin
   inherited;
 end;
 
-function TXLIFFParser.DisplayName(Capability: Integer): WideString;
+function TXLIFFParser.DisplayName(Capability:Integer):WideString;
 begin
   case Capability of
     CAP_IMPORT:
@@ -105,21 +105,22 @@ begin
   end;
 end;
 
-function TXLIFFParser.ExportItems(const Items, Orphans: ITranslationItems): HRESULT;
-var Strings: TTntStringlist;
+function TXLIFFParser.ExportItems(const Items, Orphans:ITranslationItems):HRESULT;
+var
+  Strings:TTntStringlist;
 
-  function WrapTags(const T: ITranslationItem; IsOriginal: boolean): WideString;
+  function WrapTags(const T:ITranslationItem; IsOriginal:boolean):WideString;
   begin
     if IsOriginal then
-      Result := WideFormat('%s%s</source>',[T.PreData, T.Original])
+      Result := WideFormat('%s%s</source>', [T.PreData, T.Original])
     else
-      Result := WideFormat('%s%s</target>',[T.PostData, T.Translation])
+      Result := WideFormat('%s%s</target>', [T.PostData, T.Translation])
   end;
-  procedure BuildPreview(const Items, Orphans: ITranslationItems; Strings: TTntStrings);
+  procedure BuildPreview(const Items, Orphans:ITranslationItems; Strings:TTntStrings);
   var
-    S: WideString;
-    i: integer;
-    TI: ITranslationItem;
+    S:WideString;
+    i:integer;
+    TI:ITranslationItem;
   begin
     S := XML;
     for i := 0 to Items.Count - 1 do
@@ -151,21 +152,22 @@ begin
   end;
 end;
 
-function TXLIFFParser.ImportItems(const Items, Orphans: ITranslationItems): HRESULT;
+function TXLIFFParser.ImportItems(const Items, Orphans:ITranslationItems):HRESULT;
 type
   TFoundItem = (fiOriginal, fiTranslation);
   TFoundItems = set of TFoundItem;
 
 var
-  NodeList, SourceNodes, TargetNodes: IDOMNodeList;
-  ParentNode, SourceNode, TargetNode: IDOMNode;
-  i: integer;
-  TI: ITranslationItem;
-  FFoundItems: TFoundItems;
-  FXMLImport: IXMLDocument;
+  NodeList, SourceNodes, TargetNodes:IDOMNodeList;
+  ParentNode, SourceNode, TargetNode:IDOMNode;
+  i:integer;
+  TI:ITranslationItem;
+  FFoundItems:TFoundItems;
+  FXMLImport:IXMLDocument;
 
-  function SaveTag(const S:WideString): WideString;
-  var i:integer;
+  function SaveTag(const S:WideString):WideString;
+  var
+    i:integer;
   begin
     Result := S;
     i := 1;
@@ -180,8 +182,9 @@ var
     end;
     Result := '';
   end;
-  function StripTags(const S: WideString): WideString;
-  var i:integer;
+  function StripTags(const S:WideString):WideString;
+  var
+    i:integer;
   begin
     Result := S;
     // strip start tag
@@ -280,7 +283,7 @@ begin
   end;
 end;
 
-procedure TXLIFFParser.Init(const ApplicationServices: IApplicationServices);
+procedure TXLIFFParser.Init(const ApplicationServices:IApplicationServices);
 begin
   if FOldAppHandle = 0 then
     FOldAppHandle := Application.Handle;
@@ -308,7 +311,7 @@ begin
   end;
 end;
 
-function TXLIFFParser.Translate(const Value: WideString): WideString;
+function TXLIFFParser.Translate(const Value:WideString):WideString;
 begin
   if FApplicationServices <> nil then
     Result := FApplicationServices.Translate(ClassName, Value, Value)
@@ -317,4 +320,3 @@ begin
 end;
 
 end.
-

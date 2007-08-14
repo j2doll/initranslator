@@ -25,24 +25,24 @@ uses
 type
   TToolPropertiesViewPlugins = class(TInterfacedObject, IInterface, IToolItems)
   public
-    function Count: Integer; safecall;
-    function ToolItem(Index: Integer; out ToolItem: IToolItem): HRESULT; safecall;
+    function Count:Integer; safecall;
+    function ToolItem(Index:Integer; out ToolItem:IToolItem):HRESULT; safecall;
   end;
 
   TToolPropertiesViewPlugin = class(TInterfacedObject, IInterface, IToolItem)
   private
     FAppServices:IApplicationServices;
   public
-    function About: WideString; safecall;
-    function DisplayName: WideString; safecall;
-    function Execute(const Items: ITranslationItems;
-      const Orphans: ITranslationItems;
-      var SelectedItem: ITranslationItem): HRESULT; safecall;
-    function Icon: Cardinal; safecall;
-    procedure Init(const ApplicationServices: IApplicationServices); safecall;
-    function Status(const Items: ITranslationItems;
-      const Orphans: ITranslationItems;
-      const SelectedItem: ITranslationItem): Integer; safecall;
+    function About:WideString; safecall;
+    function DisplayName:WideString; safecall;
+    function Execute(const Items:ITranslationItems;
+      const Orphans:ITranslationItems;
+      var SelectedItem:ITranslationItem):HRESULT; safecall;
+    function Icon:Cardinal; safecall;
+    procedure Init(const ApplicationServices:IApplicationServices); safecall;
+    function Status(const Items:ITranslationItems;
+      const Orphans:ITranslationItems;
+      const SelectedItem:ITranslationItem):Integer; safecall;
   end;
 
 implementation
@@ -51,13 +51,13 @@ uses
 
 { TToolPropertiesViewPlugins }
 
-function TToolPropertiesViewPlugins.Count: Integer;
+function TToolPropertiesViewPlugins.Count:Integer;
 begin
   Result := 1;
 end;
 
-function TToolPropertiesViewPlugins.ToolItem(Index: Integer;
-  out ToolItem: IToolItem): HRESULT;
+function TToolPropertiesViewPlugins.ToolItem(Index:Integer;
+  out ToolItem:IToolItem):HRESULT;
 begin
   if Index = 0 then
   begin
@@ -70,19 +70,19 @@ end;
 
 { TToolPropertiesViewPlugin }
 
-function TToolPropertiesViewPlugin.About: WideString;
+function TToolPropertiesViewPlugin.About:WideString;
 begin
   Result := 'Plugin to display all properties of the translation items';
 end;
 
 
-function TToolPropertiesViewPlugin.DisplayName: WideString;
+function TToolPropertiesViewPlugin.DisplayName:WideString;
 begin
   Result := 'View all &properties...';
 end;
 
 function TToolPropertiesViewPlugin.Execute(const Items,
-  Orphans: ITranslationItems; var SelectedItem: ITranslationItem): HRESULT;
+  Orphans:ITranslationItems; var SelectedItem:ITranslationItem):HRESULT;
 begin
   if TfrmToolPropertiesView.Execute(FAppServices, SelectedItem) then
     Result := S_OK
@@ -90,19 +90,19 @@ begin
     Result := S_FALSE;
 end;
 
-function TToolPropertiesViewPlugin.Icon: Cardinal;
+function TToolPropertiesViewPlugin.Icon:Cardinal;
 begin
   Result := 0;
 end;
 
-procedure TToolPropertiesViewPlugin.Init(const ApplicationServices: IApplicationServices);
+procedure TToolPropertiesViewPlugin.Init(const ApplicationServices:IApplicationServices);
 begin
   FAppServices := ApplicationServices;
 end;
 
 function TToolPropertiesViewPlugin.Status(const Items,
-  Orphans: ITranslationItems;
-  const SelectedItem: ITranslationItem): Integer;
+  Orphans:ITranslationItems;
+  const SelectedItem:ITranslationItem):Integer;
 begin
   Result := TOOL_VISIBLE;
   if Items.Count > 0 then

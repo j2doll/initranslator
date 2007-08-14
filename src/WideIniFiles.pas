@@ -27,34 +27,34 @@ type
 
   TWideCustomIniFile = class(TObject)
   private
-    FFileName: WideString;
+    FFileName:WideString;
   public
-    constructor Create(const FileName: WideString);
-    function SectionExists(const Section: WideString): Boolean;
-    function ReadString(const Section, Ident, Default: WideString): WideString; virtual; abstract;
-    procedure WriteString(const Section, Ident, Value: WideString); virtual; abstract;
-    function ReadInteger(const Section, Ident: WideString; Default: Longint): Longint; virtual;
-    procedure WriteInteger(const Section, Ident: WideString; Value: Longint); virtual;
-    function ReadBool(const Section, Ident: WideString; Default: Boolean): Boolean; virtual;
-    procedure WriteBool(const Section, Ident: WideString; Value: Boolean); virtual;
-    function ReadBinaryStream(const Section, Name: WideString; Value: TStream): Integer; virtual;
-    function ReadDate(const Section, Name: WideString; Default: TDateTime): TDateTime; virtual;
-    function ReadDateTime(const Section, Name: WideString; Default: TDateTime): TDateTime; virtual;
-    function ReadFloat(const Section, Name: WideString; Default: Double): Double; virtual;
-    function ReadTime(const Section, Name: WideString; Default: TDateTime): TDateTime; virtual;
-    procedure WriteBinaryStream(const Section, Name: WideString; Value: TStream); virtual;
-    procedure WriteDate(const Section, Name: WideString; Value: TDateTime); virtual;
-    procedure WriteDateTime(const Section, Name: WideString; Value: TDateTime); virtual;
-    procedure WriteFloat(const Section, Name: WideString; Value: Double); virtual;
-    procedure WriteTime(const Section, Name: WideString; Value: TDateTime); virtual;
-    procedure ReadSection(const Section: WideString; Strings: TTntStrings); virtual; abstract;
-    procedure ReadSections(Strings: TTntStrings); virtual; abstract;
-    procedure ReadSectionValues(const Section: WideString; Strings: TTntStrings); virtual; abstract;
-    procedure EraseSection(const Section: WideString); virtual; abstract;
-    procedure DeleteKey(const Section, Ident: WideString); virtual; abstract;
+    constructor Create(const FileName:WideString);
+    function SectionExists(const Section:WideString):Boolean;
+    function ReadString(const Section, Ident, Default:WideString):WideString; virtual; abstract;
+    procedure WriteString(const Section, Ident, Value:WideString); virtual; abstract;
+    function ReadInteger(const Section, Ident:WideString; Default:Longint):Longint; virtual;
+    procedure WriteInteger(const Section, Ident:WideString; Value:Longint); virtual;
+    function ReadBool(const Section, Ident:WideString; Default:Boolean):Boolean; virtual;
+    procedure WriteBool(const Section, Ident:WideString; Value:Boolean); virtual;
+    function ReadBinaryStream(const Section, Name:WideString; Value:TStream):Integer; virtual;
+    function ReadDate(const Section, Name:WideString; Default:TDateTime):TDateTime; virtual;
+    function ReadDateTime(const Section, Name:WideString; Default:TDateTime):TDateTime; virtual;
+    function ReadFloat(const Section, Name:WideString; Default:Double):Double; virtual;
+    function ReadTime(const Section, Name:WideString; Default:TDateTime):TDateTime; virtual;
+    procedure WriteBinaryStream(const Section, Name:WideString; Value:TStream); virtual;
+    procedure WriteDate(const Section, Name:WideString; Value:TDateTime); virtual;
+    procedure WriteDateTime(const Section, Name:WideString; Value:TDateTime); virtual;
+    procedure WriteFloat(const Section, Name:WideString; Value:Double); virtual;
+    procedure WriteTime(const Section, Name:WideString; Value:TDateTime); virtual;
+    procedure ReadSection(const Section:WideString; Strings:TTntStrings); virtual; abstract;
+    procedure ReadSections(Strings:TTntStrings); virtual; abstract;
+    procedure ReadSectionValues(const Section:WideString; Strings:TTntStrings); virtual; abstract;
+    procedure EraseSection(const Section:WideString); virtual; abstract;
+    procedure DeleteKey(const Section, Ident:WideString); virtual; abstract;
     procedure UpdateFile; virtual; abstract;
-    function ValueExists(const Section, Ident: WideString): Boolean;
-    property FileName: WideString read FFileName;
+    function ValueExists(const Section, Ident:WideString):Boolean;
+    property FileName:WideString read FFileName;
   end;
 
   { TWideStringHash - used internally by TMemIniFile to optimize searches. }
@@ -62,43 +62,43 @@ type
   PPHashItem = ^PHashItem;
   PHashItem = ^THashItem;
   THashItem = record
-    Next: PHashItem;
-    Key: WideString;
-    Value: Integer;
+    Next:PHashItem;
+    Key:WideString;
+    Value:Integer;
   end;
 
   TWideStringHash = class
   private
-    Buckets: array of PHashItem;
+    Buckets:array of PHashItem;
   protected
-    function Find(const Key: WideString): PPHashItem;
-    function HashOf(const Key: WideString): Cardinal; virtual;
+    function Find(const Key:WideString):PPHashItem;
+    function HashOf(const Key:WideString):Cardinal; virtual;
   public
-    constructor Create(Size: Cardinal = 256);
+    constructor Create(Size:Cardinal = 256);
     destructor Destroy; override;
-    procedure Add(const Key: WideString; Value: Integer);
+    procedure Add(const Key:WideString; Value:Integer);
     procedure Clear;
-    procedure Remove(const Key: WideString);
-    function Modify(const Key: WideString; Value: Integer): Boolean;
-    function ValueOf(const Key: WideString): Integer;
+    procedure Remove(const Key:WideString);
+    function Modify(const Key:WideString; Value:Integer):Boolean;
+    function ValueOf(const Key:WideString):Integer;
   end;
 
   { TWideHashedStringList - A TTntStringList that uses TWideStringHash to improve the
     speed of Find }
   TWideHashedStringList = class(TTntStringList)
   private
-    FValueHash: TWideStringHash;
-    FNameHash: TWideStringHash;
-    FValueHashValid: Boolean;
-    FNameHashValid: Boolean;
+    FValueHash:TWideStringHash;
+    FNameHash:TWideStringHash;
+    FValueHashValid:Boolean;
+    FNameHashValid:Boolean;
     procedure UpdateValueHash;
     procedure UpdateNameHash;
   protected
     procedure Changed; override;
   public
     destructor Destroy; override;
-    function IndexOf(const S: WideString): Integer; override;
-    function IndexOfName(const Name: WideString): Integer; override;
+    function IndexOf(const S:WideString):Integer; override;
+    function IndexOfName(const Name:WideString):Integer; override;
   end;
 
   { TWideMemIniFile - loads an entire INI file into memory and allows all
@@ -107,39 +107,39 @@ type
 
   TWideMemIniFile = class(TWideCustomIniFile)
   private
-    FSections: TTntStringList;
-    function AddSection(const Section: WideString): TTntStrings;
-    function GetCaseSensitive: Boolean;
+    FSections:TTntStringList;
+    function AddSection(const Section:WideString):TTntStrings;
+    function GetCaseSensitive:Boolean;
     procedure LoadValues;
-    procedure SetCaseSensitive(Value: Boolean);
+    procedure SetCaseSensitive(Value:Boolean);
   public
-    constructor Create(const FileName: WideString);
+    constructor Create(const FileName:WideString);
     destructor Destroy; override;
     procedure Clear;
-    procedure DeleteKey(const Section, Ident: WideString); override;
-    procedure EraseSection(const Section: WideString); override;
-    procedure GetStrings(List: TTntStrings);
-    procedure ReadSection(const Section: WideString; Strings: TTntStrings); override;
-    procedure ReadSections(Strings: TTntStrings); override;
-    procedure ReadSectionValues(const Section: WideString; Strings: TTntStrings); override;
-    function ReadString(const Section, Ident, Default: WideString): WideString; override;
-    procedure Rename(const FileName: WideString; Reload: Boolean);
-    procedure SetStrings(List: TTntStrings);
+    procedure DeleteKey(const Section, Ident:WideString); override;
+    procedure EraseSection(const Section:WideString); override;
+    procedure GetStrings(List:TTntStrings);
+    procedure ReadSection(const Section:WideString; Strings:TTntStrings); override;
+    procedure ReadSections(Strings:TTntStrings); override;
+    procedure ReadSectionValues(const Section:WideString; Strings:TTntStrings); override;
+    function ReadString(const Section, Ident, Default:WideString):WideString; override;
+    procedure Rename(const FileName:WideString; Reload:Boolean);
+    procedure SetStrings(List:TTntStrings);
     procedure UpdateFile; override;
-    procedure WriteString(const Section, Ident, Value: WideString); override;
-    property CaseSensitive: Boolean read GetCaseSensitive write SetCaseSensitive;
+    procedure WriteString(const Section, Ident, Value:WideString); override;
+    property CaseSensitive:Boolean read GetCaseSensitive write SetCaseSensitive;
   end;
 
   TWideIniFile = class(TWideMemIniFile)
   public
     destructor Destroy; override;
-    function ReadString(const Section, Ident, Default: WideString): WideString; override;
-    procedure WriteString(const Section, Ident, Value: WideString); override;
-    procedure ReadSection(const Section: WideString; Strings: TTntStrings); override;
-    procedure ReadSections(Strings: TTntStrings); override;
-    procedure ReadSectionValues(const Section: WideString; Strings: TTntStrings); override;
-    procedure EraseSection(const Section: WideString); override;
-    procedure DeleteKey(const Section, Ident: WideString); override;
+    function ReadString(const Section, Ident, Default:WideString):WideString; override;
+    procedure WriteString(const Section, Ident, Value:WideString); override;
+    procedure ReadSection(const Section:WideString; Strings:TTntStrings); override;
+    procedure ReadSections(Strings:TTntStrings); override;
+    procedure ReadSectionValues(const Section:WideString; Strings:TTntStrings); override;
+    procedure EraseSection(const Section:WideString); override;
+    procedure DeleteKey(const Section, Ident:WideString); override;
     procedure UpdateFile; override;
   end;
 
@@ -147,21 +147,21 @@ implementation
 uses
   TntSysUtils, {$IFDEF COMPILER_9_UP}WideStrUtils{$ELSE}TntWideStrUtils{$ENDIF}, RTLConsts;
 
-function PChar2(const S: WideString): PChar;
+function PChar2(const S:WideString):PChar;
 begin
   Result := PChar(string(S));
 end;
 
 { TWideCustomIniFile }
 
-constructor TWideCustomIniFile.Create(const FileName: WideString);
+constructor TWideCustomIniFile.Create(const FileName:WideString);
 begin
   FFileName := FileName;
 end;
 
-function TWideCustomIniFile.SectionExists(const Section: WideString): Boolean;
+function TWideCustomIniFile.SectionExists(const Section:WideString):Boolean;
 var
-  S: TTntStrings;
+  S:TTntStrings;
 begin
   S := TTntStringlist.Create;
   try
@@ -172,10 +172,10 @@ begin
   end;
 end;
 
-function TWideCustomIniFile.ReadInteger(const Section, Ident: WideString;
-  Default: Longint): Longint;
+function TWideCustomIniFile.ReadInteger(const Section, Ident:WideString;
+  Default:Longint):Longint;
 var
-  IntStr: WideString;
+  IntStr:WideString;
 begin
   IntStr := ReadString(Section, Ident, '');
   if (Length(IntStr) > 2) and (IntStr[1] = '0') and
@@ -184,20 +184,20 @@ begin
   Result := StrToIntDef(IntStr, Default);
 end;
 
-procedure TWideCustomIniFile.WriteInteger(const Section, Ident: WideString; Value: Longint);
+procedure TWideCustomIniFile.WriteInteger(const Section, Ident:WideString; Value:Longint);
 begin
   WriteString(Section, Ident, IntToStr(Value));
 end;
 
-function TWideCustomIniFile.ReadBool(const Section, Ident: WideString;
-  Default: Boolean): Boolean;
+function TWideCustomIniFile.ReadBool(const Section, Ident:WideString;
+  Default:Boolean):Boolean;
 begin
   Result := ReadInteger(Section, Ident, Ord(Default)) <> 0;
 end;
 
-function TWideCustomIniFile.ReadDate(const Section, Name: WideString; Default: TDateTime): TDateTime;
+function TWideCustomIniFile.ReadDate(const Section, Name:WideString; Default:TDateTime):TDateTime;
 var
-  DateStr: WideString;
+  DateStr:WideString;
 begin
   DateStr := ReadString(Section, Name, '');
   Result := Default;
@@ -212,9 +212,9 @@ begin
   end;
 end;
 
-function TWideCustomIniFile.ReadDateTime(const Section, Name: WideString; Default: TDateTime): TDateTime;
+function TWideCustomIniFile.ReadDateTime(const Section, Name:WideString; Default:TDateTime):TDateTime;
 var
-  DateStr: WideString;
+  DateStr:WideString;
 begin
   DateStr := ReadString(Section, Name, '');
   Result := Default;
@@ -229,9 +229,9 @@ begin
   end;
 end;
 
-function TWideCustomIniFile.ReadFloat(const Section, Name: WideString; Default: Double): Double;
+function TWideCustomIniFile.ReadFloat(const Section, Name:WideString; Default:Double):Double;
 var
-  FloatStr: WideString;
+  FloatStr:WideString;
 begin
   FloatStr := ReadString(Section, Name, '');
   Result := Default;
@@ -246,9 +246,9 @@ begin
   end;
 end;
 
-function TWideCustomIniFile.ReadTime(const Section, Name: WideString; Default: TDateTime): TDateTime;
+function TWideCustomIniFile.ReadTime(const Section, Name:WideString; Default:TDateTime):TDateTime;
 var
-  TimeStr: WideString;
+  TimeStr:WideString;
 begin
   TimeStr := ReadString(Section, Name, '');
   Result := Default;
@@ -263,36 +263,36 @@ begin
   end;
 end;
 
-procedure TWideCustomIniFile.WriteDate(const Section, Name: WideString; Value: TDateTime);
+procedure TWideCustomIniFile.WriteDate(const Section, Name:WideString; Value:TDateTime);
 begin
   WriteString(Section, Name, DateToStr(Value));
 end;
 
-procedure TWideCustomIniFile.WriteDateTime(const Section, Name: WideString; Value: TDateTime);
+procedure TWideCustomIniFile.WriteDateTime(const Section, Name:WideString; Value:TDateTime);
 begin
   WriteString(Section, Name, DateTimeToStr(Value));
 end;
 
-procedure TWideCustomIniFile.WriteFloat(const Section, Name: WideString; Value: Double);
+procedure TWideCustomIniFile.WriteFloat(const Section, Name:WideString; Value:Double);
 begin
   WriteString(Section, Name, FloatToStr(Value));
 end;
 
-procedure TWideCustomIniFile.WriteTime(const Section, Name: WideString; Value: TDateTime);
+procedure TWideCustomIniFile.WriteTime(const Section, Name:WideString; Value:TDateTime);
 begin
   WriteString(Section, Name, TimeToStr(Value));
 end;
 
-procedure TWideCustomIniFile.WriteBool(const Section, Ident: WideString; Value: Boolean);
+procedure TWideCustomIniFile.WriteBool(const Section, Ident:WideString; Value:Boolean);
 const
-  Values: array[Boolean] of WideString = ('0', '1');
+  Values:array[Boolean] of WideString = ('0', '1');
 begin
   WriteString(Section, Ident, Values[Value]);
 end;
 
-function TWideCustomIniFile.ValueExists(const Section, Ident: WideString): Boolean;
+function TWideCustomIniFile.ValueExists(const Section, Ident:WideString):Boolean;
 var
-  S: TTntStrings;
+  S:TTntStrings;
 begin
   S := TTntStringlist.Create;
   try
@@ -304,23 +304,23 @@ begin
 end;
 
 function TWideCustomIniFile.ReadBinaryStream(const Section,
-  Name: WideString; Value: TStream): Integer;
+  Name:WideString; Value:TStream):Integer;
 begin
   raise EWideIniFileException.Create('ReadBinaryStream not implemented!');
 end;
 
 procedure TWideCustomIniFile.WriteBinaryStream(const Section,
-  Name: WideString; Value: TStream);
+  Name:WideString; Value:TStream);
 begin
   raise EWideIniFileException.Create('WriteBinaryStream not implemented!');
 end;
 
 { TWideStringHash }
 
-procedure TWideStringHash.Add(const Key: WideString; Value: Integer);
+procedure TWideStringHash.Add(const Key:WideString; Value:Integer);
 var
-  Hash: Integer;
-  Bucket: PHashItem;
+  Hash:Integer;
+  Bucket:PHashItem;
 begin
   Hash := HashOf(Key) mod Cardinal(Length(Buckets));
   New(Bucket);
@@ -332,8 +332,8 @@ end;
 
 procedure TWideStringHash.Clear;
 var
-  I: Integer;
-  P, N: PHashItem;
+  I:Integer;
+  P, N:PHashItem;
 begin
   for I := 0 to Length(Buckets) - 1 do
   begin
@@ -348,7 +348,7 @@ begin
   end;
 end;
 
-constructor TWideStringHash.Create(Size: Cardinal);
+constructor TWideStringHash.Create(Size:Cardinal);
 begin
   inherited Create;
   SetLength(Buckets, Size);
@@ -360,9 +360,9 @@ begin
   inherited Destroy;
 end;
 
-function TWideStringHash.Find(const Key: WideString): PPHashItem;
+function TWideStringHash.Find(const Key:WideString):PPHashItem;
 var
-  Hash: Integer;
+  Hash:Integer;
 begin
   Hash := HashOf(Key) mod Cardinal(Length(Buckets));
   Result := @Buckets[Hash];
@@ -375,9 +375,9 @@ begin
   end;
 end;
 
-function TWideStringHash.HashOf(const Key: WideString): Cardinal;
+function TWideStringHash.HashOf(const Key:WideString):Cardinal;
 var
-  I: Integer;
+  I:Integer;
 begin
   Result := 0;
   for I := 1 to Length(Key) do
@@ -385,9 +385,9 @@ begin
       Ord(Key[I]);
 end;
 
-function TWideStringHash.Modify(const Key: WideString; Value: Integer): Boolean;
+function TWideStringHash.Modify(const Key:WideString; Value:Integer):Boolean;
 var
-  P: PHashItem;
+  P:PHashItem;
 begin
   P := Find(Key)^;
   if P <> nil then
@@ -399,10 +399,10 @@ begin
     Result := False;
 end;
 
-procedure TWideStringHash.Remove(const Key: WideString);
+procedure TWideStringHash.Remove(const Key:WideString);
 var
-  P: PHashItem;
-  Prev: PPHashItem;
+  P:PHashItem;
+  Prev:PPHashItem;
 begin
   Prev := Find(Key);
   P := Prev^;
@@ -413,9 +413,9 @@ begin
   end;
 end;
 
-function TWideStringHash.ValueOf(const Key: WideString): Integer;
+function TWideStringHash.ValueOf(const Key:WideString):Integer;
 var
-  P: PHashItem;
+  P:PHashItem;
 begin
   P := Find(Key)^;
   if P <> nil then
@@ -440,7 +440,7 @@ begin
   inherited Destroy;
 end;
 
-function TWideHashedStringList.IndexOf(const S: WideString): Integer;
+function TWideHashedStringList.IndexOf(const S:WideString):Integer;
 begin
   UpdateValueHash;
   if not CaseSensitive then
@@ -449,7 +449,7 @@ begin
     Result := FValueHash.ValueOf(S);
 end;
 
-function TWideHashedStringList.IndexOfName(const Name: WideString): Integer;
+function TWideHashedStringList.IndexOfName(const Name:WideString):Integer;
 begin
   UpdateNameHash;
   if not CaseSensitive then
@@ -460,9 +460,9 @@ end;
 
 procedure TWideHashedStringList.UpdateNameHash;
 var
-  I: Integer;
-  P: Integer;
-  Key: WideString;
+  I:Integer;
+  P:Integer;
+  Key:WideString;
 begin
   if FNameHashValid then
     Exit;
@@ -489,7 +489,7 @@ end;
 
 procedure TWideHashedStringList.UpdateValueHash;
 var
-  I: Integer;
+  I:Integer;
 begin
   if FValueHashValid then
     Exit;
@@ -508,7 +508,7 @@ end;
 
 { TWideMemIniFile }
 
-constructor TWideMemIniFile.Create(const FileName: WideString);
+constructor TWideMemIniFile.Create(const FileName:WideString);
 begin
   inherited Create(FileName);
   FSections := TWideHashedStringList.Create;
@@ -523,7 +523,7 @@ begin
   inherited Destroy;
 end;
 
-function TWideMemIniFile.AddSection(const Section: WideString): TTntStrings;
+function TWideMemIniFile.AddSection(const Section:WideString):TTntStrings;
 begin
   Result := TWideHashedStringList.Create;
   try
@@ -537,17 +537,17 @@ end;
 
 procedure TWideMemIniFile.Clear;
 var
-  I: Integer;
+  I:Integer;
 begin
   for I := 0 to FSections.Count - 1 do
     TObject(FSections.Objects[I]).Free;
   FSections.Clear;
 end;
 
-procedure TWideMemIniFile.DeleteKey(const Section, Ident: WideString);
+procedure TWideMemIniFile.DeleteKey(const Section, Ident:WideString);
 var
-  I, J: Integer;
-  Strings: TTntStrings;
+  I, J:Integer;
+  Strings:TTntStrings;
 begin
   I := FSections.IndexOf(Section);
   if I >= 0 then
@@ -559,9 +559,9 @@ begin
   end;
 end;
 
-procedure TWideMemIniFile.EraseSection(const Section: WideString);
+procedure TWideMemIniFile.EraseSection(const Section:WideString);
 var
-  I: Integer;
+  I:Integer;
 begin
   I := FSections.IndexOf(Section);
   if I >= 0 then
@@ -571,15 +571,15 @@ begin
   end;
 end;
 
-function TWideMemIniFile.GetCaseSensitive: Boolean;
+function TWideMemIniFile.GetCaseSensitive:Boolean;
 begin
   Result := FSections.CaseSensitive;
 end;
 
-procedure TWideMemIniFile.GetStrings(List: TTntStrings);
+procedure TWideMemIniFile.GetStrings(List:TTntStrings);
 var
-  I, J: Integer;
-  Strings: TTntStrings;
+  I, J:Integer;
+  Strings:TTntStrings;
 begin
   List.BeginUpdate;
   try
@@ -598,7 +598,7 @@ end;
 
 procedure TWideMemIniFile.LoadValues;
 var
-  List: TTntStringList;
+  List:TTntStringList;
 begin
   if (FileName <> '') and FileExists(FileName) then
   begin
@@ -614,11 +614,11 @@ begin
     Clear;
 end;
 
-procedure TWideMemIniFile.ReadSection(const Section: WideString;
-  Strings: TTntStrings);
+procedure TWideMemIniFile.ReadSection(const Section:WideString;
+  Strings:TTntStrings);
 var
-  I, J: Integer;
-  SectionStrings: TTntStrings;
+  I, J:Integer;
+  SectionStrings:TTntStrings;
 begin
   Strings.BeginUpdate;
   try
@@ -635,15 +635,15 @@ begin
   end;
 end;
 
-procedure TWideMemIniFile.ReadSections(Strings: TTntStrings);
+procedure TWideMemIniFile.ReadSections(Strings:TTntStrings);
 begin
   Strings.Assign(FSections);
 end;
 
-procedure TWideMemIniFile.ReadSectionValues(const Section: WideString;
-  Strings: TTntStrings);
+procedure TWideMemIniFile.ReadSectionValues(const Section:WideString;
+  Strings:TTntStrings);
 var
-  I: Integer;
+  I:Integer;
 begin
   Strings.BeginUpdate;
   try
@@ -657,10 +657,10 @@ begin
 end;
 
 function TWideMemIniFile.ReadString(const Section, Ident,
-  Default: WideString): WideString;
+  Default:WideString):WideString;
 var
-  I: Integer;
-  Strings: TTntStrings;
+  I:Integer;
+  Strings:TTntStrings;
 begin
   I := FSections.IndexOf(Section);
   if I >= 0 then
@@ -676,16 +676,16 @@ begin
   Result := Default;
 end;
 
-procedure TWideMemIniFile.Rename(const FileName: WideString; Reload: Boolean);
+procedure TWideMemIniFile.Rename(const FileName:WideString; Reload:Boolean);
 begin
   FFileName := FileName;
   if Reload then
     LoadValues;
 end;
 
-procedure TWideMemIniFile.SetCaseSensitive(Value: Boolean);
+procedure TWideMemIniFile.SetCaseSensitive(Value:Boolean);
 var
-  I: Integer;
+  I:Integer;
 begin
   if Value <> FSections.CaseSensitive then
   begin
@@ -700,11 +700,11 @@ begin
   end;
 end;
 
-procedure TWideMemIniFile.SetStrings(List: TTntStrings);
+procedure TWideMemIniFile.SetStrings(List:TTntStrings);
 var
-  I, J: Integer;
-  S: WideString;
-  Strings: TTntStrings;
+  I, J:Integer;
+  S:WideString;
+  Strings:TTntStrings;
 begin
   Clear;
   Strings := nil;
@@ -731,7 +731,7 @@ end;
 
 procedure TWideMemIniFile.UpdateFile;
 var
-  List: TTntStringList;
+  List:TTntStringList;
 begin
   List := TTntStringList.Create;
   try
@@ -742,11 +742,11 @@ begin
   end;
 end;
 
-procedure TWideMemIniFile.WriteString(const Section, Ident, Value: WideString);
+procedure TWideMemIniFile.WriteString(const Section, Ident, Value:WideString);
 var
-  I: Integer;
-  S: WideString;
-  Strings: TTntStrings;
+  I:Integer;
+  S:WideString;
+  Strings:TTntStrings;
 begin
   I := FSections.IndexOf(Section);
   if I >= 0 then
@@ -763,7 +763,7 @@ end;
 
 { TWideIniFile }
 
-procedure TWideIniFile.DeleteKey(const Section, Ident: WideString);
+procedure TWideIniFile.DeleteKey(const Section, Ident:WideString);
 begin
   if Win32PlatformIsUnicode then
     WritePrivateProfileStringW(PWideChar(Section), PWideChar(Ident), nil, PWideChar(FFileName))
@@ -777,7 +777,7 @@ begin
   inherited Destroy;
 end;
 
-procedure TWideIniFile.EraseSection(const Section: WideString);
+procedure TWideIniFile.EraseSection(const Section:WideString);
 begin
   if Win32PlatformIsUnicode then
   begin
@@ -789,13 +789,13 @@ begin
 
 end;
 
-procedure TWideIniFile.ReadSection(const Section: WideString;
-  Strings: TTntStrings);
+procedure TWideIniFile.ReadSection(const Section:WideString;
+  Strings:TTntStrings);
 const
   BufSize = 16384;
 var
-  WBuffer, P: PWideChar;
-  ABuffer, P2: PChar;
+  WBuffer, P:PWideChar;
+  ABuffer, P2:PChar;
 begin
   WBuffer := nil;
   ABuffer := nil;
@@ -844,12 +844,12 @@ begin
   end;
 end;
 
-procedure TWideIniFile.ReadSections(Strings: TTntStrings);
+procedure TWideIniFile.ReadSections(Strings:TTntStrings);
 const
   BufSize = 16384;
 var
-  WBuffer, P: PWideChar;
-  ABuffer, P2: PChar;
+  WBuffer, P:PWideChar;
+  ABuffer, P2:PChar;
 begin
   WBuffer := nil;
   ABuffer := nil;
@@ -899,11 +899,11 @@ begin
   end;
 end;
 
-procedure TWideIniFile.ReadSectionValues(const Section: WideString;
-  Strings: TTntStrings);
+procedure TWideIniFile.ReadSectionValues(const Section:WideString;
+  Strings:TTntStrings);
 var
-  KeyList: TTntStringList;
-  I: Integer;
+  KeyList:TTntStringList;
+  I:Integer;
 begin
   KeyList := TTntStringList.Create;
   try
@@ -922,10 +922,10 @@ begin
 end;
 
 function TWideIniFile.ReadString(const Section, Ident,
-  Default: WideString): WideString;
+  Default:WideString):WideString;
 var
-  WBuffer: array[0..2047] of WideChar;
-  ABuffer: array[0..2047] of Char;
+  WBuffer:array[0..2047] of WideChar;
+  ABuffer:array[0..2047] of Char;
 begin
   if Win32PlatformIsUnicode then
     SetString(Result, WBuffer, GetPrivateProfileStringW(PWideChar(Section),
@@ -944,7 +944,7 @@ begin
 end;
 
 procedure TWideIniFile.WriteString(const Section, Ident,
-  Value: WideString);
+  Value:WideString);
 begin
   if Win32PlatformIsUnicode then
   begin
@@ -958,4 +958,3 @@ begin
 end;
 
 end.
-

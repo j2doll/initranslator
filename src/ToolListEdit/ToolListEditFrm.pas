@@ -11,28 +11,28 @@ const
 
 type
   TfrmToolListEdit = class(TTntForm)
-    TntStatusBar1: TTntStatusBar;
-    lvItems: TTntListView;
-    alMain: TTntActionList;
-    acEdit: TTntAction;
-    acClose: TTntAction;
-    procedure lvItemsResize(Sender: TObject);
-    procedure lvItemsData(Sender: TObject; Item: TListItem);
-    procedure lvItemsAdvancedCustomDrawItem(Sender: TCustomListView;
-      Item: TListItem; State: TCustomDrawState; Stage: TCustomDrawStage;
-      var DefaultDraw: Boolean);
-    procedure lvItemsEnter(Sender: TObject);
-    procedure acCloseExecute(Sender: TObject);
-    procedure acEditExecute(Sender: TObject);
+    TntStatusBar1:TTntStatusBar;
+    lvItems:TTntListView;
+    alMain:TTntActionList;
+    acEdit:TTntAction;
+    acClose:TTntAction;
+    procedure lvItemsResize(Sender:TObject);
+    procedure lvItemsData(Sender:TObject; Item:TListItem);
+    procedure lvItemsAdvancedCustomDrawItem(Sender:TCustomListView;
+      Item:TListItem; State:TCustomDrawState; Stage:TCustomDrawStage;
+      var DefaultDraw:Boolean);
+    procedure lvItemsEnter(Sender:TObject);
+    procedure acCloseExecute(Sender:TObject);
+    procedure acEditExecute(Sender:TObject);
   private
     { Private declarations }
-    FItems: ITranslationItems;
-    procedure LoadItems(const Items: ITranslationItems);
+    FItems:ITranslationItems;
+    procedure LoadItems(const Items:ITranslationItems);
     procedure EditItem;
-    procedure WmEditItem(var Msg: TMessage); message WM_EDITITEM;
+    procedure WmEditItem(var Msg:TMessage); message WM_EDITITEM;
   public
     { Public declarations }
-    class function Edit(const Items: ITranslationItems): boolean;
+    class function Edit(const Items:ITranslationItems):boolean;
   end;
 
 implementation
@@ -44,9 +44,9 @@ uses
 
 { TfrmToolListEdit }
 
-class function TfrmToolListEdit.Edit(const Items: ITranslationItems): boolean;
+class function TfrmToolListEdit.Edit(const Items:ITranslationItems):boolean;
 var
-  frm: TfrmToolListEdit;
+  frm:TfrmToolListEdit;
 begin
   frm := self.Create(Application);
   try
@@ -58,7 +58,7 @@ begin
   end;
 end;
 
-procedure TfrmToolListEdit.LoadItems(const Items: ITranslationItems);
+procedure TfrmToolListEdit.LoadItems(const Items:ITranslationItems);
 begin
   FItems := Items;
   lvItems.Items.Count := FItems.Count;
@@ -70,8 +70,9 @@ begin
   PostMessage(Handle, WM_EDITITEM, 0, 0);
 end;
 
-procedure TfrmToolListEdit.WmEditItem(var Msg: TMessage);
-var P: TPoint;
+procedure TfrmToolListEdit.WmEditItem(var Msg:TMessage);
+var
+  P:TPoint;
 begin
   if (lvItems.Selected <> nil) then
   begin
@@ -84,8 +85,9 @@ begin
   end;
 end;
 
-procedure TfrmToolListEdit.lvItemsResize(Sender: TObject);
-var W: integer;
+procedure TfrmToolListEdit.lvItemsResize(Sender:TObject);
+var
+  W:integer;
 begin
   W := lvItems.ClientWidth div 3;
   lvItems.Columns[0].Width := W;
@@ -93,7 +95,7 @@ begin
   lvItems.Columns[2].Width := W;
 end;
 
-procedure TfrmToolListEdit.lvItemsData(Sender: TObject; Item: TListItem);
+procedure TfrmToolListEdit.lvItemsData(Sender:TObject; Item:TListItem);
 begin
   if (Item <> nil) and (Item.Index >= 0) then
   begin
@@ -107,8 +109,8 @@ begin
 end;
 
 procedure TfrmToolListEdit.lvItemsAdvancedCustomDrawItem(
-  Sender: TCustomListView; Item: TListItem; State: TCustomDrawState;
-  Stage: TCustomDrawStage; var DefaultDraw: Boolean);
+  Sender:TCustomListView; Item:TListItem; State:TCustomDrawState;
+  Stage:TCustomDrawStage; var DefaultDraw:Boolean);
 begin
   if (Item <> nil) and (Item.Index >= 0) then
     with FItems[Item.Index] do
@@ -120,7 +122,7 @@ begin
     end;
 end;
 
-procedure TfrmToolListEdit.lvItemsEnter(Sender: TObject);
+procedure TfrmToolListEdit.lvItemsEnter(Sender:TObject);
 begin
   if (lvItems.Items.Count > 0) and (lvItems.Selected = nil) then
   begin
@@ -129,15 +131,14 @@ begin
   end;
 end;
 
-procedure TfrmToolListEdit.acCloseExecute(Sender: TObject);
+procedure TfrmToolListEdit.acCloseExecute(Sender:TObject);
 begin
   Close;
 end;
 
-procedure TfrmToolListEdit.acEditExecute(Sender: TObject);
+procedure TfrmToolListEdit.acEditExecute(Sender:TObject);
 begin
   EditItem;
 end;
 
 end.
-

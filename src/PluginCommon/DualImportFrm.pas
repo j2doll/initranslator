@@ -25,34 +25,34 @@ uses
 
 type
   TfrmDualImport = class(TTntForm, IInterface, ILocalizable)
-    lblOriginal: TTntLabel;
-    edFilename: TTntEdit;
-    btnBrowse: TTntButton;
-    btnOK: TTntButton;
-    btnCancel: TTntButton;
-    OpenDialog1: TTntOpenDialog;
-    lblTranslation: TTntLabel;
-    edFilename2: TTntEdit;
-    btnBrowse2: TTntButton;
-    OpenDialog2: TTntOpenDialog;
-    procedure CheckChange(Sender: TObject);
-    procedure btnBrowseClick(Sender: TObject);
-    procedure btnBrowse2Click(Sender: TObject);
+    lblOriginal:TTntLabel;
+    edFilename:TTntEdit;
+    btnBrowse:TTntButton;
+    btnOK:TTntButton;
+    btnCancel:TTntButton;
+    OpenDialog1:TTntOpenDialog;
+    lblTranslation:TTntLabel;
+    edFilename2:TTntEdit;
+    btnBrowse2:TTntButton;
+    OpenDialog2:TTntOpenDialog;
+    procedure CheckChange(Sender:TObject);
+    procedure btnBrowseClick(Sender:TObject);
+    procedure btnBrowse2Click(Sender:TObject);
   private
     { Private declarations }
-    FCount: integer;
-    FSecondIsOptional: boolean;
-    FApplicationServices: IApplicationServices;
+    FCount:integer;
+    FSecondIsOptional:boolean;
+    FApplicationServices:IApplicationServices;
     procedure LoadSettings;
     procedure SaveSettings;
-    function Translate(const Value: WideString): WideString;
+    function Translate(const Value:WideString):WideString;
 
   public
     { Public declarations }
     // SecondIsOptional parameter suggested by Chris Thornton
-    class function Execute(var AOriginalFile, ATranslationFile: WideString; const ACaption, Filter, InitialDir, DefaultExt: WideString; const SecondIsOptional: Boolean = false): boolean; overload;
-    class function Execute(const ApplicationServices: IApplicationServices; var AOriginalFile, ATranslationFile: WideString; const ACaption, Filter, InitialDir, DefaultExt: WideString; const SecondIsOptional: Boolean = false): boolean; overload;
-    function GetString(out Section: WideString; out Name: WideString; out Value: WideString): WordBool; safecall;
+    class function Execute(var AOriginalFile, ATranslationFile:WideString; const ACaption, Filter, InitialDir, DefaultExt:WideString; const SecondIsOptional:Boolean = false):boolean; overload;
+    class function Execute(const ApplicationServices:IApplicationServices; var AOriginalFile, ATranslationFile:WideString; const ACaption, Filter, InitialDir, DefaultExt:WideString; const SecondIsOptional:Boolean = false):boolean; overload;
+    function GetString(out Section:WideString; out Name:WideString; out Value:WideString):WordBool; safecall;
   end;
 
 implementation
@@ -66,17 +66,17 @@ resourcestring
 
 { TfrmImport }
 
-class function TfrmDualImport.Execute(var AOriginalFile, ATranslationFile: WideString; const ACaption, Filter, InitialDir, DefaultExt: WideString; const SecondIsOptional: Boolean = false): boolean;
+class function TfrmDualImport.Execute(var AOriginalFile, ATranslationFile:WideString; const ACaption, Filter, InitialDir, DefaultExt:WideString; const SecondIsOptional:Boolean = false):boolean;
 begin
   Result := Execute(nil, AOriginalFile, ATranslationFile, ACaption, Filter, InitialDir, DefaultExt, SecondIsOptional);
 end;
 
-procedure TfrmDualImport.CheckChange(Sender: TObject);
+procedure TfrmDualImport.CheckChange(Sender:TObject);
 begin
   btnOK.Enabled := (edFilename.Text <> '') and (FSecondIsOptional or ((edFilename2.Text <> '') and FileExists(edFilename.Text) and FileExists(edFilename2.Text)));
 end;
 
-procedure TfrmDualImport.btnBrowseClick(Sender: TObject);
+procedure TfrmDualImport.btnBrowseClick(Sender:TObject);
 begin
   OpenDialog1.Filename := edFilename.Text;
   if OpenDialog1.Execute then
@@ -84,7 +84,7 @@ begin
   CheckChange(Sender);
 end;
 
-procedure TfrmDualImport.btnBrowse2Click(Sender: TObject);
+procedure TfrmDualImport.btnBrowse2Click(Sender:TObject);
 begin
   OpenDialog2.Filename := edFilename2.Text;
   if OpenDialog2.Execute then
@@ -93,8 +93,9 @@ begin
 end;
 
 procedure TfrmDualImport.LoadSettings;
-var M: TMemoryStream;
-  FRect: TRect;
+var
+  M:TMemoryStream;
+  FRect:TRect;
 begin
   try
     FRect := Rect(0, 0, 0, 0);
@@ -134,8 +135,9 @@ begin
 end;
 
 procedure TfrmDualImport.SaveSettings;
-var M: TMemoryStream;
-  FRect: TRect;
+var
+  M:TMemoryStream;
+  FRect:TRect;
 begin
   if WindowState = wsNormal then
   try
@@ -159,11 +161,11 @@ begin
 end;
 
 class function TfrmDualImport.Execute(
-  const ApplicationServices: IApplicationServices; var AOriginalFile,
-  ATranslationFile: WideString; const ACaption, Filter, InitialDir,
-  DefaultExt: WideString; const SecondIsOptional: Boolean): boolean;
+  const ApplicationServices:IApplicationServices; var AOriginalFile,
+  ATranslationFile:WideString; const ACaption, Filter, InitialDir,
+  DefaultExt:WideString; const SecondIsOptional:Boolean):boolean;
 var
-  frmImport: TfrmDualImport;
+  frmImport:TfrmDualImport;
 begin
   frmImport := self.Create(Application);
   with frmImport do
@@ -205,7 +207,7 @@ begin
 
 end;
 
-function TfrmDualImport.Translate(const Value: WideString): WideString;
+function TfrmDualImport.Translate(const Value:WideString):WideString;
 begin
   if FApplicationServices <> nil then
     Result := FApplicationServices.Translate(self.ClassName, Value, Value)
@@ -213,20 +215,20 @@ begin
     Result := Value;
 end;
 
-function TfrmDualImport.GetString(out Section, Name, Value: WideString): WordBool;
+function TfrmDualImport.GetString(out Section, Name, Value:WideString):WordBool;
 begin
   Result := true;
   case FCount of
-    0: Value := SOptional;
-    1: Value := self.Caption;
-    2: Value := lblOriginal.Caption;
-    3: Value := lblTranslation.Caption;
-    4: Value := btnBrowse.Caption;
-    5: Value := btnBrowse2.Caption;
-    6: Value := btnOK.Caption;
-    7: Value := btnCancel.Caption;
-    8: Value := OpenDialog1.Title;
-    9: Value := OpenDialog2.Title;
+    0:Value := SOptional;
+    1:Value := self.Caption;
+    2:Value := lblOriginal.Caption;
+    3:Value := lblTranslation.Caption;
+    4:Value := btnBrowse.Caption;
+    5:Value := btnBrowse2.Caption;
+    6:Value := btnOK.Caption;
+    7:Value := btnCancel.Caption;
+    8:Value := OpenDialog1.Title;
+    9:Value := OpenDialog2.Title;
   else
     Result := false;
     FCount := 0;
@@ -238,4 +240,3 @@ begin
 end;
 
 end.
-

@@ -26,24 +26,24 @@ uses
 type
   TToolTrimPlugins = class(TInterfacedObject, IInterface, IToolItems)
   public
-    function Count: Integer; safecall;
-    function ToolItem(Index: Integer; out ToolItem: IToolItem): HRESULT;
+    function Count:Integer; safecall;
+    function ToolItem(Index:Integer; out ToolItem:IToolItem):HRESULT;
       safecall;
   end;
 
   TToolTrimPlugin = class(TInterfacedObject, IInterface, IToolItem, ILocalizable)
   private
     { ILocalizable }
-    FIndex: integer;
+    FIndex:integer;
   public
-    function About: WideString; safecall;
-    function DisplayName: WideString; safecall;
-    function Execute(const Items: ITranslationItems; const Orphans: ITranslationItems; var SelectedItem: ITranslationItem): HRESULT; safecall;
-    function Icon: Cardinal; safecall;
-    procedure Init(const ApplicationServices: IApplicationServices); safecall;
-    function Status(const Items: ITranslationItems; const Orphans: ITranslationItems; const SelectedItem: ITranslationItem): Integer; safecall;
-    function GetString(out Section: WideString; out Name: WideString;
-      out Value: WideString): WordBool; safecall;
+    function About:WideString; safecall;
+    function DisplayName:WideString; safecall;
+    function Execute(const Items:ITranslationItems; const Orphans:ITranslationItems; var SelectedItem:ITranslationItem):HRESULT; safecall;
+    function Icon:Cardinal; safecall;
+    procedure Init(const ApplicationServices:IApplicationServices); safecall;
+    function Status(const Items:ITranslationItems; const Orphans:ITranslationItems; const SelectedItem:ITranslationItem):Integer; safecall;
+    function GetString(out Section:WideString; out Name:WideString;
+      out Value:WideString):WordBool; safecall;
 
   end;
 
@@ -54,13 +54,13 @@ uses
 
 { TToolTrimPlugins }
 
-function TToolTrimPlugins.Count: Integer;
+function TToolTrimPlugins.Count:Integer;
 begin
   Result := 1;
 end;
 
-function TToolTrimPlugins.ToolItem(Index: Integer;
-  out ToolItem: IToolItem): HRESULT;
+function TToolTrimPlugins.ToolItem(Index:Integer;
+  out ToolItem:IToolItem):HRESULT;
 begin
   if Index = 0 then
   begin
@@ -73,38 +73,38 @@ end;
 
 { TToolTrimPlugin }
 
-function TToolTrimPlugin.About: WideString;
+function TToolTrimPlugin.About:WideString;
 begin
   Result := Translate(SToolTrimAbout);
 end;
 
-function TToolTrimPlugin.DisplayName: WideString;
+function TToolTrimPlugin.DisplayName:WideString;
 begin
   Result := Translate(SToolTrimPluginDisplayName);
 end;
 
-function TToolTrimPlugin.Execute(const Items, Orphans: ITranslationItems; var SelectedItem: ITranslationItem): HRESULT;
+function TToolTrimPlugin.Execute(const Items, Orphans:ITranslationItems; var SelectedItem:ITranslationItem):HRESULT;
 begin
   TfrmToolTrim.Execute(Items);
   Result := S_OK;
 end;
 
 function TToolTrimPlugin.GetString(out Section, Name,
-  Value: WideString): WordBool;
+  Value:WideString):WordBool;
 begin
   Result := true;
   case FIndex of
-    0: Value := SToolTrimAbout;
-    1: Value := SToolTrimPluginDisplayName;
-    2: Value := SFormCaption;
-    3: Value := STrimWhatLabel;
-    4: Value := STrimWhereLabel;
-    5: Value := STrimHowLabel;
-    6: Value := STrimWhiteSpace;
-    7: Value := STrimWhereOptions;
-    8: Value := STrimHowOptions;
-    9: Value := SOK;
-    10: Value := SCancel;
+    0:Value := SToolTrimAbout;
+    1:Value := SToolTrimPluginDisplayName;
+    2:Value := SFormCaption;
+    3:Value := STrimWhatLabel;
+    4:Value := STrimWhereLabel;
+    5:Value := STrimHowLabel;
+    6:Value := STrimWhiteSpace;
+    7:Value := STrimWhereOptions;
+    8:Value := STrimHowOptions;
+    9:Value := SOK;
+    10:Value := SCancel;
   else
     Result := false;
   end;
@@ -118,19 +118,19 @@ begin
     FIndex := 0;
 end;
 
-function TToolTrimPlugin.Icon: Cardinal;
+function TToolTrimPlugin.Icon:Cardinal;
 begin
   Result := 0;
 end;
 
-procedure TToolTrimPlugin.Init(const ApplicationServices: IApplicationServices);
+procedure TToolTrimPlugin.Init(const ApplicationServices:IApplicationServices);
 begin
   GlobalAppServices := ApplicationServices;
 end;
 
 function TToolTrimPlugin.Status(const Items,
-  Orphans: ITranslationItems;
-  const SelectedItem: ITranslationItem): Integer;
+  Orphans:ITranslationItems;
+  const SelectedItem:ITranslationItem):Integer;
 begin
   Result := TOOL_VISIBLE;
   if Items.Count > 0 then
@@ -138,4 +138,3 @@ begin
 end;
 
 end.
-

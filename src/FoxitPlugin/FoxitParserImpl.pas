@@ -25,23 +25,23 @@ uses
 type
   TFoxitParser = class(TInterfacedObject, IUnknown, IFileParser)
   private
-    FOldAppHandle: Cardinal;
-    FOrigFile, FTransFile: WideString;
+    FOldAppHandle:Cardinal;
+    FOrigFile, FTransFile:WideString;
     procedure LoadSettings;
     procedure SaveSettings;
-    procedure BuildPreview(Items: ITranslationItems; Strings: TTntStrings);
+    procedure BuildPreview(Items:ITranslationItems; Strings:TTntStrings);
   public
     constructor Create;
     destructor Destroy; override;
 
-    function Capabilities: Integer; safecall;
-    function Configure(Capability: Integer): HRESULT; safecall;
-    function DisplayName(Capability: Integer): WideString; safecall;
-    function ExportItems(const Items: ITranslationItems;
-      const Orphans: ITranslationItems): HRESULT; safecall;
-    function ImportItems(const Items: ITranslationItems;
-      const Orphans: ITranslationItems): HRESULT; safecall;
-    procedure Init(const ApplicationServices: IApplicationServices); safecall;
+    function Capabilities:Integer; safecall;
+    function Configure(Capability:Integer):HRESULT; safecall;
+    function DisplayName(Capability:Integer):WideString; safecall;
+    function ExportItems(const Items:ITranslationItems;
+      const Orphans:ITranslationItems):HRESULT; safecall;
+    function ImportItems(const Items:ITranslationItems;
+      const Orphans:ITranslationItems):HRESULT; safecall;
+    procedure Init(const ApplicationServices:IApplicationServices); safecall;
   end;
 
 implementation
@@ -61,11 +61,11 @@ const
   cReplaceID = '!!!!%d!!!!';
 
 var
-  XML: WideString = '';
+  XML:WideString = '';
 
 { TFoxitParser }
 
-function XMLEncode(const S: WideString): WideString;
+function XMLEncode(const S:WideString):WideString;
 begin
   Result := Tnt_WideStringReplace(S, '&', '&amp;', [rfReplaceAll]);
   Result := Tnt_WideStringReplace(Result, '"', '&quot;', [rfReplaceAll]);
@@ -74,11 +74,11 @@ begin
   Result := Tnt_WideStringReplace(Result, '>', '&gt;', [rfReplaceAll]);
 end;
 
-procedure TFoxitParser.BuildPreview(Items: ITranslationItems; Strings: TTntStrings);
+procedure TFoxitParser.BuildPreview(Items:ITranslationItems; Strings:TTntStrings);
 var
-  i: integer;
-  TI: ITranslationItem;
-  S: WideString;
+  i:integer;
+  TI:ITranslationItem;
+  S:WideString;
 begin
   if XML = '' then
     raise Exception.Create('Building Foxit file from scratch not supported. Please import from a Foxit file before trying to export.');
@@ -92,12 +92,12 @@ begin
   Strings.Text := S;
 end;
 
-function TFoxitParser.Capabilities: Integer;
+function TFoxitParser.Capabilities:Integer;
 begin
   Result := CAP_IMPORT or CAP_EXPORT;
 end;
 
-function TFoxitParser.Configure(Capability: Integer): HRESULT;
+function TFoxitParser.Configure(Capability:Integer):HRESULT;
 begin
   Result := E_NOTIMPL;
 end;
@@ -114,7 +114,7 @@ begin
   inherited;
 end;
 
-function TFoxitParser.DisplayName(Capability: Integer): WideString;
+function TFoxitParser.DisplayName(Capability:Integer):WideString;
 begin
   case Capability of
     CAP_IMPORT:
@@ -126,10 +126,10 @@ begin
   end;
 end;
 
-function TFoxitParser.ExportItems(const Items, Orphans: ITranslationItems): HRESULT;
+function TFoxitParser.ExportItems(const Items, Orphans:ITranslationItems):HRESULT;
 var
-  S: TTntStringlist;
-  FOldSort: TTranslateSortType;
+  S:TTntStringlist;
+  FOldSort:TTranslateSortType;
 begin
   Result := S_FALSE;
   FOldSort := Items.Sort;
@@ -155,21 +155,22 @@ begin
   end;
 end;
 
-function TFoxitParser.ImportItems(const Items, Orphans: ITranslationItems): HRESULT;
+function TFoxitParser.ImportItems(const Items, Orphans:ITranslationItems):HRESULT;
 type
   TFoundItem = (fiOriginal, fiTranslation);
   TFoundItems = set of TFoundItem;
 
 var
-  NodeList: IDOMNodeList;
+  NodeList:IDOMNodeList;
 //  Node, ChildNode: IDOMNode;
 //  i: integer;
-  TI: ITranslationItem;
-  FFoundItems: TFoundItems;
-  FXMLImport: IXMLDocument;
+  TI:ITranslationItem;
+  FFoundItems:TFoundItems;
+  FXMLImport:IXMLDocument;
 
-  function FindItem(const Section, Name: WideString): ITranslationItem;
-  var i: integer;
+  function FindItem(const Section, Name:WideString):ITranslationItem;
+  var
+    i:integer;
   begin
     for i := 0 to Items.Count - 1 do
       if WideSameText(Section, Items[i].Section) and WideSameText(Name, Items[i].Name) then
@@ -180,8 +181,9 @@ var
     Result := nil;
   end;
 
-  function GetName(const ANode: IDOMNode): WideString;
-  var N: IDOMNode;
+  function GetName(const ANode:IDOMNode):WideString;
+  var
+    N:IDOMNode;
   begin
     N := ANode;
     Result := '';
@@ -195,8 +197,9 @@ var
     end;
   end;
 
-  procedure ImportOriginalItem(const ItemName: WideString);
-  var i: integer;
+  procedure ImportOriginalItem(const ItemName:WideString);
+  var
+    i:integer;
   begin
     NodeList := FXMLImport.DOMDocument.getElementsByTagName(ItemName);
     if NodeList <> nil then
@@ -212,8 +215,9 @@ var
 
   end;
 
-  procedure ImportTranslationItem(const ItemName: WideString);
-  var i: integer;
+  procedure ImportTranslationItem(const ItemName:WideString);
+  var
+    i:integer;
   begin
     NodeList := FXMLImport.DOMDocument.getElementsByTagName(ItemName);
     if NodeList <> nil then
@@ -281,7 +285,7 @@ begin
   end;
 end;
 
-procedure TFoxitParser.Init(const ApplicationServices: IApplicationServices);
+procedure TFoxitParser.Init(const ApplicationServices:IApplicationServices);
 begin
   Application.Handle := ApplicationServices.AppHandle;
 end;
@@ -317,4 +321,3 @@ begin
 end;
 
 end.
-

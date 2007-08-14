@@ -190,6 +190,7 @@ begin
   // load all the matching plugin DLL's into a helper class
   APath := WideIncludeTrailingPathDelimiter(PluginFolder);
 {$WARN SYMBOL_PLATFORM OFF}
+{$WARN SYMBOL_DEPRECATED OFF}
   if SysUtils.FindFirst(APath + '*.dll', faAnyFile and not (faDirectory or faVolumeID), F) = 0 then
   try
     repeat
@@ -217,6 +218,8 @@ begin
   finally
     SysUtils.FindClose(F);
   end;
+{$WARN SYMBOL_PLATFORM ON}
+{$WARN SYMBOL_DEPRECATED ON}
 end;
 
 procedure TExternalToolItems.ReleasePlugins;

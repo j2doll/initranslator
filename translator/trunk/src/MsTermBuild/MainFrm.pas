@@ -1,4 +1,5 @@
 unit MainFrm;
+{$I ..\TRANSLATOR.INC}
 
 interface
 
@@ -48,7 +49,7 @@ var
 
 implementation
 uses
-  TntWideStrUtils, IniFiles, TntWindows;
+  {$IFDEF COMPILER_9_UP}WideStrUtils{$ELSE}TntWideStrUtils{$ENDIF}, IniFiles, TntWindows;
 
 {$R *.dfm}
 

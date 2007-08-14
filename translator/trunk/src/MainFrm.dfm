@@ -1,11 +1,11 @@
 object frmMain: TfrmMain
   Left = 379
   Top = 181
-  Width = 573
-  Height = 455
   Action = acAbout
   ActiveControl = reTranslation
   Caption = 'Ini Translator'
+  ClientHeight = 421
+  ClientWidth = 565
   Color = clBtnFace
   Constraints.MinHeight = 375
   Constraints.MinWidth = 450
@@ -113,466 +113,466 @@ object frmMain: TfrmMain
       ProcessShortCuts = True
       TabOrder = 0
       object mnuFile: TSpTBXSubmenuItem
+        Caption = '&File'
         OnSelect = mnuFileSelect
-        CaptionW = '&File'
         object OpenOriginal1: TSpTBXItem
+          Caption = 'Open Original...'
+          Hint = 'Open original and translation file'
           Action = acOpenOrig
-          CaptionW = 'Open Original...'
-          HintW = 'Open original and translation file'
         end
         object TBXItem13: TSpTBXItem
+          Caption = 'Save Original'
+          Hint = 'Save current original file'
           Action = acSaveOriginal
-          CaptionW = 'Save Original'
-          HintW = 'Save current original file'
         end
         object TBXItem1: TSpTBXItem
+          Caption = 'Save Original As...'
+          Hint = 'Save current original file with a new filename'
           Action = acSaveOrigAs
-          CaptionW = 'Save Original As...'
-          HintW = 'Save current original file with a new filename'
         end
         object TBSeparatorItem3: TSpTBXSeparatorItem
         end
         object ClearTranslation1: TSpTBXItem
+          Caption = 'New Translation'
+          Hint = 'Create new translation'
           Action = acNewTrans
-          CaptionW = 'New Translation'
-          HintW = 'Create new translation'
         end
         object OpenTranslation1: TSpTBXItem
+          Caption = 'Open Translation...'
+          Hint = 'Open existing translation file'
           Action = acOpenTrans
-          CaptionW = 'Open Translation...'
-          HintW = 'Open existing translation file'
         end
         object SaveTranslation1: TSpTBXItem
+          Caption = 'Save Translation'
+          Hint = 'Save current translation file'
           Action = acSaveTrans
-          CaptionW = 'Save Translation'
-          HintW = 'Save current translation file'
         end
         object SaveTranslationAs1: TSpTBXItem
+          Caption = 'Save Translation As...'
+          Hint = 'Save current translation with a new filename'
           Action = acSaveTransAs
-          CaptionW = 'Save Translation As...'
-          HintW = 'Save current translation with a new filename'
         end
         object N1: TSpTBXSeparatorItem
         end
         object TBXItem4: TSpTBXItem
+          Caption = 'Import...'
+          Hint = 'Import from an external file or files'
           Action = acImport
-          CaptionW = 'Import...'
-          HintW = 'Import from an external file or files'
         end
         object TBXItem3: TSpTBXItem
+          Caption = 'Export...'
+          Hint = 'Export to an external file or files'
           Action = acExport
-          CaptionW = 'Export...'
-          HintW = 'Export to an external file or files'
         end
         object TBXSeparatorItem4: TSpTBXSeparatorItem
         end
         object SelectLanguage1: TSpTBXItem
+          Caption = 'Preferences...'
+          Hint = 'Display the settings dialog'
           Action = acPreferences
-          CaptionW = 'Preferences...'
-          HintW = 'Display the settings dialog'
         end
         object TBSeparatorItem16: TSpTBXSeparatorItem
         end
         object miRecentlyUsed: TSpTBXSubmenuItem
+          Caption = 'Reopen'
           DropdownCombo = True
-          CaptionW = 'Reopen'
           object TBMRUListItem1: TTBXMRUListItem
             MRUList = MRUFiles
           end
           object TBSeparatorItem15: TSpTBXSeparatorItem
           end
           object TBItem31: TSpTBXItem
+            Caption = 'Clear'
+            Hint = 'Clear the MRU list'
             Action = acClearMRU
-            CaptionW = 'Clear'
-            HintW = 'Clear the MRU list'
           end
           object TBItem32: TSpTBXItem
+            Caption = 'Remove Invalid'
+            Hint = 'Remove invalid entries from the MRU list'
             Action = acClearInvalidMRU
-            CaptionW = 'Remove Invalid'
-            HintW = 'Remove invalid entries from the MRU list'
           end
         end
         object N11: TSpTBXSeparatorItem
         end
         object Exit1: TSpTBXItem
+          Caption = 'Exit'
+          Hint = 'Exit application'
           Action = acExit
-          CaptionW = 'Exit'
-          HintW = 'Exit application'
         end
       end
       object Edit1: TSpTBXSubmenuItem
+        Caption = '&Edit'
         ShortCut = 16474
-        CaptionW = '&Edit'
         object TBItem14: TSpTBXItem
+          Caption = 'Undo'
+          Hint = 'Undo last action'
           Action = acUndo
-          CaptionW = 'Undo'
-          HintW = 'Undo last action'
         end
         object TBSeparatorItem8: TSpTBXSeparatorItem
         end
         object TBItem5: TSpTBXItem
+          Caption = 'Cut'
+          Hint = 'Cut selected text'
           Action = acCut
-          CaptionW = 'Cut'
-          HintW = 'Cut selected text'
         end
         object TBItem7: TSpTBXItem
+          Caption = 'Copy'
+          Hint = 'Copy selected text'
           Action = acCopy
-          CaptionW = 'Copy'
-          HintW = 'Copy selected text'
         end
         object acCopyFromOriginal1: TSpTBXItem
+          Caption = 'Copy from Original'
+          Hint = 'Copy the value of Original to Translation'
           Action = acCopyFromOriginal
-          CaptionW = 'Copy from Original'
-          HintW = 'Copy the value of Original to Translation'
         end
         object TBItem13: TSpTBXItem
+          Caption = 'Copy from Name'
+          Hint = 'Copy the value of Name to Translation'
           Action = acCopyFromName
-          CaptionW = 'Copy from Name'
-          HintW = 'Copy the value of Name to Translation'
         end
         object TBItem6: TSpTBXItem
+          Caption = 'Paste'
+          Hint = 'Paste from clipboard'
           Action = acPaste
-          CaptionW = 'Paste'
-          HintW = 'Paste from clipboard'
         end
         object TBSeparatorItem6: TSpTBXSeparatorItem
         end
         object Find1: TSpTBXItem
+          Caption = 'Find...'
+          Hint = 'Search for text'
           Action = acFind
-          CaptionW = 'Find...'
-          HintW = 'Search for text'
         end
         object FindNext1: TSpTBXItem
+          Caption = 'Find Next'
+          Hint = 'Continue searching'
           Action = acFindNext
-          CaptionW = 'Find Next'
-          HintW = 'Continue searching'
         end
         object Replace1: TSpTBXItem
+          Caption = 'Replace...'
+          Hint = 'Replace text'
           Action = acReplace
-          CaptionW = 'Replace...'
-          HintW = 'Replace text'
         end
         object N8: TSpTBXSeparatorItem
         end
         object ToggleFocus1: TSpTBXItem
+          Caption = 'Toggle Focus'
+          Hint = 'Toggle focus between list and translation'
           Action = acToggleFocus
-          CaptionW = 'Toggle Focus'
-          HintW = 'Toggle focus between list and translation'
         end
       end
       object Navigation1: TSpTBXSubmenuItem
-        CaptionW = '&Actions'
+        Caption = '&Actions'
         object tbxSpellCheck: TSpTBXItem
+          Caption = 'Spelling...'
+          Hint = 'Spell check the translations'
           Action = acSpellCheck
-          CaptionW = 'Spelling...'
-          HintW = 'Spell check the translations'
         end
         object Previous1: TSpTBXItem
+          Caption = 'Previous'
+          Hint = 'Go to previous item in list'
           Action = acPrev
-          CaptionW = 'Previous'
-          HintW = 'Go to previous item in list'
         end
         object Next1: TSpTBXItem
+          Caption = 'Next'
+          Hint = 'Go to next item in list'
           Action = acNext
-          CaptionW = 'Next'
-          HintW = 'Go to next item in list'
         end
         object About2: TSpTBXSeparatorItem
         end
         object Previousuntranslated1: TSpTBXItem
+          Caption = 'Prev untranslated'
+          Hint = 'Go to previous untranslated item'
           Action = acPrevUntranslated
-          CaptionW = 'Prev untranslated'
-          HintW = 'Go to previous untranslated item'
         end
         object Nextuntranslated1: TSpTBXItem
+          Caption = 'Next untranslated'
+          Hint = 'Go to next untranslated item'
           Action = acNextUntranslated
-          CaptionW = 'Next untranslated'
-          HintW = 'Go to next untranslated item'
         end
         object SpTBXSeparatorItem1: TSpTBXSeparatorItem
         end
         object SpTBXItem2: TSpTBXItem
+          Caption = 'Use this translation everywhere'
+          Hint = 'Use this translation everywhere'
           Action = acReplaceEverywhere
-          CaptionW = 'Use this translation everywhere'
-          HintW = 'Use this translation everywhere'
         end
         object SpTBXItem1: TSpTBXItem
+          Caption = 'Make all translations consistent'
           Action = acMakeConsistent
-          CaptionW = 'Make all translations consistent'
         end
         object N4: TSpTBXSeparatorItem
         end
         object Unsort1: TSpTBXItem
+          Caption = 'Restore original sort'
+          Hint = 'Restore original sort'
           Action = acRestoreSort
-          CaptionW = 'Restore original sort'
-          HintW = 'Restore original sort'
         end
         object TBSeparatorItem10: TSpTBXSeparatorItem
         end
         object TBSubmenuItem3: TSpTBXSubmenuItem
-          CaptionW = 'Toggle Bookmark'
+          Caption = 'Toggle Bookmark'
           object TBItem41: TSpTBXItem
+            Caption = 'Bookmark 0'
+            Hint = 'Toggle Bookmark 0 on/off'
             Action = acToggleBookmark0
             Images = ilBookmarks
-            CaptionW = 'Bookmark 0'
-            HintW = 'Toggle Bookmark 0 on/off'
           end
           object TBItem40: TSpTBXItem
+            Caption = 'Bookmark 1'
+            Hint = 'Toggle Bookmark 1 on/off'
             Action = acToggleBookmark1
             Images = ilBookmarks
-            CaptionW = 'Bookmark 1'
-            HintW = 'Toggle Bookmark 1 on/off'
           end
           object TBItem39: TSpTBXItem
+            Caption = 'Bookmark 2'
+            Hint = 'Toggle Bookmark 2 on/off'
             Action = acToggleBookmark2
             Images = ilBookmarks
-            CaptionW = 'Bookmark 2'
-            HintW = 'Toggle Bookmark 2 on/off'
           end
           object TBItem38: TSpTBXItem
+            Caption = 'Bookmark 3'
+            Hint = 'Toggle Bookmark 3 on/off'
             Action = acToggleBookmark3
             Images = ilBookmarks
-            CaptionW = 'Bookmark 3'
-            HintW = 'Toggle Bookmark 3 on/off'
           end
           object TBItem37: TSpTBXItem
+            Caption = 'Bookmark 4'
+            Hint = 'Toggle Bookmark 4 on/off'
             Action = acToggleBookmark4
             Images = ilBookmarks
-            CaptionW = 'Bookmark 4'
-            HintW = 'Toggle Bookmark 4 on/off'
           end
           object TBItem30: TSpTBXItem
+            Caption = 'Bookmark 5'
+            Hint = 'Toggle Bookmark 5 on/off'
             Action = acToggleBookmark5
             Images = ilBookmarks
-            CaptionW = 'Bookmark 5'
-            HintW = 'Toggle Bookmark 5 on/off'
           end
           object TBItem28: TSpTBXItem
+            Caption = 'Bookmark 6'
+            Hint = 'Toggle Bookmark 6 on/off'
             Action = acToggleBookmark6
             Images = ilBookmarks
-            CaptionW = 'Bookmark 6'
-            HintW = 'Toggle Bookmark 6 on/off'
           end
           object TBItem26: TSpTBXItem
+            Caption = 'Bookmark 7'
+            Hint = 'Toggle Bookmark 7 on/off'
             Action = acToggleBookmark7
             Images = ilBookmarks
-            CaptionW = 'Bookmark 7'
-            HintW = 'Toggle Bookmark 7 on/off'
           end
           object TBItem23: TSpTBXItem
+            Caption = 'Bookmark 8'
+            Hint = 'Toggle Bookmark 8 on/off'
             Action = acToggleBookmark8
             Images = ilBookmarks
-            CaptionW = 'Bookmark 8'
-            HintW = 'Toggle Bookmark 8 on/off'
           end
           object TBItem22: TSpTBXItem
+            Caption = 'Bookmark 9'
+            Hint = 'Toggle Bookmark 9 on/off'
             Action = acToggleBookmark9
             Images = ilBookmarks
-            CaptionW = 'Bookmark 9'
-            HintW = 'Toggle Bookmark 9 on/off'
           end
         end
         object TBSubmenuItem4: TSpTBXSubmenuItem
-          CaptionW = 'Goto Bookmark'
+          Caption = 'Goto Bookmark'
           object TBItem51: TSpTBXItem
+            Caption = 'Bookmark 0'
+            Hint = 'Goto Bookmark 0'
             Action = acGotoBookmark0
             Images = ilBookmarks
-            CaptionW = 'Bookmark 0'
-            HintW = 'Goto Bookmark 0'
           end
           object TBItem50: TSpTBXItem
+            Caption = 'Bookmark 1'
+            Hint = 'Goto Bookmark 1'
             Action = acGotoBookmark1
             Images = ilBookmarks
-            CaptionW = 'Bookmark 1'
-            HintW = 'Goto Bookmark 1'
           end
           object TBItem49: TSpTBXItem
+            Caption = 'Bookmark 2'
+            Hint = 'Goto Bookmark 2'
             Action = acGotoBookmark2
             Images = ilBookmarks
-            CaptionW = 'Bookmark 2'
-            HintW = 'Goto Bookmark 2'
           end
           object TBItem48: TSpTBXItem
+            Caption = 'Bookmark 3'
+            Hint = 'Goto Bookmark 3'
             Action = acGotoBookmark3
             Images = ilBookmarks
-            CaptionW = 'Bookmark 3'
-            HintW = 'Goto Bookmark 3'
           end
           object TBItem47: TSpTBXItem
+            Caption = 'Bookmark 4'
+            Hint = 'Goto Bookmark 4'
             Action = acGotoBookmark4
             Images = ilBookmarks
-            CaptionW = 'Bookmark 4'
-            HintW = 'Goto Bookmark 4'
           end
           object TBItem46: TSpTBXItem
+            Caption = 'Bookmark 5'
+            Hint = 'Goto Bookmark 5'
             Action = acGotoBookmark5
             Images = ilBookmarks
-            CaptionW = 'Bookmark 5'
-            HintW = 'Goto Bookmark 5'
           end
           object TBItem45: TSpTBXItem
+            Caption = 'Bookmark 6'
+            Hint = 'Goto Bookmark 6'
             Action = acGotoBookmark6
             Images = ilBookmarks
-            CaptionW = 'Bookmark 6'
-            HintW = 'Goto Bookmark 6'
           end
           object TBItem44: TSpTBXItem
+            Caption = 'Bookmark 7'
+            Hint = 'Goto Bookmark 7'
             Action = acGotoBookmark7
             Images = ilBookmarks
-            CaptionW = 'Bookmark 7'
-            HintW = 'Goto Bookmark 7'
           end
           object TBItem43: TSpTBXItem
+            Caption = 'Bookmark 8'
+            Hint = 'Goto Bookmark 8'
             Action = acGotoBookmark8
             Images = ilBookmarks
-            CaptionW = 'Bookmark 8'
-            HintW = 'Goto Bookmark 8'
           end
           object TBItem42: TSpTBXItem
+            Caption = 'Bookmark 9'
+            Hint = 'Goto Bookmark 9'
             Action = acGotoBookmark9
             Images = ilBookmarks
-            CaptionW = 'Bookmark 9'
-            HintW = 'Goto Bookmark 9'
           end
         end
         object TBXSeparatorItem2: TSpTBXSeparatorItem
         end
         object TBXItem2: TSpTBXItem
+          Caption = 'Configure Keyboard...'
+          Hint = 'Display the keyboard configuration window'
           Action = acConfigureKeyboard
-          CaptionW = 'Configure Keyboard...'
-          HintW = 'Display the keyboard configuration window'
         end
       end
       object TBSubmenuItem2: TSpTBXSubmenuItem
-        CaptionW = '&View'
+        Caption = '&View'
         object TBItem36: TSpTBXItem
-          Action = acFindUnmatchedShortCut
-          CaptionW = 'Next unmatched shortcut'
-          HintW = 
+          Caption = 'Next unmatched shortcut'
+          Hint = 
             'Find next translated item that is missing a shortcut key present' +
             ' in the original'
+          Action = acFindUnmatchedShortCut
         end
         object TBItem55: TSpTBXItem
-          Action = acNextSuspicious
-          CaptionW = 'Next suspicious translation'
-          HintW = 
+          Caption = 'Next suspicious translation'
+          Hint = 
             'Move to next item that is suspected not being translated correct' +
             'ly'
+          Action = acNextSuspicious
         end
         object TBXItem15: TSpTBXItem
+          Caption = 'Configure suspicious translations...'
+          Hint = 'Configure the behavior of Next Suspicious Translation'
           Action = acConfigSuspicious
-          CaptionW = 'Configure suspicious translations...'
-          HintW = 'Configure the behavior of Next Suspicious Translation'
         end
         object N9: TSpTBXSeparatorItem
         end
         object ShowQuotes1: TSpTBXItem
+          Caption = 'Show Quotes'
+          Hint = 'Show quotes in texts'
           Action = acShowQuotes
-          CaptionW = 'Show Quotes'
-          HintW = 'Show quotes in texts'
         end
         object ShowDetails1: TSpTBXItem
+          Caption = 'Show Key Details'
+          Hint = 'Display the details pane'
           Action = acViewDetails
-          CaptionW = 'Show Key Details'
-          HintW = 'Display the details pane'
         end
         object N10: TSpTBXSeparatorItem
         end
         object TBItem16: TSpTBXItem
+          Caption = 'View Comments'
+          Hint = 'Toggle the comments window'
           Action = acViewComments
-          CaptionW = 'View Comments'
-          HintW = 'Toggle the comments window'
         end
         object TBItem56: TSpTBXItem
-          Action = acViewOrphans
-          CaptionW = 'View Orphaned Items'
-          HintW = 
+          Caption = 'View Orphaned Items'
+          Hint = 
             'Display orphans (items in translation that are not in the origin' +
             'al)'
+          Action = acViewOrphans
         end
         object TBXSeparatorItem3: TSpTBXSeparatorItem
         end
         object TBXVisibilityToggleItem1: TSpTBXItem
+          Caption = 'Tools'
           Control = tbTools
-          CaptionW = 'Tools'
         end
         object TBXItem8: TSpTBXItem
+          Caption = 'Full Screen'
+          Hint = 'Toggle full screen mode'
           Action = acFullScreen
-          CaptionW = 'Full Screen'
-          HintW = 'Toggle full screen mode'
         end
       end
       object Dictionary1: TSpTBXSubmenuItem
-        CaptionW = '&Dictionary'
+        Caption = '&Dictionary'
         object CreateDictionary1: TSpTBXItem
+          Caption = 'New Dictionary...'
+          Hint = 'Create new dictionary'
           Action = acDictCreate
-          CaptionW = 'New Dictionary...'
-          HintW = 'Create new dictionary'
         end
         object LoadDictionary1: TSpTBXItem
+          Caption = 'Load Dictionary...'
+          Hint = 'Load existing dictionary'
           Action = acDictLoad
-          CaptionW = 'Load Dictionary...'
-          HintW = 'Load existing dictionary'
         end
         object SaveDictionary1: TSpTBXItem
+          Caption = 'Save Dictionary...'
+          Hint = 'Save current dictionary to file'
           Action = acDictSave
-          CaptionW = 'Save Dictionary...'
-          HintW = 'Save current dictionary to file'
         end
         object N5: TSpTBXSeparatorItem
         end
         object Translatewithdictionary1: TSpTBXItem
+          Caption = 'Translate using Dictionary'
+          Hint = 'Translate using the dictionary'
           Action = acDictTranslate
-          CaptionW = 'Translate using Dictionary'
-          HintW = 'Translate using the dictionary'
         end
         object TBXItem6: TSpTBXItem
+          Caption = 'Add to Dictionary'
+          Hint = 'Add current item to the dictionary'
           Action = acDictAdd
-          CaptionW = 'Add to Dictionary'
-          HintW = 'Add current item to the dictionary'
         end
         object N6: TSpTBXSeparatorItem
         end
         object TBXItem16: TSpTBXItem
+          Caption = 'Edit Dictionary...'
+          Hint = 'Edit the currently loaded dictionary'
           Action = acDictEdit
-          CaptionW = 'Edit Dictionary...'
-          HintW = 'Edit the currently loaded dictionary'
         end
         object TBXSeparatorItem8: TSpTBXSeparatorItem
         end
         object acDictInvert1: TSpTBXItem
+          Caption = 'Invert Dictionary'
+          Hint = 'Invert the dictionary'
           Action = acDictInvert
-          CaptionW = 'Invert Dictionary'
-          HintW = 'Invert the dictionary'
         end
       end
       object mnuPlugins: TSpTBXSubmenuItem
+        Caption = '&Plugins'
         Visible = False
         OnPopup = mnuPluginsPopup
-        CaptionW = '&Plugins'
       end
       object mnuTools: TSpTBXSubmenuItem
+        Caption = 'T&ools'
         OnPopup = mnuToolsPopup
-        CaptionW = 'T&ools'
         object TBXItem10: TSpTBXItem
+          Caption = 'Customize...'
+          Hint = 'Display the tools window'
           Action = acToolsCustomize
-          CaptionW = 'Customize...'
-          HintW = 'Display the tools window'
         end
       end
       object Help1: TSpTBXSubmenuItem
-        CaptionW = '&Help'
+        Caption = '&Help'
         object Help2: TSpTBXItem
+          Caption = 'Help'
+          Hint = 'Show help file'
           Action = acHelp
-          CaptionW = 'Help'
-          HintW = 'Show help file'
         end
         object N7: TSpTBXSeparatorItem
         end
         object About1: TSpTBXItem
+          Caption = 'About...'
+          Hint = 'Show about box'
           Action = acAbout
-          CaptionW = 'About...'
-          HintW = 'Show about box'
         end
       end
     end
@@ -591,96 +591,96 @@ object frmMain: TfrmMain
       Options = [tboLongHintInMenuOnly, tboShowHint]
       TabOrder = 1
       object TBItem1: TSpTBXItem
+        Caption = 'Open Original...'
+        Hint = 'Open original and translation file'
         Action = acOpenOrig
-        CaptionW = 'Open Original...'
-        HintW = 'Open original and translation file'
       end
       object TBSeparatorItem2: TSpTBXSeparatorItem
       end
       object TBItem2: TSpTBXItem
+        Caption = 'New Translation'
+        Hint = 'Create new translation'
         Action = acNewTrans
-        CaptionW = 'New Translation'
-        HintW = 'Create new translation'
       end
       object TBItem3: TSpTBXItem
+        Caption = 'Open Translation...'
+        Hint = 'Open existing translation file'
         Action = acOpenTrans
-        CaptionW = 'Open Translation...'
-        HintW = 'Open existing translation file'
       end
       object TBItem4: TSpTBXItem
+        Caption = 'Save Translation'
+        Hint = 'Save current translation file'
         Action = acSaveTrans
-        CaptionW = 'Save Translation'
-        HintW = 'Save current translation file'
       end
       object TBSeparatorItem1: TSpTBXSeparatorItem
       end
       object SpTBXItem3: TSpTBXItem
+        Caption = 'Undo'
+        Hint = 'Undo last action'
         Action = acUndo
-        CaptionW = 'Undo'
-        HintW = 'Undo last action'
       end
       object SpTBXSeparatorItem2: TSpTBXSeparatorItem
       end
       object TBItem12: TSpTBXItem
+        Caption = 'Cut'
+        Hint = 'Cut selected text'
         Action = acCut
-        CaptionW = 'Cut'
-        HintW = 'Cut selected text'
       end
       object TBItem10: TSpTBXItem
+        Caption = 'Copy'
+        Hint = 'Copy selected text'
         Action = acCopy
-        CaptionW = 'Copy'
-        HintW = 'Copy selected text'
       end
       object TBItem8: TSpTBXItem
+        Caption = 'Paste'
+        Hint = 'Paste from clipboard'
         Action = acPaste
-        CaptionW = 'Paste'
-        HintW = 'Paste from clipboard'
       end
       object TBSeparatorItem7: TSpTBXSeparatorItem
       end
       object TBItem9: TSpTBXItem
+        Caption = 'Find...'
+        Hint = 'Search for text'
         Action = acFind
-        CaptionW = 'Find...'
-        HintW = 'Search for text'
       end
       object TBItem11: TSpTBXItem
+        Caption = 'Replace...'
+        Hint = 'Replace text'
         Action = acReplace
-        CaptionW = 'Replace...'
-        HintW = 'Replace text'
       end
       object TBSeparatorItem12: TSpTBXSeparatorItem
       end
       object TBItem18: TSpTBXItem
+        Caption = 'Prev untranslated'
+        Hint = 'Go to previous untranslated item'
         Action = acPrevUntranslated
-        CaptionW = 'Prev untranslated'
-        HintW = 'Go to previous untranslated item'
       end
       object TBItem19: TSpTBXItem
+        Caption = 'Next untranslated'
+        Hint = 'Go to next untranslated item'
         Action = acNextUntranslated
-        CaptionW = 'Next untranslated'
-        HintW = 'Go to next untranslated item'
       end
       object TBSeparatorItem4: TSpTBXSeparatorItem
       end
       object TBItem27: TSpTBXItem
+        Caption = 'Translate using Dictionary'
+        Hint = 'Translate using the dictionary'
         Action = acDictTranslate
-        CaptionW = 'Translate using Dictionary'
-        HintW = 'Translate using the dictionary'
       end
       object TBSeparatorItem5: TSpTBXSeparatorItem
       end
       object TBItem29: TSpTBXItem
+        Caption = 'Help'
+        Hint = 'Show help file'
         Action = acHelp
-        CaptionW = 'Help'
-        HintW = 'Show help file'
       end
       object TBXSeparatorItem1: TSpTBXSeparatorItem
       end
       object mnuThemes: TSpTBXSubmenuItem
+        Caption = 'Themes'
         DisplayMode = nbdmImageAndText
         MinWidth = 90
         DropdownCombo = True
-        CaptionW = 'Themes'
         object mnuThemesGroup: TSpTBXThemeGroupItem
         end
       end
@@ -3833,50 +3833,50 @@ object frmMain: TfrmMain
     Left = 38
     Top = 158
     object Undo1: TSpTBXItem
+      Caption = 'Undo'
+      Hint = 'Undo last action'
       Action = acUndo
-      CaptionW = 'Undo'
-      HintW = 'Undo last action'
     end
     object N13: TSpTBXSeparatorItem
     end
     object Cut1: TSpTBXItem
+      Caption = 'Cut'
+      Hint = 'Cut selected text'
       Action = acCut
-      CaptionW = 'Cut'
-      HintW = 'Cut selected text'
     end
     object Copy1: TSpTBXItem
+      Caption = 'Copy'
+      Hint = 'Copy selected text'
       Action = acCopy
-      CaptionW = 'Copy'
-      HintW = 'Copy selected text'
     end
     object Paste1: TSpTBXItem
+      Caption = 'Paste'
+      Hint = 'Paste from clipboard'
       Action = acPaste
-      CaptionW = 'Paste'
-      HintW = 'Paste from clipboard'
     end
     object N14: TSpTBXSeparatorItem
     end
     object TBItem54: TSpTBXItem
+      Caption = 'Use this translation everywhere'
+      Hint = 'Use this translation everywhere'
       Action = acReplaceEverywhere
-      CaptionW = 'Use this translation everywhere'
-      HintW = 'Use this translation everywhere'
     end
     object SelectAll1: TSpTBXItem
+      Caption = 'Select All'
+      Hint = 'Select all text'
       Action = acSelectAll
-      CaptionW = 'Select All'
-      HintW = 'Select all text'
     end
     object TBSeparatorItem9: TSpTBXSeparatorItem
     end
     object TBItem17: TSpTBXItem
+      Caption = 'ASCII Value(s)...'
+      Hint = 'Show the ASCII values for the selected text'
       Action = acAsciiValues
-      CaptionW = 'ASCII Value(s)...'
-      HintW = 'Show the ASCII values for the selected text'
     end
     object TBXSeparatorItem6: TSpTBXSeparatorItem
     end
     object smiDictionary: TSpTBXSubmenuItem
-      CaptionW = 'Dictionary'
+      Caption = 'Dictionary'
     end
   end
   object popList: TSpTBXPopupMenu
@@ -3884,67 +3884,67 @@ object frmMain: TfrmMain
     Left = 78
     Top = 158
     object TBItem20: TSpTBXItem
+      Caption = 'Copy from Original'
+      Hint = 'Copy the value of Original to Translation'
       Action = acCopyFromOriginal
-      CaptionW = 'Copy from Original'
-      HintW = 'Copy the value of Original to Translation'
     end
     object TBItem21: TSpTBXItem
+      Caption = 'Copy from Name'
+      Hint = 'Copy the value of Name to Translation'
       Action = acCopyFromName
-      CaptionW = 'Copy from Name'
-      HintW = 'Copy the value of Name to Translation'
     end
     object TBXItem7: TSpTBXItem
+      Caption = 'Add to Dictionary'
+      Hint = 'Add current item to the dictionary'
       Action = acDictAdd
-      CaptionW = 'Add to Dictionary'
-      HintW = 'Add current item to the dictionary'
     end
     object TBSeparatorItem14: TSpTBXSeparatorItem
     end
     object TBItem24: TSpTBXItem
+      Caption = 'Next untranslated'
+      Hint = 'Go to next untranslated item'
       Action = acNextUntranslated
-      CaptionW = 'Next untranslated'
-      HintW = 'Go to next untranslated item'
     end
     object TBItem25: TSpTBXItem
+      Caption = 'Prev untranslated'
+      Hint = 'Go to previous untranslated item'
       Action = acPrevUntranslated
-      CaptionW = 'Prev untranslated'
-      HintW = 'Go to previous untranslated item'
     end
     object TBSeparatorItem11: TSpTBXSeparatorItem
     end
     object TBItem53: TSpTBXItem
+      Caption = 'Clear All Translations'
+      Hint = 'Clear the translated text'
       Action = acClearAllTranslations
-      CaptionW = 'Clear All Translations'
-      HintW = 'Clear the translated text'
     end
     object TBItem52: TSpTBXItem
+      Caption = 'Use this translation everywhere'
+      Hint = 'Use this translation everywhere'
       Action = acReplaceEverywhere
-      CaptionW = 'Use this translation everywhere'
-      HintW = 'Use this translation everywhere'
     end
     object TBXSeparatorItem5: TSpTBXSeparatorItem
     end
     object TBXItem5: TSpTBXItem
+      Caption = 'Translated'
+      Hint = 'Toggle the Translated status of the item'
       Action = acToggleTranslated
-      CaptionW = 'Translated'
-      HintW = 'Toggle the Translated status of the item'
     end
     object TBXSeparatorItem7: TSpTBXSeparatorItem
     end
     object TBXItem12: TSpTBXItem
+      Caption = 'Add Item...'
+      Hint = 'Add new item to original and translation'
       Action = acAddItem
-      CaptionW = 'Add Item...'
-      HintW = 'Add new item to original and translation'
     end
     object TBXItem11: TSpTBXItem
+      Caption = 'Edit Item...'
+      Hint = 'Edit all parts of the current item'
       Action = acEditItem
-      CaptionW = 'Edit Item...'
-      HintW = 'Edit all parts of the current item'
     end
     object TBXItem9: TSpTBXItem
+      Caption = 'Delete Item...'
+      Hint = 'Delete the current item from both original and translation'
       Action = acDeleteItem
-      CaptionW = 'Delete Item...'
-      HintW = 'Delete the current item from both original and translation'
     end
   end
   object MRUFiles: TTBXMRUList

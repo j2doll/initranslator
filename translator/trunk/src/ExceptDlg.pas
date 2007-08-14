@@ -521,12 +521,12 @@ end;
 class procedure TExceptionDialog.ExceptionThreadHandler(Thread: TJclDebugThread);
 begin
   if ExceptionShowing then
-    Application.ShowException(Thread.SyncException)
+    Application.ShowException(Thread.SyncException as Exception)
   else
   begin
     ExceptionShowing := True;
     try
-      ShowException(Thread.SyncException, Thread);
+      ShowException(Thread.SyncException as Exception, Thread);
     finally
       ExceptionShowing := False;
     end;

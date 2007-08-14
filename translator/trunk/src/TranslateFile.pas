@@ -82,7 +82,7 @@ type
     destructor Destroy; override;
     function TransQuote: WideChar;
     function OrigQuote: WideChar;
-  published
+  public
 
     property Owner: ITranslationItems read GetOwner write SetOwner;
     property Index: integer read GetIndex write SetIndex;
@@ -164,7 +164,7 @@ type
 
 implementation
 uses
-  Windows, TntSystem;
+  Windows, TntSystem, CommonUtils;
 
 function trimQuotes(const S: WideString; Quote: WideChar): WideString;
 begin
@@ -536,7 +536,7 @@ end;
 function TTranslateFiles.LoadOriginal(const Filename: WideString; Encoding: TEncoding): TEncoding;
 var
   S, FComments: TTntStringlist;
-  ASection: WideString;
+  ASection, tmpString, tmpTrimString: WideString;
   i, j: integer;
 begin
   FItems.Clear;
@@ -544,6 +544,7 @@ begin
 
   FItems.Sort := stNone;
   S := TTntStringlist.Create;
+
   FComments := TTntStringlist.Create;
   try
     if AppUtils.AutoDetectCharacterSet(Filename) = feAnsi then // only use the requested encoding if the file has no BOM
@@ -568,27 +569,29 @@ begin
     end;
     for i := 0 to S.Count - 1 do
     begin
-      if InStringList(CommentChars, S[i]) then
-        FComments.Add(S[i])
-      else if (WideTextPos(StartSection, S[i]) = 1) and (WideTextPos(EndSection, S[i]) = Length(S[i])) then
-        ASection := Copy(S[i], 2, Length(S[i]) - 2)
-      else if (WideTextPos(SeparatorChar, S[i]) > 1) then
+      tmpString := S[i];
+      tmpTrimString := trim(tmpString);
+      if InStringList(CommentChars, tmpString) then
+        FComments.Add(tmpString)
+      else if WideStartsText(StartSection, tmpTrimString) and WideEndsText(EndSection, tmpTrimString) then
+        ASection := Copy(tmpTrimString, 2, Length(tmpTrimString) - 2)
+      else if (WideTextPos(SeparatorChar, tmpString) > 1) then
       begin
-        j := WideTextPos(SeparatorChar, S[i]);
+        j := WideTextPos(SeparatorChar, tmpString);
         if j > 1 then
         begin
           with FItems.Add do
           begin
             Section := ASection;
-            Name := Copy(S[i], 1, j - 1);
-            Original := Copy(S[i], j + 1, MaxInt);
+            Name := Copy(tmpString, 1, j - 1);
+            Original := Copy(tmpString, j + 1, MaxInt);
             OrigComments := FComments.Text;
             FComments.Clear;
           end;
         end;
       end
       else
-        FComments.Add(S[i]);
+        FComments.Add(tmpString);
     end;
   finally
     S.Free;
@@ -599,7 +602,7 @@ end;
 function TTranslateFiles.LoadTranslation(const Filename: WideString; Encoding: TEncoding): TEncoding;
 var
   S, FComments: TTNTStringlist;
-  ASection: WideString;
+  ASection, tmpString, tmpTrimString: WideString;
   i, j, k: integer;
   FOldSort: TTranslateSortType;
   FItem: ITranslationItem;
@@ -633,20 +636,21 @@ begin
     end;
     for i := 0 to S.Count - 1 do
     begin
-      if InStringList(CommentChars, S[i]) then
-        FComments.Add(S[i])
-      else if (WideTextPos(StartSection, S[i]) = 1) and (WideTextPos(EndSection, S[i]) = Length(S[i]))
-        and (WideTextPos(SeparatorChar, S[i]) = 0) then
-        ASection := Copy(S[i], 2, Length(S[i]) - 2)
+      tmpString := S[i];
+      tmpTrimString := trim(tmpString);
+      if InStringList(CommentChars, tmpString) then
+        FComments.Add(tmpString)
+      else if WideStartsText(StartSection, tmpTrimString) and WideEndsText(EndSection, tmpTrimString) then
+        ASection := Copy(tmpTrimString, 2, Length(tmpTrimString) - 2)
       else
       begin
-        j := WideTextPos(SeparatorChar, S[i]);
+        j := WideTextPos(SeparatorChar, tmpString);
         if j > 1 then
         begin
-          k := FItems.IndexOf(ASection, Copy(S[i], 1, j - 1));
+          k := FItems.IndexOf(ASection, Copy(tmpString, 1, j - 1));
           if k >= 0 then
           begin
-            FItems[k].Translation := Copy(S[i], j + 1, MaxInt);
+            FItems[k].Translation := Copy(tmpString, j + 1, MaxInt);
             // normal behavior is to regard empty translations as untranslated
             FItems[k].Translated := FItems[k].Translation <> '';
             FItems[k].TransComments := FComments.Text;
@@ -656,15 +660,17 @@ begin
           begin
             FItem := FOrphans.Add;
             FItem.Section := ASection;
-            FItem.Name := Copy(S[i], 1, j - 1);
-            FItem.Original := Copy(S[i], 1, j - 1);  // have to store something...
-            FItem.Translation := Copy(S[i], j + 1, MaxInt);
+            FItem.Name := Copy(tmpString, 1, j - 1);
+            FItem.Original := Copy(tmpString, 1, j - 1);  // have to store something...
+            FItem.Translation := Copy(tmpString, j + 1, MaxInt);
             // normal behavior is to regard empty translations as untranslated
 //            FItem.Translated := FItem.Translation <> '';
             FItem.TransComments := FComments.Text;
             FComments.Clear;
           end;
-        end;
+        end
+        else
+          FComments.Add(tmpString);
       end;
     end;
   finally

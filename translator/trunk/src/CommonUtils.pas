@@ -16,6 +16,7 @@
 }
 // $Id$
 unit CommonUtils;
+{$I TRANSLATOR.INC}
 
 interface
 uses
@@ -85,7 +86,7 @@ implementation
 uses
   Forms, Dialogs, Math, Registry, StrUtils,
   ShlObj, ActiveX, ShFolder,
-  TntWindows, TntSysUtils, TntWideStrUtils;
+  TntWindows, TntSysUtils, {$IFDEF COMPILER_9_UP}WideStrUtils{$ELSE}TntWideStrUtils{$ENDIF};
 
 function AutoWideDequotedStr(const S: WideString): WideString;
 begin

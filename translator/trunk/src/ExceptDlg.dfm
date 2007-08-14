@@ -1,12 +1,11 @@
 object ExceptionDialog: TExceptionDialog
   Left = 360
   Top = 150
+  Width = 497
+  Height = 444
   ActiveControl = OkBtn
-  AutoScroll = False
   BorderIcons = [biSystemMenu]
   Caption = 'ExceptionDialog'
-  ClientHeight = 410
-  ClientWidth = 472
   Color = clBtnFace
   Constraints.MinHeight = 235
   Constraints.MinWidth = 480
@@ -26,7 +25,7 @@ object ExceptionDialog: TExceptionDialog
   OnResize = FormResize
   OnShow = FormShow
   DesignSize = (
-    472
+    489
     410)
   PixelsPerInch = 96
   TextHeight = 13
@@ -62,7 +61,7 @@ object ExceptionDialog: TExceptionDialog
   object pnlTop: TTntPanel
     Left = 0
     Top = 0
-    Width = 472
+    Width = 489
     Height = 64
     Align = alTop
     BevelInner = bvRaised
@@ -70,7 +69,7 @@ object ExceptionDialog: TExceptionDialog
     Color = clWhite
     TabOrder = 3
     DesignSize = (
-      472
+      489
       64)
     object Label1: TTntLabel
       Left = 8

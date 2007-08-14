@@ -114,7 +114,7 @@ object frmMain: TfrmMain
     Width = 253
     Height = 21
     Style = csDropDownList
-    ItemHeight = 13
+    ItemHeight = 0
     TabOrder = 2
   end
   object cbTranslation: TTntComboBox
@@ -123,7 +123,7 @@ object frmMain: TfrmMain
     Width = 264
     Height = 21
     Style = csDropDownList
-    ItemHeight = 13
+    ItemHeight = 0
     TabOrder = 3
   end
   object btnCreate: TTntButton

@@ -145,7 +145,7 @@ type
 
 implementation
 uses
-  TntSysUtils, TntWideStrUtils, RTLConsts;
+  TntSysUtils, {$IFDEF COMPILER_9_UP}WideStrUtils{$ELSE}TntWideStrUtils{$ENDIF}, RTLConsts;
 
 function PChar2(const S: WideString): PChar;
 begin

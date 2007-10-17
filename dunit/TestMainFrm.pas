@@ -38,11 +38,6 @@ type
     procedure SetUp; override;
     procedure TearDown; override;
   published
-    procedure TestFormCreate;
-    procedure TestFormCloseQuery;
-    procedure TestlvTranslateStringsChange;
-    procedure TestreTranslationExit;
-    procedure TestlvTranslateStringsData;
     procedure TestacExitExecute;
     procedure TestacOpenOrigExecute;
     procedure TestacOpenTransExecute;
@@ -51,24 +46,18 @@ type
     procedure TestacPrevExecute;
     procedure TestacNextExecute;
     procedure TestacCopyFromOriginalExecute;
-    procedure TestreTranslationEnter;
     procedure TestacAboutExecute;
-    procedure TestlvTranslateStringsEnter;
     procedure TestacToggleFocusExecute;
     procedure TestacFocusTranslationExecute;
     procedure TestacFindExecute;
     procedure TestacFindNextExecute;
     procedure TestacReplaceExecute;
-    procedure TestlvTranslateStringsAdvancedCustomDrawItem;
     procedure TestacNextUntranslatedExecute;
     procedure TestacPrevUntranslatedExecute;
     procedure TestacFocusListViewExecute;
     procedure TestacFocusOriginalExecute;
     procedure TestacShowQuotesExecute;
-    procedure TestalMainUpdate;
-    procedure TestlvTranslateStringsColumnClick;
     procedure TestacRestoreSortExecute;
-    procedure TestpnlBottomResize;
     procedure TestacDictSaveExecute;
     procedure TestacDictLoadExecute;
     procedure TestacDictCreateExecute;
@@ -76,22 +65,17 @@ type
     procedure TestacDictInvertExecute;
     procedure TestacDictAddExecute;
     procedure TestacHelpExecute;
-    procedure TestlvTranslateStringsDataFind;
     procedure TestacNewTransExecute;
     procedure TestacCreateTranslationFileExecute;
     procedure TestacCopyAllFromOrigExecute;
     procedure TestacViewDetailsExecute;
-    procedure TestacPasteUpdate;
-    procedure TestreTranslationKeyDown;
     procedure TestacCopyFromNameExecute;
     procedure TestacPreferencesExecute;
     procedure TestacViewCommentsExecute;
     procedure TestacAsciiValuesExecute;
-    procedure TestlvTranslateStringsInfoTip;
     procedure TestMRUFilesClick;
     procedure TestacClearMRUExecute;
     procedure TestacClearInvalidMRUExecute;
-    procedure TestmnuFileSelect;
     procedure TestacFindUnmatchedShortCutExecute;
     procedure TestacHomeExecute;
     procedure TestacEndExecute;
@@ -115,20 +99,14 @@ type
     procedure TestacToggleTranslatedExecute;
     procedure TestacTestExceptionHandlerExecute;
     procedure TestacFullScreenExecute;
-    procedure TestpopEditPopup;
     procedure TestacToolsCustomizeExecute;
     procedure TestacAddItemExecute;
     procedure TestacEditItemExecute;
     procedure TestacDeleteItemExecute;
     procedure TestacSaveOriginalExecute;
-    procedure TestlvTranslateStringsDblClick;
     procedure TestacConfigSuspiciousExecute;
     procedure TestacDictEditExecute;
-    procedure TestmnuPluginsPopup;
     procedure TestacMakeConsistentExecute;
-    procedure TestmnuToolsPopup;
-    procedure TestBeginUpdate;
-    procedure TestEndUpdate;
     procedure TestTranslate;
   end;
 
@@ -143,55 +121,6 @@ procedure TestTfrmMain.TearDown;
 begin
   FfrmMain.Free;
   FfrmMain := nil;
-end;
-
-procedure TestTfrmMain.TestFormCreate;
-var
-  Sender: TObject;
-begin
-  // TODO: Setup method call parameters
-  FfrmMain.FormCreate(Sender);
-  // TODO: Validate method results
-end;
-
-procedure TestTfrmMain.TestFormCloseQuery;
-var
-  CanClose: Boolean;
-  Sender: TObject;
-begin
-  // TODO: Setup method call parameters
-  FfrmMain.FormCloseQuery(Sender, CanClose);
-  // TODO: Validate method results
-end;
-
-procedure TestTfrmMain.TestlvTranslateStringsChange;
-var
-  Change: TItemChange;
-  Item: TListItem;
-  Sender: TObject;
-begin
-  // TODO: Setup method call parameters
-  FfrmMain.lvTranslateStringsChange(Sender, Item, Change);
-  // TODO: Validate method results
-end;
-
-procedure TestTfrmMain.TestreTranslationExit;
-var
-  Sender: TObject;
-begin
-  // TODO: Setup method call parameters
-  FfrmMain.reTranslationExit(Sender);
-  // TODO: Validate method results
-end;
-
-procedure TestTfrmMain.TestlvTranslateStringsData;
-var
-  Item: TListItem;
-  Sender: TObject;
-begin
-  // TODO: Setup method call parameters
-  FfrmMain.lvTranslateStringsData(Sender, Item);
-  // TODO: Validate method results
 end;
 
 procedure TestTfrmMain.TestacExitExecute;
@@ -266,30 +195,12 @@ begin
   // TODO: Validate method results
 end;
 
-procedure TestTfrmMain.TestreTranslationEnter;
-var
-  Sender: TObject;
-begin
-  // TODO: Setup method call parameters
-  FfrmMain.reTranslationEnter(Sender);
-  // TODO: Validate method results
-end;
-
 procedure TestTfrmMain.TestacAboutExecute;
 var
   Sender: TObject;
 begin
   // TODO: Setup method call parameters
   FfrmMain.acAboutExecute(Sender);
-  // TODO: Validate method results
-end;
-
-procedure TestTfrmMain.TestlvTranslateStringsEnter;
-var
-  Sender: TObject;
-begin
-  // TODO: Setup method call parameters
-  FfrmMain.lvTranslateStringsEnter(Sender);
   // TODO: Validate method results
 end;
 
@@ -338,20 +249,6 @@ begin
   // TODO: Validate method results
 end;
 
-procedure TestTfrmMain.TestlvTranslateStringsAdvancedCustomDrawItem;
-var
-  DefaultDraw: Boolean;
-  Stage: TCustomDrawStage;
-  State: TCustomDrawState;
-  Item: TListItem;
-  Sender: TCustomListView;
-begin
-  // TODO: Setup method call parameters
-  FfrmMain.lvTranslateStringsAdvancedCustomDrawItem(Sender, Item, State, Stage, 
-      DefaultDraw);
-  // TODO: Validate method results
-end;
-
 procedure TestTfrmMain.TestacNextUntranslatedExecute;
 var
   Sender: TObject;
@@ -397,41 +294,12 @@ begin
   // TODO: Validate method results
 end;
 
-procedure TestTfrmMain.TestalMainUpdate;
-var
-  Handled: Boolean;
-  Action: TBasicAction;
-begin
-  // TODO: Setup method call parameters
-  FfrmMain.alMainUpdate(Action, Handled);
-  // TODO: Validate method results
-end;
-
-procedure TestTfrmMain.TestlvTranslateStringsColumnClick;
-var
-  Column: TListColumn;
-  Sender: TObject;
-begin
-  // TODO: Setup method call parameters
-  FfrmMain.lvTranslateStringsColumnClick(Sender, Column);
-  // TODO: Validate method results
-end;
-
 procedure TestTfrmMain.TestacRestoreSortExecute;
 var
   Sender: TObject;
 begin
   // TODO: Setup method call parameters
   FfrmMain.acRestoreSortExecute(Sender);
-  // TODO: Validate method results
-end;
-
-procedure TestTfrmMain.TestpnlBottomResize;
-var
-  Sender: TObject;
-begin
-  // TODO: Setup method call parameters
-  FfrmMain.pnlBottomResize(Sender);
   // TODO: Validate method results
 end;
 
@@ -498,24 +366,6 @@ begin
   // TODO: Validate method results
 end;
 
-procedure TestTfrmMain.TestlvTranslateStringsDataFind;
-var
-  Index: Integer;
-  Wrap: Boolean;
-  Direction: TSearchDirection;
-  StartIndex: Integer;
-  FindData: Pointer;
-  FindPosition: TPoint;
-  FindString: WideString;
-  Find: TItemFind;
-  Sender: TObject;
-begin
-  // TODO: Setup method call parameters
-  FfrmMain.lvTranslateStringsDataFind(Sender, Find, FindString, FindPosition, 
-      FindData, StartIndex, Direction, Wrap, Index);
-  // TODO: Validate method results
-end;
-
 procedure TestTfrmMain.TestacNewTransExecute;
 var
   Sender: TObject;
@@ -549,26 +399,6 @@ var
 begin
   // TODO: Setup method call parameters
   FfrmMain.acViewDetailsExecute(Sender);
-  // TODO: Validate method results
-end;
-
-procedure TestTfrmMain.TestacPasteUpdate;
-var
-  Sender: TObject;
-begin
-  // TODO: Setup method call parameters
-  FfrmMain.acPasteUpdate(Sender);
-  // TODO: Validate method results
-end;
-
-procedure TestTfrmMain.TestreTranslationKeyDown;
-var
-  Shift: TShiftState;
-  Key: Word;
-  Sender: TObject;
-begin
-  // TODO: Setup method call parameters
-  FfrmMain.reTranslationKeyDown(Sender, Key, Shift);
   // TODO: Validate method results
 end;
 
@@ -608,17 +438,6 @@ begin
   // TODO: Validate method results
 end;
 
-procedure TestTfrmMain.TestlvTranslateStringsInfoTip;
-var
-  InfoTip: string;
-  Item: TListItem;
-  Sender: TObject;
-begin
-  // TODO: Setup method call parameters
-  FfrmMain.lvTranslateStringsInfoTip(Sender, Item, InfoTip);
-  // TODO: Validate method results
-end;
-
 procedure TestTfrmMain.TestMRUFilesClick;
 var
   FileName: string;
@@ -644,17 +463,6 @@ var
 begin
   // TODO: Setup method call parameters
   FfrmMain.acClearInvalidMRUExecute(Sender);
-  // TODO: Validate method results
-end;
-
-procedure TestTfrmMain.TestmnuFileSelect;
-var
-  Selecting: Boolean;
-  Viewer: TTBItemViewer;
-  Sender: TTBCustomItem;
-begin
-  // TODO: Setup method call parameters
-  FfrmMain.mnuFileSelect(Sender, Viewer, Selecting);
   // TODO: Validate method results
 end;
 
@@ -865,15 +673,6 @@ begin
   // TODO: Validate method results
 end;
 
-procedure TestTfrmMain.TestpopEditPopup;
-var
-  Sender: TObject;
-begin
-  // TODO: Setup method call parameters
-  FfrmMain.popEditPopup(Sender);
-  // TODO: Validate method results
-end;
-
 procedure TestTfrmMain.TestacToolsCustomizeExecute;
 var
   Sender: TObject;
@@ -919,15 +718,6 @@ begin
   // TODO: Validate method results
 end;
 
-procedure TestTfrmMain.TestlvTranslateStringsDblClick;
-var
-  Sender: TObject;
-begin
-  // TODO: Setup method call parameters
-  FfrmMain.lvTranslateStringsDblClick(Sender);
-  // TODO: Validate method results
-end;
-
 procedure TestTfrmMain.TestacConfigSuspiciousExecute;
 var
   Sender: TObject;
@@ -946,48 +736,12 @@ begin
   // TODO: Validate method results
 end;
 
-procedure TestTfrmMain.TestmnuPluginsPopup;
-var
-  FromLink: Boolean;
-  Sender: TTBCustomItem;
-begin
-  // TODO: Setup method call parameters
-  FfrmMain.mnuPluginsPopup(Sender, FromLink);
-  // TODO: Validate method results
-end;
-
 procedure TestTfrmMain.TestacMakeConsistentExecute;
 var
   Sender: TObject;
 begin
   // TODO: Setup method call parameters
   FfrmMain.acMakeConsistentExecute(Sender);
-  // TODO: Validate method results
-end;
-
-procedure TestTfrmMain.TestmnuToolsPopup;
-var
-  FromLink: Boolean;
-  Sender: TTBCustomItem;
-begin
-  // TODO: Setup method call parameters
-  FfrmMain.mnuToolsPopup(Sender, FromLink);
-  // TODO: Validate method results
-end;
-
-procedure TestTfrmMain.TestBeginUpdate;
-var
-  ReturnValue: Integer;
-begin
-  ReturnValue := FfrmMain.BeginUpdate;
-  // TODO: Validate method results
-end;
-
-procedure TestTfrmMain.TestEndUpdate;
-var
-  ReturnValue: Integer;
-begin
-  ReturnValue := FfrmMain.EndUpdate;
   // TODO: Validate method results
 end;
 

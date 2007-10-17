@@ -65,7 +65,11 @@ uses
   TestUndoList in 'TestUndoList.pas',
   UndoList in '..\src\UndoList.pas',
   TestWideIniFiles in 'TestWideIniFiles.pas',
-  WideIniFiles in '..\src\WideIniFiles.pas';
+  WideIniFiles in '..\src\WideIniFiles.pas',
+  TestCommonUtils in 'TestCommonUtils.pas',
+  CommonUtils in '..\src\CommonUtils.pas',
+  TestAppUtils in 'TestAppUtils.pas',
+  AppUtils in '..\src\AppUtils.pas';
 
 {$R *.RES}
 

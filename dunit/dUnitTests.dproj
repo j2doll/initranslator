@@ -46,9 +46,11 @@
       <MainSource>MainSource</MainSource>
     </DelphiCompile>
     <DCCReference Include="..\src\ApplicationServices.pas" />
+    <DCCReference Include="..\src\AppUtils.pas" />
     <DCCReference Include="..\src\BaseForm.pas" />
     <DCCReference Include="..\src\ColorsFrm.pas" />
     <DCCReference Include="..\src\CommentsFrm.pas" />
+    <DCCReference Include="..\src\CommonUtils.pas" />
     <DCCReference Include="..\src\DictEditFrm.pas" />
     <DCCReference Include="..\src\Dictionary.pas" />
     <DCCReference Include="..\src\DictTranslationSelectDlg.pas" />
@@ -70,9 +72,11 @@
     <DCCReference Include="..\src\UndoList.pas" />
     <DCCReference Include="..\src\WideIniFiles.pas" />
     <DCCReference Include="TestApplicationServices.pas" />
+    <DCCReference Include="TestAppUtils.pas" />
     <DCCReference Include="TestBaseForm.pas" />
     <DCCReference Include="TestColorsFrm.pas" />
     <DCCReference Include="TestCommentsFrm.pas" />
+    <DCCReference Include="TestCommonUtils.pas" />
     <DCCReference Include="TestDictEditFrm.pas" />
     <DCCReference Include="TestDictionary.pas" />
     <DCCReference Include="TestDictTranslationSelectDlg.pas" />

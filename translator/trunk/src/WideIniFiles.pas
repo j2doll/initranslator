@@ -18,6 +18,7 @@
 
 unit WideIniFiles;
 {$I TRANSLATOR.INC}
+
 interface
 uses
   Windows, SysUtils, Classes, TntClasses;
@@ -782,10 +783,10 @@ begin
   if Win32PlatformIsUnicode then
   begin
     if not WritePrivateProfileStringW(PWideChar(Section), nil, nil, PWideChar(FFileName)) then
-      raise EWideIniFileException.CreateResFmt(@SIniFileWriteError, [FileName]);
+      EWideIniFileException.CreateFmt(SIniFileWriteError, [FFileName]);
   end
   else if not WritePrivateProfileStringA(PChar2(Section), nil, nil, PChar2(FFileName)) then
-    raise EWideIniFileException.CreateResFmt(@SIniFileWriteError, [FileName]);
+    raise EWideIniFileException.CreateFmt(SIniFileWriteError, [FFileName]);
 
 end;
 
@@ -950,11 +951,11 @@ begin
   begin
     if not WritePrivateProfileStringW(PWideChar(Section), PWideChar(Ident),
       PWideChar(Value), PWideChar(FFileName)) then
-      raise EWideIniFileException.CreateResFmt(@SIniFileWriteError, [FileName]);
+      raise EWideIniFileException.CreateFmt(SIniFileWriteError, [FileName]);
   end
   else if not WritePrivateProfileStringA(PChar2(Section), PChar2(Ident),
     PChar2(Value), PChar2(FFileName)) then
-    raise EWideIniFileException.CreateResFmt(@SIniFileWriteError, [FileName]);
+    raise EWideIniFileException.CreateFmt(SIniFileWriteError, [FileName]);
 end;
 
 end.

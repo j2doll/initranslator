@@ -42,6 +42,6 @@ end;
 
 initialization
   // Register any test cases with the test runner
-  RegisterTest(TestTFileMonitorThread.Suite);
+  //RegisterTest(TestTFileMonitorThread.Suite);
 end.
 

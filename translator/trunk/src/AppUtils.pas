@@ -24,6 +24,42 @@ uses
   MsgTranslate, AppConsts, AppOptions, TransIntf,
   TntClasses, TBXExtItems;
 
+type
+  TAppUtils = class
+  public
+    class procedure TBMRULoadFromIni(MRU:TTBXMRUList);
+    class procedure TBMRUSaveToIni(MRU:TTBXMRUList);
+    class procedure TBMRULoadFromReg(MRU:TTBXMRUList; RootKey:Cardinal; const Path:WideString);
+    class procedure TBMRUSaveToReg(MRU:TTBXMRUList; RootKey:Cardinal; const Path:WideString);
+
+    class function DetectEncoding(const FileName:WideString):TEncoding;
+    class function GetAppVersion:WideString;
+    class function GetCurrentYear:Integer;
+
+    class function ActionShortCutInUse(AM:TActionList; ShortCut:Word):boolean;
+    class function FindActionShortCut(AM:TActionList; ShortCut:Word):TCustomAction;
+    class function RemoveActionShortCut(AM:TActionList; ShortCut:Word):integer;
+    class function _(const ASection, AMsg:WideString):WideString;
+    class function MyShortCutToText(ShortCut:TShortCut):WideString;
+
+    class function GlobalLanguageFile:TAppLanguage;
+    class function GlobalAppOptions:TAppOptions;
+    class function GlobalApplicationServices:IApplicationServices;
+
+    class function GetUserAppDataFolder(const Default:WideString):WideString;
+    class function GetUserShortcutFile:WideString;
+    class function GetUserAppOptionsFile:WideString;
+    class procedure HandleFileCreateException(Sender:TObject; E:Exception; const Filename:WideString);
+
+    class function GetAppStoragePath:WideString;
+    class function AutoDetectCharacterSet(Stream:TStream):TEncoding; overload;
+    class function AutoDetectCharacterSet(const Filename:WideString):TEncoding; overload;
+    class function FileCharSetToEncoding(CharSet:TTntStreamCharSet):TEncoding;
+
+    class procedure FixXPStyles(AControl:TWinControl);
+    class function GetPluginsFolder:WideString;
+  end;
+
 procedure TBMRULoadFromIni(MRU:TTBXMRUList);
 procedure TBMRUSaveToIni(MRU:TTBXMRUList);
 procedure TBMRULoadFromReg(MRU:TTBXMRUList; RootKey:Cardinal; const Path:WideString);
@@ -438,6 +474,141 @@ begin
   FreeAndNil(FAppOptions);
 end;
 
+{ TAppUtils }
+
+class function TAppUtils.ActionShortCutInUse(AM:TActionList;
+  ShortCut:Word):boolean;
+begin
+  Result := AppUtils.ActionShortCutInUse(AM, ShortCut);
+end;
+
+class function TAppUtils.AutoDetectCharacterSet(Stream:TStream):TEncoding;
+begin
+  Result := AppUtils.AutoDetectCharacterSet(Stream);
+end;
+
+class function TAppUtils.AutoDetectCharacterSet(const Filename:WideString):TEncoding;
+begin
+  Result := AppUtils.AutoDetectCharacterSet(Filename);
+end;
+
+class function TAppUtils.DetectEncoding(const FileName:WideString):TEncoding;
+begin
+  Result := AppUtils.DetectEncoding(FileName);
+end;
+
+class function TAppUtils.FileCharSetToEncoding(
+  CharSet:TTntStreamCharSet):TEncoding;
+begin
+  Result := AppUtils.FileCharSetToEncoding(CharSet);
+end;
+
+class function TAppUtils.FindActionShortCut(AM:TActionList;
+  ShortCut:Word):TCustomAction;
+begin
+  Result := AppUtils.FindActionShortCut(AM, ShortCut);
+end;
+
+class procedure TAppUtils.FixXPStyles(AControl:TWinControl);
+begin
+  AppUtils.FixXPStyles(AControl);
+end;
+
+class function TAppUtils.GetAppStoragePath:WideString;
+begin
+  Result := AppUtils.GetAppStoragePath;
+end;
+
+class function TAppUtils.GetAppVersion:WideString;
+begin
+  Result := AppUtils.GetAppVersion;
+end;
+
+class function TAppUtils.GetCurrentYear:Integer;
+begin
+  Result := AppUtils.GetCurrentYear;
+end;
+
+class function TAppUtils.GetPluginsFolder:WideString;
+begin
+  Result := AppUtils.GetPluginsFolder;
+end;
+
+class function TAppUtils.GetUserAppDataFolder(
+  const Default:WideString):WideString;
+begin
+  Result := AppUtils.GetUserAppDataFolder(Default);
+end;
+
+class function TAppUtils.GetUserAppOptionsFile:WideString;
+begin
+  Result := AppUtils.GetUserAppOptionsFile;
+end;
+
+class function TAppUtils.GetUserShortcutFile:WideString;
+begin
+  Result := AppUtils.GetUserShortCutFile;
+end;
+
+class function TAppUtils.GlobalApplicationServices:IApplicationServices;
+begin
+  Result := AppUtils.GlobalApplicationServices;
+end;
+
+class function TAppUtils.GlobalAppOptions:TAppOptions;
+begin
+  Result := AppUtils.GlobalAppOptions;
+end;
+
+class function TAppUtils.GlobalLanguageFile:TAppLanguage;
+begin
+  Result := AppUtils.GlobalLanguageFile;
+end;
+
+class procedure TAppUtils.HandleFileCreateException(Sender:TObject;
+  E:Exception; const Filename:WideString);
+begin
+  AppUtils.HandleFileCreateException(Sender, E, Filename);
+end;
+
+class function TAppUtils.MyShortCutToText(ShortCut:TShortCut):WideString;
+begin
+  Result := AppUtils.MyShortCutToText(ShortCut);
+end;
+
+class function TAppUtils.RemoveActionShortCut(AM:TActionList;
+  ShortCut:Word):integer;
+begin
+  Result := AppUtils.RemoveActionShortCut(AM, ShortCut);
+end;
+
+class procedure TAppUtils.TBMRULoadFromIni(MRU:TTBXMRUList);
+begin
+  AppUtils.TBMRULoadFromIni(MRU);
+end;
+
+class procedure TAppUtils.TBMRULoadFromReg(MRU:TTBXMRUList; RootKey:Cardinal;
+  const Path:WideString);
+begin
+  AppUtils.TBMRULoadFromReg(MRU, RootKey, Path);
+end;
+
+class procedure TAppUtils.TBMRUSaveToIni(MRU:TTBXMRUList);
+begin
+  AppUtils.TBMRUSaveToIni(MRU);
+end;
+
+class procedure TAppUtils.TBMRUSaveToReg(MRU:TTBXMRUList; RootKey:Cardinal;
+  const Path:WideString);
+begin
+  AppUtils.TBMRUSaveToReg(MRU, RootKey, Path);
+end;
+
+class function TAppUtils._(const ASection, AMsg:WideString):WideString;
+begin
+  Result := AppUtils._(ASection, AMsg);
+end;
+
 initialization
 
 finalization
@@ -445,3 +616,4 @@ finalization
   FreeAndNil(FLanguageFile);
 
 end.
+

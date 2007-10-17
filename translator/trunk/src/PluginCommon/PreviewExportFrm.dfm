@@ -45,10 +45,12 @@ object frmExport: TfrmExport
     0007C0000007C0000007C0000007C0000007C0000007C0000007C0000007C000
     0007C0000007C0000007C0000007C0000007C0000007C0000007C0000007C000
     0007C0000007C0000007C0000007E000000FF24924BF}
+  KeyPreview = True
   OldCreateOrder = False
+  OnKeyDown = TntFormKeyDown
   DesignSize = (
     392
-    266)
+    268)
   PixelsPerInch = 96
   TextHeight = 13
   object lblFilename: TTntLabel
@@ -129,5 +131,11 @@ object frmExport: TfrmExport
     Title = 'Save file'
     Left = 58
     Top = 82
+  end
+  object FindDialog1: TFindDialog
+    Options = [frDown, frHideMatchCase, frHideWholeWord, frHideUpDown]
+    OnFind = FindDialog1Find
+    Left = 104
+    Top = 88
   end
 end

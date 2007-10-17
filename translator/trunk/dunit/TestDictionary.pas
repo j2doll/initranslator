@@ -14,17 +14,6 @@ interface
 uses
   TestFramework, Classes, Dictionary, SysUtils, TntClasses, TransIntf;
 type
-  // Test methods for class TDictionaryItem
-  
-  TestTDictionaryItem = class(TTestCase)
-  strict private
-    FDictionaryItem: TDictionaryItem;
-  public
-    procedure SetUp; override;
-    procedure TearDown; override;
-  published
-    procedure TestDefaultTranslation;
-  end;
   // Test methods for class TDictionaryItems
   
   TestTDictionaryItems = class(TTestCase)
@@ -50,25 +39,6 @@ type
   end;
 
 implementation
-
-procedure TestTDictionaryItem.SetUp;
-begin
-  FDictionaryItem := TDictionaryItem.Create;
-end;
-
-procedure TestTDictionaryItem.TearDown;
-begin
-  FDictionaryItem.Free;
-  FDictionaryItem := nil;
-end;
-
-procedure TestTDictionaryItem.TestDefaultTranslation;
-var
-  ReturnValue: WideString;
-begin
-  ReturnValue := FDictionaryItem.DefaultTranslation;
-  // TODO: Validate method results
-end;
 
 procedure TestTDictionaryItems.SetUp;
 begin
@@ -184,7 +154,6 @@ end;
 
 initialization
   // Register any test cases with the test runner
-  RegisterTest(TestTDictionaryItem.Suite);
   RegisterTest(TestTDictionaryItems.Suite);
 end.
 

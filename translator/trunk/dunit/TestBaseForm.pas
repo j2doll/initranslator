@@ -24,8 +24,6 @@ type
     procedure SetUp; override;
     procedure TearDown; override;
   published
-    procedure TestAfterConstruction;
-    procedure TestCloseQuery;
   end;
 
 implementation
@@ -39,20 +37,6 @@ procedure TestTfrmBase.TearDown;
 begin
   FfrmBase.Free;
   FfrmBase := nil;
-end;
-
-procedure TestTfrmBase.TestAfterConstruction;
-begin
-  FfrmBase.AfterConstruction;
-  // TODO: Validate method results
-end;
-
-procedure TestTfrmBase.TestCloseQuery;
-var
-  ReturnValue: Boolean;
-begin
-  ReturnValue := FfrmBase.CloseQuery;
-  // TODO: Validate method results
 end;
 
 initialization

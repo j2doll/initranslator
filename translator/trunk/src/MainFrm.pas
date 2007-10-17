@@ -2462,7 +2462,7 @@ end;
 procedure TfrmMain.CreateEverything;
 begin
   FApplicationServices := TApplicationServices.Create(self);
-  GlobalApplicationServicesFunc := @InternalApplicationServicesFunc;
+  GlobalApplicationServicesFunc := TApplicationServicesFunc(@InternalApplicationServicesFunc);
   FTranslateFile := TTranslateFiles.Create;
   FFindReplace := TFindReplace.Create(Self);
   FDictionary := TDictionaryItems.Create;

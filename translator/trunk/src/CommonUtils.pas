@@ -22,6 +22,70 @@ interface
 uses
   Windows, SysUtils, Controls, Classes, TntClasses;
 
+type
+  TCommonUtils = class
+  public
+    class procedure InfoMsg(const AText, ACaption:WideString);
+    class procedure AboutMsg(const AText, ACaption:WideString);
+    class procedure ErrMsg(const AText, ACaption:WideString);
+    class function YesNo(const AText, ACaption:WideString):boolean;
+    class function YesNoCancel(const AText, ACaption:WideString):integer;
+    class function WideMessageBox(hWnd:HWND; lpText, lpCaption:PWideChar; uType:UINT):Integer;
+
+    class function GetCmdSwitchValue(const Switch:AnsiString; SwitchChars:TSysCharSet; var Value:AnsiString; IgnoreCase:boolean):boolean;
+    class function ScreenCursor(ACursor:TCursor):IInterface;
+    class function WaitCursor:IInterface;
+
+    class function StripChars(const S:AnsiString; Ch:TSysCharSet):AnsiString; overload;
+    class function StripChars(const S:WideString; const Ch:WideString):WideString; overload;
+    class function SysDir:WideString;
+    class function WinDir:WideString;
+
+    class function MatchesString(const SubStr, Str:WideString; WholeLine, CaseSense, Fuzzy:boolean):boolean;
+    class function StripKey(const S, StripChars:WideString; ReallyStrip:boolean):WideString;
+    class procedure StripKeys(Strings:TTntStrings; StripChars:WideString; ReallyStrip:boolean);
+    class function trimCRLFRight(const S:WideString):WideString;
+    class function strBetween(const S:WideString; StartChar, EndChar:WideChar):WideString;
+    class function StrDefault(const S, Default:WideString):WideString;
+
+    class function MyWideDequotedStr(const S:WideString; Quote:WideChar):WideString;
+    class function AutoWideDequotedStr(const S:WideString):WideString;
+    class function MyWideQuotedStr(const S:WideString; Quote:WideChar):WideString;
+
+    class function GetMinimizedFilename(const AFilename:WideString; Minimize:boolean):WideString;
+    class function DoubleQuoteString(const S:WideString; CheckString:boolean = true):WideString;
+    class function RunProcess(const Filename, Params:WideString; WorkingDir:WideString;
+      const WaitUntilTerminated, WaitUntilIdle:Boolean; const ShowCmd:Integer; var ResultCode:Cardinal):Boolean;
+    class function GetSpecialFolderLocation(const Folder:Integer):WideString;
+    class function WideSHGetFolderPath(hwnd:HWND; csidl:Integer; hToken:THandle; dwFlags:DWord; pszPath:PWideChar):HRESULT;
+    class function IsFileOpen(const Filename:WideString):boolean;
+
+    class function SubStrCount(const SubStr, Str:WideString):integer;
+    class function WideContainsChar(Ch:WideChar; const S:WideString):boolean;
+    class function IsCharPunct(const S:WideChar):boolean;
+    class function IsCharUpper(const S:WideChar):boolean;
+    class function IsCharLower(const S:WideChar):boolean;
+    class function IsCharDigit(const S:WideChar):boolean;
+    class function IsCharSpace(const S:WideChar):boolean;
+    class function IsCharControl(const S:WideChar):boolean;
+    class function IsCharBlank(const S:WideChar):boolean;
+    class function IsCharHex(const S:WideChar):boolean;
+    class function IsCharAlpha(const S:WideChar):boolean;
+
+    class function GetClipboardString(const Section, Name, Value:WideString):WideString;
+    class function ParseClipboardString(const Str:WideString; out Section, Name, Value:WideString):boolean;
+
+    // for Delphi 6
+    class function ValueFromIndex(S:TTntStrings; i:integer):WideString; overload;
+    class function ValueFromIndex(S:TStrings; i:integer):AnsiString; overload;
+    class function strtok(Search, Delim:WideString):WideString;
+
+    class function WideStartsText(const ASubText, AText:WideString):Boolean;
+    class function WideEndsText(const ASubText, AText:WideString):Boolean;
+
+    class function BinarySearch(AList:TList; L, R:integer; CompareItem:Pointer; CompareFunc:TListSortCompare; var Index:integer):boolean;
+  end;
+
 procedure InfoMsg(const AText, ACaption:WideString);
 procedure AboutMsg(const AText, ACaption:WideString);
 procedure ErrMsg(const AText, ACaption:WideString);
@@ -339,7 +403,7 @@ function MatchesString(const SubStr, Str:WideString; WholeLine, CaseSense, Fuzzy
       for i := 1 to Length(S) do
       begin
         tmp := S[i];
-        if GetStringTypeEx(LOCALE_USER_DEFAULT, CT_CTYPE1, @tmp, 1, W) and
+        if GetStringTypeExW(LOCALE_USER_DEFAULT, CT_CTYPE1, @tmp, 1, W) and
           (W and C1_ALPHA = C1_ALPHA) then
           Result := Result + S[i];
       end;
@@ -393,6 +457,7 @@ begin
       Strings[i] := StripKey(Strings[i], StripChars, true);
   end;
 end;
+
 
 function strBetween(const S:WideString; StartChar, EndChar:WideChar):WideString;
 var
@@ -827,4 +892,269 @@ begin
   Index := L;
 end;
 
+{ TCommonUtils }
+
+class procedure TCommonUtils.AboutMsg(const AText, ACaption:WideString);
+begin
+  CommonUtils.AboutMsg(AText, ACaption);
+end;
+
+class function TCommonUtils.AutoWideDequotedStr(const S:WideString):WideString;
+begin
+  Result := CommonUtils.AutoWideDequotedStr(S);
+end;
+
+class function TCommonUtils.BinarySearch(AList:TList; L, R:integer;
+  CompareItem:Pointer; CompareFunc:TListSortCompare;
+  var Index:integer):boolean;
+begin
+  Result := CommonUtils.BinarySearch(AList, L, R, CompareItem, CompareFunc, Index);
+end;
+
+class function TCommonUtils.DoubleQuoteString(const S:WideString;
+  CheckString:boolean):WideString;
+begin
+  Result := CommonUtils.DoubleQuoteString(S, CheckString);
+end;
+
+class procedure TCommonUtils.ErrMsg(const AText, ACaption:WideString);
+begin
+  CommonUtils.ErrMsg(AText, ACaption);
+end;
+
+class function TCommonUtils.GetClipboardString(const Section, Name,
+  Value:WideString):WideString;
+begin
+  Result := CommonUtils.GetClipboardString(Section, Name, Value);
+end;
+
+class function TCommonUtils.GetCmdSwitchValue(const Switch:AnsiString;
+  SwitchChars:TSysCharSet; var Value:AnsiString;
+  IgnoreCase:boolean):boolean;
+begin
+  Result := CommonUtils.GetCmdSwitchValue(Switch, SwitchChars, Value, IgnoreCase);
+end;
+
+class function TCommonUtils.GetMinimizedFilename(const AFilename:WideString;
+  Minimize:boolean):WideString;
+begin
+  Result := CommonUtils.GetMinimizedFilename(AFilename, Minimize);
+end;
+
+class function TCommonUtils.GetSpecialFolderLocation(
+  const Folder:Integer):WideString;
+begin
+  Result := CommonUtils.GetSpecialFOlderLocation(Folder);
+end;
+
+class procedure TCommonUtils.InfoMsg(const AText, ACaption:WideString);
+begin
+  CommonUtils.InfoMsg(AText, ACaption);
+end;
+
+class function TCommonUtils.IsCharAlpha(const S:WideChar):boolean;
+begin
+  Result := CommonUtils.IsCharAlpha(S);
+end;
+
+class function TCommonUtils.IsCharBlank(const S:WideChar):boolean;
+begin
+  Result := CommonUtils.IsCharBlank(S);
+end;
+
+class function TCommonUtils.IsCharControl(const S:WideChar):boolean;
+begin
+  Result := CommonUtils.IsCharControl(S);
+end;
+
+class function TCommonUtils.IsCharDigit(const S:WideChar):boolean;
+begin
+  Result := CommonUtils.IsCharDigit(S);
+end;
+
+class function TCommonUtils.IsCharHex(const S:WideChar):boolean;
+begin
+  Result := CommonUtils.IsCharHex(S);
+end;
+
+class function TCommonUtils.IsCharLower(const S:WideChar):boolean;
+begin
+  Result := CommonUtils.IsCharLower(S);
+end;
+
+class function TCommonUtils.IsCharPunct(const S:WideChar):boolean;
+begin
+  Result := CommonUtils.IsCharPunct(S);
+end;
+
+class function TCommonUtils.IsCharSpace(const S:WideChar):boolean;
+begin
+  Result := CommonUtils.IsCharSpace(S);
+end;
+
+class function TCommonUtils.IsCharUpper(const S:WideChar):boolean;
+begin
+  Result := CommonUtils.IsCharUpper(S);
+end;
+
+class function TCommonUtils.IsFileOpen(const Filename:WideString):boolean;
+begin
+  Result := CommonUtils.IsFileOpen(Filename);
+end;
+
+class function TCommonUtils.MatchesString(const SubStr, Str:WideString;
+  WholeLine, CaseSense, Fuzzy:boolean):boolean;
+begin
+  Result := CommonUtils.MatchesString(SubStr, Str, WholeLine, CaseSense, Fuzzy);
+end;
+
+class function TCommonUtils.MyWideDequotedStr(const S:WideString;
+  Quote:WideChar):WideString;
+begin
+  Result := CommonUtils.MyWideDequotedStr(S, Quote);
+end;
+
+class function TCommonUtils.MyWideQuotedStr(const S:WideString;
+  Quote:WideChar):WideString;
+begin
+  Result := CommonUtils.MyWideQuotedStr(S, Quote);
+end;
+
+class function TCommonUtils.ParseClipboardString(const Str:WideString;
+  out Section, Name, Value:WideString):boolean;
+begin
+  Result := CommonUtils.ParseClipboardString(Str, Section, Name, Value);
+end;
+
+class function TCommonUtils.RunProcess(const Filename, Params:WideString;
+  WorkingDir:WideString; const WaitUntilTerminated, WaitUntilIdle:Boolean;
+  const ShowCmd:Integer; var ResultCode:Cardinal):Boolean;
+begin
+  Result := CommonUtils.RunProcess(Filename, Params, WorkingDir,
+    WaitUntilTerminated, WaitUntilIdle, ShowCmd, ResultCode);
+end;
+
+class function TCommonUtils.ScreenCursor(ACursor:TCursor):IInterface;
+begin
+  Result := CommonUtils.ScreenCursor(ACursor);
+end;
+
+class function TCommonUtils.strBetween(const S:WideString; StartChar,
+  EndChar:WideChar):WideString;
+begin
+  Result := CommonUtils.strBetween(S, StartChar, EndChar);
+end;
+
+class function TCommonUtils.StrDefault(const S,
+  Default:WideString):WideString;
+begin
+  Result := CommonUtils.StrDefault(S, Default);
+end;
+
+class function TCommonUtils.StripChars(const S, Ch:WideString):WideString;
+begin
+  Result := CommonUtils.StripChars(S, Ch);
+end;
+
+class function TCommonUtils.StripChars(const S:AnsiString;
+  Ch:TSysCharSet):AnsiString;
+begin
+  Result := CommonUtils.StripChars(S, Ch);
+end;
+
+class function TCommonUtils.StripKey(const S, StripChars:WideString;
+  ReallyStrip:boolean):WideString;
+begin
+  Result := CommonUtils.StripKey(S, StripChars, ReallyStrip);
+end;
+
+class procedure TCommonUtils.StripKeys(Strings:TTntStrings;
+  StripChars:WideString; ReallyStrip:boolean);
+begin
+  CommonUtils.StripKeys(Strings, StripChars, ReallyStrip);
+end;
+
+class function TCommonUtils.strtok(Search, Delim:WideString):WideString;
+begin
+  Result := CommonUtils.strtok(Search, Delim);
+end;
+
+class function TCommonUtils.SubStrCount(const SubStr, Str:WideString):integer;
+begin
+  Result := CommonUtils.SubStrCount(SubStr, Str);
+end;
+
+class function TCommonUtils.SysDir:WideString;
+begin
+  Result := CommonUtils.SysDir;
+end;
+
+class function TCommonUtils.trimCRLFRight(const S:WideString):WideString;
+begin
+  Result := CommonUtils.trimCRLFRight(S);
+end;
+
+class function TCommonUtils.ValueFromIndex(S:TStrings; i:integer):AnsiString;
+begin
+  Result := CommonUtils.ValueFromIndex(S, i);
+end;
+
+class function TCommonUtils.ValueFromIndex(S:TTntStrings;
+  i:integer):WideString;
+begin
+  Result := CommonUtils.ValueFromIndex(S, i);
+end;
+
+class function TCommonUtils.WaitCursor:IInterface;
+begin
+  Result := CommonUtils.WaitCursor;
+end;
+
+class function TCommonUtils.WideContainsChar(Ch:WideChar;
+  const S:WideString):boolean;
+begin
+  Result := CommonUtils.WideCOntainsChar(Ch, S);
+end;
+
+class function TCommonUtils.WideEndsText(const ASubText,
+  AText:WideString):Boolean;
+begin
+  Result := CommonUtils.WideEndsText(ASubText, AText);
+end;
+
+class function TCommonUtils.WideMessageBox(hWnd:HWND; lpText,
+  lpCaption:PWideChar; uType:UINT):Integer;
+begin
+  Result := CommonUtils.WideMessageBox(hWnd, lpText, lpCaption, uType);
+end;
+
+class function TCommonUtils.WideSHGetFolderPath(hwnd:HWND; csidl:Integer;
+  hToken:THandle; dwFlags:DWord; pszPath:PWideChar):HRESULT;
+begin
+  Result := CommonUtils.WideSHGetFolderPath(hwnd, csidl, hToken, dwFlags, pszPath);
+end;
+
+class function TCommonUtils.WideStartsText(const ASubText,
+  AText:WideString):Boolean;
+begin
+  Result := CommonUtils.WideStartsText(ASubText, AText);
+end;
+
+class function TCommonUtils.WinDir:WideString;
+begin
+  Result := CommonUtils.WinDir;
+end;
+
+class function TCommonUtils.YesNo(const AText, ACaption:WideString):boolean;
+begin
+  Result := CommonUtils.YesNo(AText, ACaption);
+end;
+
+class function TCommonUtils.YesNoCancel(const AText,
+  ACaption:WideString):integer;
+begin
+  Result := CommonUtils.YesNoCancel(AText, ACaption);
+end;
+
 end.
+

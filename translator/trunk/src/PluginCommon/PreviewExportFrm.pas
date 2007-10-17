@@ -34,7 +34,11 @@ type
     btnCancel:TTntButton;
     lblPreview:TTntLabel;
     SaveDialog1:TTntSaveDialog;
+    FindDialog1: TFindDialog;
     procedure btnBrowseClick(Sender:TObject);
+    procedure FindDialog1Find(Sender: TObject);
+    procedure TntFormKeyDown(Sender: TObject; var Key: Word;
+      Shift: TShiftState);
   private
     { Private declarations }
     FHasPrompted:boolean;
@@ -45,6 +49,8 @@ type
     function OverwriteOK:boolean;
     procedure LoadSettings;
     procedure SaveSettings;
+    procedure FindFirst();
+    procedure FindNext();
     function Translate(const Value:WideString):WideString;
   public
     { Public declarations }
@@ -60,10 +66,12 @@ uses
   ShellAPI, IniFiles, CommonUtils, TntSysUtils;
 
 const
-  SFmtErrIvalidFilename = 'Invalid filename "%s". Select another filename and try again.';
+  SFmtErrInvalidFilename = 'Invalid filename "%s". Select another filename and try again.';
   SError = 'Error';
   SFmtOverwriteOK = 'File "%s" already exists. Do you want to overwrite it?';
   SConfirm = 'Confirm';
+  SFmtTextNotFound = 'No more instances of "%s" found';
+  SInformation = 'Information';
 
 {$R *.dfm}
 
@@ -142,7 +150,7 @@ begin
     try
       M := TMemoryStream.Create;
       try
-        if ReadBinaryStream('Forms', ClassName, M) = SizeOf(TRect) then
+        if ReadBinaryStream('Forms', self.ClassName, M) = SizeOf(TRect) then
         begin
           M.Seek(0, soFromBeginning);
           Move(M.Memory^, Pointer(@FRect)^, sizeof(TRect));
@@ -187,7 +195,7 @@ begin
       try
         M.Write(FRect, sizeof(TRect));
         M.Seek(0, soFromBeginning);
-        WriteBinaryStream('Forms', ClassName, M);
+        WriteBinaryStream('Forms', self.ClassName, M);
       finally
         M.Free;
       end;
@@ -237,7 +245,7 @@ function TfrmExport.CheckFilename:boolean;
 begin
   Result := IsValidFilename;
   if not Result then
-    WideMessageBox(Handle, PWideChar(Translate(Format(SFmtErrIvalidFilename, [edFilename.Text]))), PWideChar(Translate(SError)), MB_OK or MB_TASKMODAl or MB_ICONERROR);
+    WideMessageBox(Handle, PWideChar(Translate(Format(SFmtErrInvalidFilename, [edFilename.Text]))), PWideChar(Translate(SError)), MB_OK or MB_TASKMODAl or MB_ICONERROR);
 end;
 
 function TfrmExport.Translate(const Value:WideString):WideString;
@@ -252,7 +260,7 @@ function TfrmExport.GetString(out Section, Name, Value:WideString):WordBool;
 begin
   Result := true;
   case FCount of
-    0:Value := SFmtErrIvalidFilename;
+    0:Value := SFmtErrInvalidFilename;
     1:Value := SError;
     2:Value := SFmtOverwriteOK;
     3:Value := SConfirm;
@@ -263,6 +271,8 @@ begin
     8:Value := btnOK.Caption;
     9:Value := btnCancel.Caption;
     10:Value := SaveDialog1.Title;
+    11:Value := SFmtTextNotFound;
+    12:Value := SInformation;
   else
     Result := false;
     FCount := 0;
@@ -271,6 +281,58 @@ begin
     Inc(FCount);
   Section := ClassName;
   Name := Value;
+end;
+
+procedure TfrmExport.FindFirst;
+begin
+  if rePreview.SelText <> '' then
+    FindDialog1.FindText := rePreview.SelText;
+  FindDialog1.Execute;
+end;
+
+procedure TfrmExport.FindNext;
+var
+  i:integer;
+  hWnd:THandle;
+begin
+  if FindDialog1.FindText = '' then
+    FindFirst
+  else
+  begin
+    i := rePreview.FindText(FindDialog1.FindText, rePreview.SelStart + 1,Length(rePreview.Text),[]);
+    if i >= 0 then
+    begin
+      rePreview.HideSelection := false;
+      rePreview.SelStart := i;
+      rePreview.SelLength := Length(FindDialog1.FindText);
+      rePreview.Perform(EM_SCROLLCARET,0,0);
+    end
+    else
+    begin
+      hWnd := Windows.GetFocus;
+      WideMessageBox(Handle, PWideChar(Translate(Format(SFmtTextNotFound, [FindDialog1.FindText]))),
+        PWideChar(Translate(SInformation)), MB_OK or MB_TASKMODAL or MB_ICONINFORMATION);
+      if FindDialog1.Handle = 0 then // dialog not visible
+        hWnd := rePreview.Handle;
+      Windows.SetFocus(hWnd); // restore previous focus
+    end;
+  end;
+end;
+
+procedure TfrmExport.FindDialog1Find(Sender: TObject);
+begin
+  FindNext;
+end;
+
+procedure TfrmExport.TntFormKeyDown(Sender: TObject; var Key: Word;
+  Shift: TShiftState);
+begin
+  if (Shift = [ssCtrl]) and (Key = Ord('F')) then
+    FindFirst
+  else if Key = VK_F3 then
+    FindNext
+  else
+   inherited;
 end;
 
 end.

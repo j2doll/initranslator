@@ -18,27 +18,11 @@ type
   // Test methods for class TfrmColors
   
   TestTfrmColors = class(TTestCase)
-  strict private
-    FfrmColors: TfrmColors;
-  public
-    procedure SetUp; override;
-    procedure TearDown; override;
   published
     procedure TestEdit;
   end;
 
 implementation
-
-procedure TestTfrmColors.SetUp;
-begin
-  FfrmColors := TfrmColors.Create(nil);
-end;
-
-procedure TestTfrmColors.TearDown;
-begin
-  FfrmColors.Free;
-  FfrmColors := nil;
-end;
 
 procedure TestTfrmColors.TestEdit;
 var
@@ -46,8 +30,13 @@ var
   Options: TAppOptions;
 begin
   // TODO: Setup method call parameters
-  ReturnValue := FfrmColors.Edit(Options);
-  // TODO: Validate method results
+  Options := TAppOptions.Create('');
+  try
+    ReturnValue := TfrmColors.Edit(Options);
+    // TODO: Validate method results
+  finally
+    Options.Free;
+  end;
 end;
 
 initialization

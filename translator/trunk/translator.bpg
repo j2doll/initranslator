@@ -13,7 +13,7 @@ PROJECTS = IniTranslatorPluginWizard.bpl DCPPParser.dll FoxitParser.dll \
   IBForumsParser.dll KeePassParser.dll MozillaDTDParser.dll \
   MozillaPropsParser.dll MSDictBuild.exe MSDictParser.dll MsTermBuild.exe \
   OlegParser.dll OOGSIParser.dll PHPNukeParser.dll PHPParser.dll \
-  PolyGlotParser.dll POParser.dll SciTEParser.dll TMXParser.dll \
+  PolyGlotParser.dll POParser.dll ResXParser.dll SciTEParser.dll TMXParser.dll \
   ToolConsistency.dll ToolKeyCheck.dll ToolListEdit.dll ToolPropertiesView.dll \
   ToolTreeView.dll ToolTrim.dll WixParser.dll XLIFFParser.dll XilisoftParser.dll \
   SDFSplit.exe translator.exe
@@ -106,6 +106,9 @@ DCPPParser.dll: src\DCPPPlugin\DCPPParser.dpr
   $(DCC)
 
 IniTranslatorPluginWizard.bpl: src\PluginWizard\IniTranslatorPluginWizard.dpk
+  $(DCC)
+
+ResXParser.dll: src\ResXPlugin\ResXParser.dpr
   $(DCC)
 
 

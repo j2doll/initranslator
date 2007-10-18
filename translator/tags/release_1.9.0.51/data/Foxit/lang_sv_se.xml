@@ -1,0 +1,1179 @@
+<?xml version="1.0"?>
+<Reader>
+	<Menus>
+		<menu id="128">
+			<popup id="|0" text="&amp;Arkiv">
+				<menuitem id="57601" text="&amp;Öppna...\tCtrl+O"/>
+				<menuitem id="33111" text="&amp;Konvertera PDF..."/>
+				<menuitem id="57602" text="&amp;Stäng\tCtrl+W"/>
+				<menuitem id="57603" text="Spara\tCtrl+S"/>
+				<menuitem id="32932" text="S&amp;para som...\tCtrl+Shift+S"/>
+				<menuitem id="57607" text="&amp;Skriv ut...\tCtrl+P"/>
+				<menuitem id="57606" text="Skrivar&amp;inställningar..."/>
+				<menuitem id="57616" text="Nyligen använda filer"/>
+				<menuitem id="32776" text="E&amp;genskaper..."/>
+				<menuitem id="57665" text="A&amp;vsluta\tCtrl+Q"/>
+			</popup>
+			<popup id="|1" text="R&amp;edigera">
+				<menuitem id="33112" text="&amp;Redigera innehåll..."/>
+				<menuitem id="57634" text="K&amp;opiera\tCtrl+C"/>
+				<menuitem id="57636" text="&amp;Sök text...\tCtrl+F"/>
+				<menuitem id="32903" text="Sök i&amp;gen\tF3"/>
+				<menuitem id="32985" text="&amp;Inställningar...\tCtrl+K"/>
+			</popup>
+			<popup id="|2" text="&amp;Visa">
+				<menuitem id="32782" text="&amp;Bokmärke\tAlt+1"/>
+				<menuitem id="32783" text="&amp;Helskärm\tAlt+2"/>
+				<menuitem id="32787" text="Zooma &amp;in\tCtrl+Num +"/>
+				<menuitem id="32788" text="Zooma &amp;ut\tCtrl+Num -"/>
+				<menuitem id="32789" text="&amp;Zooma...\tCtrl+M"/>
+				<menuitem id="32790" text="&amp;Faktisk storlek\tCtrl+1"/>
+				<menuitem id="32791" text="An&amp;passa sida\tCtrl+2"/>
+				<menuitem id="32792" text="Sid&amp;bredd\tCtrl+3"/>
+				<popup id="|2|12" text="Sidla&amp;yout">
+					<menuitem id="32925" text="E&amp;n sida"/>
+					<menuitem id="32926" text="&amp;Kontinuerligt"/>
+					<menuitem id="32938" text="&amp;Motstående"/>
+					<menuitem id="32939" text="Ko&amp;ntinuerligt - motstående sidor"/>
+				</popup>
+				<popup id="|2|14" text="Rotera v&amp;y">
+					<menuitem id="32935" text="&amp;Medsols\tShift+Ctrl+Plus"/>
+					<menuitem id="32941" text="M&amp;otsols\tShift+Ctrl+Minus"/>
+				</popup>
+				<menuitem id="32942" text="&amp;Omvänd visning"/>
+				<menuitem id="32930" text="&amp;Annons"/>
+				<popup id="|2|20" text="&amp;Verktygsfält">
+					<menuitem id="33043" text="&amp;Arkiv"/>
+					<menuitem id="33044" text="Na&amp;vigering"/>
+					<menuitem id="33045" text="R&amp;otera vy"/>
+					<menuitem id="33046" text="&amp;Zooma"/>
+					<menuitem id="33042" text="Gr&amp;undläggande"/>
+					<menuitem id="33104" text="&amp;Hjälp"/>
+					<menuitem id="33065" text="Te&amp;xtvisare"/>
+					<menuitem id="33048" text="Åte&amp;rställ verktygsfält\tAlt+F8"/>
+					<menuitem id="33049" text="&amp;Docka alla verktygsfält\tCtrl+F8"/>
+					<menuitem id="33053" text="Dölj verktygsfält\tF8"/>
+				</popup>
+				<menuitem id="32898" text="&amp;Menyrad"/>
+				<menuitem id="59393" text="&amp;Statusfält"/>
+			</popup>
+			<popup id="|3" text="&amp;Språk">
+				<menuitem id="40801" text="&amp;Standard"/>
+			</popup>
+			<popup id="|4" text="&amp;Dokument">
+				<menuitem id="32777" text="&amp;Första sidan\tHome"/>
+				<menuitem id="32778" text="Före&amp;gående sida\tLeft Arrow"/>
+				<menuitem id="32779" text="&amp;Nästa sida\tRight Arrow"/>
+				<menuitem id="32780" text="&amp;Sista sidan\tEnd"/>
+				<menuitem id="33097" text="Föregående &amp;vy\tAlt+Left Arrow "/>
+				<menuitem id="33098" text="Nästa &amp;vy\tAlt+Right Arrow"/>
+				<menuitem id="32781" text="&amp;Gå till sida...\tShift+Ctrl+N"/>
+			</popup>
+			<popup id="|5" text="&amp;Verktyg">
+				<menuitem id="32784" text="&amp;Handverktyget\tAlt+3"/>
+				<menuitem id="32785" text="Zooma &amp;ut\tAlt+4"/>
+				<menuitem id="32786" text="Zooma &amp;in\tAlt+5"/>
+				<menuitem id="32977" text="&amp;Markera text\tAlt+6"/>
+				<menuitem id="32987" text="&amp;Ögonblicksbild\tAlt+7"/>
+				<menuitem id="32793" text="Text&amp;visare\tAlt+9"/>
+			</popup>
+			<popup id="|6" text="&amp;Avancerat">
+				<menuitem id="33118" text="JavaScript &amp;konsolen..."/>
+				<menuitem id="33117" text="Javascript i &amp;dokumentet..."/>
+				<popup id="|6|3" text="&amp;Formulärverktyg">
+					<popup id="|6|3|0" text="&amp;Exportera formulärdata">
+						<menuitem id="33132" text="Till &amp;formulärdatafil (FDF) ..."/>
+						<menuitem id="33133" text="Till &amp;e-postadress ..."/>
+					</popup>
+					<menuitem id="33120" text="&amp;Importera formulärdata ..."/>
+					<menuitem id="33121" text="&amp;Återställ formulär..."/>
+					<menuitem id="33122" text="Ange beräkningsordning ..."/>
+				</popup>
+			</popup>
+			<popup id="|7" text="&amp;Fönster">
+				<menuitem id="57648" text="&amp;Nytt fönster"/>
+				<menuitem id="57650" text="&amp;Överlappande"/>
+				<menuitem id="57651" text="&amp;Sida vid sida"/>
+				<menuitem id="57649" text="&amp;Ordna"/>
+				<menuitem id="57602" text="St&amp;äng"/>
+				<menuitem id="32795" text="Stäng al&amp;la\tCtrl+Shift+W"/>
+			</popup>
+			<popup id="|8" text="&amp;Hjälp">
+				<menuitem id="32969" text="&amp;Ange som standard PDF läsare"/>
+				<menuitem id="33116" text="Sök efter uppdateringar nu..."/>
+				<menuitem id="32774" text="Foxit Softwares &amp;hemsida"/>
+				<menuitem id="57664" text="&amp;Om Foxit Reader..."/>
+			</popup>
+		</menu>
+		<menu id="159">
+			<popup id="|0" text="Verktygsfält">
+				<menuitem id="33043" text="&amp;Arkiv"/>
+				<menuitem id="33044" text="Na&amp;vigering"/>
+				<menuitem id="33045" text="R&amp;otera vy"/>
+				<menuitem id="33046" text="&amp;Zooma"/>
+				<menuitem id="33042" text="Gr&amp;undläggande"/>
+				<menuitem id="33104" text="&amp;Hjälp"/>
+				<menuitem id="33065" text="Te&amp;xtvisare"/>
+				<menuitem id="33048" text="Åte&amp;rställ verktygsfält\tAlt+F8"/>
+				<menuitem id="33049" text="&amp;Docka alla verktygsfält\tCtrl+F8"/>
+				<menuitem id="33053" text="Dölj verktygsfält\tF8"/>
+				<menuitem id="32930" text="&amp;Annons"/>
+				<menuitem id="32898" text="&amp;Menyrad"/>
+				<menuitem id="59393" text="&amp;Statusfält"/>
+			</popup>
+		</menu>
+		<menu id="164">
+			<popup id="|0" text="Hjälp">
+				<menuitem id="32969" text="&amp;Ange som standard PDF läsare"/>
+				<menuitem id="32774" text="Foxit Softwares &amp;hemsida"/>
+				<menuitem id="57664" text="&amp;Om Foxit Reader..."/>
+			</popup>
+		</menu>
+		<menu id="266">
+			<popup id="|0" text="Markera text">
+				<menuitem id="57634" text="&amp;Kopiera              \tCtrl+C"/>
+			</popup>
+		</menu>
+		<menu id="245">
+			<popup id="|0" text="&amp;Visa">
+				<menuitem id="32782" text="&amp;Bokmärke\tAlt+1"/>
+				<popup id="|0|2" text="S&amp;kärmverktyg">
+					<menuitem id="32784" text="&amp;Handverktyget\tAlt+3"/>
+					<menuitem id="32785" text="Zooma &amp;ut\tAlt+4"/>
+					<menuitem id="32786" text="Zooma &amp;in\tAlt+5"/>
+					<menuitem id="32977" text="Markera te&amp;xt\tAlt+6"/>
+					<menuitem id="32987" text="&amp;Ögonblicksbild\tAlt+7"/>
+				</popup>
+				<menuitem id="32930" text="&amp;Annons"/>
+				<menuitem id="32787" text="Zooma &amp;in\tCtrl+Num +"/>
+				<menuitem id="32788" text="Zooma &amp;ut\tCtrl+Num -"/>
+				<menuitem id="32789" text="&amp;Zooma...\tCtrl+M"/>
+				<menuitem id="32790" text="&amp;Faktisk storlek\tCtrl+1"/>
+				<menuitem id="32791" text="An&amp;passa sida\tCtrl+2"/>
+				<menuitem id="32792" text="Sid&amp;bredd\tCtrl+3"/>
+				<popup id="|0|14" text="Sidla&amp;yout">
+					<menuitem id="32925" text="E&amp;n sida"/>
+					<menuitem id="32926" text="&amp;Kontinuerligt"/>
+					<menuitem id="32938" text="&amp;Motstående"/>
+					<menuitem id="32939" text="Ko&amp;ntinuerligt - motstående sidor"/>
+				</popup>
+				<popup id="|0|16" text="Rotera v&amp;y">
+					<menuitem id="32935" text="&amp;Medsols\tShift+Ctrl+Plus"/>
+					<menuitem id="32941" text="M&amp;otsols\tShift+Ctrl+Minus"/>
+				</popup>
+				<menuitem id="32942" text="&amp;Omvänd visning"/>
+			</popup>
+		</menu>
+		<menu id="623">
+			<popup id="|0" text="Textvy">
+				<menuitem id="57643" text="&amp;Ångra\tCtrl+Z"/>
+				<menuitem id="57635" text="&amp;Klipp ut\tCtrl+X"/>
+				<menuitem id="57634" text="K&amp;opiera\tCtrl+C"/>
+				<menuitem id="57637" text="Kl&amp;istra in\tCtrl+V"/>
+				<menuitem id="32901" text="&amp;Ta bort\tDel"/>
+				<menuitem id="57636" text="&amp;Sök...\tCtrl+F"/>
+				<menuitem id="32903" text="Sök &amp;nästa...\tF3"/>
+				<menuitem id="57641" text="&amp;Ersätt...\tCtrl+H"/>
+				<menuitem id="57642" text="Markera &amp;alla\tCtrl+A"/>
+			</popup>
+		</menu>
+		<menu id="720">
+			<popup id="|0" text="Textvy">
+				<menuitem id="57634" text="K&amp;opiera\tCtrl+C"/>
+				<menuitem id="57636" text="&amp;Sök...\tCtrl+F"/>
+				<menuitem id="32903" text="Sök &amp;nästa...\tF3"/>
+				<menuitem id="57642" text="Markera &amp;alla\tCtrl+A"/>
+			</popup>
+		</menu>
+		<menu id="653">
+			<popup id="|0" text="Verktygsfält">
+				<popup id="|0|0" text="Visa knapptext">
+					<menuitem id="33050" text="Stan&amp;dardrubriker"/>
+					<menuitem id="33051" text="&amp;Alla rubriker"/>
+					<menuitem id="33052" text="&amp;Inga rubriker"/>
+				</popup>
+			</popup>
+		</menu>
+		<menu id="163">
+			<popup id="|0" text="&amp;Visa">
+				<menuitem id="32782" text="&amp;Bokmärke\tAlt+1"/>
+				<menuitem id="32783" text="&amp;Helskärm\tAlt+2"/>
+				<popup id="|0|2" text="Verkt&amp;yg">
+					<menuitem id="32784" text="&amp;Handverktyget\tAlt+3"/>
+					<menuitem id="32785" text="Zooma &amp;ut\tAlt+4"/>
+					<menuitem id="32786" text="Zooma &amp;in\tAlt+5"/>
+					<menuitem id="32977" text="Markera te&amp;xt\tAlt+6"/>
+					<menuitem id="32987" text="&amp;Ögonblicksbild\tAlt+7"/>
+					<menuitem id="32793" text="Text&amp;visare\tAlt+9"/>
+				</popup>
+				<menuitem id="32787" text="Zooma &amp;in\tCtrl+Num +"/>
+				<menuitem id="32788" text="Zooma &amp;ut\tCtrl+Num -"/>
+				<menuitem id="32789" text="&amp;Zooma...\tCtrl+M"/>
+				<menuitem id="32790" text="&amp;Faktisk storlek\tCtrl+1"/>
+				<menuitem id="32791" text="An&amp;passa sida\tCtrl+2"/>
+				<menuitem id="32792" text="Sid&amp;bredd\tCtrl+3"/>
+				<popup id="|0|12" text="Sidla&amp;yout">
+					<menuitem id="32925" text="E&amp;n sida"/>
+					<menuitem id="32926" text="&amp;Kontinuerligt"/>
+					<menuitem id="32938" text="&amp;Motstående"/>
+					<menuitem id="32939" text="Ko&amp;ntinuerligt - motstående sidor"/>
+				</popup>
+				<popup id="|0|14" text="Rotera v&amp;y">
+					<menuitem id="32935" text="&amp;Medsols\tShift+Ctrl+Plus"/>
+					<menuitem id="32941" text="M&amp;otsols\tShift+Ctrl+Minus"/>
+				</popup>
+				<menuitem id="32942" text="&amp;Omvänd visning"/>
+				<menuitem id="32930" text="&amp;Annons"/>
+				<popup id="|0|20" text="&amp;Verktygsfält">
+					<menuitem id="33043" text="&amp;Arkiv"/>
+					<menuitem id="33044" text="Na&amp;vigering"/>
+					<menuitem id="33045" text="R&amp;otera vy"/>
+					<menuitem id="33046" text="&amp;Zooma"/>
+					<menuitem id="33042" text="Gr&amp;undläggande"/>
+					<menuitem id="33104" text="&amp;Hjälp"/>
+					<menuitem id="33065" text="Te&amp;xtvisare"/>
+					<menuitem id="33048" text="Åte&amp;rställ verktygsfält\tAlt+F8"/>
+					<menuitem id="33049" text="&amp;Docka alla verktygsfält\tCtrl+F8"/>
+					<menuitem id="33053" text="Dölj verktygsfält\tF8"/>
+				</popup>
+				<menuitem id="59393" text="&amp;Statusfält"/>
+				<menuitem id="32898" text="&amp;Menyrad"/>
+			</popup>
+		</menu>
+		<menu id="160">
+			<popup id="|0" text="Zooma in">
+				<menuitem id="32865" text="1600%"/>
+				<menuitem id="32866" text="800%"/>
+				<menuitem id="32867" text="400%"/>
+				<menuitem id="32868" text="200%"/>
+				<menuitem id="32869" text="150%"/>
+				<menuitem id="32870" text="125%"/>
+				<menuitem id="32871" text="100%"/>
+			</popup>
+		</menu>
+		<menu id="161">
+			<popup id="|0" text="Zooma ut">
+				<menuitem id="32871" text="100%"/>
+				<menuitem id="32873" text="50%"/>
+				<menuitem id="32874" text="25%"/>
+				<menuitem id="32875" text="12.5%"/>
+				<menuitem id="32876" text="8.33%"/>
+			</popup>
+		</menu>
+		<menu id="129">
+			<popup id="|1" text="&amp;Arkiv">
+				<menuitem id="57601" text="&amp;Öppna...\tCtrl+O"/>
+				<menuitem id="33111" text="&amp;Konvertera PDF..."/>
+				<menuitem id="57602" text="&amp;Stäng\tCtrl+W"/>
+				<menuitem id="57603" text="Spara\tCtrl+S"/>
+				<menuitem id="32932" text="S&amp;para som...\tCtrl+Shift+S"/>
+				<menuitem id="57607" text="&amp;Skriv ut...\tCtrl+P"/>
+				<menuitem id="57606" text="Skrivar&amp;inställningar..."/>
+				<menuitem id="57616" text="Nyligen använda filer"/>
+				<menuitem id="32776" text="E&amp;genskaper..."/>
+				<menuitem id="57665" text="A&amp;vsluta\tCtrl+Q"/>
+			</popup>
+			<popup id="|2" text="R&amp;edigera">
+				<menuitem id="33112" text="&amp;Redigera innehåll..."/>
+				<menuitem id="57634" text="K&amp;opiera\tCtrl+C"/>
+				<menuitem id="57636" text="&amp;Sök text...\tCtrl+F"/>
+				<menuitem id="32903" text="Sök i&amp;gen\tF3"/>
+				<menuitem id="32985" text="&amp;Inställningar...\tCtrl+K"/>
+			</popup>
+			<popup id="|3" text="&amp;Visa">
+				<menuitem id="32782" text="&amp;Bokmärke\tAlt+1"/>
+				<menuitem id="32783" text="&amp;Helskärm\tAlt+2"/>
+				<menuitem id="32787" text="Zooma &amp;in\tCtrl+Num +"/>
+				<menuitem id="32788" text="Zooma &amp;ut\tCtrl+Num -"/>
+				<menuitem id="32789" text="&amp;Zooma...\tCtrl+M"/>
+				<menuitem id="32790" text="&amp;Faktisk storlek\tCtrl+1"/>
+				<menuitem id="32791" text="An&amp;passa sida\tCtrl+2"/>
+				<menuitem id="32792" text="Sid&amp;bredd\tCtrl+3"/>
+				<popup id="|3|12" text="Sidla&amp;yout">
+					<menuitem id="32925" text="E&amp;n sida"/>
+					<menuitem id="32926" text="&amp;Kontinuerligt"/>
+					<menuitem id="32938" text="&amp;Motstående"/>
+					<menuitem id="32939" text="Ko&amp;ntinuerligt - motstående sidor"/>
+				</popup>
+				<popup id="|3|14" text="Rotera v&amp;y">
+					<menuitem id="32935" text="&amp;Medsols\tShift+Ctrl+Plus"/>
+					<menuitem id="32941" text="M&amp;otsols\tShift+Ctrl+Minus"/>
+				</popup>
+				<menuitem id="32942" text="&amp;Omvänd visning"/>
+				<menuitem id="32930" text="&amp;Annons"/>
+				<popup id="|3|20" text="&amp;Verktygsfält">
+					<menuitem id="33043" text="&amp;Arkiv"/>
+					<menuitem id="33044" text="Na&amp;vigering"/>
+					<menuitem id="33045" text="R&amp;otera vy"/>
+					<menuitem id="33046" text="&amp;Zooma"/>
+					<menuitem id="33042" text="Gr&amp;undläggande"/>
+					<menuitem id="33104" text="&amp;Hjälp"/>
+					<menuitem id="33065" text="Te&amp;xtvisare"/>
+					<menuitem id="33048" text="Åte&amp;rställ verktygsfält\tAlt+F8"/>
+					<menuitem id="33049" text="&amp;Docka alla verktygsfält\tCtrl+F8"/>
+					<menuitem id="33053" text="Dölj verktygsfält\tF8"/>
+				</popup>
+				<menuitem id="32898" text="&amp;Menyrad"/>
+				<menuitem id="59393" text="&amp;Statusfält"/>
+			</popup>
+			<popup id="|4" text="&amp;Språk">
+				<menuitem id="40801" text="&amp;Standard"/>
+			</popup>
+			<popup id="|5" text="&amp;Dokument">
+				<menuitem id="32777" text="&amp;Första sidan\tHome"/>
+				<menuitem id="32778" text="Före&amp;gående sida\tLeft Arrow"/>
+				<menuitem id="32779" text="&amp;Nästa sida\tRight Arrow"/>
+				<menuitem id="32780" text="&amp;Sista sidan\tEnd"/>
+				<menuitem id="33097" text="Föregående &amp;vy\tAlt+Left Arrow "/>
+				<menuitem id="33098" text="Nästa &amp;vy\tAlt+Right Arrow"/>
+				<menuitem id="32781" text="&amp;Gå till sida...\tShift+Ctrl+N"/>
+			</popup>
+			<popup id="|6" text="&amp;Verktyg">
+				<menuitem id="32784" text="&amp;Handverktyget\tAlt+3"/>
+				<menuitem id="32785" text="Zooma &amp;ut\tAlt+4"/>
+				<menuitem id="32786" text="Zooma &amp;in\tAlt+5"/>
+				<menuitem id="32977" text="&amp;Markera text\tAlt+6"/>
+				<menuitem id="32987" text="&amp;Ögonblicksbild\tAlt+7"/>
+				<menuitem id="32793" text="Text&amp;visare\tAlt+9"/>
+			</popup>
+			<popup id="|7" text="&amp;Avancerat">
+				<menuitem id="33118" text="JavaScript &amp;konsolen..."/>
+				<menuitem id="33117" text="Javascript i dokumentet..."/>
+				<popup id="|7|3" text="&amp;Formulärverktyg">
+					<popup id="|7|3|0" text="&amp;Exportera formulärdata">
+						<menuitem id="33132" text="Till &amp;formulärdatafil (FDF) ..."/>
+						<menuitem id="33133" text="Till &amp;e-postadress ..."/>
+					</popup>
+					<menuitem id="33120" text="&amp;Importera formulärdata från ..."/>
+					<menuitem id="33121" text="&amp;Återställ formulär..."/>
+					<menuitem id="33122" text="Ange beräkningsordning ..."/>
+				</popup>
+			</popup>
+			<popup id="|8" text="&amp;Fönster">
+				<menuitem id="57648" text="&amp;Nytt fönster"/>
+				<menuitem id="57650" text="&amp;Överlappande"/>
+				<menuitem id="57651" text="&amp;Sida vid sida"/>
+				<menuitem id="57649" text="&amp;Ordna"/>
+				<menuitem id="57602" text="St&amp;äng"/>
+				<menuitem id="32795" text="Stäng al&amp;la\tCtrl+Shift+W"/>
+			</popup>
+			<popup id="|9" text="&amp;Hjälp">
+				<menuitem id="32969" text="&amp;Ange som standard PDF läsare"/>
+				<menuitem id="33116" text="Sök efter uppdateringar nu..."/>
+				<menuitem id="32774" text="Foxit Softwares &amp;hemsida"/>
+				<menuitem id="57664" text="&amp;Om Foxit Reader..."/>
+			</popup>
+		</menu>
+		<menu id="209">
+			<popup id="|0" text="&amp;Arkiv">
+				<menuitem id="57601" text="&amp;Öppna...\tCtrl+O"/>
+				<menuitem id="57602" text="&amp;Stäng\tCtrl+W"/>
+				<menuitem id="57603" text="Spara\tCtrl+S"/>
+				<menuitem id="32932" text="S&amp;para som...\tCtrl+Shift+S"/>
+				<menuitem id="57607" text="&amp;Skriv ut...\tCtrl+P"/>
+				<menuitem id="57606" text="Skrivar&amp;inställningar..."/>
+				<menuitem id="57616" text="Nyligen använda filer"/>
+				<menuitem id="32776" text="E&amp;genskaper..."/>
+				<menuitem id="57665" text="A&amp;vsluta\tCtrl+Q"/>
+			</popup>
+			<popup id="|1" text="R&amp;edigera">
+				<menuitem id="57634" text="K&amp;opiera\tCtrl+C"/>
+				<menuitem id="57636" text="&amp;Sök text...\tCtrl+F"/>
+				<menuitem id="32903" text="Sök i&amp;gen\tF3"/>
+				<menuitem id="32985" text="&amp;Inställningar...\tCtrl+K"/>
+			</popup>
+			<popup id="|2" text="&amp;Visa">
+				<menuitem id="32782" text="&amp;Bokmärke\tAlt+1"/>
+				<menuitem id="32783" text="&amp;Helskärm\tAlt+2"/>
+				<menuitem id="32787" text="Zooma &amp;in\tCtrl+Num +"/>
+				<menuitem id="32788" text="Zooma &amp;ut\tCtrl+Num -"/>
+				<menuitem id="32789" text="&amp;Zooma...\tCtrl+M"/>
+				<menuitem id="32790" text="&amp;Faktisk storlek\tCtrl+1"/>
+				<menuitem id="32791" text="An&amp;passa sida\tCtrl+2"/>
+				<menuitem id="32792" text="Sid&amp;bredd\tCtrl+3"/>
+				<popup id="|2|12" text="Sidla&amp;yout">
+					<menuitem id="32925" text="E&amp;n sida"/>
+					<menuitem id="32926" text="&amp;Kontinuerligt"/>
+					<menuitem id="32938" text="&amp;Motstående"/>
+					<menuitem id="32939" text="Ko&amp;ntinuerligt - motstående sidor"/>
+				</popup>
+				<popup id="|2|14" text="Rotera v&amp;y">
+					<menuitem id="32935" text="&amp;Medsols\tShift+Ctrl+Plus"/>
+					<menuitem id="32941" text="M&amp;otsols\tShift+Ctrl+Minus"/>
+				</popup>
+				<menuitem id="32942" text="&amp;Omvänd visning"/>
+				<menuitem id="32930" text="&amp;Annons"/>
+				<popup id="|2|20" text="&amp;Verktygsfält">
+					<menuitem id="33043" text="&amp;Arkiv"/>
+					<menuitem id="33044" text="Na&amp;vigering"/>
+					<menuitem id="33045" text="R&amp;otera vy"/>
+					<menuitem id="33046" text="&amp;Zooma"/>
+					<menuitem id="33042" text="Gr&amp;undläggande"/>
+					<menuitem id="33104" text="&amp;Hjälp"/>
+					<menuitem id="33065" text="Te&amp;xtvisare"/>
+					<menuitem id="33048" text="Åte&amp;rställ verktygsfält\tAlt+F8"/>
+					<menuitem id="33049" text="&amp;Docka alla verktygsfält\tCtrl+F8"/>
+					<menuitem id="33053" text="Dölj verktygsfält\tF8"/>
+				</popup>
+				<menuitem id="32898" text="&amp;Menyrad"/>
+				<menuitem id="59393" text="&amp;Statusfält"/>
+			</popup>
+			<popup id="|3" text="&amp;Dokument">
+				<menuitem id="32777" text="&amp;Första sidan\tHome"/>
+				<menuitem id="32778" text="Före&amp;gående sida\tLeft Arrow"/>
+				<menuitem id="32779" text="&amp;Nästa sida\tRight Arrow"/>
+				<menuitem id="32780" text="&amp;Sista sidan\tEnd"/>
+				<menuitem id="33097" text="Föregående &amp;vy\tAlt+Left Arrow "/>
+				<menuitem id="33098" text="Nästa &amp;vy\tAlt+Right Arrow"/>
+				<menuitem id="32781" text="&amp;Gå till sida...\tShift+Ctrl+N"/>
+			</popup>
+			<popup id="|4" text="&amp;Verktyg">
+				<menuitem id="32784" text="&amp;Handverktyget\tAlt+3"/>
+				<menuitem id="32785" text="Zooma &amp;ut\tAlt+4"/>
+				<menuitem id="32786" text="Zooma &amp;in\tAlt+5"/>
+				<menuitem id="32977" text="&amp;Markera text\tAlt+6"/>
+				<menuitem id="32987" text="&amp;Ögonblicksbild\tAlt+7"/>
+				<menuitem id="32793" text="Text&amp;visare\tAlt+9"/>
+			</popup>
+			<popup id="|5" text="&amp;Fönster">
+				<menuitem id="57648" text="&amp;Nytt fönster"/>
+				<menuitem id="57650" text="&amp;Överlappande"/>
+				<menuitem id="57651" text="&amp;Sida vid sida"/>
+				<menuitem id="57649" text="&amp;Ordna"/>
+				<menuitem id="57602" text="St&amp;äng"/>
+				<menuitem id="32795" text="Stäng al&amp;la\tCtrl+Shift+W"/>
+			</popup>
+			<popup id="|6" text="&amp;Hjälp">
+				<menuitem id="32969" text="&amp;Ange som standard PDF läsare"/>
+				<menuitem id="32774" text="Foxit Softwares &amp;hemsida"/>
+				<menuitem id="57664" text="&amp;Om Foxit Reader..."/>
+			</popup>
+		</menu>
+		<menu id="205">
+			<popup id="|0" text="&amp;Arkiv">
+				<menuitem id="57601" text="&amp;Öppna...\tCtrl+O"/>
+				<menuitem id="57602" text="&amp;Stäng\tCtrl+W"/>
+				<menuitem id="57603" text="Spara\tCtrl+S"/>
+				<menuitem id="32932" text="S&amp;para som...\tCtrl+Shift+S"/>
+				<menuitem id="57607" text="&amp;Skriv ut...\tCtrl+P"/>
+				<menuitem id="57606" text="Skrivar&amp;inställningar..."/>
+				<menuitem id="57616" text="Nyligen använda filer"/>
+				<menuitem id="32776" text="E&amp;genskaper..."/>
+				<menuitem id="57665" text="A&amp;vsluta\tCtrl+Q"/>
+			</popup>
+			<popup id="|1" text="R&amp;edigera">
+				<menuitem id="57634" text="K&amp;opiera\tCtrl+C"/>
+				<menuitem id="57636" text="&amp;Sök text...\tCtrl+F"/>
+				<menuitem id="32903" text="Sök i&amp;gen\tF3"/>
+				<menuitem id="32985" text="&amp;Inställningar...\tCtrl+K"/>
+			</popup>
+			<popup id="|2" text="&amp;Visa">
+				<menuitem id="32782" text="&amp;Bokmärke\tAlt+1"/>
+				<menuitem id="32783" text="&amp;Helskärm\tAlt+2"/>
+				<menuitem id="32787" text="Zooma &amp;in\tCtrl+Num +"/>
+				<menuitem id="32788" text="Zooma &amp;ut\tCtrl+Num -"/>
+				<menuitem id="32789" text="&amp;Zooma...\tCtrl+M"/>
+				<menuitem id="32790" text="&amp;Faktisk storlek\tCtrl+1"/>
+				<menuitem id="32791" text="An&amp;passa sida\tCtrl+2"/>
+				<menuitem id="32792" text="Sid&amp;bredd\tCtrl+3"/>
+				<popup id="|2|12" text="Sidla&amp;yout">
+					<menuitem id="32925" text="E&amp;n sida"/>
+					<menuitem id="32926" text="&amp;Kontinuerligt"/>
+					<menuitem id="32938" text="&amp;Motstående"/>
+					<menuitem id="32939" text="Ko&amp;ntinuerligt - motstående sidor"/>
+				</popup>
+				<popup id="|2|14" text="Rotera v&amp;y">
+					<menuitem id="32935" text="&amp;Medsols\tShift+Ctrl+Plus"/>
+					<menuitem id="32941" text="M&amp;otsols\tShift+Ctrl+Minus"/>
+				</popup>
+				<menuitem id="32942" text="&amp;Omvänd visning"/>
+				<menuitem id="32930" text="&amp;Annons"/>
+				<popup id="|2|20" text="&amp;Verktygsfält">
+					<menuitem id="33043" text="&amp;Arkiv"/>
+					<menuitem id="33044" text="Na&amp;vigering"/>
+					<menuitem id="33045" text="R&amp;otera vy"/>
+					<menuitem id="33046" text="&amp;Zooma"/>
+					<menuitem id="33042" text="Gr&amp;undläggande"/>
+					<menuitem id="33104" text="&amp;Hjälp"/>
+					<menuitem id="33065" text="Te&amp;xtvisare"/>
+					<menuitem id="33048" text="Åte&amp;rställ verktygsfält\tAlt+F8"/>
+					<menuitem id="33049" text="&amp;Docka alla verktygsfält\tCtrl+F8"/>
+					<menuitem id="33053" text="Dölj verktygsfält\tF8"/>
+				</popup>
+				<menuitem id="32898" text="&amp;Menyrad"/>
+				<menuitem id="59393" text="&amp;Statusfält"/>
+			</popup>
+			<popup id="|3" text="&amp;Dokument">
+				<menuitem id="32777" text="&amp;Första sidan\tHome"/>
+				<menuitem id="32778" text="Före&amp;gående sida\tLeft Arrow"/>
+				<menuitem id="32779" text="&amp;Nästa sida\tRight Arrow"/>
+				<menuitem id="32780" text="&amp;Sista sidan\tEnd"/>
+				<menuitem id="33097" text="Föregående &amp;vy\tAlt+Left Arrow "/>
+				<menuitem id="33098" text="Nästa &amp;vy\tAlt+Right Arrow"/>
+				<menuitem id="32781" text="&amp;Gå till sida...\tShift+Ctrl+N"/>
+			</popup>
+			<popup id="|4" text="&amp;Verktyg">
+				<menuitem id="32784" text="&amp;Handverktyget\tAlt+3"/>
+				<menuitem id="32785" text="Zooma &amp;ut\tAlt+4"/>
+				<menuitem id="32786" text="Zooma &amp;in\tAlt+5"/>
+				<menuitem id="32977" text="&amp;Markera text\tAlt+6"/>
+				<menuitem id="32987" text="&amp;Ögonblicksbild\tAlt+7"/>
+				<menuitem id="32793" text="Text&amp;visare\tAlt+9"/>
+			</popup>
+			<popup id="|5" text="&amp;Fönster">
+				<menuitem id="57648" text="&amp;Nytt fönster"/>
+				<menuitem id="57650" text="&amp;Överlappande"/>
+				<menuitem id="57651" text="&amp;Sida vid sida"/>
+				<menuitem id="57649" text="&amp;Ordna"/>
+				<menuitem id="57602" text="St&amp;äng"/>
+				<menuitem id="32795" text="Stäng al&amp;la\tCtrl+Shift+W"/>
+			</popup>
+			<popup id="|6" text="&amp;Hjälp">
+				<menuitem id="32969" text="&amp;Ange som standard PDF läsare"/>
+				<menuitem id="32774" text="Foxit Softwares &amp;hemsida"/>
+				<menuitem id="57664" text="&amp;Om Foxit Reader..."/>
+			</popup>
+		</menu>
+		<menu id="9032">
+			<popup id="|0" text="HorzScale">
+				<menuitem id="9061" text="200%"/>
+				<menuitem id="9067" text="150%"/>
+				<menuitem id="9066" text="125%"/>
+				<menuitem id="9062" text="100%"/>
+				<menuitem id="9063" text="75%"/>
+				<menuitem id="9064" text="50%"/>
+				<menuitem id="9065" text="Mer..."/>
+			</popup>
+		</menu>
+		<menu id="828">
+			<popup id="|0" text="markera">
+				<menuitem id="33131" text="&amp;Alla fält"/>
+				<menuitem id="33129" text="&amp;Kombinationsruta"/>
+				<menuitem id="33125" text="Kr&amp;yssruta"/>
+				<menuitem id="33130" text="&amp;Listruta"/>
+				<menuitem id="33126" text="Ko&amp;mmandoknapp"/>
+				<menuitem id="33127" text="&amp;Alternativknapp"/>
+				<menuitem id="33128" text="&amp;Textruta"/>
+			</popup>
+		</menu>
+	</Menus>
+	<Dialogs>
+		<Dialog id="147">
+			<dlgitem id="1002" text="Spara hela dokumnetet"/>
+			<dlgitem id="1003" text="Spara aktuell sida"/>
+			<dlgitem id="1004" text="Spara sidor i intervallet:"/>
+			<dlgitem id="1191" text="till"/>
+			<dlgitem id="1190" text="Spara vad:"/>
+		</Dialog>
+		<Dialog id="727" text="Progress">
+			<dlgitem id="2" text="Avbryt"/>
+			<dlgitem id="1255" text="Sök..."/>
+		</Dialog>
+		<Dialog id="274" text="Find Text">
+			<dlgitem id="1192" text="Sök e&amp;fter:"/>
+			<dlgitem id="1067" text="Matcha &amp;hela ord"/>
+			<dlgitem id="1068" text="Matcha gemener/&amp;VERSALER"/>
+			<dlgitem id="1193" text="Riktning"/>
+			<dlgitem id="1069" text="&amp;Upp"/>
+			<dlgitem id="1070" text="&amp;Ner"/>
+			<dlgitem id="1153" text="Sök &amp;nästa"/>
+			<dlgitem id="2" text="Avbr&amp;yt"/>
+		</Dialog>
+		<Dialog id="157" text="Go to  Page">
+			<dlgitem id="1194" text="&amp;Sida:"/>
+			<dlgitem id="1195" text="av"/>
+			<dlgitem id="1" text="OK"/>
+			<dlgitem id="2" text="Avbryt"/>
+		</Dialog>
+		<Dialog id="130" text="Password">
+			<dlgitem id="1196" text="Ange lösenord:"/>
+			<dlgitem id="1" text="OK"/>
+			<dlgitem id="2" text="Avbryt"/>
+			<dlgitem id="1121" text="Filen är skyddad. Ange ett lösenord."/>
+		</Dialog>
+		<Dialog id="276">
+			<dlgitem id="1197" text="Alternativ för dokumentfärger"/>
+			<dlgitem id="1074" text="E&amp;rsätt dokumentfärger"/>
+			<dlgitem id="1075" text="Använd &amp;Windows systemfärger"/>
+			<dlgitem id="1076" text="&amp;Egna färger:"/>
+			<dlgitem id="1102" text="Sid&amp;bakgrund:"/>
+			<dlgitem id="1103" text="Dokument&amp;text:"/>
+			<dlgitem id="1078" text="Ändra &amp;färg endast för svart-vitt innehåll "/>
+		</Dialog>
+		<Dialog id="300">
+			<dlgitem id="1198" text="Markering"/>
+			<dlgitem id="1108" text="A&amp;nvänd fast upplösning för ögonblicksbilder"/>
+			<dlgitem id="1200" text="Upp&amp;lösning:"/>
+			<dlgitem id="1199" text="Skrivare"/>
+			<dlgitem id="1253" text="Skriv ut text som &amp;bilder (ignorera typsnittersättningar)"/>
+		</Dialog>
+		<Dialog id="278">
+			<dlgitem id="1201" text="Sidvisning"/>
+			<dlgitem id="1202" text="Standard sidl&amp;ayout:"/>
+			<dlgitem id="1101" text="Visa &amp;rutnät"/>
+			<dlgitem id="1105" text="E&amp;gen sidlayout"/>
+			<dlgitem id="1204" text="Sidor"/>
+			<dlgitem id="1252" text="Egna &amp;marginaler"/>
+			<dlgitem id="1205" text="Pixlar"/>
+			<dlgitem id="1111" text="Visa text optimerat för LCD skärmar"/>
+			<dlgitem id="1203" text="Förstoring"/>
+			<dlgitem id="1206" text="Standard&amp;zoom:"/>
+			<dlgitem id="1207" text="Max s&amp;ynlig zoom:"/>
+		</Dialog>
+		<Dialog id="275" text="Preferences">
+			<dlgitem id="1" text="OK"/>
+			<dlgitem id="2" text="Avbryt"/>
+			<dlgitem id="1104" text="Objekt:"/>
+		</Dialog>
+		<Dialog id="778" text="Progress">
+			<dlgitem id="1152" text="Progress1"/>
+			<dlgitem id="1255" text="Skriver..."/>
+			<dlgitem id="2" text="Avbryt"/>
+		</Dialog>
+		<Dialog id="530" text="Printer">
+			<dlgitem id="1199" text="Skrivare"/>
+			<dlgitem id="1208" text="&amp;Namn:"/>
+			<dlgitem id="1120" text="E&amp;genskaper"/>
+			<dlgitem id="1209" text="Status:"/>
+			<dlgitem id="1141" text="Förberedd"/>
+			<dlgitem id="1122" text="Skriv till &amp;fil"/>
+			<dlgitem id="1210" text="Typ:"/>
+			<dlgitem id="1142" text="Foxit PDF Printer"/>
+			<dlgitem id="1139" text="Utskrifts&amp;tips"/>
+			<dlgitem id="1140" text="A&amp;vancerat"/>
+			<dlgitem id="1211" text="Utskriftsområde"/>
+			<dlgitem id="1123" text="&amp;Alla"/>
+			<dlgitem id="1127" text="Aktuell &amp;vy"/>
+			<dlgitem id="1130" text="A&amp;ktuell sida"/>
+			<dlgitem id="1216" text="Si&amp;da från:"/>
+			<dlgitem id="1191" text="&amp;till:"/>
+			<dlgitem id="1212" text="Del&amp;mängd:"/>
+			<dlgitem id="1226" text="Om&amp;vänd sidordning"/>
+			<dlgitem id="1213" text="Utskriftshantering"/>
+			<dlgitem id="1214" text="&amp;Kopior:"/>
+			<dlgitem id="1163" text="&amp;Marginaler:"/>
+			<dlgitem id="1228" text="i"/>
+			<dlgitem id="1229" text="S&amp;ortera"/>
+			<dlgitem id="1215" text="Sid&amp;skalning:"/>
+			<dlgitem id="1217" text="Sida&amp;rrangering:"/>
+			<dlgitem id="1219" text="Sid&amp;rotation:"/>
+			<dlgitem id="1164" text="Sidor&amp;dning:"/>
+			<dlgitem id="1165" text="Sidor per ar&amp;k:"/>
+			<dlgitem id="1166" text="me&amp;d"/>
+			<dlgitem id="1133" text="Auto-&amp;Rotera"/>
+			<dlgitem id="1151" text="Auto-Cen&amp;trera"/>
+			<dlgitem id="1156" text="Skriv ut sid&amp;ram"/>
+			<dlgitem id="1221" text="Skriv &amp;vad:"/>
+			<dlgitem id="1135" text="Väl&amp;j papperskälla efter PDF sidans storlek"/>
+			<dlgitem id="1154" text="Förhandsgranska"/>
+			<dlgitem id="1222" text="Dokument:"/>
+			<dlgitem id="1223" text="Papper:"/>
+			<dlgitem id="1225" text="Enheter:"/>
+			<dlgitem id="1144" text="Statisk"/>
+			<dlgitem id="1" text="OK"/>
+			<dlgitem id="2" text="Avbryt"/>
+			<dlgitem id="1143" text="Visa sida"/>
+		</Dialog>
+		<Dialog id="791" text="Foxit Reader">
+			<dlgitem id="1" text="OK"/>
+			<dlgitem id="1227" text="Dokumentet använder CJK (Chinese/Japanese/Korean) tecken. Du måste installera FPDFCJK.BIN i Foxits programkatalog för att dessa tecken ska visas korrekt."/>
+			<dlgitem id="1148" text="http://www.foxitsoftware.com/pdf/rd_intro.php"/>
+			<dlgitem id="1228" text="Ladda ner filen från"/>
+		</Dialog>
+		<Dialog id="723" text="Foxit Reader">
+			<dlgitem id="1" text="OK"/>
+			<dlgitem id="1227" text="Tack för att du använder Foxit Reader! Detta är en utvärderingsversion med följande begränsingar:"/>
+			<dlgitem id="1231" text="Om du vill köpa en licensierad kopia av Foxit Reader, besök vår webbsida på "/>
+			<dlgitem id="1232" text="eller skriv till sales@foxitsoftware.com."/>
+			<dlgitem id="1148" text="http://www.foxitsoftware.com"/>
+			<dlgitem id="1106" text="Visa inte detta meddelande igen"/>
+		</Dialog>
+		<Dialog id="252" text="Foxit Reader">
+			<dlgitem id="1064" text="Utför kontrollen varje gång Foxit reader startar."/>
+			<dlgitem id="1" text="&amp;Ja"/>
+			<dlgitem id="2" text="&amp;Nej"/>
+			<dlgitem id="1065" text="Foxit Reader är inte standardläsare för PDF filer. Vill du ange Foxit Reader som din standardläsare för PDF filer?"/>
+			<dlgitem id="1228" text="När Foxit Reader är standardläsare för PDF filer, kan du dubbelklicka på en PDF fil för att öppna den i Foxit Reader. Du kan också läsa PDF filer direkt i din webbläsare."/>
+			<dlgitem id="1229" text="För att återställa din standardläsare för PDF filer till din föregående läsare, måste du starta det andra programmet och göra ändringen där."/>
+		</Dialog>
+		<Dialog id="285" text="Foxit Reader">
+			<dlgitem id="1" text="OK"/>
+			<dlgitem id="1065" text="Det markerade området har kopierats till Urklipp."/>
+			<dlgitem id="1106" text="Visa inte detta meddelande igen"/>
+		</Dialog>
+		<Dialog id="150" text="Properties">
+			<dlgitem id="1244" text="Allmänt"/>
+			<dlgitem id="1032" text="Statisk"/>
+			<dlgitem id="1201" text="Statisk"/>
+			<dlgitem id="1241" text="Avancerat"/>
+			<dlgitem id="1243" text="Antal sidor:"/>
+			<dlgitem id="1057" text="PDF Version:"/>
+			<dlgitem id="1208" text="Mer..."/>
+			<dlgitem id="1" text="OK"/>
+			<dlgitem id="2" text="Avbryt"/>
+			<dlgitem id="1242" text="Sidstorlek:"/>
+			<dlgitem id="1233" text="Titel:"/>
+			<dlgitem id="1234" text="Ämne:"/>
+			<dlgitem id="1235" text="Författare:"/>
+			<dlgitem id="1238" text="Nyckelord:"/>
+			<dlgitem id="1236" text="Skapare:"/>
+			<dlgitem id="1237" text="Producent:"/>
+			<dlgitem id="1239" text="Skapad:"/>
+			<dlgitem id="1240" text="Modifierad:"/>
+			<dlgitem id="1205" text="Statisk"/>
+			<dlgitem id="1207" text="Statisk"/>
+			<dlgitem id="1203" text="Statisk"/>
+		</Dialog>
+		<Dialog id="788" text="Foxit Reader">
+			<dlgitem id="1" text="OK"/>
+			<dlgitem id="1245" text="Tack för att du använder Foxit Reader."/>
+			<dlgitem id="1246" text="Funktionen du försöker använda är en del av Foxit  Reader  Pro Pack.  Du kan fortfarande använda den, men när du sparar PDF filen infogas en speciell utvärderingsmärkning."/>
+			<dlgitem id="1106" text="Visa inte detta meddelande igen"/>
+			<dlgitem id="1228" text="När du köper Foxit  Reader Professional  Version kan du ta bort märkningen igen."/>
+			<dlgitem id="1270" text="Besök Foxit  Softwares webbsida (www.foxitsoftware.com) för mer information om hur du köper en licens för Foxit  Reader  Pro Pack."/>
+		</Dialog>
+		<Dialog id="786" text="Foxit Reader">
+			<dlgitem id="1" text="OK"/>
+			<dlgitem id="1245" text="Tack för att du använder Foxit Reader."/>
+			<dlgitem id="1228" text="Funktionen du försöker använda är en del av Foxit Reader Pro Pack och är inte aktiverad för den här versionen. När du köper en licens för Foxit Reader Pro Pack, kommer du att kunna använda funktionen."/>
+			<dlgitem id="1106" text="Visa inte detta meddelande igen"/>
+			<dlgitem id="1270" text="Besök Foxit Softwares webbsida (www.foxitsoftware.com) för mer information om hur du köper en licens för Foxit  Reader  Pro Pack."/>
+		</Dialog>
+		<Dialog id="787" text="Foxit Reader">
+			<dlgitem id="1" text="OK"/>
+			<dlgitem id="1245" text="Tack för att du använder Foxit Reader."/>
+			<dlgitem id="1246" text="Du har ändrat dokumentet och du kan spara det men eftersom du inte har en licens för Foxit Reader Pro Pack, kommer de ändrade sidorna att innehålla en märkning som anger att du har en utvärderingsversion."/>
+			<dlgitem id="1106" text="Visa inte detta meddelande igen"/>
+			<dlgitem id="1228" text="Du kan ta bort märkningen när du har köpt en licens för Foxit Reader Pro Pack"/>
+			<dlgitem id="1270" text="Besök Foxit Softwares webbsida (www.foxitsoftware.com) för mer information om hur du köper en licens för Foxit  Reader  Pro Pack."/>
+		</Dialog>
+		<Dialog id="165" text="Text Viewer Colors">
+			<dlgitem id="1254" text="Förgrund"/>
+			<dlgitem id="1251" text="röd:"/>
+			<dlgitem id="1202" text="Slider1"/>
+			<dlgitem id="1252" text="grön:"/>
+			<dlgitem id="1206" text="Slider1"/>
+			<dlgitem id="1253" text="blå:"/>
+			<dlgitem id="1204" text="Slider1"/>
+			<dlgitem id="1084" text="Bakgrund"/>
+			<dlgitem id="1255" text="röd:"/>
+			<dlgitem id="1210" text="Slider1"/>
+			<dlgitem id="1256" text="grön:"/>
+			<dlgitem id="1212" text="Slider1"/>
+			<dlgitem id="1257" text="blå:"/>
+			<dlgitem id="1214" text="Slider1"/>
+			<dlgitem id="1" text="OK"/>
+			<dlgitem id="2" text="Avbryt"/>
+		</Dialog>
+		<Dialog id="708"/>
+		<Dialog id="673" text="PDF Font...">
+			<dlgitem id="1048" text="List1"/>
+			<dlgitem id="1258" text="Mål:"/>
+			<dlgitem id="1051" text="Förhandsgranska"/>
+			<dlgitem id="1" text="OK"/>
+			<dlgitem id="2" text="Avbryt"/>
+		</Dialog>
+		<Dialog id="672" text="Text Viewer Settings">
+			<dlgitem id="1259" text="Nuvarande sidbredd"/>
+			<dlgitem id="1264" text="Minsta bredd:"/>
+			<dlgitem id="1043" text="Automatisk bredd"/>
+			<dlgitem id="1045" text="Automatisk rotation"/>
+			<dlgitem id="1242" text="Behåll kolumn"/>
+			<dlgitem id="1260" text="Aktuell dokumentbredd"/>
+			<dlgitem id="1263" text="Minsta bredd:"/>
+			<dlgitem id="1058" text="Automatisk bredd"/>
+			<dlgitem id="1061" text="Automatisk rotation"/>
+			<dlgitem id="1060" text="Behåll kolumn"/>
+			<dlgitem id="1261" text="Systemets standardbredd"/>
+			<dlgitem id="1262" text="Minsta bredd:"/>
+			<dlgitem id="1240" text="Automatisk bredd"/>
+			<dlgitem id="1062" text="Automatisk rotation"/>
+			<dlgitem id="1056" text="Behåll kolumn"/>
+			<dlgitem id="1" text="OK"/>
+			<dlgitem id="2" text="Avbryt"/>
+		</Dialog>
+		<Dialog id="158" text="ZoomTo">
+			<dlgitem id="1203" text="&amp;Förstoring:"/>
+			<dlgitem id="1" text="OK"/>
+			<dlgitem id="2" text="Avbryt"/>
+		</Dialog>
+		<Dialog id="9026" text="Character Spacing">
+			<dlgitem id="1" text="OK"/>
+			<dlgitem id="2" text="Avbryt"/>
+			<dlgitem id="9018" text="Expanderad"/>
+			<dlgitem id="9011" text="Komprimerad"/>
+			<dlgitem id="9027" text="Av:"/>
+			<dlgitem id="9029" text="Av:"/>
+			<dlgitem id="9014" text="Förhandsgranska"/>
+			<dlgitem id="9021" text="DU kan expandera och komprimera textrader genom att använda olika teckenavstånd:"/>
+			<dlgitem id="9023" text="Punkter"/>
+			<dlgitem id="9025" text="Punkter"/>
+		</Dialog>
+		<Dialog id="9024" text="Horizontal Scale">
+			<dlgitem id="1" text="OK"/>
+			<dlgitem id="2" text="Avbryt"/>
+			<dlgitem id="9008" text="Förhandsgranska"/>
+			<dlgitem id="9031" text="&amp;Horisontell skala:"/>
+			<dlgitem id="9033" text="%"/>
+		</Dialog>
+		<Dialog id="9054" text="Symbol">
+			<dlgitem id="1" text="&amp;Infoga"/>
+			<dlgitem id="2" text="Avbr&amp;yt"/>
+		</Dialog>
+		<Dialog id="9020" text="Preference Settings">
+			<dlgitem id="1" text="&amp;OK"/>
+			<dlgitem id="2" text="Avbr&amp;yt"/>
+			<dlgitem id="9035" text="Sta&amp;ndardtypsnitt:"/>
+			<dlgitem id="9039" text="Standard typsnitt&amp;storlek:"/>
+			<dlgitem id="9047" text="Ba&amp;kgrundsfärg:"/>
+			<dlgitem id="9010" text="Ä&amp;ndra"/>
+			<dlgitem id="9041" text="Standard &amp;horisontell skala:"/>
+			<dlgitem id="65535" text="%"/>
+			<dlgitem id="9043" text="Standard te&amp;ckenavstånd:"/>
+			<dlgitem id="9045" text="Standard te&amp;ckenfärg:"/>
+			<dlgitem id="9017" text="Ä&amp;ndra"/>
+			<dlgitem id="9037" text="Standard teckenstil:"/>
+			<dlgitem id="9005" text="&amp;Fet"/>
+			<dlgitem id="9019" text="&amp;Kursiv"/>
+		</Dialog>
+		<Dialog id="9022">
+			<dlgitem id="9049" text="Typsnitt:"/>
+		</Dialog>
+		<Dialog id="793" text="Foxit Reader Update Manager">
+			<dlgitem id="1185" text="La&amp;dda ner"/>
+			<dlgitem id="2" text="Avbr&amp;yt"/>
+			<dlgitem id="1178" text="Progress1"/>
+			<dlgitem id="1187" text="Filnamn:"/>
+			<dlgitem id="1188" text="Plats:"/>
+			<dlgitem id="1189" text="Återstående tid:"/>
+			<dlgitem id="1186" text="Beskrivning:"/>
+		</Dialog>
+		<Dialog id="792" text="Missing Component Found">
+			<dlgitem id="1" text="&amp;Ja"/>
+			<dlgitem id="2" text="&amp;Nej"/>
+			<dlgitem id="1186" text="Fråga:"/>
+			<dlgitem id="1226" text="Vill du att Foxit Reader ska hämta mer information om komponenten och visa nerladdningsdialogen? "/>
+			<dlgitem id="1273" text="NOTERA: detta kräver en internetanslutning till Foxits server."/>
+		</Dialog>
+		<Dialog id="796" text="Foxit Reader Updates">
+			<dlgitem id="1" text="&amp;Installera"/>
+			<dlgitem id="2" text="Avbr&amp;yt"/>
+			<dlgitem id="1265" text="Tillg&amp;ängliga uppdateringar:"/>
+			<dlgitem id="1266" text="&amp;Markerade uppdateringar:"/>
+			<dlgitem id="1269" text="(0.0 KB)"/>
+			<dlgitem id="1169" text="&amp;Lägg till"/>
+			<dlgitem id="1170" text="&amp;Ta bort"/>
+			<dlgitem id="1186" text="&amp;Beskrivning:"/>
+			<dlgitem id="1267" text="Storle&amp;k:"/>
+			<dlgitem id="1274" text="Statisk"/>
+		</Dialog>
+		<Dialog id="815" text="Calculation Order">
+			<dlgitem id="1312" text="Formulärfält:"/>
+			<dlgitem id="1287" text="&amp;Upp"/>
+			<dlgitem id="1288" text="&amp;Ner"/>
+			<dlgitem id="1" text="OK"/>
+			<dlgitem id="2" text="Avbryt"/>
+		</Dialog>
+		<Dialog id="810" text="Progress">
+		</Dialog>
+		<Dialog id="812" text="Foxit Reader">
+			<dlgitem id="2" text="Avbryt"/>
+			<dlgitem id="1313" text="Söker efter uppdateringar..."/>
+		</Dialog>
+		<Dialog id="816">
+			<dlgitem id="1290" text="Markera fält"/>
+			<dlgitem id="1312" text="Detta dokument innehåller interaktiva formulärfält."/>
+		</Dialog>
+		<Dialog id="814" text="JavaScript Editor">
+			<dlgitem id="1317" text="Skapa och redigera JavaScript:"/>
+			<dlgitem id="1286" text="&amp;Typsnitt ..."/>
+			<dlgitem id="1285" text="&amp;Uppdatera"/>
+			<dlgitem id="1284" text="&amp;Spara"/>
+			<dlgitem id="1283" text="&amp;Stäng"/>
+		</Dialog>
+		<Dialog id="813" text="Java Script Functions">
+			<dlgitem id="2" text="&amp;Stäng"/>
+			<dlgitem id="1275" text="Script&amp;namn:"/>
+			<dlgitem id="1279" text="&amp;Lägg till"/>
+			<dlgitem id="1280" text="R&amp;edigera"/>
+			<dlgitem id="1281" text="&amp;Ta bort"/>
+		</Dialog>
+		<Dialog id="819">
+			<dlgitem id="1314" text="Markeringsfärg"/>
+			<dlgitem id="1301" text="Mar&amp;kera alla fält"/>
+			<dlgitem id="1303" text="Kr&amp;yssruta"/>
+			<dlgitem id="1302" text="&amp;Kombinationsruta"/>
+			<dlgitem id="14009" text="&amp;Alternativknapp"/>
+			<dlgitem id="14010" text="&amp;Listruta"/>
+			<dlgitem id="14011" text="&amp;Textruta"/>
+			<dlgitem id="14012" text="Ko&amp;mmandoknapp"/>
+			<dlgitem id="1316" text="Markering för fält:"/>
+			<dlgitem id="1315" text="&amp;Transparens:"/>
+			<dlgitem id="1304" text="Slider1"/>
+			<dlgitem id="1319" text="Ange markeringsla&amp;ger:"/>
+		</Dialog>
+	</Dialogs>
+	<Strings>
+		<string id="100" text="OLE initialization failed.  Make sure that the OLE libraries are the correct version."/>
+		<string id="128" text="Foxit Reader 2.0"/>
+		<string id="129" text="\nFoxit Reader\nPDF\nPDF Filer(*.pdf)\n.pdf\nFoxitReader.Document\nPDF Document"/>
+		<string id="2015" text="2005-2006 Foxit Software"/>
+		<string id="2016" text="2.0 Build 0912"/>
+		<string id="2017" text="För att återställa din standardläsare för PDF filer till din föregående läsare, måste du starta det andra programmet och göra ändringen där."/>
+		<string id="2020" text=" är skyddad. Ange ett lösenord."/>
+		<string id="2021" text="Klicka här för information om hur du aktiverar avancerade funktioner i Foxit Reader!"/>
+		<string id="2022" text="Klicka här för information om hur du använder det kostnadsfria  textinmatningen för att skriva i alla PDF dokument!"/>
+		<string id="2023" text="Klicka här för information om hur du modifierar ett existerande PDF dokument!"/>
+		<string id="2024" text="Nu kan du använda den kostnadsfria textinmatningen för att skriva i alla PDF dokument.\n\Klicka på knappen &quot;Textinmatning&quot; i verktygsfältet eller välj &quot;Textinmatning&quot;\n från &quot;Redigera&quot; menyn. Klicka sedan i dokumentet och börja skriva!\n\nDu kan också skriva ut dokumentet inklusive din text."/>
+		<string id="2026" text="Ett fel upppstod när dokumentet skulle öppnas. Filen är skadad och kunde inte repareras automatiskt."/>
+		<string id="2027" text="Kan inte hitta sida:"/>
+		<string id="2028" text="Kan inte starta programmet"/>
+		<string id="2029" text="Sidan '%s' finns inte i dokumentet."/>
+		<string id="2031" text="Copyright (C)"/>
+		<string id="2032" text="Website:http://www.foxitsoftware.com"/>
+		<string id="2033" text="All Rights Reserved"/>
+		<string id="2034" text="Version"/>
+		<string id="2035" text="Kan inte hitta texten"/>
+		<string id="2036" text="Foxit Reader har sökt färdigt i dokumentet."/>
+		<string id="2037" text="Det går inte att skriva ut dokumentet.\n\nOrsak: dokumentskyddet tillåter inte utksrift."/>
+		<string id="2038" text="Kopiering av text inte tillåtet.\n\nOrsak: dokumentskyddet tillåter inte kopiering av text."/>
+		<string id="2039" text="Det går inte att spara detta dokument.\n\nOrsak: dokumentskyddet tillåter inte sparande av dokumentet."/>
+		<string id="2040" text="Dokumentet kunde inte sparas. Dokumentet är redan öppet."/>
+		<string id="2041" text="Innan du akn använda utskriftsfunktionerna\nmåste du installera en skrivare.\n"/>
+		<string id="2042" text="Dokumentet kunde inte sparas. Dokumentet kan vara skrivskyddat eller en\nannan användare kan ha dokumentet öppet. Spara med ett annat namn\neller i en annan katalog."/>
+		<string id="2043" text="Dokument"/>
+		<string id="2044" text="Dokument och anteckningar"/>
+		<string id="2045" text="Dokument och anteckningar"/>
+		<string id="2046" text="Dokument"/>
+		<string id="2047" text="Vill du spara ändringar i '%s' innan du avslutar?"/>
+		<string id="2050" text="En sida"/>
+		<string id="2051" text="Kontinuerligt"/>
+		<string id="2052" text="Motstående sidor"/>
+		<string id="2053" text="Kontinuerligt - motstående sidor"/>
+		<string id="2054" text="Faktisk storlek"/>
+		<string id="2055" text="Anpassa sida"/>
+		<string id="2056" text="Sidbredd"/>
+		<string id="2057" text="Arkiv"/>
+		<string id="2058" text="Navigering"/>
+		<string id="2059" text="Verktygsfältet Zooma"/>
+		<string id="2060" text="Rotera vy"/>
+		<string id="2061" text="Grundläggande"/>
+		<string id="2062" text="Textvisare"/>
+		<string id="2063" text="Helskärm"/>
+		<string id="2064" text="Hjälp"/>
+		<string id="2070" text="En komponent (%s) saknas i Foxit Reader.Du måste eventuellt ladda ner en uppdatering från vår webbsida för att visa filen korrekt."/>
+		<string id="2071" text="Kunde inte ladda ner..."/>
+		<string id="2072" text="Söker efter uppdateringar..."/>
+		<string id="2073" text="Laddar ner uppdateringar"/>
+		<string id="2074" text="Installerar uppdateringar"/>
+		<string id="2075" text="&amp;Paus"/>
+		<string id="2076" text="&amp;Fortsätt"/>
+		<string id="2077" text="&amp;Klar"/>
+		<string id="2078" text="timmar"/>
+		<string id="2079" text="Minuter"/>
+		<string id="2080" text="sekunder"/>
+		<string id="2081" text="Professional  Version"/>
+		<string id="2082" text="upptagen"/>
+		<string id="2083" text="dörren är öppen"/>
+		<string id="2084" text="i felläge"/>
+		<string id="2085" text="initialiserar"/>
+		<string id="2086" text="i aktivt in/utläge"/>
+		<string id="2087" text="i manuellt matningsläge "/>
+		<string id="2088" text="toner slut"/>
+		<string id="2089" text="inte tillgänglig för utskrift"/>
+		<string id="2090" text="offline"/>
+		<string id="2091" text="slut på minne"/>
+		<string id="2092" text="utskriftsfacket fullt"/>
+		<string id="2093" text="kan inte skriva ut aktuell sida"/>
+		<string id="2094" text="Papperskvadd i skrivaren"/>
+		<string id="2095" text="slut på papper"/>
+		<string id="2096" text="pappersproblem"/>
+		<string id="2097" text="pausad"/>
+		<string id="2098" text="tar bort printjobb"/>
+		<string id="2099" text="i strömsparsläge"/>
+		<string id="2100" text="skriver ut"/>
+		<string id="2101" text="bearbetar utskriftsjobb"/>
+		<string id="2102" text="okänd status"/>
+		<string id="2103" text="toner låg"/>
+		<string id="2104" text="har ett fel som kräver åtgärd av användaren"/>
+		<string id="2105" text="väntar"/>
+		<string id="2106" text="värmer up"/>
+		<string id="2107" text="Klar"/>
+		<string id="2108" text="Bokmärken"/>
+		<string id="2109" text="Sida"/>
+		<string id="2110" text="Dölj vertygsfält"/>
+		<string id="2111" text="Visa verktygsfält"/>
+		<string id="2112" text="PDF filer"/>
+		<string id="2113" text="Alla filer"/>
+		<string id="2114" text="Grundläggande verktyg"/>
+		<string id="2115" text="Kommentarverktyg"/>
+		<string id="2116" text="Formulärverktyg"/>
+		<string id="2117" text="Bildmarkeringsverktyg"/>
+		<string id="2118" text="Verktyg för smart text"/>
+		<string id="2119" text="Allmänt"/>
+		<string id="2120" text="Dokumentfärger"/>
+		<string id="2121" text="Sidvisning"/>
+		<string id="2122" text="Anpassa till pappersstorlek"/>
+		<string id="2123" text="Faktisk storlek"/>
+		<string id="2124" text="Ingen"/>
+		<string id="2125" text="Fler sidor per ark"/>
+		<string id="2126" text="Normal"/>
+		<string id="2127" text="Medsols"/>
+		<string id="2128" text="Motsols"/>
+		<string id="2129" text="Tum"/>
+		<string id="2130" text="Alla sidor i intervallet"/>
+		<string id="2131" text="Endast ojämna sidor"/>
+		<string id="2132" text="Endast jämna sidor"/>
+		<string id="2133" text="Anpassad..."/>
+		<string id="2134" text="Värdet måste vara 'Verklig storlek', 'Anpassa sida', 'Sidbredd' eller ett värde mellan %s och %s."/>
+		<string id="2135" text="Ange ett värde mellan %s och %s."/>
+		<string id="2136" text="Arkiv"/>
+		<string id="2137" text="&amp;Om Foxit Reader..."/>
+		<string id="2138" text="&amp;Om Foxit Reader Pro..."/>
+		<string id="2139" text="Horisontell"/>
+		<string id="2140" text="Omvänt horisontell"/>
+		<string id="2141" text="Vertikal"/>
+		<string id="2142" text="Omvänt vertikal"/>
+		<string id="2143" text="Söker %d av %d"/>
+		<string id="2144" text="Skriver %d av %d"/>
+		<string id="2145" text="Konverterar filer"/>
+		<string id="2146" text="Dokumentet försöker ansluta till platsen:\n\n%s\n\nOm du litar på platsen, klicka på &quot;Ja&quot; annars klicka på &quot;Nej&quot;\n"/>
+		<string id="2147" text="Säkerhetsvarning"/>
+		<string id="2148" text="Klicka på 'Ladda ner' för att börja."/>
+		<string id="2149" text="Installation av uppdateringen klar, klicka på 'Klar' för att stänga fönstret."/>
+		<string id="2150" text="Kunde inte installera."/>
+		<string id="2151" text="filfel: kan inte hitta eller öppna filen."/>
+		<string id="2152" text="formatfel: inte en PDF fil eller filen skadad."/>
+		<string id="2153" text="Ogiltigt lösenord. Försök igen."/>
+		<string id="2154" text="Dokumentet har krypterats med okänd krypteringsmetod."/>
+		<string id="2155" text="Kan inte öppna filen eller filen finns inte!"/>
+		<string id="2156" text="Fel"/>
+		<string id="2157" text="Kan inte öppna formulärdatafilen!"/>
+		<string id="2158" text="Export av formulärdata till filen:\n\n%s\n\nlyckades!"/>
+		<string id="2159" text="Information"/>
+		<string id="2160" text="Kan inte exportera eller läsa formulärdata!"/>
+		<string id="2161" text="Import av formulärdata från filen:\n\n%s\n\nlyckades!"/>
+		<string id="2162" text="Kan inte importera eller läsa formulärdata!"/>
+		<string id="2163" text="Bekräfta"/>
+		<string id="2164" text="Detta kommer att återställa alla fält till sina standardvärden.\nDu riskerar att förlora data. Är du säker?\n\nKlicka på &quot;Ja&quot; för att fortsätta, &quot;Nej&quot; för att avbryta."/>
+		<string id="2165" text="Kan inte återställa eller läsa formulärdata!"/>
+		<string id="2166" text="Formulär"/>
+		<string id="2167" text="*Viktig uppdatering"/>
+		<string id="2168" text="Standarposition"/>
+		<string id="2169" text="Under fält"/>
+		<string id="2170" text="Över fält"/>
+		<string id="16640" text="Klicka här för mer information!\nKlicka här"/>
+		<string id="32773" text="Tack för din beställning av Foxit Softwares produkter!\nBeställ"/>
+		<string id="32774" text="Besök Foxit Softwares hemsida."/>
+		<string id="32775" text="Få online support från Foxit Software."/>
+		<string id="32776" text="Visa PDF filens egenskaper\nEgenskaper"/>
+		<string id="32777" text="Första sidan\nFörsta sidan"/>
+		<string id="32778" text="Föregående sida\nFöregående sida"/>
+		<string id="32779" text="Nästa sida\nNästa sida"/>
+		<string id="32780" text="Sista sidan\nSista sidan"/>
+		<string id="32782" text="Visa/dölj bokmärke\nBokmärke"/>
+		<string id="32783" text="Helskärm\nHelskärm"/>
+		<string id="32784" text="Handverktyget\nHandverktyget"/>
+		<string id="32785" text="Zooma ut\nZooma ut"/>
+		<string id="32786" text="Zooma in\nZooma in"/>
+		<string id="32787" text="Zooma in\nZooma in"/>
+		<string id="32788" text="Zooma ut\nZooma ut"/>
+		<string id="32789" text="Zooma till\nZooma till"/>
+		<string id="32790" text="Verklig storlek\nVerklig storlek"/>
+		<string id="32791" text="Anpassa sida\nAnpassa sida"/>
+		<string id="32792" text="Sidbredd\nSidbredd"/>
+		<string id="32793" text="Sidbredd\nSidbredd"/>
+		<string id="32795" text="Stäng alla dokument\nStäng alla"/>
+		<string id="32796" text="Textvisare\nTextvisare"/>
+		<string id="32802" text="Ändra dokumentet med nytt typsnitt\nTypsnitt"/>
+		<string id="32862" text="Spara aktuellt dokument me annat namn\nSpara som"/>
+		<string id="32898" text="Visa eller dölj menyraden\nVisa/dölj menyrad"/>
+		<string id="32925" text="En sida\nEn sida"/>
+		<string id="32926" text="Kontinuerligt\nKontinuerligt"/>
+		<string id="32932" text="Spara aktuellt dokument me annat namn\nSpara som"/>
+		<string id="32935" text="Rotera medsols\nRotera medsols"/>
+		<string id="32938" text="Motstående\nMotstående"/>
+		<string id="32939" text="Kontinuerligt-Motstående sidor\nKontinuerligt-Motstående sidor"/>
+		<string id="32941" text="Rotera motsols\nRotera motsols"/>
+		<string id="32942" text="Omvänd\nOmvänd"/>
+		<string id="32977" text="Markeringsverktyget\nMarkeringsverktyget"/>
+		<string id="32985" text="Inställningar\nInställningar"/>
+		<string id="32987" text="Ögonblicksbildverktyget\Ögonblicksbildverktyget"/>
+		<string id="33060" text="Fet\nFet"/>
+		<string id="33061" text="Kursiv\nKursiv"/>
+		<string id="33064" text="Inställningar för textvisaren\nInställningar"/>
+		<string id="33066" text="Typsnitt\nTypsnitt"/>
+		<string id="33069" text="Färg\nFärg"/>
+		<string id="33071" text="PDF typsnitt\nPDF typsnitt"/>
+		<string id="33097" text="Föregående vy\nFöregående vy"/>
+		<string id="33098" text="Nästa vy\nNästa vy"/>
+		<string id="33124" text="Markera\nMarkera"/>
+		<string id="57344" text="Foxit Reader"/>
+		<string id="57345" text="Klar"/>
+		<string id="57600" text="Skapa nytt dokument\nNytt"/>
+		<string id="57601" text="Öppna existerande dokument\nÖppna"/>
+		<string id="57602" text="Stäng aktuellt dokument\nStäng"/>
+		<string id="57603" text="Spara aktuellt dokument\nSpara"/>
+		<string id="57604" text="Spara aktuellt dokument me annat namn\nSpara som"/>
+		<string id="57605" text="Ändra utskriftsformat\nUtskriftsformat"/>
+		<string id="57606" text="Ändra skrivarinställningar\nSkrivarinställningar"/>
+		<string id="57607" text="Slriv ut aktuellt dokument\nSkriv ut"/>
+		<string id="57609" text="Visa alla sidor\nFörhandsgranska"/>
+		<string id="57616" text="Öppna detta dokument"/>
+		<string id="57617" text="Öppna detta dokument"/>
+		<string id="57618" text="Öppna detta dokument"/>
+		<string id="57619" text="Öppna detta dokument"/>
+		<string id="57620" text="Öppna detta dokument"/>
+		<string id="57621" text="Öppna detta dokument"/>
+		<string id="57622" text="Öppna detta dokument"/>
+		<string id="57623" text="Öppna detta dokument"/>
+		<string id="57624" text="Öppna detta dokument"/>
+		<string id="57625" text="Öppna detta dokument"/>
+		<string id="57626" text="Öppna detta dokument"/>
+		<string id="57627" text="Öppna detta dokument"/>
+		<string id="57628" text="Öppna detta dokument"/>
+		<string id="57629" text="Öppna detta dokument"/>
+		<string id="57630" text="Öppna detta dokument"/>
+		<string id="57631" text="Öppna detta dokument"/>
+		<string id="57632" text="Ta bort markeringen\nTa bort"/>
+		<string id="57633" text="Ta bort allt\nTa bort allt"/>
+		<string id="57634" text="Kopiera markeringen till Urklipp\nKopiera"/>
+		<string id="57635" text="Klipp ut markeringen till Urklipp\nKlipp ut"/>
+		<string id="57636" text="Sök efter angiven text\nSök"/>
+		<string id="57637" text="Klistra in från Urklipp\nKlistra in"/>
+		<string id="57640" text="Repetera senaste åtgärden\nGör om"/>
+		<string id="57641" text="Ersätt angiven text med ny text\nErsätt"/>
+		<string id="57642" text="Markera hela dokumentet\nMarkera allt"/>
+		<string id="57643" text="Ångra senaste åtgärden\nÅngra"/>
+		<string id="57644" text="Gör om senast ångrade åtgärden\Gör om"/>
+		<string id="57648" text="Öppna nytt fönster med aktuellt dokument\nNytt fönster"/>
+		<string id="57649" text="Ordna ikoner i fönstrets nederkant\nOrdna"/>
+		<string id="57650" text="Ordna fönster så att de överlappar\nÖverlappande"/>
+		<string id="57651" text="Ordna fönster så att de inte överlappar\nSida vid sida"/>
+		<string id="57652" text="Ordna fönster så att de inte överlappar\nSida vid sida"/>
+		<string id="57653" text="Dela aktivt fönster i flera vyer\nDela"/>
+		<string id="57664" text="Vis programinformation, version och copyright\nOm"/>
+		<string id="57665" text="Avsluta programmet\nAvsluta"/>
+		<string id="57680" text="Gåt ill nästa vy\nNästa vy"/>
+		<string id="57681" text="Gå till föregående vy\nFöregående vy"/>
+		<string id="59136" text="EXT"/>
+		<string id="59137" text="CAP"/>
+		<string id="59138" text="NUM"/>
+		<string id="59139" text="SCRL"/>
+		<string id="59140" text="OVR"/>
+		<string id="59141" text="REC"/>
+		<string id="59392" text="Visa eller dölj verktygsfältet\nVäxla verktygsfältets visning"/>
+		<string id="59393" text="Visa eller dölj statusfältet\nVäxla statusfältets visning"/>
+		<string id="61184" text="Ändra fönstrets storlek"/>
+		<string id="61185" text="Ändra fönstrets placering"/>
+		<string id="61186" text="Minimera fönstret"/>
+		<string id="61187" text="Maximera fönstret"/>
+		<string id="61188" text="Växla till nästa dokument"/>
+		<string id="61189" text="Växla till föregående dokument"/>
+		<string id="61190" text="Stäng aktivt fönster"/>
+		<string id="61202" text="Återställ fönstret"/>
+		<string id="61203" text="Aktivera åtgärdslistan"/>
+		<string id="61215" text="Aktivera fönster"/>
+		<string id="61445" text="Close print preview mode\nCancel PreviewStäng förhandsgranskningsfönstret\nStäng förhandsgranskning"/>
+	</Strings>
+</Reader>

@@ -1,6 +1,6 @@
 1 VERSIONINFO
-FILEVERSION 1,9,0,50
-PRODUCTVERSION 1,9,0,50
+FILEVERSION 1,9,0,51
+PRODUCTVERSION 1,9,0,51
 FILEFLAGSMASK 0x3FL
 FILEFLAGS 0x00L
 FILEOS 0x40004L
@@ -13,14 +13,14 @@ BEGIN
          BEGIN
               VALUE "CompanyName", "IniTranslator\0"
               VALUE "FileDescription", "ResX Plugin for IniTranslator\0"
-              VALUE "FileVersion", "1.9.0.50\0"
+              VALUE "FileVersion", "1.9.0.51\0"
               VALUE "InternalName", "ResXParser.dll\0"
               VALUE "LegalCopyright", "Copyright (c) 2003-2007 by Peter Thornqvist; all rights reserved\0"
               VALUE "OriginalFilename", "ResXParser.dll\0"
               VALUE "ProductName", "ResX Plugin for IniTranslator\0"
-              VALUE "ProductVersion", "1.9.0.50\0"
+              VALUE "ProductVersion", "1.9.0.51\0"
               VALUE "Comments", "Latest version at http://initranslator.sourceforge.net\0"
-              VALUE "CompileDate", "den 17 oktober 2007 22:40\0"
+              VALUE "CompileDate", "den 18 oktober 2007 19:57\0"
          END
     END
     BLOCK "VarFileInfo"

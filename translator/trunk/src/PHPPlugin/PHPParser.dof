@@ -36,7 +36,7 @@ AutoIncBuild=0
 MajorVer=1
 MinorVer=9
 Release=0
-Build=50
+Build=51
 Debug=0
 PreRelease=0
 Special=0
@@ -47,7 +47,7 @@ CodePage=1252
 [Version Info Keys]
 CompanyName=IniTranslator
 FileDescription=PHP Plugin for IniTranslator
-FileVersion=1.9.0.50
+FileVersion=1.9.0.51
 InternalName=PHPParser.dll
 LegalCopyright=Copyright (c) 2003-2004 by Peter Thornqvist; all rights reserved
 LegalTrademarks=

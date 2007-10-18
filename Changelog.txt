@@ -1,7 +1,13 @@
 Ini Translator Changelog
 ========================
+2007-10-17:
+- new parser for VS.Net resx files (requested by user)
+- when previewing before exporting, you can now search the content of the preview with Ctrl+F/F3
+
 2007-08-14:
 - modifications to build with Delphi 2007
+2006-12-25:
+- new parser for DC++ language files
 
 2006-12-22:
 - PreviewExportForm didn't delete temporary file

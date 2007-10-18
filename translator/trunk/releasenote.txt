@@ -5,6 +5,11 @@ Ini Translator is a small Windows tool to simplify the translation of ini style 
 
 The program and the sources are hosted at sourceforge and are released subject to the MPL 1.1 license.
 
+New in version 1.9.0.51:
+- New parser for VS.Net .resx files
+- The export preview now supports searching (press Ctrl+F or F3)
+- Several minor bugfixes
+
 New in version 1.9.0.42:
 - Bug Fixed: previous version did not work on non-XP systems
 - New tool plugin: ToolConsistency. Checks if items are consistently translated, i.e same translation for same original

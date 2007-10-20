@@ -749,6 +749,9 @@ begin
   acSpellCheck.Tag := 0;
   acSpellCheck.OnExecute := SpellCheckExecute;
 {$ENDIF}
+  FTranslateFile.StartSection := GlobalAppOptions.SectionStart[1];
+  FTranslateFile.EndSection := GlobalAppOptions.SectionEnd[1];
+  FTranslateFile.SeparatorChars := GlobalAppOptions.SeparatorChars;
 end;
 
 procedure TfrmMain.SaveSettings;

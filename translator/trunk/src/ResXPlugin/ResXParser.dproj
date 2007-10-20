@@ -32,46 +32,10 @@
     <Borland.Personality>Delphi.Personality</Borland.Personality>
     <Borland.ProjectType>VCLApplication</Borland.ProjectType>
     <BorlandProject>
-<BorlandProject xmlns=""> <Delphi.Personality>   <Parameters>
-      <Parameters Name="HostApplication">C:\Program\Borland\projects\Private\translator\trunk\bin\translator.exe</Parameters>
-      <Parameters Name="UseLauncher">False</Parameters>
-      <Parameters Name="LoadAllSymbols">True</Parameters>
-      <Parameters Name="LoadUnspecifiedSymbols">False</Parameters>
-    </Parameters>
-    <VersionInfo>
-      <VersionInfo Name="IncludeVerInfo">True</VersionInfo>
-      <VersionInfo Name="AutoIncBuild">False</VersionInfo>
-      <VersionInfo Name="MajorVer">1</VersionInfo>
-      <VersionInfo Name="MinorVer">9</VersionInfo>
-      <VersionInfo Name="Release">0</VersionInfo>
-      <VersionInfo Name="Build">50</VersionInfo>
-      <VersionInfo Name="Debug">False</VersionInfo>
-      <VersionInfo Name="PreRelease">False</VersionInfo>
-      <VersionInfo Name="Special">False</VersionInfo>
-      <VersionInfo Name="Private">False</VersionInfo>
-      <VersionInfo Name="DLL">False</VersionInfo>
-      <VersionInfo Name="Locale">1033</VersionInfo>
-      <VersionInfo Name="CodePage">1252</VersionInfo>
-    </VersionInfo>
-    <VersionInfoKeys>
-      <VersionInfoKeys Name="CompanyName">IniTranslator</VersionInfoKeys>
-      <VersionInfoKeys Name="FileDescription">ResX Plugin for IniTranslator</VersionInfoKeys>
-      <VersionInfoKeys Name="FileVersion">1.9.0.50</VersionInfoKeys>
-      <VersionInfoKeys Name="InternalName">ResXPlugin.dll</VersionInfoKeys>
-      <VersionInfoKeys Name="LegalCopyright">Copyright (c) 2007 by Peter Thörnqvist; all rights reserved</VersionInfoKeys>
-      <VersionInfoKeys Name="LegalTrademarks"></VersionInfoKeys>
-      <VersionInfoKeys Name="OriginalFilename">ResXPlugin.dll</VersionInfoKeys>
-      <VersionInfoKeys Name="ProductName">ResX Plugin for IniTranslator</VersionInfoKeys>
-      <VersionInfoKeys Name="ProductVersion">1.9.0.50</VersionInfoKeys>
-      <VersionInfoKeys Name="Comments">Latest version at http://initranslator.sourceforge.net</VersionInfoKeys>
-      <VersionInfoKeys Name="CompileDate">den 14 augusti 2007 14:58</VersionInfoKeys>
-    </VersionInfoKeys>
-    <Source>
-      <Source Name="MainSource">ResXParser.dpr</Source>
-    </Source>
-  </Delphi.Personality> </BorlandProject></BorlandProject>
+<BorlandProject><Delphi.Personality><Parameters><Parameters Name="HostApplication">C:\Program\Borland\projects\Private\translator\trunk\bin\translator.exe</Parameters><Parameters Name="UseLauncher">False</Parameters><Parameters Name="LoadAllSymbols">True</Parameters><Parameters Name="LoadUnspecifiedSymbols">False</Parameters></Parameters><VersionInfo><VersionInfo Name="IncludeVerInfo">True</VersionInfo><VersionInfo Name="AutoIncBuild">False</VersionInfo><VersionInfo Name="MajorVer">1</VersionInfo><VersionInfo Name="MinorVer">9</VersionInfo><VersionInfo Name="Release">0</VersionInfo><VersionInfo Name="Build">50</VersionInfo><VersionInfo Name="Debug">False</VersionInfo><VersionInfo Name="PreRelease">False</VersionInfo><VersionInfo Name="Special">False</VersionInfo><VersionInfo Name="Private">False</VersionInfo><VersionInfo Name="DLL">False</VersionInfo><VersionInfo Name="Locale">1033</VersionInfo><VersionInfo Name="CodePage">1252</VersionInfo></VersionInfo><VersionInfoKeys><VersionInfoKeys Name="CompanyName">IniTranslator</VersionInfoKeys><VersionInfoKeys Name="FileDescription">ResX Plugin for IniTranslator</VersionInfoKeys><VersionInfoKeys Name="FileVersion">1.9.0.50</VersionInfoKeys><VersionInfoKeys Name="InternalName">ResXPlugin.dll</VersionInfoKeys><VersionInfoKeys Name="LegalCopyright">Copyright (c) 2007 by Peter Thörnqvist; all rights reserved</VersionInfoKeys><VersionInfoKeys Name="LegalTrademarks"></VersionInfoKeys><VersionInfoKeys Name="OriginalFilename">ResXPlugin.dll</VersionInfoKeys><VersionInfoKeys Name="ProductName">ResX Plugin for IniTranslator</VersionInfoKeys><VersionInfoKeys Name="ProductVersion">1.9.0.50</VersionInfoKeys><VersionInfoKeys Name="Comments">Latest version at http://initranslator.sourceforge.net</VersionInfoKeys><VersionInfoKeys Name="CompileDate">den 14 augusti 2007 14:58</VersionInfoKeys></VersionInfoKeys><Source><Source Name="MainSource">ResXParser.dpr</Source></Source></Delphi.Personality>  <ModelSupport>False</ModelSupport>
+</BorlandProject></BorlandProject>
   </ProjectExtensions>
-  <ItemGroup />
+  <Import Project="$(MSBuildBinPath)\Borland.Delphi.Targets" />
   <ItemGroup>
     <DelphiCompile Include="ResXParser.dpr">
       <MainSource>MainSource</MainSource>
@@ -86,5 +50,4 @@
     <DCCReference Include="..\TransIntf.pas" />
     <DCCReference Include="ResXParserImpl.pas" />
   </ItemGroup>
-  <Import Project="$(MSBuildBinPath)\Borland.Delphi.Targets" />
 </Project>

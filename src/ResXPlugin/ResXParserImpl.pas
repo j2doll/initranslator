@@ -27,11 +27,11 @@ type
   private
     FOldAppHandle:Cardinal;
     FApplicationServices:IApplicationServices;
-    FOrigFilename, FTransFilename:WideString;
+    FOrigFilename, FTransFilename, FMimeTypes:WideString;
+    FMetaData:boolean;
     procedure LoadSettings;
     procedure SaveSettings;
     function Translate(const Value:WideString):WideString;
-
   protected
     function Capabilities:Integer; safecall;
     function Configure(Capability:Integer):HRESULT; safecall;
@@ -68,6 +68,8 @@ resourcestring
 
 var
   XML:WideString = '';
+  Encoding:WideString = 'UTF-8';
+
 const
   cTranslationItem:WideString = '%%%%%%%%T%d%%%%%%%%';
 
@@ -108,42 +110,37 @@ begin
 end;
 
 function TResXParser.ExportItems(const Items, Orphans:ITranslationItems):HRESULT;
-var
-  Strings:TTntStringlist;
-
   function WrapTags(const T:ITranslationItem):WideString;
   begin
     if T.Translation = '' then
-      Result := #13#10'        <value/>'
+      Result := #13#10#9#9'<value/>'
    else
-     Result := WideFormat(#13#10'        <value>%s</value>',[T.Translation]);
+     Result := WideFormat(#13#10#9#9'<value>%s</value>',[T.Translation]);
    if T.TransComments <> '' then
-     Result := Result + WideFormat(#13#10'        <comment>%s</comment>',[T.TransComments]);
-   Result := Result + #13#10'      ';
+     Result := Result + WideFormat(#13#10#9#9'<comment>%s</comment>',[T.TransComments]);
+   Result := Result + #13#10#9;
   end;
-  
+
   procedure BuildPreview(const Items, Orphans:ITranslationItems; Strings:TTntStrings);
   var
     S:WideString;
     i:integer;
     TI:ITranslationItem;
-    // XmlDoc:IXMLDocument;
   begin
-    S := XML; // preserve template in case user exports more than once
+    S := TnT_WideStringReplace(XML,'</root>','',[rfReplaceAll]); // preserve template in case user exports more than once
     for i := 0 to Items.Count - 1 do
     begin
       TI := Items[i];
+      if TI.PreData = '' then
+        S := S + #13#10#9 + TI.PostData;
       S := Tnt_WideStringReplace(S, WideFormat(cTranslationItem, [TI.Index]), WrapTags(TI), [rfReplaceAll]);
     end;
-{
-    // prettify
-    XmlDoc := NewXMLDocument();
-    XmlDoc.Options := [doNodeAutoIndent];
-    XmlDoc.LoadFromXml(S);
-    XmlDoc.SaveToXml(S);
-}
+    S := S + #13#10'</root>';
     Strings.Text := S;
   end;
+  var
+    XmlDoc:IXMLDocument;
+    Strings:TTntStringlist;
 begin
   Result := S_FALSE;
   LoadSettings;
@@ -154,7 +151,14 @@ begin
       if TfrmExport.Execute(FApplicationServices, FTransFilename, Translate(cResXExportTitle), Translate(cResXFilter), '.', '.resx', Strings) then
       begin
         SaveSettings;
-        Strings.SaveToFile(FTransFilename);
+        XmlDoc := NewXMLDocument();
+        XmlDoc.Options := XmlDoc.Options + [doNodeAutoIndent]; 
+        XmlDoc.LoadFromXml(Strings.Text);
+        if Encoding = '' then
+          Encoding := 'UTF-8';
+        XmlDoc.Encoding := Encoding;
+        XmlDoc.StandAlone := 'yes';
+        XmlDoc.SaveToFile(FTransFilename);
         Result := S_OK;
       end;
     finally
@@ -170,7 +174,6 @@ function TResXParser.ImportItems(const Items, Orphans:ITranslationItems):HRESULT
 var
   NodeList:IDOMNodeList;
   ParentNode, TargetNode, CommentNode:IDOMNode;
-  i,j:integer;
   TI:ITranslationItem;
   FXMLImport:IXMLDocument;
   Name:WideString;
@@ -203,6 +206,7 @@ var
       Dec(i);
     end;
   end;
+  
   function IsMatchingNode(ParentNode:IDOMNode; out ValueNode:IDOMNode; out CommentNode: IDOMNode; out Name:WideString):boolean;
   var
     NameNode:IDOMNode;
@@ -220,10 +224,17 @@ var
     else
       Exit;
 
-    NameNode := ParentNode.attributes.getNamedItem('type');
-    if NameNode <> nil then
-      Exit;
+    //NameNode := ParentNode.attributes.getNamedItem('type');
+    //if NameNode <> nil then
+    //  Exit;
 
+    NameNode := ParentNode.attributes.getNamedItem('mimetype');
+    if (NameNode <> nil) then
+    begin
+      // check if this is a mimetype the user wants to import
+      if (FMimeTypes = '') or (NameNode.nodeValue = '') or (WideTextPos(NameNode.nodeValue, FMimeTypes) < 1) then
+        Exit;
+    end;
 
     for i := 0 to ParentNode.childNodes.length-1 do
       if ParentNode.childNodes[i].nodeName = 'value' then
@@ -235,9 +246,87 @@ var
         CommentNode := ParentNode.childNodes[i];
   end;
 
+  procedure RemoveContent(ParentNode, TargetNode, CommentNode:IDOMNode; XMLDoc:IXMLDocument; Index:integer);
+  var j:integer;
+  begin
+    // preserve content of (meta)data node but remove any inner text nodes
+    // we use this template in the translation when exporting (see ExportItems)
+    if TargetNode <> nil then
+      ParentNode.removeChild(TargetNode);
+    if CommentNode <> nil then
+      ParentNode.removeChild(CommentNode);
+    // remove any redunant text nodes but leave any other nodes alone
+    for j := ParentNode.childNodes.length - 1 downto 0 do
+      if (ParentNode.childNodes[j].nodeType = TEXT_NODE) and (trim(ParentNode.childNodes[j].nodeValue) = '') then
+        ParentNode.removeChild(ParentNode.childNodes[j]);
+    TargetNode := XMLDoc.DOMDocument.createTextNode('');
+    TargetNode.nodeValue := WideFormat(cTranslationItem, [Index]);
+    ParentNode.appendChild(TargetNode);
+  end;
+  
+  procedure GetOriginalNodes(TagName:WideString);
+  var i:integer;
+  begin
+    NodeList := FXMLImport.DOMDocument.getElementsByTagName(TagName);
+    for i := 0 to NodeList.length-1 do
+    begin
+      ParentNode := NodeList[i];
+
+      if IsMatchingNode(ParentNode, TargetNode, CommentNode, Name) then
+      begin
+        TI := Items.Add;
+        TI.Section := cSection;
+        TI.Name := Name;
+        if CommentNode <> nil then
+          TI.OrigComments := StripTags((CommentNode as IDOMNodeEx).xml);
+        TI.Original := StripTags((TargetNode as IDOMNodeEx).xml);
+        RemoveContent(ParentNode, TargetNode, CommentNode, FXMLImport, TI.Index);
+        TI.PostData := (ParentNode as IDOMNodeEx).xml; // template for missing items
+      end;
+    end;
+  end;
+
+  procedure GetTranslationNodes(TagName:WideString);
+  var i,j:integer;
+  begin
+    NodeList := FXMLImport.DOMDocument.getElementsByTagName(TagName);
+    for i := 0 to NodeList.length-1 do
+    begin
+      ParentNode := NodeList[i];
+      if IsMatchingNode(ParentNode, TargetNode, CommentNode, Name) then
+      begin
+        j := Items.IndexOf(cSection,Name);
+        if j >= 0 then
+        begin
+          TI := Items[j];
+          if CommentNode <> nil then
+            TI.TransComments := StripTags((CommentNode as IDOMNodeEx).xml);
+          TI.Translation := StripTags((TargetNode as IDOMNodeEx).xml);
+          TI.Translated := TI.Translation <> '';
+          TI.PreData := '~'; // marker so we know that this was in the file from the beginning
+          RemoveContent(ParentNode, TargetNode, CommentNode, FXMLImport, TI.Index);
+        end
+        else // not found in original, add to orphans
+        begin
+          TI := Orphans.Add;
+          TI.Section := cSection;
+          TI.Name := Name;
+          if CommentNode <> nil then
+            TI.OrigComments := StripTags((CommentNode as IDOMNodeEx).xml);
+          TI.Original := StripTags((TargetNode as IDOMNodeEx).xml);
+          TI.Translation := TI.Original;
+          // remove this node altogether
+          TargetNode := ParentNode;
+          ParentNode := ParentNode.parentNode;
+          if (ParentNode <> nil) and (TargetNode <> nil) then
+            ParentNode.removeChild(TargetNode);
+          TargetNode := nil;
+        end;
+      end;
+    end;
+  end;
 begin
   Result := S_FALSE;
-  
   try
     Items.Clear;
     Orphans.Clear;
@@ -249,69 +338,20 @@ begin
       FXMLImport := LoadXMLDocument(FOrigFilename);
       if Assigned(FXMLImport) and Assigned(FXMLImport.DOMDocument) then
       begin
-        NodeList := FXMLImport.DOMDocument.getElementsByTagName('data');
-        for i := 0 to NodeList.length-1 do
-        begin
-          ParentNode := NodeList[i];
-
-          if IsMatchingNode(ParentNode, TargetNode, CommentNode, Name) then
-          begin
-            TI := Items.Add;
-            TI.Section := cSection;
-            TI.Name := Name;
-            if CommentNode <> nil then
-              TI.OrigComments := StripTags((CommentNode as IDOMNodeEx).xml);
-            TI.Original := StripTags((TargetNode as IDOMNodeEx).xml);
-            // preserve content of data node but remove any inner text nodes
-            // we use this template in the translation when exporting (see ExportItems)
-            if TargetNode <> nil then
-              ParentNode.removeChild(TargetNode);
-            if CommentNode <> nil then
-              ParentNode.removeChild(CommentNode);
-            // remove any redunant text nodes but leave any other nodes alone
-            for j := ParentNode.childNodes.length - 1 downto 0 do
-              if (ParentNode.childNodes[j].nodeType = TEXT_NODE) and (trim(ParentNode.childNodes[j].nodeValue) = '') then 
-                ParentNode.removeChild(ParentNode.childNodes[j]);
-            TargetNode := FXMLImport.DOMDocument.createTextNode('');
-            TargetNode.nodeValue := WideFormat(cTranslationItem, [TI.Index]);
-            ParentNode.appendChild(TargetNode);
-          end;
-        end;
-        FXMLImport.SaveToXML(XML); // save the original file in a WideString as our reference file
-
+        GetOriginalNodes('data');
+        if FMetaData then
+          GetOriginalNodes('metadata');
       end;
       // read translation file
       FXMLImport := LoadXMLDocument(FTransFilename);
       if Assigned(FXMLImport) and Assigned(FXMLImport.DOMDocument) then
       begin
-        NodeList := FXMLImport.DOMDocument.getElementsByTagName('data');
-        for i := 0 to NodeList.length-1 do
-        begin
-          ParentNode := NodeList[i];
-          if IsMatchingNode(ParentNode, TargetNode, CommentNode, Name) then
-          begin
-            j := Items.IndexOf(cSection,Name);
-            if j >= 0 then
-            begin
-              TI := Items[j];
-              if CommentNode <> nil then
-                TI.TransComments := StripTags((CommentNode as IDOMNodeEx).xml);
-              TI.Translation := StripTags((TargetNode as IDOMNodeEx).xml);
-              TI.Translated := TI.Translation <> '';
-            end
-            else // not found in original, add to orphans
-            begin
-              TI := Orphans.Add;
-              TI.Section := cSection;
-              TI.Name := Name;
-              if CommentNode <> nil then
-                TI.OrigComments := StripTags((CommentNode as IDOMNodeEx).xml);
-              TI.Original := StripTags((TargetNode as IDOMNodeEx).xml);
-              TI.Translation := TI.Original;
-            end;
-          end;
-        end;
+        GetTranslationNodes('data');
+        if FMetaData then
+          GetTranslationNodes('metadata');
       end;
+      Encoding := FXMLImport.Encoding;
+      FXMLImport.SaveToXML(XML); // save the translation in a string as our reference file
       SaveSettings;
       Items.Modified := false;
 
@@ -337,6 +377,8 @@ begin
   try
     FOrigFilename := ReadString('Settings', 'OriginalFilename', FOrigFilename);
     FTransFilename := ReadString('Settings', 'TranslationFilename', FTransFilename);
+    FMimeTypes := ReadString('Settings','MimeTypes', '');
+    FMetaData  := ReadBool('Settings','MetaData', false);
   finally
     Free;
   end;
@@ -348,6 +390,8 @@ begin
   try
     WriteString('Settings', 'OriginalFilename', FOrigFilename);
     WriteString('Settings', 'TranslationFilename', FTransFilename);
+    WriteString('Settings','MimeTypes', FMimeTypes);
+    WriteBool('Settings','MetaData', FMetaData);
   finally
     Free;
   end;

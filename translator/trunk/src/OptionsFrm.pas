@@ -212,6 +212,12 @@ begin
   pnlFontPreview.Font.Size := Options.FontSize;
   reHeader.Lines := Options.Header;
   reFooter.Lines := Options.Footer;
+
+{
+  edSeparatorChars.Text := Options.SeparatorChars;
+  edSectionStart.Text := Options.SectionStart;
+  edSectionEnd.Text := Options.SectionEnd;
+}
   UpdateFontList;
 end;
 
@@ -242,6 +248,12 @@ begin
 
   Options.Header := reHeader.Lines;
   Options.Footer := reFooter.Lines;
+
+{
+  Options.SeparatorChars := edSeparatorChars.Text;
+  Options.SectionStart := edSectionStart.Text;
+  Options.SectionEnd := edSectionEnd.Text;
+}  
 end;
 
 procedure TfrmOptions.GetFonts(Strings:TTntStrings);

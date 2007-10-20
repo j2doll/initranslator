@@ -1,7 +1,7 @@
 object frmOptions: TfrmOptions
   Left = 316
   Top = 175
-  ActiveControl = chkGlobalPath
+  ActiveControl = chkShowQuotes
   BorderStyle = bsDialog
   Caption = 'Preferences'
   ClientHeight = 449
@@ -65,7 +65,7 @@ object frmOptions: TfrmOptions
     Top = 2
     Width = 477
     Height = 387
-    ActivePage = tsAdvanced
+    ActivePage = tsGeneral
     Anchors = [akLeft, akTop, akRight, akBottom]
     TabOrder = 3
     object tsGeneral: TTntTabSheet

@@ -129,6 +129,7 @@ type
     property Items[Index: integer]: ITranslationItem read GetItem; default;
     property TranslatedCount: integer read GetTranslatedCount write SetTranslatedCount;
     property Modified: WordBool read GetModified write SetModified;
+
   end;
 
   TTranslateFiles = class
@@ -137,7 +138,7 @@ type
     FOrphans: ITranslationItems;
     FEndSection: WideChar;
     FStartSection: WideChar;
-    FSeparatorChar: WideChar;
+    FSeparatorChars: WideString;
     FHeader: WideString;
     FFooter: WideString;
     FCommentChars: TTntStrings;
@@ -158,7 +159,7 @@ type
     // various delimiters used to parse the file (should probably not be changed)
     property StartSection: WideChar read FStartSection write FStartSection default '[';
     property EndSection: WideChar read FEndSection write FEndSection default ']';
-    property SeparatorChar: WideChar read FSeparatorChar write FSeparatorChar default '=';
+    property SeparatorChars: WideString read FSeparatorChars write FSeparatorChars;
     property CommentChars: TTntStrings read FCommentChars;
   end;
 
@@ -505,7 +506,7 @@ begin
   FOrphans := TTranslationItems.Create;
   StartSection := '[';
   EndSection := ']';
-  SeparatorChar := '=';
+  SeparatorChars := '=';
   FCommentChars.Add(';');
   FCommentChars.Add('//');
   FCommentChars.Add('#');
@@ -531,6 +532,17 @@ begin
       Exit;
     end;
   Result := false;
+end;
+
+function WideTextContains(SubStr:WideString; Str:WideString):integer;
+var i:integer;
+begin
+  for i := 1 to Length(SubStr) do
+  begin
+    Result := WideTExtPos(SubStr[i], Str);
+    if Result > 0 then Exit;
+  end;
+  Result := 0;
 end;
 
 function TTranslateFiles.LoadOriginal(const Filename: WideString; Encoding: TEncoding): TEncoding;
@@ -575,9 +587,9 @@ begin
         FComments.Add(tmpString)
       else if WideStartsText(StartSection, tmpTrimString) and WideEndsText(EndSection, tmpTrimString) then
         ASection := Copy(tmpTrimString, 2, Length(tmpTrimString) - 2)
-      else if (WideTextPos(SeparatorChar, tmpString) > 1) then
+      else if WideTextContains(SeparatorChars, tmpString) > 1 then
       begin
-        j := WideTextPos(SeparatorChar, tmpString);
+        j := WideTextContains(SeparatorChars, tmpString);
         if j > 1 then
         begin
           with FItems.Add do
@@ -644,7 +656,7 @@ begin
         ASection := Copy(tmpTrimString, 2, Length(tmpTrimString) - 2)
       else
       begin
-        j := WideTextPos(SeparatorChar, tmpString);
+        j := WideTextContains(SeparatorChars, tmpString);
         if j > 1 then
         begin
           k := FItems.IndexOf(ASection, Copy(tmpString, 1, j - 1));
@@ -711,7 +723,8 @@ begin
       end;
       if not NewSection then
         FixAndAddComments(S, Items[i].OrigComments);
-      S.Add(Items[i].Name + SeparatorChar + Items[i].Original);
+
+      S.Add(Items[i].Name + Copy(SeparatorChars,1,1) + Items[i].Original);
     end;
     if Footer <> '' then
       S.Add(trim(Footer));
@@ -760,7 +773,7 @@ begin
       end;
       if not NewSection then
         FixAndAddComments(S, Items[i].TransComments);
-      S.Add(Items[i].Name + SeparatorChar + Items[i].Translation);
+      S.Add(Items[i].Name + TCommonUtils.StrDefault(Copy(SeparatorChars,1,1),'=') + Items[i].Translation);
     end;
     if Footer <> '' then
       S.Add(trim(Footer));

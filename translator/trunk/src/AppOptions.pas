@@ -135,6 +135,9 @@ type
     FHeader:TTntStrings;
     FFontSize:integer;
     FFontName:WideString;
+    FSectionEnd: WideString;
+    FSectionStart: WideString;
+    FSeparatorChars: WideString;
     procedure ReadWindowInfos(ini:TWideCustomIniFile);
     procedure WriteWindowInfos(ini:TWideCustomIniFile);
     function GetWindowInfo(AForm:TForm):TAppWindowInfo;
@@ -144,6 +147,9 @@ type
     procedure SetHeader(const Value:TTntStrings);
     function GetOption(const Section, Name:WideString):WideString;
     procedure SetOption(const Section, Name, Value:WideString);
+    procedure SetSectionEnd(const Value: WideString);
+    procedure SetSectionStart(const Value: WideString);
+    procedure SetSeparatorChars(const Value: WideString);
   public
     constructor Create(const AFilename:WideString);
     destructor Destroy; override;
@@ -219,6 +225,10 @@ type
     property ColorFontEvenRow:TColor read FColorFontEvenRow write FColorFontEvenRow;
     property ColorOddRow:TColor read FColorOddRow write FColorOddRow;
     property ColorFontOddRow:TColor read FColorFontOddRow write FColorFontOddRow;
+
+    property SeparatorChars:WideString read FSeparatorChars write SetSeparatorChars;
+    property SectionStart:WideString read FSectionStart write SetSectionStart;
+    property SectionEnd:WideString read FSectionEnd write SetSectionEnd;
   end;
 
 implementation
@@ -550,6 +560,11 @@ begin
     ColorOddRow := ini.ReadInteger('Colors', 'ColorOddRow', $FFFFFF);
     ColorFontOddRow := ini.ReadInteger('Colors', 'ColorFontOddRow', $000000);
 
+    SeparatorChars  := ini.ReadString('Parsing','SeparatorChars','=');
+    SectionStart  := ini.ReadString('Parsing','SectionStart','[');
+    SectionEnd  := ini.ReadString('Parsing','SectionEnd',']');
+
+
     ReadWindowInfos(ini);
     FTools.LoadFromIni(ini);
   finally
@@ -648,6 +663,11 @@ begin
     ini.WriteInteger('Colors', 'ColorFontEvenRow', ColorFontEvenRow);
     ini.WriteInteger('Colors', 'ColorOddRow', ColorOddRow);
     ini.WriteInteger('Colors', 'ColorFontOddRow', ColorFontOddRow);
+
+
+    ini.WriteString('Parsing','SeparatorChars',SeparatorChars);
+    ini.WriteString('Parsing','SectionStart',SectionStart);
+    ini.WriteString('Parsing','SectionEnd',SectionEnd);
 
     WriteWindowInfos(ini);
     FTools.SaveToIni(ini);
@@ -748,6 +768,27 @@ begin
   finally
     Free;
   end;
+end;
+
+procedure TAppOptions.SetSectionEnd(const Value: WideString);
+begin
+  FSectionEnd := Value;
+  if FSectionEnd = '' then
+    FSectionEnd := ']';
+end;
+
+procedure TAppOptions.SetSectionStart(const Value: WideString);
+begin
+  FSectionStart := Value;
+  if FSectionStart = '' then
+    FSectionStart := '[';
+end;
+
+procedure TAppOptions.SetSeparatorChars(const Value: WideString);
+begin
+  FSeparatorChars := Value;
+  if FSeparatorChars = '' then
+    FSeparatorChars := '=';
 end;
 
 end.

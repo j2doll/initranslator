@@ -1,11 +1,11 @@
 object frmMain: TfrmMain
   Left = 379
   Top = 181
+  Width = 573
+  Height = 453
   Action = acAbout
   ActiveControl = reTranslation
   Caption = 'Ini Translator'
-  ClientHeight = 421
-  ClientWidth = 565
   Color = clBtnFace
   Constraints.MinHeight = 375
   Constraints.MinWidth = 450
@@ -21,7 +21,7 @@ object frmMain: TfrmMain
   OnCreate = FormCreate
   PixelsPerInch = 96
   TextHeight = 13
-  object StatusBar1: TTBXStatusBar
+  object sbBottom: TTBXStatusBar
     Left = 0
     Top = 402
     Width = 565
@@ -889,7 +889,7 @@ object frmMain: TfrmMain
         ParentBackground = False
         ParentFont = False
         TabOrder = 0
-        object lblViewDetails: TLabel
+        object lblViewDetails: TTntLabel
           Left = 4
           Top = 4
           Width = 527

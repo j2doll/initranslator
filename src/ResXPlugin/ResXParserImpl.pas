@@ -23,9 +23,10 @@ uses
   SysUtils, TransIntf;
 
 type
-  TResXParser = class(TInterfacedObject, IInterface, IFileParser)
+  TResXParser = class(TInterfacedObject, IInterface, IFileParser, ILocalizable)
   private
     FOldAppHandle:Cardinal;
+    Findex:integer;
     FApplicationServices:IApplicationServices;
     FOrigFilename, FTransFilename, FMimeTypes:WideString;
     FMetaData:boolean;
@@ -41,6 +42,8 @@ type
     function ImportItems(const Items:ITranslationItems;
       const Orphans:ITranslationItems):HRESULT; safecall;
     procedure Init(const ApplicationServices:IApplicationServices); safecall;
+    function GetString(out Section: WideString; out Name: WideString;
+      out Value: WideString): WordBool; safecall;
   public
     constructor Create;
     destructor Destroy; override;
@@ -52,7 +55,7 @@ type
  * orphans in the translation are added to the orphans list but there is no way to add them back into
    the original or translation
 }
- 
+
 
 implementation
 uses
@@ -64,7 +67,7 @@ resourcestring
   cResXImportTitle = 'Import from ResX file';
   cResXExportTitle = 'Export to ResX file';
   cResXFilter = 'ResX files (*.resx)|*.resx|All files (*.*)|*.*';
-  cSection = 'ResX';
+  cSectionName = 'ResX';
 
 var
   XML:WideString = '';
@@ -157,7 +160,7 @@ begin
         if Encoding = '' then
           Encoding := 'UTF-8';
         XmlDoc.Encoding := Encoding;
-        XmlDoc.StandAlone := 'yes';
+        
         XmlDoc.SaveToFile(FTransFilename);
         Result := S_OK;
       end;
@@ -167,6 +170,27 @@ begin
   except
     Application.HandleException(Self);
   end;
+end;
+
+function TResXParser.GetString(out Section, Name,
+  Value: WideString): WordBool;
+begin
+  Result := true;
+  case FIndex of
+    0: Value := cResXFilter;
+    1: Value := cResXImportTitle;
+    2: Value := cResXExportTitle;
+  else
+    Result := false;
+  end;
+  if Result then
+  begin
+    Section := cSectionName;
+    Name := Value;
+    Inc(FIndex);
+  end
+  else
+    FIndex := 0;
 end;
 
 function TResXParser.ImportItems(const Items, Orphans:ITranslationItems):HRESULT;
@@ -275,7 +299,7 @@ var
       if IsMatchingNode(ParentNode, TargetNode, CommentNode, Name) then
       begin
         TI := Items.Add;
-        TI.Section := cSection;
+        TI.Section := cSectionName;
         TI.Name := Name;
         if CommentNode <> nil then
           TI.OrigComments := StripTags((CommentNode as IDOMNodeEx).xml);
@@ -295,7 +319,7 @@ var
       ParentNode := NodeList[i];
       if IsMatchingNode(ParentNode, TargetNode, CommentNode, Name) then
       begin
-        j := Items.IndexOf(cSection,Name);
+        j := Items.IndexOf(cSectionName,Name);
         if j >= 0 then
         begin
           TI := Items[j];
@@ -309,7 +333,7 @@ var
         else // not found in original, add to orphans
         begin
           TI := Orphans.Add;
-          TI.Section := cSection;
+          TI.Section := cSectionName;
           TI.Name := Name;
           if CommentNode <> nil then
             TI.OrigComments := StripTags((CommentNode as IDOMNodeEx).xml);
@@ -400,7 +424,7 @@ end;
 function TResXParser.Translate(const Value:WideString):WideString;
 begin
   if FApplicationServices <> nil then
-    Result := FApplicationServices.Translate(ClassName, Value, Value)
+    Result := FApplicationServices.Translate(cSectionName, Value, Value)
   else
     Result := Value;
 end;

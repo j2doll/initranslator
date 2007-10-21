@@ -23,15 +23,17 @@ uses
   SysUtils, TransIntf;
 
 type
-  TXLIFFParser = class(TInterfacedObject, IInterface, IFileParser)
+  TXLIFFParser = class(TInterfacedObject, IInterface, IFileParser, ILocalizable)
   private
     FOldAppHandle:Cardinal;
+    FIndex:integer;
     FApplicationServices:IApplicationServices;
     FFilename:WideString;
     procedure LoadSettings;
     procedure SaveSettings;
     function Translate(const Value:WideString):WideString;
-
+    function GetString(out Section: WideString; out Name: WideString;
+      out Value: WideString): WordBool; safecall;
   protected
     function Capabilities:Integer; safecall;
     function Configure(Capability:Integer):HRESULT; safecall;
@@ -41,6 +43,7 @@ type
     function ImportItems(const Items:ITranslationItems;
       const Orphans:ITranslationItems):HRESULT; safecall;
     procedure Init(const ApplicationServices:IApplicationServices); safecall;
+
   public
     constructor Create;
     destructor Destroy; override;
@@ -62,6 +65,7 @@ resourcestring
   cXLIFFImportTitle = 'Import from XLIFF file';
   cXLIFFExportTitle = 'Export to XLIFF file';
   cXLIFFFilter = 'XLIFF files (*.xlf)|*.xlf|All files (*.*)|*.*';
+  cSectionName = 'XLIFF';
 
 var
   XML:WideString = '';
@@ -150,6 +154,27 @@ begin
   except
     Application.HandleException(Self);
   end;
+end;
+
+function TXLIFFParser.GetString(out Section, Name,
+  Value: WideString): WordBool;
+begin
+  Result := true;
+  case FIndex of
+    0:Value := cXLIFFFilter;
+    1:Value := cXLIFFImportTitle;
+    2:Value := cXLIFFExportTitle;
+  else
+    Result := false;
+  end;
+  if Result then
+  begin
+    Section := cSectionName;
+    Name := Value;
+    Inc(FIndex);
+  end
+  else
+    FIndex := 0;
 end;
 
 function TXLIFFParser.ImportItems(const Items, Orphans:ITranslationItems):HRESULT;
@@ -241,7 +266,7 @@ begin
               TargetNode := nil;
 
             TI := Items.Add;
-            TI.Section := 'XLIFF';
+            TI.Section := cSectionName;
 
             if Assigned(SourceNode) then
             begin
@@ -314,7 +339,7 @@ end;
 function TXLIFFParser.Translate(const Value:WideString):WideString;
 begin
   if FApplicationServices <> nil then
-    Result := FApplicationServices.Translate(ClassName, Value, Value)
+    Result := FApplicationServices.Translate(cSectionName, Value, Value)
   else
     Result := Value;
 end;

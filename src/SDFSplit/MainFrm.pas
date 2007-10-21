@@ -102,6 +102,7 @@ begin
     S := 'File does not exist';
     edSDFFile.SetFocus;
   end;
+  ForceDirectories(edSaveFolder.Text);
   if not DirectoryExists(edSaveFolder.Text) then
   begin
     S := 'Output folder does not exist';
@@ -172,6 +173,7 @@ var
   end;
 begin
   aBaseFolder := IncludeTrailingPathDelimiter(OutputFolder);
+  ForceDirectories(aBaseFolder);
   aFileNameTemplate := ExtractFileName(Filename);
   S := TStringlist.Create;
   FLanguages := TStringlist.Create;

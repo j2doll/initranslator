@@ -77,6 +77,7 @@ type
     TntLabel5:TTntLabel;
     cbFontSizes:TTntComboBox;
     TntLabel6:TTntLabel;
+    edPreview: TTntEdit;
     procedure chkShowToolTipsClick(Sender:TObject);
     procedure chkReturnToSaveClick(Sender:TObject);
     procedure btnLanguageClick(Sender:TObject);
@@ -85,6 +86,9 @@ type
     procedure btnColorsClick(Sender:TObject);
     procedure cbFontsChange(Sender:TObject);
     procedure cbFontSizesChange(Sender:TObject);
+    procedure pnlFontPreviewClick(Sender: TObject);
+    procedure edPreviewClick(Sender: TObject);
+    procedure edPreviewExit(Sender: TObject);
   private
     { Private declarations }
 
@@ -175,10 +179,14 @@ end;
 
 procedure TfrmOptions.UpdatePreview;
 begin
+  edPreview.Visible := false;
   pnlFontPreview.Font.Name := cbFonts.Text;
   pnlFontPreview.Font.Size := StrToIntDef(cbFontSizes.Text, pnlFontPreview.Font.Size);
   with pnlFontPreview do
-    Caption := WideFormat('%s, %dpt', [Font.Name, Font.Size]);
+    if edPreview.Text <> '' then
+      Caption := edPreview.Text
+    else
+      Caption := WideFormat('%s, %dpt', [Font.Name, Font.Size]);
 end;
 
 procedure TfrmOptions.btnColorsClick(Sender:TObject);
@@ -210,6 +218,7 @@ begin
   edHelp.Text := Options.HelpFile;
   pnlFontPreview.Font.Name := Options.FontName;
   pnlFontPreview.Font.Size := Options.FontSize;
+  edPreview.Text           := Options.PreviewText;
   reHeader.Lines := Options.Header;
   reFooter.Lines := Options.Footer;
 
@@ -245,6 +254,8 @@ begin
   Options.HelpFile := edHelp.Text;
   Options.FontName := pnlFontPreview.Font.Name;
   Options.FontSize := pnlFontPreview.Font.Size;
+  Options.PreviewText := edPreview.Text;
+
 
   Options.Header := reHeader.Lines;
   Options.Footer := reFooter.Lines;
@@ -364,6 +375,23 @@ begin
   finally
     L.Free;
   end;
+  UpdatePreview;
+end;
+
+procedure TfrmOptions.pnlFontPreviewClick(Sender: TObject);
+begin
+  edPreview.Text := pnlFontPreview.Caption;
+  edPreview.Visible := true;
+  Windows.SetFocus(edPreview.Handle);
+end;
+
+procedure TfrmOptions.edPreviewClick(Sender: TObject);
+begin
+  UpdatePreview;
+end;
+
+procedure TfrmOptions.edPreviewExit(Sender: TObject);
+begin
   UpdatePreview;
 end;
 

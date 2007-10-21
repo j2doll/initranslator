@@ -109,9 +109,9 @@ function TDCPPParser.DisplayName(Capability:Integer):WideString;
 begin
   case Capability of
     CAP_IMPORT:
-      Result := cImportTitle;
+      Result := Translate(cImportTitle);
     CAP_EXPORT:
-      Result := cExportTitle;
+      Result := Translate(cExportTitle);
   else
     Result := '';
   end;
@@ -167,9 +167,9 @@ function TDCPPParser.GetString(out Section, Name,
 begin
   Result := true;
   case FIndex of
-    0:Value := cImportTitle;
-    1:Value := cExportTitle;
-    3:Value := cDCPPFilter;
+    0: Value := cImportTitle;
+    1: Value := cExportTitle;
+    2: Value := cDCPPFilter;
   else
     Result := false;
   end;

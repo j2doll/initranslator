@@ -138,6 +138,8 @@ type
     FSectionEnd: WideString;
     FSectionStart: WideString;
     FSeparatorChars: WideString;
+    
+    FPreviewText: WideString;
     procedure ReadWindowInfos(ini:TWideCustomIniFile);
     procedure WriteWindowInfos(ini:TWideCustomIniFile);
     function GetWindowInfo(AForm:TForm):TAppWindowInfo;
@@ -188,6 +190,7 @@ type
     property AppTitle:WideString read FAppTitle write FAppTitle;
     property FontName:WideString read FFontName write FFontName;
     property FontSize:integer read FFontSize write FFontSize;
+    property PreviewText:WideString read FPreviewText write FPreviewText; 
     property MonitorFiles:boolean read FMonitorFiles write FMonitorFiles default true;
     property Theme:WideString read FTheme write FTheme;
     property Header:TTntStrings read FHeader write SetHeader;
@@ -495,6 +498,7 @@ begin
     FFilename := AFilename;
     FontName := ini.ReadString('Font', 'FontName', FontName);
     FontSize := ini.ReadInteger('Font', 'FontSize', FontSize);
+    PreviewText := ini.ReadString('Font', 'PreviewText', PreviewText);
 
     ShowQuotes := ini.ReadBool('General', 'ShowQuotes', ShowQuotes);
     InvertDictionary := ini.ReadBool('General', 'InvertDictionary', InvertDictionary);
@@ -601,6 +605,7 @@ begin
     FFilename := AFilename;
     ini.WriteString('Font', 'FontName', FontName);
     ini.WriteInteger('Font', 'FontSize', FontSize);
+    ini.WriteString('Font', 'PreviewText', PreviewText);
 
     ini.WriteBool('General', 'ShowQuotes', ShowQuotes);
     ini.WriteBool('General', 'InvertDictionary', InvertDictionary);

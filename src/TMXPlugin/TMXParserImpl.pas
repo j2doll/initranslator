@@ -23,13 +23,18 @@ uses
   Classes, Types, TntClasses, TntSysUtils, TransIntf;
 
 type
-  TTMXParser = class(TInterfacedObject, IUnknown, IFileParser)
+  TTMXParser = class(TInterfacedObject, IUnknown, IFileParser, ILocalizable)
   private
     FOldAppHandle:Cardinal;
+    FIndex:integer;
+    FApplicationServices:IApplicationServices;
     FOrigFile, FOrigLang, FTransLang:WideString;
     procedure LoadSettings;
     procedure SaveSettings;
     procedure BuildPreview(Items:ITranslationItems; Strings:TTntStrings);
+    function GetString(out Section: WideString; out Name: WideString;
+      out Value: WideString): WordBool; safecall;
+    function Translate(const Value: WideString): WideString;
   public
     constructor Create;
     destructor Destroy; override;
@@ -53,6 +58,7 @@ const
   cTMXFilter = 'TMX Files (*.tmx)|*.tmx|All files (*.*)|*.*';
   cTMXImportTitle = 'Import from TMX file';
   cTMXExportTitle = 'Export to TMX file';
+  cSectionName = 'TMX';
   cOriginalItem:WideString = '!!!!Original%d!!!!';
   cTranslationItem:WideString = '!!!!Translation%d!!!!';
 
@@ -60,6 +66,14 @@ var
   XML:WideString = '';
 
 { TTMXParser }
+
+function TTMXParser.Translate(const Value:WideString):WideString;
+begin
+  if FApplicationServices <> nil then
+    Result := FApplicationServices.Translate(cSectionName, Value, Value)
+  else
+    Result := Value;
+end;
 
 procedure TTMXParser.BuildPreview(Items:ITranslationItems; Strings:TTntStrings);
 var
@@ -105,9 +119,9 @@ function TTMXParser.DisplayName(Capability:Integer):WideString;
 begin
   case Capability of
     CAP_IMPORT:
-      Result := cTMXImportTitle;
+      Result := Translate(cTMXImportTitle);
     CAP_EXPORT:
-      Result := cTMXExportTitle;
+      Result := Translate(cTMXExportTitle);
   else
     Result := '';
   end;
@@ -126,7 +140,7 @@ begin
     S := TTntStringlist.Create;
     try
       BuildPreview(Items, S);
-      if TfrmExport.Execute(FOrigFile, cTMXExportTitle, cTMXFilter, '.', 'tmx', S) then
+      if TfrmExport.Execute(FOrigFile, Translate(cTMXExportTitle), Translate(cTMXFilter), '.', 'tmx', S) then
       begin
         S.SaveToFile(FOrigFile);
         Result := S_OK;
@@ -139,6 +153,27 @@ begin
   except
     Application.HandleException(self);
   end;
+end;
+
+function TTMXParser.GetString(out Section, Name,
+  Value: WideString): WordBool;
+begin
+  Result := true;
+  case FIndex of
+    0: Value := cTMXFilter;
+    1: Value := cTMXImportTitle;
+    2: Value := cTMXExportTitle;
+  else
+    Result := false;
+  end;
+  if Result then
+  begin
+    Section := cSectionName;
+    Name := Value;
+    Inc(FIndex);
+  end
+  else
+    FIndex := 0;
 end;
 
 function TTMXParser.ImportItems(const Items, Orphans:ITranslationItems):HRESULT;
@@ -178,7 +213,7 @@ begin
     Items.Clear;
     Orphans.Clear;
     LoadSettings;
-    if TfrmTMXImport.Execute(FOrigFile, FOrigLang, FTransLang, cTMXImportTitle, cTMXFilter, '.', 'tmx') then
+    if TfrmTMXImport.Execute(FOrigFile, FOrigLang, FTransLang, Translate(cTMXImportTitle), Translate(cTMXFilter), '.', 'tmx') then
     begin
       FXMLImport := TXMLDocument.Create(nil);
       try
@@ -247,6 +282,7 @@ end;
 procedure TTMXParser.Init(const ApplicationServices:IApplicationServices);
 begin
   Application.Handle := ApplicationServices.AppHandle;
+  FApplicationServices := ApplicationServices;
 end;
 
 procedure TTMXParser.LoadSettings;

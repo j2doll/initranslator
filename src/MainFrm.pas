@@ -67,7 +67,7 @@ const
 
 type
   TfrmMain = class(TfrmBase)
-    StatusBar1:TTBXStatusBar;
+    sbBottom: TTBXStatusBar;
     alMain:TTntActionList;
     acOpenOrig:TTntAction;
     acOpenTrans:TTntAction;
@@ -302,7 +302,7 @@ type
     lvTranslateStrings:TTntListView;
     pnlKeyBack:TTntPanel;
     pnlKeyDetails:TTntPanel;
-    lblViewDetails:TLabel;
+    lblViewDetails: TTntLabel;
     acTestExceptionHandler:TTntAction;
     acDictAdd:TTntAction;
     TBXItem6:TSpTBXItem;
@@ -728,6 +728,8 @@ begin
   finally
     reTranslation.Modified := m;
   end;
+  lblViewDetails.Font.Name := GlobalAppOptions.FontName;
+  
   Application.ShowHint := GlobalAppOptions.ShowToolTips;
   Application.HintShortCuts := GlobalAppOptions.ShowToolTipShortCuts;
   ShowHint := Application.ShowHint;
@@ -1489,44 +1491,44 @@ var
   end;
 begin
   if Modified then
-    StatusBar1.Panels[0].Caption := '  ' + _(ClassName, SModified)
+    sbBottom.Panels[0].Caption := '  ' + _(ClassName, SModified)
   else
-    StatusBar1.Panels[0].Caption := '  ' + _(ClassName, SReady);
+    sbBottom.Panels[0].Caption := '  ' + _(ClassName, SReady);
 
   if SelectedItem <> nil then
   begin
-    StatusBar1.Panels[1].Caption := '  ' + SelectedItem.Section;
-    StatusBar1.Panels[2].Caption := '  ' + SelectedItem.Name;
+    sbBottom.Panels[1].Caption := '  ' + SelectedItem.Section;
+    sbBottom.Panels[2].Caption := '  ' + SelectedItem.Name;
     with SelectedItem do
       lblViewDetails.Caption := WideFormat(_(ClassName, SFmtKeyDetails), [Section, Name]);
   end
   else
   begin
-    StatusBar1.Panels[1].Caption := '';
-    StatusBar1.Panels[2].Caption := '';
+    sbBottom.Panels[1].Caption := '';
+    sbBottom.Panels[2].Caption := '';
     lblViewDetails.Caption := Application.Title;
   end;
   // very simple, but should work *most* of the time...
   lblViewDetails.Font.Height := -CalcMaxFontSize(lblViewDetails.Canvas, lblViewDetails.Caption, lblViewDetails.Width,
     14, 7);
-  StatusBar1.Panels[3].Caption := '  ' + WideFormat(_(ClassName, SFmtItemsCount), [FTranslateFile.Items.Count]);
+  sbBottom.Panels[3].Caption := '  ' + WideFormat(_(ClassName, SFmtItemsCount), [FTranslateFile.Items.Count]);
   if SaveDictDlg.FileName <> '' then
-    StatusBar1.Panels[4].Caption := '  ' + ExtractFileName(SaveDictDlg.FileName)
+    sbBottom.Panels[4].Caption := '  ' + ExtractFileName(SaveDictDlg.FileName)
   else
-    StatusBar1.Panels[4].Caption := '  ' + _(ClassName, SNoDictionary);
+    sbBottom.Panels[4].Caption := '  ' + _(ClassName, SNoDictionary);
   if acDictInvert.Checked then
-    StatusBar1.Panels[4].Caption := StatusBar1.Panels[4].Caption + WideFormat(' (%s)', [_(ClassName,
+    sbBottom.Panels[4].Caption := sbBottom.Panels[4].Caption + WideFormat(' (%s)', [_(ClassName,
         SDictInverted)]);
-  StatusBar1.Panels[5].Caption := WideFormat(_(ClassName, '  %d | %d | %d | %f%%'),
+  sbBottom.Panels[5].Caption := WideFormat(_(ClassName, '  %d | %d | %d | %f%%'),
     [FTranslateFile.Items.Count, FTranslateFile.Items.TranslatedCount, FTranslateFile.Items.Count - FTranslateFile.Items.TranslatedCount, SafeDiv(FTranslateFile.Items.TranslatedCount, FTranslateFile.Items.Count) * 100]);
   pbTranslated.Max := FTranslateFile.Items.Count;
   pbTranslated.Position := FTranslateFile.Items.TranslatedCount;
   pbTranslated.Hint := '  ' + WideFormat(_(ClassName, SFmtCountOfCountTranslated), [FTranslateFile.Items.TranslatedCount,
     FTranslateFile.Items.Count]);
-  // StatusBar1.Panels[6].Caption := ''; this is the progress bar
-  StatusBar1.Panels[7].Caption := WideFormat(_(ClassName, SFmtOrphansCount), [FTranslateFile.Orphans.Count]);
-  for i := 0 to StatusBar1.Panels.Count - 1 do
-    StatusBar1.Panels[i].Hint := StatusBar1.Panels[i].Caption;
+  // sbBottom.Panels[6].Caption := ''; this is the progress bar
+  sbBottom.Panels[7].Caption := WideFormat(_(ClassName, SFmtOrphansCount), [FTranslateFile.Orphans.Count]);
+  for i := 0 to sbBottom.Panels.Count - 1 do
+    sbBottom.Panels[i].Hint := sbBottom.Panels[i].Caption;
 
   UpdateColumn(0, GlobalAppOptions.OriginalFile);
   UpdateColumn(1, GlobalAppOptions.TranslationFile);
@@ -3684,7 +3686,7 @@ begin
   // adjust UI
   if acFullScreen.Checked then
   begin
-    StatusBar1.Visible := false;
+    sbBottom.Visible := false;
     tbTools.Tag := Ord(tbTools.Visible);
     tbTools.Visible := false;
     BorderStyle := bsNone;
@@ -3692,7 +3694,7 @@ begin
   end
   else
   begin
-    StatusBar1.Visible := true;
+    sbBottom.Visible := true;
     tbTools.Visible := tbTools.Visible or (tbTools.Tag = 1);
     BorderStyle := bsSizeable;
     P.showCmd := SW_RESTORE;

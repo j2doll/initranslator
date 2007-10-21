@@ -32,14 +32,19 @@ uses
   Classes, Types, TntClasses, TransIntf;
 
 type
-  TPolyGlotParser = class(TInterfacedObject, IUnknown, IFileParser)
+  TPolyGlotParser = class(TInterfacedObject, IUnknown, IFileParser, ILocalizable)
   private
     FOldAppHandle:Cardinal;
+    FIndex:integer;
+    FApplicationServices:IApplicationServices;
     FTransFile, FOrigFile:WideString;
     FSection:WideString;
     procedure LoadSettings;
     procedure SaveSettings;
     procedure BuildPreview(Items:ITranslationItems; Strings:TTntStrings);
+    function GetString(out Section: WideString; out Name: WideString;
+      out Value: WideString): WordBool; safecall;
+    function Translate(const Value: WideString): WideString;
   public
     constructor Create;
     destructor Destroy; override;
@@ -52,6 +57,7 @@ type
     function ImportItems(const Items:ITranslationItems;
       const Orphans:ITranslationItems):HRESULT; safecall;
     procedure Init(const ApplicationServices:IApplicationServices); safecall;
+
   end;
 
 implementation
@@ -62,9 +68,17 @@ const
   cPolyGlotFilter = 'PolyGlot Translator  Files (*.lng)|*.lng|All files (*.*)|*.*';
   cPolyGlotImportTitle = 'Import from PolyGlot Translator file';
   cPolyGlotExportTitle = 'Export to PolyGlot Translator file';
-  //cSectionName = 'PolyGlot Translator';
+  cSectionName = 'PolyGlot';
 
 { TPolyGlotParser }
+
+function TPolyGlotParser.Translate(const Value:WideString):WideString;
+begin
+  if FApplicationServices <> nil then
+    Result := FApplicationServices.Translate(cSectionName, Value, Value)
+  else
+    Result := Value;
+end;
 
 procedure TPolyGlotParser.BuildPreview(Items:ITranslationItems; Strings:TTntStrings);
 var
@@ -114,9 +128,9 @@ function TPolyGlotParser.DisplayName(Capability:Integer):WideString;
 begin
   case Capability of
     CAP_IMPORT:
-      Result := cPolyGlotImportTitle;
+      Result := Translate(cPolyGlotImportTitle);
     CAP_EXPORT:
-      Result := cPolyGlotExportTitle;
+      Result := Translate(cPolyGlotExportTitle);
   else
     Result := '';
   end;
@@ -137,7 +151,7 @@ begin
     S := TTntStringlist.Create;
     try
       BuildPreview(Items, S);
-      if TfrmExport.Execute(FTransFile, cPolyGlotExportTitle, cPolyGlotFilter, '.', 'lng', S) then
+      if TfrmExport.Execute(FTransFile, Translate(cPolyGlotExportTitle), Translate(cPolyGlotFilter), '.', 'lng', S) then
       begin
         S.AnsiStrings.SaveToFile(FTransFile);
         Result := S_OK;
@@ -152,6 +166,27 @@ begin
   end;
 end;
 
+function TPolyGlotParser.GetString(out Section, Name,
+  Value: WideString): WordBool;
+begin
+  Result := true;
+  case FIndex of
+    0: Value := cPolyGlotFilter;
+    1: Value := cPolyGlotImportTitle;
+    2: Value := cPolyGlotExportTitle;
+  else
+    Result := false;
+  end;
+  if Result then
+  begin
+    Section := cSectionName;
+    Name := Value;
+    Inc(FIndex);
+  end
+  else
+    FIndex := 0;
+end;
+
 function TPolyGlotParser.ImportItems(const Items, Orphans:ITranslationItems):HRESULT;
 var
   S:TTntStringlist;
@@ -164,7 +199,7 @@ begin
     Orphans.Clear;
     TI := nil;
     LoadSettings;
-    if TfrmDualImport.Execute(FOrigFile, FTransFile, cPolyGlotImportTitle, cPolyGlotFilter, '.', 'lng', True) then
+    if TfrmDualImport.Execute(FOrigFile, FTransFile, Translate(cPolyGlotImportTitle), Translate(cPolyGlotFilter), '.', 'lng', True) then
     begin
       Items.Sort := stNone;
       S := TTntStringlist.Create;
@@ -233,6 +268,7 @@ end;
 procedure TPolyGlotParser.Init(const ApplicationServices:IApplicationServices);
 begin
   Application.Handle := ApplicationServices.AppHandle;
+  FApplicationServices := ApplicationServices;
 end;
 
 procedure TPolyGlotParser.LoadSettings;

@@ -237,14 +237,30 @@ object frmOptions: TfrmOptions
         OnClick = btnHelpClick
       end
       object pnlFontPreview: TTntPanel
-        Left = 245
-        Top = 179
+        Left = 243
+        Top = 178
         Width = 202
         Height = 21
+        Hint = 
+          'Click to edit, click again to save.  To restore default preview,' +
+          ' clear the text.'
         Anchors = [akLeft, akRight, akBottom]
         BevelKind = bkFlat
         BevelOuter = bvNone
         TabOrder = 12
+        OnClick = pnlFontPreviewClick
+        object edPreview: TTntEdit
+          Left = 0
+          Top = 0
+          Width = 198
+          Height = 17
+          Align = alClient
+          BorderStyle = bsNone
+          TabOrder = 0
+          Visible = False
+          OnClick = edPreviewClick
+          OnExit = edPreviewExit
+        end
       end
       object chkUseTranslationEverywhere: TTntCheckBox
         Left = 214

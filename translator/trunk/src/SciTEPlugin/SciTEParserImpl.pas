@@ -29,15 +29,20 @@ RESTRICTIONS:
 
 
 type
-  TSciTEParser = class(TInterfacedObject, IUnknown, IFileParser)
+  TSciTEParser = class(TInterfacedObject, IUnknown, IFileParser, ILocalizable)
   private
     FOldHandle:LongWord;
     FTransFile:WideString;
     FExportRect:TRect;
+    FIndex:integer;
+    FApplicationServices:IApplicationServices;
     procedure BuildPreview(const Items:ITranslationItems; Strings:TTntStrings);
     function DoSciTEImport(const Items, Orphans:ITranslationItems; const TransFile:WideString):boolean;
     procedure LoadSettings;
     procedure SaveSettings;
+    function GetString(out Section: WideString; out Name: WideString;
+      out Value: WideString): WordBool; safecall;
+    function Translate(const Value: WideString): WideString;
   public
     constructor Create;
     destructor Destroy; override;
@@ -51,7 +56,8 @@ type
 
 implementation
 uses
-  Windows, Forms, IniFiles, CommonUtils, PreviewExportFrm, SingleImportFrm;
+  Windows, Forms, IniFiles,
+  CommonUtils, PreviewExportFrm, SingleImportFrm;
 
 const
   cSciTEFilter = 'SciTE files (locale.properties)|*.properties|All files (*.*)|*.*';
@@ -72,6 +78,14 @@ begin
 end;
 
 { TSciTEParser }
+
+function TSciTEParser.Translate(const Value:WideString):WideString;
+begin
+  if FApplicationServices <> nil then
+    Result := FApplicationServices.Translate(cSectionName, Value, Value)
+  else
+    Result := Value;
+end;
 
 function TSciTEParser.Capabilities:Integer;
 begin
@@ -122,8 +136,8 @@ end;
 function TSciTEParser.DisplayName(Capability:Integer):WideString;
 begin
   case Capability of
-    CAP_IMPORT:Result := cSciTEImportTitle;
-    CAP_EXPORT:Result := cSciTEExportTitle;
+    CAP_IMPORT:Result := Translate(cSciTEImportTitle);
+    CAP_EXPORT:Result := Translate(cSciTEExportTitle);
 //    CAP_CONFIGURE : Result := 'Configure';
   else
     Result := '';
@@ -214,7 +228,7 @@ begin
     S := TTntStringlist.Create;
     try
       BuildPreview(Items, S);
-      if TfrmExport.Execute(FTransFile, cSciTEExportTitle, cSciTEFilter, '.', 'properties', S) then
+      if TfrmExport.Execute(FTransFile, Translate(cSciTEExportTitle), Translate(cSciTEFilter), '.', 'properties', S) then
       begin
         S.AnsiStrings.SaveToFile(FTransFile);
         SaveSettings;
@@ -233,7 +247,7 @@ begin
   try
     Result := S_FALSE;
     LoadSettings;
-    if TfrmSingleImport.Execute(FTransFile, cSciTEImportTitle, cSciTEFilter, '.', 'properties') then
+    if TfrmSingleImport.Execute(FTransFile, Translate(cSciTEImportTitle), Translate(cSciTEFilter), '.', 'properties') then
     begin
       if DoSciTEImport(Items, Orphans, FTransFile) then
       begin
@@ -243,7 +257,7 @@ begin
         Result := S_OK;
       end
       else
-        Application.MessageBox(PChar(SImportError), PChar(SError), MB_OK or MB_ICONERROR);
+        WideMessageBox(GetActiveWindow, PWideChar(Translate(SImportError)), PWideChar(Translate(SError)), MB_OK or MB_ICONERROR);
     end;
   except
     Application.HandleException(Self);
@@ -253,6 +267,7 @@ end;
 procedure TSciTEParser.Init(const ApplicationServices:IApplicationServices);
 begin
   Application.Handle := ApplicationServices.AppHandle;
+  FApplicationServices := ApplicationServices;
 end;
 
 procedure TSciTEParser.LoadSettings;
@@ -305,5 +320,28 @@ begin
   end;
 end;
 
+
+function TSciTEParser.GetString(out Section, Name,
+  Value: WideString): WordBool;
+begin
+  Result := true;
+  case FIndex of
+    0: Value := cSciTEFilter;
+    1: Value := cSciTEImportTitle;
+    2: Value := cSciTEExportTitle;
+    3: Value := SImportError;
+    4: Value := SError;
+  else
+    Result := false;
+  end;
+  if Result then
+  begin
+    Section := cSectionName;
+    Name := Value;
+    Inc(FIndex);
+  end
+  else
+    FIndex := 0;
+end;
 
 end.

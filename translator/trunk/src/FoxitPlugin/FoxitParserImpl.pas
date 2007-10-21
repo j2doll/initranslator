@@ -23,13 +23,18 @@ uses
   Classes, Types, TntClasses, TntSysUtils, TransIntf;
 
 type
-  TFoxitParser = class(TInterfacedObject, IUnknown, IFileParser)
+  TFoxitParser = class(TInterfacedObject, IUnknown, IFileParser, ILocalizable)
   private
     FOldAppHandle:Cardinal;
+    FIndex:integer;
+    FApplicationServices:IApplicationServices;
     FOrigFile, FTransFile:WideString;
     procedure LoadSettings;
     procedure SaveSettings;
     procedure BuildPreview(Items:ITranslationItems; Strings:TTntStrings);
+    function Translate(Value: WideString): WideString;
+    function GetString(out Section: WideString; out Name: WideString;
+      out Value: WideString): WordBool; safecall;
   public
     constructor Create;
     destructor Destroy; override;
@@ -53,6 +58,7 @@ const
   cFoxitFilter = 'Foxit Files (*.xml)|*.xml|All files (*.*)|*.*';
   cFoxitImportTitle = 'Import from Foxit file';
   cFoxitExportTitle = 'Export to Foxit file';
+  cSectionName  = 'Foxit';
   cDialogItem = 'dlgitem';
   cPopupItem = 'popup';
   cMenuItem = 'menuitem';
@@ -72,6 +78,14 @@ begin
   Result := Tnt_WideStringReplace(Result, '''', '&apos;', [rfReplaceAll]);
   Result := Tnt_WideStringReplace(Result, '<', '&lt;', [rfReplaceAll]);
   Result := Tnt_WideStringReplace(Result, '>', '&gt;', [rfReplaceAll]);
+end;
+
+function TFoxitParser.Translate(Value:WideString):WideString;
+begin
+  if FApplicationServices <> nil then
+    Result := FApplicationServices.Translate(cSectionName, Value, Value)
+  else
+    Result := Value;
 end;
 
 procedure TFoxitParser.BuildPreview(Items:ITranslationItems; Strings:TTntStrings);
@@ -118,9 +132,9 @@ function TFoxitParser.DisplayName(Capability:Integer):WideString;
 begin
   case Capability of
     CAP_IMPORT:
-      Result := cFoxitImportTitle;
+      Result := Translate(cFoxitImportTitle);
     CAP_EXPORT:
-      Result := cFoxitExportTitle;
+      Result := Translate(cFoxitExportTitle);
   else
     Result := '';
   end;
@@ -139,7 +153,7 @@ begin
     S := TTntStringlist.Create;
     try
       BuildPreview(Items, S);
-      if TfrmExport.Execute(FTransFile, cFoxitExportTitle, cFoxitFilter, '.', 'xml', S) then
+      if TfrmExport.Execute(FTransFile, Translate(cFoxitExportTitle), Translate(cFoxitFilter), '.', 'xml', S) then
       begin
         S.Text := WideStringToUTF8(S.Text);
         S.AnsiStrings.SaveToFile(FTransFile);
@@ -153,6 +167,27 @@ begin
   except
     Application.HandleException(self);
   end;
+end;
+
+function TFoxitParser.GetString(out Section, Name,
+  Value: WideString): WordBool;
+begin
+  Result := true;
+  case FIndex of
+    0:Value := cFoxitFilter;
+    1:Value := cFoxitImportTitle;
+    2:Value := cFoxitExportTitle;
+  else
+    Result := false;
+  end;
+  if Result then
+  begin
+    Section := cSectionName;
+    Name := Value;
+    Inc(FIndex);
+  end
+  else
+    FIndex := 0;
 end;
 
 function TFoxitParser.ImportItems(const Items, Orphans:ITranslationItems):HRESULT;
@@ -248,7 +283,7 @@ begin
     Items.Clear;
     Orphans.Clear;
     LoadSettings;
-    if TfrmDualImport.Execute(FOrigFile, FTransFile, cFoxitImportTitle, cFoxitFilter, '.', 'xml') then
+    if TfrmDualImport.Execute(FOrigFile, FTransFile, Translate(cFoxitImportTitle), Translate(cFoxitFilter), '.', 'xml') then
     begin
       FXMLImport := TXMLDocument.Create(FOrigFile);
       try
@@ -288,6 +323,7 @@ end;
 procedure TFoxitParser.Init(const ApplicationServices:IApplicationServices);
 begin
   Application.Handle := ApplicationServices.AppHandle;
+  FApplicationServices := ApplicationServices;
 end;
 
 procedure TFoxitParser.LoadSettings;

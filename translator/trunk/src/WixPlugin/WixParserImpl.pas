@@ -31,6 +31,8 @@ type
     procedure LoadSettings;
     procedure SaveSettings;
     procedure BuildPreview(Items:ITranslationItems; Strings:TTntStrings);
+    function GetString(out Section:WideString; out Name:WideString;
+      out Value:WideString):WordBool; safecall;
   public
     function Capabilities:Integer; safecall;
     function Configure(Capability:Integer):HRESULT; safecall;
@@ -38,8 +40,6 @@ type
     function ExportItems(const Items:ITranslationItems; const Orphans:ITranslationItems):HRESULT; safecall;
     function ImportItems(const Items:ITranslationItems; const Orphans:ITranslationItems):HRESULT; safecall;
     procedure Init(const ApplicationServices:IApplicationServices); safecall;
-    function GetString(out Section:WideString; out Name:WideString;
-      out Value:WideString):WordBool; safecall;
   end;
 
 implementation
@@ -102,9 +102,9 @@ function TWixParser.DisplayName(Capability:Integer):WideString;
 begin
   case Capability of
     CAP_IMPORT:
-      Result := cImportTitle;
+      Result := Translate(cImportTitle);
     CAP_EXPORT:
-      Result := cExportTitle;
+      Result := Translate(cExportTitle);
   else
     Result := '';
   end;

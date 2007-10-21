@@ -16,31 +16,37 @@ main="Ini Translator Help","toc.hhc","Index.hhk","Introduction.html",,,,,,0x2352
 
 
 [FILES]
-Index.html
-Introduction.html
-Editing Items.html
-Moving around.html
-Opening and Saving Files.html
-Icons in the ListView.html
-Bookmarks.html
-Spelling.html
-Trim.html
-Comments dialog.html
-Dictionaries.html
-Searching and Replacing.html
 Appendix A.html
 Appendix B.html
 Appendix C.html
 Appendix D.html
+Bookmarks.html
 Command-line interface.html
-Plugins.html
-Known issues.html
-Preferences dialog.html
-..\MPL-1.1.html
-Contact.html
+Comments dialog.html
 Configure Keyboard Dialog.html
-External Tools.html
 Configure Suspicious Translations.html
+Contact.html
+Dictionaries.html
+Editing Items.html
+External Tools.html
+Icons in the ListView.html
+Import and Export.html
+Index.html
+Introduction.html
+Known issues.html
+Moving around.html
+MSDictBuild.html
+MSTermBuild.html
+Opening and Saving Files.html
+Plugins.html
+Preferences dialog.html
+SDFSplit.html
+Searching and Replacing.html
+Spelling.html
+translator.html
+Trim.html
+Working with PO Files.html
+..\MPL-1.1.html
 
 [INFOTYPES]
 

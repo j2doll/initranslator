@@ -37,7 +37,6 @@
 		<LI> <OBJECT type="text/sitemap">
 			<param name="Name" value="Suspicious translations">
 			<param name="Local" value="Configure Suspicious Translations.html">
-			<param name="New" value="1">
 			</OBJECT>
 		<LI> <OBJECT type="text/sitemap">
 			<param name="Name" value="Dictionaries">
@@ -82,7 +81,6 @@
 		<LI> <OBJECT type="text/sitemap">
 			<param name="Name" value="Plugins">
 			<param name="Local" value="Plugins.html">
-			<param name="New" value="1">
 			</OBJECT>
 		<LI> <OBJECT type="text/sitemap">
 			<param name="Name" value="Known Issues">
@@ -156,6 +154,23 @@
 			<LI> <OBJECT type="text/sitemap">
 				<param name="Name" value="Command-file syntax">
 				<param name="Local" value="Appendix D.html">
+				</OBJECT>
+		</UL>
+		<LI> <OBJECT type="text/sitemap">
+			<param name="Name" value="Tools">
+			</OBJECT>
+		<UL>
+			<LI> <OBJECT type="text/sitemap">
+				<param name="Name" value="MS Terminology Translations Builder">
+				<param name="Local" value="MSTermBuild.html">
+				</OBJECT>
+			<LI> <OBJECT type="text/sitemap">
+				<param name="Name" value="MS Dictionary Builder">
+				<param name="Local" value="MSDictBuild.html">
+				</OBJECT>
+			<LI> <OBJECT type="text/sitemap">
+				<param name="Name" value="SDF Split and Extract">
+				<param name="Local" value="SDFSplit.html">
 				</OBJECT>
 		</UL>
 	</UL>

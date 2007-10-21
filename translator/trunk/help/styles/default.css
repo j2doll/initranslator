@@ -18,7 +18,7 @@
 	li		{margin-bottom: .7em; margin-left: -2em;}
 
 /* PREFORMATTING - CODE */ 
-	pre		{font-size: 100%; margin-top: 1.2em; margin-bottom: 1.5em;}
+	pre		{font-size: 125%; margin-top: 1.2em; margin-bottom: 1.5em;}
 	code	{font-family: "courier new", courier; font-size: 125%; }
 	
 /* TABLES */ 
@@ -204,5 +204,6 @@
 	.BPHide4Thai 	{  }
 
 .InfoField {
-	PADDING-RIGHT: 12px; PADDING-LEFT: 12px; PADDING-BOTTOM: 4px; MARGIN-LEFT: 24px; MARGIN-RIGHT: 48px; PADDING-TOP: 4px; BACKGROUND-COLOR: #cccccc
+	PADDING-RIGHT: 12px; PADDING-LEFT: 12px; PADDING-BOTTOM: 4px; MARGIN-LEFT: 24px; MARGIN-RIGHT: 48px;
+  PADDING-TOP: 4px; BACKGROUND-COLOR: #efefef
 }

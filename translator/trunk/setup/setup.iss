@@ -54,6 +54,8 @@ Source: ..\bin\MsDictBuild.exe; DestDir: {app}; Components: MSDICTBUILDINSTALL
 Source: ..\bin\MsDictBuild.map; DestDir: {app}; Components: DEBUGFILES and MSDICTBUILDINSTALL
 Source: ..\bin\MsTermBuild.exe; DestDir: {app}; Components: MSDICTBUILDINSTALL
 Source: ..\bin\MsTermBuild.map; DestDir: {app}; Components: DEBUGFILES and MSDICTBUILDINSTALL
+Source: ..\bin\SDFSplit.exe; DestDir: {app}; Components: SDFSPLITINSTALL
+Source: ..\bin\SDFSplit.map; DestDir: {app}; Components: DEBUGFILES and SDFSPLITINSTALL
 Source: ..\Changelog.txt; DestDir: {app}; Components: MAINAPPLICATION
 Source: ..\description.txt; DestDir: {app}; Components: MAINAPPLICATION
 Source: ..\releasenote.txt; DestDir: {app}; Components: MAINAPPLICATION
@@ -141,7 +143,8 @@ Name: PLUGINS; Description: Available Plugins; Types: custom full
 
 Name: DEBUGFILES; Description: Debug map files; Types: custom full
 Name: MSDICTBUILDINSTALL; Description: MS Dictionary Converters; Types: custom full
-Name: DEFAULT_TOOLS; Description: Install default tools; Types: custom full compact
+Name: SDFSPLITINSTALL; Description: SDF Split and Extract; Types: custom full
+Name: DEFAULT_TOOLS; Description: Install default tool menu items; Types: custom full compact
 
 [Code]
 const

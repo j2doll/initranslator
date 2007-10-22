@@ -28,9 +28,7 @@
       perform common tasks, like trimming text or supplying an alternative method of editing the
       items.
     </p>
-    <p>
-       
-    </p>
+    <p></p>
     <h4>
       Writing plugins
     </h4>
@@ -44,27 +42,20 @@
       <li>it must be able to create pure 32-bit Windows DLL files
       </li>
     </ol>
-    <p>
-       
-    </p>
+    <p></p>
     <p>
       The following discussion assumes Delphi syntax, but you can use any tool that supports the
       requirements above.
     </p>
-    <p>
-       
-    </p>
+    <p></p>
     <p class="InfoField">
       <strong>Note</strong><br />
       <br />
       When a function or method returns a <strong>HResult</strong>, you should generally return
       <strong>S_OK</strong> if the method executed normally, <strong>S_FALSE</strong> otherwise. If
       any other return value is expected, it is described in the documentation.<br />
-       
     </p>
-    <p>
-       
-    </p>
+    <p></p>
     <h4>
       Writing a file parser
     </h4>
@@ -74,9 +65,7 @@
       concept of a Original-Translation pair. A file parser must implement the IFileParser
       interface:
     </p>
-    <p>
-       
-    </p>
+    <p></p>
     <pre>
 <strong>type</strong>
   IFileParser = <strong>interface</strong>(IInterface)
@@ -126,9 +115,7 @@
       unloaded, restore the original ApplicationHandle. This ensures that any dialogs that your
       plugin displays, will behave correctly with IniTranslator.
     </p>
-    <p>
-       
-    </p>
+    <p></p>
     <h4>
       Writing a tool plugin
     </h4>
@@ -191,9 +178,7 @@
       plugin available from the DLL. Due to the internal structure of IniTranslator, a DLL can only
       contain one single file parser, but you can have as meny tool plugins as you like.
     </p>
-    <p>
-       
-    </p>
+    <p></p>
     <p>
       To register a file parser, export a function named <em>"RegisterTransFileParser001"</em> with
       the following signature:
@@ -217,9 +202,7 @@ When this function is called, you should create an instance of a class that impl
       should create an instance of a class that implements IToolItems and return it in the
       ToolItems variable.
     </p>
-    <p>
-       
-    </p>
+    <p></p>
     <h4>
       Supporting localization
     </h4>
@@ -229,9 +212,7 @@ When this function is called, you should create an instance of a class that impl
       own language files. These files can be edited with IniTranslator itself. You can use the
       IniTranslator translation mechanism in your plugins by performing two simple steps:
     </p>
-    <p>
-       
-    </p>
+    <p></p>
     <ol>
       <li>Implement the ILocalizable interface in each of your file parsers and/or tool plugins
       </li>
@@ -239,9 +220,7 @@ When this function is called, you should create an instance of a class that impl
       UI
       </li>
     </ol>
-    <p>
-       
-    </p>
+    <p></p>
     <p>
       The ILocalizable interface looks like this:
     </p>
@@ -260,18 +239,14 @@ When this function is called, you should create an instance of a class that impl
       values. Do not include carriage returns or line feeds in the strings. Instead, encode these
       as "\r\n" or use another scheme you prefer.
     </p>
-    <p>
-       
-    </p>
+    <p></p>
     <p>
       This method is only called when the user creates a new translation template for
       IniTranslator. This is not something users do regularily. In fact, most users never do it,
       opting to use default.lng or another language file in the languages folder of their
       installation.
     </p>
-    <p>
-       
-    </p>
+    <p></p>
     <p>
       To access the translated strings at runtime (they might not be translated; this depends on
       whether the user has a UI language file loaded or not), use the
@@ -280,13 +255,8 @@ When this function is called, you should create an instance of a class that impl
       Value, use the default value for the string. If the user has a .lng file loaded and a
       translation for your string was found, the translation is returned. If no string was found,
       the default Value is returned instead.<br />
-       
     </p>
-    <p>
-       
-    </p>
-    <p>
-       
-    </p>
+    <p></p>
+    <p></p>
   </body>
 </html>

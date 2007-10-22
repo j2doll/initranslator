@@ -1113,7 +1113,7 @@ Action.SetVersionInfoKey("ProductVersion",Action.GetVersionInfoKey("FileVersion"
                     <Property MultiValue="0" name="LibraryPath" type="WideString">$(DELPHI)\Lib;$(DELPHI)\Bin;$(DELPHI)\Imports;$(DELPHI)\Projects\Bpl;$(DELPHI)\Rave5\Lib;F:\Program\Borland\Add\JEDI\JCL\source;F:\Program\Borland\Add\JEDI\dev\JVCL3\common;F:\Program\Borland\Add\JEDI\dev\JVCL3\run;F:\Program\Borland\Add\dunit\src;F:\Program\Borland\Add\Others;F:\Program\Borland\Add\Utils;F:\Program\Borland\Add\tntunicode</Property>
                     <Property name="LinkerOutput" type="Integer">3</Property>
                     <Property name="LocalSymbols" type="WordBool">True</Property>
-                    <Property name="Mapfile" type="Integer">0</Property>
+                    <Property name="Mapfile" type="Integer">3</Property>
                     <Property name="MaxStackSize" type="Cardinal">1048576</Property>
                     <Property name="MinStackSize" type="Cardinal">16384</Property>
                     <Property MultiValue="0" name="NamespacePrefixes" type="string"></Property>
@@ -1153,7 +1153,7 @@ Action.SetVersionInfoKey("ProductVersion",Action.GetVersionInfoKey("FileVersion"
                 <Property name="IsBreakPoint" type="WordBool">False</Property>
                 <Property MultiValue="0" name="LogToVariable" type="string"></Property>
                 <Property name="MaxRetryAttempts" type="Cardinal">0</Property>
-                <Property name="NodeCollapsed" type="Boolean">False</Property>
+                <Property name="NodeCollapsed" type="Boolean">True</Property>
                 <Property name="PauseInterval" type="Cardinal">0</Property>
                 <Property name="RetryPauseInterval" type="Cardinal">1000</Property>
                 <Property name="SuppressStatusMessages" type="Boolean">False</Property>

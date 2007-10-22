@@ -1,11 +1,23 @@
 Ini Translator Changelog
 ========================
+
+2007-10-21:
+- option to change the font preview text
+- localization of plugins implemented where missing and fixed where not working
+
+2007-10-20:
+ResX Parser:
+- template now derived from translation file
+- optionally import metadata nodes and specific mimetypes (set in ini file)
+- preserves encoding or uses UTF-8 as default
+
 2007-10-17:
 - new parser for VS.Net resx files (requested by user)
 - when previewing before exporting, you can now search the content of the preview with Ctrl+F/F3
 
 2007-08-14:
-- modifications to build with Delphi 2007
+- modifications for Delphi 2007
+
 2006-12-25:
 - new parser for DC++ language files
 

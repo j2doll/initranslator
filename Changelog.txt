@@ -1,11 +1,15 @@
 Ini Translator Changelog
 ========================
+2007-10-23:
+- Released on Sourceforge as 1.9.0.52
 
 2007-10-21:
 - option to change the font preview text
 - localization of plugins implemented where missing and fixed where not working
 
-2007-10-20:
+2007-10-18:
+- Released on Sourceforge as 1.9.0.51
+
 ResX Parser:
 - template now derived from translation file
 - optionally import metadata nodes and specific mimetypes (set in ini file)

@@ -151,7 +151,7 @@ begin
     S := TTntStringlist.Create;
     try
       BuildPreview(Items, S);
-      if TfrmExport.Execute(FTransFile, Translate(cPolyGlotExportTitle), Translate(cPolyGlotFilter), '.', 'lng', S) then
+      if TfrmExport.Execute(FApplicationServices, FTransFile, Translate(cPolyGlotExportTitle), Translate(cPolyGlotFilter), '.', 'lng', S) then
       begin
         S.AnsiStrings.SaveToFile(FTransFile);
         Result := S_OK;
@@ -199,7 +199,7 @@ begin
     Orphans.Clear;
     TI := nil;
     LoadSettings;
-    if TfrmDualImport.Execute(FOrigFile, FTransFile, Translate(cPolyGlotImportTitle), Translate(cPolyGlotFilter), '.', 'lng', True) then
+    if TfrmDualImport.Execute(FApplicationServices, FOrigFile, FTransFile, Translate(cPolyGlotImportTitle), Translate(cPolyGlotFilter), '.', 'lng', True) then
     begin
       Items.Sort := stNone;
       S := TTntStringlist.Create;

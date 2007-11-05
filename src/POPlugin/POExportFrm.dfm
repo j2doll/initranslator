@@ -51,7 +51,7 @@ object frmPOExport: TfrmPOExport
   ShowHint = True
   DesignSize = (
     392
-    266)
+    268)
   PixelsPerInch = 96
   TextHeight = 13
   object lblFilename: TTntLabel

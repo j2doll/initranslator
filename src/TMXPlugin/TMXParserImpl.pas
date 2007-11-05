@@ -34,11 +34,11 @@ type
     procedure BuildPreview(Items:ITranslationItems; Strings:TTntStrings);
     function GetString(out Section: WideString; out Name: WideString;
       out Value: WideString): WordBool; safecall;
-    function Translate(const Value: WideString): WideString;
   public
     constructor Create;
     destructor Destroy; override;
 
+    function Translate(const Value: WideString): WideString;
     function Capabilities:Integer; safecall;
     function Configure(Capability:Integer):HRESULT; safecall;
     function DisplayName(Capability:Integer):WideString; safecall;
@@ -52,15 +52,7 @@ type
 implementation
 uses
   SysUtils, Forms, IniFiles, PreviewExportFrm, TMXImportFrm,
-  xmlintf, xmldoc, xmldom;
-
-const
-  cTMXFilter = 'TMX Files (*.tmx)|*.tmx|All files (*.*)|*.*';
-  cTMXImportTitle = 'Import from TMX file';
-  cTMXExportTitle = 'Export to TMX file';
-  cSectionName = 'TMX';
-  cOriginalItem:WideString = '!!!!Original%d!!!!';
-  cTranslationItem:WideString = '!!!!Translation%d!!!!';
+  xmlintf, xmldoc, xmldom, TMXParserLang;
 
 var
   XML:WideString = '';
@@ -140,7 +132,8 @@ begin
     S := TTntStringlist.Create;
     try
       BuildPreview(Items, S);
-      if TfrmExport.Execute(FOrigFile, Translate(cTMXExportTitle), Translate(cTMXFilter), '.', 'tmx', S) then
+      if TfrmExport.Execute(FApplicationServices, FOrigFile, Translate(cTMXExportTitle),
+        Translate(cTMXFilter), '.', 'tmx', S) then
       begin
         S.SaveToFile(FOrigFile);
         Result := S_OK;
@@ -163,6 +156,12 @@ begin
     0: Value := cTMXFilter;
     1: Value := cTMXImportTitle;
     2: Value := cTMXExportTitle;
+    3: Value := cTMXFilename;
+    4: Value := cTMXOrigLang;
+    5: Value := cTMXTransLang;
+    6: Value := cTMXOKButton;
+    7: Value := cTMXCancelButton;
+    8: Value := cTMXOpenDialogTitle;
   else
     Result := false;
   end;
@@ -213,7 +212,7 @@ begin
     Items.Clear;
     Orphans.Clear;
     LoadSettings;
-    if TfrmTMXImport.Execute(FOrigFile, FOrigLang, FTransLang, Translate(cTMXImportTitle), Translate(cTMXFilter), '.', 'tmx') then
+    if TfrmTMXImport.Execute(self, FOrigFile, FOrigLang, FTransLang, Translate(cTMXImportTitle), Translate(cTMXFilter), '.', 'tmx') then
     begin
       FXMLImport := TXMLDocument.Create(nil);
       try

@@ -32,7 +32,7 @@ type
   private
     FOldHandle:LongWord;
     FCount:integer;
-    FAppServices:IApplicationServices;
+    FApplicationServices:IApplicationServices;
     FOrigFile, FTransFile:WideString;
     FExportRect:TRect;
     procedure BuildPreview(const Items:ITranslationItems; Strings:TTntStrings);
@@ -294,7 +294,7 @@ begin
     S := TTntStringlist.Create;
     try
       BuildPreview(Items, S);
-      if TfrmExport.Execute(FAppServices, FTransFile, Translate(cIBFExportTitle), Translate(cPHPFilter), '.', 'php', S) then
+      if TfrmExport.Execute(FApplicationServices, FTransFile, Translate(cIBFExportTitle), Translate(cPHPFilter), '.', 'php', S) then
       begin
         S.AnsiStrings.SaveToFile(FTransFile);
         SaveSettings;
@@ -312,7 +312,7 @@ function TIBFParser.ImportItems(const Items, Orphans:ITranslationItems):HRESULT;
 begin
   Result := S_FALSE;
   LoadSettings;
-  if TfrmDualImport.Execute(FAppServices, FOrigFile, FTransFile, Translate(cIBFImportTitle), Translate(cPHPFilter), '.', 'php') then
+  if TfrmDualImport.Execute(FApplicationServices, FOrigFile, FTransFile, Translate(cIBFImportTitle), Translate(cPHPFilter), '.', 'php') then
   begin
     if DoImport(Items, Orphans, FOrigFile, FTransFile) then
     begin
@@ -329,7 +329,7 @@ end;
 
 procedure TIBFParser.Init(const ApplicationServices:IApplicationServices);
 begin
-  FAppServices := ApplicationServices;
+  FApplicationServices := ApplicationServices;
   Application.Handle := ApplicationServices.AppHandle;
 end;
 
@@ -431,8 +431,8 @@ end;
 
 function TIBFParser.Translate(const Value:WideString):WideString;
 begin
-  if FAppServices <> nil then
-    Result := FAppServices.Translate(ClassName, Value, Value)
+  if FApplicationServices <> nil then
+    Result := FApplicationServices.Translate(ClassName, Value, Value)
   else
     Result := Value;
 end;

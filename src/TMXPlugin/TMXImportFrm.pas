@@ -21,18 +21,18 @@ interface
 
 uses
   Windows, Messages, SysUtils, Classes, Graphics, Controls, Forms,
-  Dialogs, StdCtrls, TntForms, TntStdCtrls, TntDialogs;
+  Dialogs, StdCtrls, TntForms, TntStdCtrls, TntDialogs, TMXParserImpl;
 
 type
   TfrmTMXImport = class(TTntForm)
-    Label1:TTntLabel;
+    lblFilename: TTntLabel;
     edFilename:TTntEdit;
     btnBrowse:TTntButton;
     btnOK:TTntButton;
     btnCancel:TTntButton;
     OpenDialog1:TTntOpenDialog;
-    Label2:TTntLabel;
-    Label3:TTntLabel;
+    lblOrigLang: TTntLabel;
+    lblTransLang: TTntLabel;
     cbOrigLang:TTntComboBox;
     cbTransLang:TTntComboBox;
     procedure btnBrowseClick(Sender:TObject);
@@ -42,18 +42,18 @@ type
     procedure ParseLanguages(const Filename:WideString);
   public
     { Public declarations }
-    class function Execute(var AFilename, AOrigLang, ATransLang:WideString; const ACaption, Filter, InitialDir, DefaultExt:WideString):boolean;
+    class function Execute(const TMXParser: TTMXParser; var AFilename, AOrigLang, ATransLang:WideString; const ACaption, Filter, InitialDir, DefaultExt:WideString):boolean;
   end;
 
 implementation
 uses
-  TntClasses, XMLDoc, xmldom;
+  TntClasses, XMLDoc, xmldom, TMXParserLang;
 
 {$R *.dfm}
 
 { TfrmImport }
 
-class function TfrmTMXImport.Execute(var AFilename, AOrigLang, ATransLang:WideString; const ACaption, Filter, InitialDir, DefaultExt:WideString):boolean;
+class function TfrmTMXImport.Execute(const TMXParser: TTMXParser; var AFilename, AOrigLang, ATransLang:WideString; const ACaption, Filter, InitialDir, DefaultExt:WideString):boolean;
 var
   frmImport:TfrmTMXImport;
 begin
@@ -64,6 +64,13 @@ begin
     OpenDialog1.Filter := Filter;
     OpenDialog1.InitialDir := InitialDir;
     OpenDialog1.DefaultExt := DefaultExt;
+    OpenDialog1.Title := TMXParser.Translate(cTMXOpenDialogTitle);
+    lblFilename.Caption := TMXParser.Translate(cTMXFilename);
+    lblOrigLang.Caption := TMXParser.Translate(cTMXOrigLang);
+    lblTransLang.Caption := TMXParser.Translate(cTMXTransLang);
+    btnOK.Caption := TMXParser.Translate(cTMXOKButton);
+    btnCancel.Caption := TMXParser.Translate(cTMXCancelButton);
+
     edFilename.Text := AFilename;
     cbOrigLang.Text := AOrigLang;
     cbTransLang.Text := ATransLang;

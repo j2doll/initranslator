@@ -73,9 +73,12 @@ begin
     OpenDialog1.Filter := Filter;
     OpenDialog1.InitialDir := InitialDir;
     OpenDialog1.DefaultExt := DefaultExt;
+    // OpenDialog1.Title := Translate(OpenDialog1.Title);
     OpenDialog2.Filter := Filter;
     OpenDialog2.InitialDir := InitialDir;
     OpenDialog2.DefaultExt := DefaultExt;
+    // OpenDialog2.Title := Translate(OpenDialog2.Title);
+
     edFilename.Text := AOriginalFile;
     edFilename2.Text := ATranslationFile;
     chkOriginalIsDual.Checked := OrigIsDualLine;

@@ -228,7 +228,7 @@ begin
     S := TTntStringlist.Create;
     try
       BuildPreview(Items, S);
-      if TfrmExport.Execute(FTransFile, Translate(cSciTEExportTitle), Translate(cSciTEFilter), '.', 'properties', S) then
+      if TfrmExport.Execute(FApplicationServices, FTransFile, Translate(cSciTEExportTitle), Translate(cSciTEFilter), '.', 'properties', S) then
       begin
         S.AnsiStrings.SaveToFile(FTransFile);
         SaveSettings;
@@ -247,7 +247,7 @@ begin
   try
     Result := S_FALSE;
     LoadSettings;
-    if TfrmSingleImport.Execute(FTransFile, Translate(cSciTEImportTitle), Translate(cSciTEFilter), '.', 'properties') then
+    if TfrmSingleImport.Execute(FApplicationServices, FTransFile, Translate(cSciTEImportTitle), Translate(cSciTEFilter), '.', 'properties') then
     begin
       if DoSciTEImport(Items, Orphans, FTransFile) then
       begin

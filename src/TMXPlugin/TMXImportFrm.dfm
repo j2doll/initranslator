@@ -49,24 +49,24 @@ object frmTMXImport: TfrmTMXImport
   Position = poScreenCenter
   DesignSize = (
     384
-    194)
+    196)
   PixelsPerInch = 96
   TextHeight = 13
-  object Label1: TTntLabel
+  object lblFilename: TTntLabel
     Left = 8
     Top = 8
     Width = 46
     Height = 13
     Caption = '&Filename:'
   end
-  object Label2: TTntLabel
+  object lblOrigLang: TTntLabel
     Left = 8
     Top = 56
     Width = 87
     Height = 13
     Caption = '&Original language:'
   end
-  object Label3: TTntLabel
+  object lblTransLang: TTntLabel
     Left = 8
     Top = 104
     Width = 107

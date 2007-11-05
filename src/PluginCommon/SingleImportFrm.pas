@@ -77,11 +77,13 @@ begin
     else
       Caption := Translate(Caption);
     OpenDialog1.Filter := Translate(Filter);
+    OpenDialog1.InitialDir := InitialDir;
+    OpenDialog1.DefaultExt := DefaultExt;
+    OpenDialog1.Title := Translate(OpenDialog1.Title);
+    
     lblFilename.Caption := Translate(lblFilename.Caption);
     btnOK.Caption := Translate(btnOK.Caption);
     btnCancel.Caption := Translate(btnCancel.Caption);
-    OpenDialog1.InitialDir := InitialDir;
-    OpenDialog1.DefaultExt := DefaultExt;
     edFilename.Text := AFilename;
     Result := (ShowModal = mrOk) and FileExists(edFilename.Text);
     if Result then

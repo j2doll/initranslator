@@ -45,6 +45,7 @@ const
   SOK = 'OK';
   SCancel = 'Cancel';
 
+
 var
   GlobalApplicationServices:IApplicationServices = nil;
 

@@ -153,7 +153,7 @@ begin
     S := TTntStringlist.Create;
     try
       BuildPreview(Items, S);
-      if TfrmExport.Execute(FTransFile, Translate(cFoxitExportTitle), Translate(cFoxitFilter), '.', 'xml', S) then
+      if TfrmExport.Execute(FApplicationServices, FTransFile, Translate(cFoxitExportTitle), Translate(cFoxitFilter), '.', 'xml', S) then
       begin
         S.Text := WideStringToUTF8(S.Text);
         S.AnsiStrings.SaveToFile(FTransFile);
@@ -283,7 +283,7 @@ begin
     Items.Clear;
     Orphans.Clear;
     LoadSettings;
-    if TfrmDualImport.Execute(FOrigFile, FTransFile, Translate(cFoxitImportTitle), Translate(cFoxitFilter), '.', 'xml') then
+    if TfrmDualImport.Execute(FApplicationServices, FOrigFile, FTransFile, Translate(cFoxitImportTitle), Translate(cFoxitFilter), '.', 'xml') then
     begin
       FXMLImport := TXMLDocument.Create(FOrigFile);
       try
